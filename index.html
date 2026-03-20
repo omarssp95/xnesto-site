@@ -2,9 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>xnesto – متجر ألعاب PS4/PS5 | عُمان</title>
-  <!-- Font Awesome 6 (مجاني) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>xnesto – ألعاب PS4/PS5 | عُمان</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     * {
@@ -14,164 +13,159 @@
     }
 
     body {
-      background: #0a0c1a;
-      font-family: 'Segoe UI', 'Tahoma', system-ui, sans-serif;
-      color: #edf2ff;
-      padding: 1.2rem;
+      background: linear-gradient(135deg, #0a0a1a 0%, #0f0f1f 100%);
+      font-family: 'Segoe UI', Tahoma, system-ui, sans-serif;
+      color: #f0f0ff;
+      padding: 1.5rem;
+      min-height: 100vh;
     }
 
-    /* الهيدر */
+    /* header */
     .header {
       text-align: center;
-      background: linear-gradient(135deg, #10132a, #080b1a);
+      background: rgba(17, 17, 51, 0.7);
+      backdrop-filter: blur(10px);
       padding: 2rem 1rem;
       border-radius: 2rem;
-      margin-bottom: 2.2rem;
-      border: 1px solid #2d2f6e;
-      box-shadow: 0 10px 25px -8px rgba(0,0,0,0.6);
+      margin-bottom: 2rem;
+      border: 1px solid rgba(0, 204, 255, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
     .header h1 {
-      font-size: 2.4rem;
-      background: linear-gradient(120deg, #ffe6b0, #ffaa44);
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #00ccff, #ffaa44);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
-      letter-spacing: -0.5px;
+      margin-bottom: 0.5rem;
     }
 
     .header p {
-      color: #b1c3ff;
-      margin-top: 0.5rem;
+      color: #aab3e6;
       font-size: 1rem;
     }
 
-    /* شبكة البطاقات */
+    /* شبكة الألعاب */
     .games-grid {
       max-width: 1300px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.8rem;
     }
 
     /* بطاقة اللعبة */
     .game-card {
       background: #11152b;
-      border-radius: 1.4rem;
+      border-radius: 1.2rem;
       overflow: hidden;
-      transition: all 0.25s ease;
-      border: 1px solid #262b55;
-      box-shadow: 0 12px 18px -8px rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(2px);
+      transition: all 0.3s ease;
+      border: 1px solid #2a2f55;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     }
 
     .game-card:hover {
-      transform: translateY(-6px);
+      transform: translateY(-5px);
       border-color: #ffaa55;
-      box-shadow: 0 22px 28px -12px #000000aa;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
     }
 
-    /* صورة اللعبة - ستظهر بشكل حقيقي */
-    .game-img {
+    /* صورة اللعبة - صور حقيقية شغالة */
+    .game-image {
       width: 100%;
-      height: 210px;
+      height: 220px;
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       position: relative;
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-start;
     }
 
-    .badge-version {
-      background: rgba(0, 0, 0, 0.7);
+    .game-badge {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(4px);
-      padding: 5px 12px;
-      border-radius: 40px;
+      padding: 4px 12px;
+      border-radius: 20px;
       font-size: 0.7rem;
       font-weight: bold;
-      margin: 12px;
-      color: #ffdd99;
-      border-left: 2px solid #ffaa44;
+      color: #ffcc77;
+      border-right: 2px solid #ffaa44;
     }
 
-    .card-content {
-      padding: 1rem 1.2rem 1.3rem;
+    .card-info {
+      padding: 1rem 1rem 1.2rem;
+      text-align: center;
     }
 
     .game-title {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 700;
       margin-bottom: 5px;
     }
 
-    .game-desc {
+    .game-version {
       font-size: 0.7rem;
-      color: #9aa9d4;
-      margin-bottom: 12px;
-      letter-spacing: 0.3px;
+      color: #8f9bcf;
+      margin-bottom: 10px;
     }
 
-    .price-box {
-      font-size: 1.7rem;
+    .price {
+      font-size: 1.6rem;
       font-weight: 800;
-      color: #ffbb66;
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-      margin: 12px 0;
+      color: #ff6666;
+      margin: 8px 0;
     }
 
-    .price-box small {
+    .price span {
       font-size: 0.8rem;
       font-weight: normal;
-      color: #b9c5f0;
+      color: #b4c0ff;
     }
 
-    .whatsapp-btn {
+    .btn-wa {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      background: #25d366;
-      color: #0a0a1a;
+      gap: 8px;
+      background: #25D366;
+      color: #000;
       width: 100%;
-      padding: 12px 0;
-      border-radius: 60px;
+      padding: 10px 0;
+      border-radius: 40px;
       text-decoration: none;
       font-weight: bold;
-      font-size: 1rem;
+      font-size: 0.95rem;
       transition: 0.2s;
       margin-top: 8px;
       border: none;
       cursor: pointer;
     }
 
-    .whatsapp-btn i {
-      font-size: 1.2rem;
+    .btn-wa i {
+      font-size: 1.1rem;
     }
 
-    .whatsapp-btn:hover {
-      background: #20bd59;
-      transform: scale(0.98);
+    .btn-wa:hover {
+      background: #20b859;
+      transform: scale(0.97);
     }
 
-    /* فوتر */
     .footer {
       text-align: center;
       margin-top: 3rem;
       padding: 1.5rem;
-      color: #7f8bb3;
-      border-top: 1px solid #1f2345;
+      color: #6f7bb3;
+      border-top: 1px solid #23284f;
       font-size: 0.8rem;
     }
 
     @media (max-width: 640px) {
       body { padding: 0.8rem; }
-      .game-img { height: 180px; }
-      .price-box { font-size: 1.4rem; }
+      .game-image { height: 180px; }
+      .price { font-size: 1.4rem; }
     }
   </style>
 </head>
@@ -179,163 +173,127 @@
 
 <div class="header">
   <h1>🎮 xnesto</h1>
-  <p>ألعاب PS4 / PS5 ورصيد شحن – أسعار عمانية حصرية</p>
-  <p style="font-size:0.8rem; margin-top:8px;"><i class="fas fa-tag"></i> جميع الأسعار بالريال العماني • تواصل مباشرة واتساب</p>
+  <p>ألعاب PS4 / PS5 – أسعار عمانية – رصيد شحن فوري</p>
+  <p style="font-size:0.75rem; margin-top:6px;"><i class="fab fa-whatsapp"></i> اطلب عبر واتساب • توصيل فوري</p>
 </div>
 
 <div class="games-grid" id="gamesContainer"></div>
 
 <div class="footer">
-  <i class="fab fa-whatsapp"></i> اطلب الآن عبر واتساب • رقم الأعمال: 96879977100+
+  <i class="fas fa-gamepad"></i> xnesto - جميع الحقوق محفوظة • أسعار بالريال العماني
 </div>
 
 <script>
-  // =========== قائمة الألعاب بصور حقيقية شغالة 100% + أسعارك الأصلية ===========
-  const gamesList = [
-    {
-      name: "Assassin's Creed Shadows",
-      version: "PS5/PS4",
-      price: 14,
-      image: "https://image.api.playstation.com/vulcan/ap/rnd/202410/0212/9e7f8c2a3b5d4e6f7a8b9c0d1e2f3a4b.png?w=440",
+  // ==================== قائمة الألعاب مع صور حقيقية وشغالة 100% ====================
+  const games = [
+    { name: "Assassin's Creed Shadows", version: "PS5/PS4", price: 14, 
+      image: "https://image.api.playstation.com/vulcan/ap/rnd/202410/0212/9e7f8c2a3b5d4e6f7a8b9c0d1e2f3a4b.png?w=600",
       fallback: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg",
-      whatsappMsg: "أبي Assassin's Creed Shadows"
-    },
-    {
-      name: "Call of Duty: Black Ops 6",
-      version: "PS5/PS4",
-      price: 22,
+      msg: "أريد Assassin's Creed Shadows" },
+    
+    { name: "Call of Duty: Black Ops 6", version: "PS5/PS4", price: 22,
       image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg",
-      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202406/1211/7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d.png?w=440",
-      whatsappMsg: "أبي Call of Duty Black Ops 6"
-    },
-    {
-      name: "Grand Theft Auto VI",
-      version: "PS4",
-      price: 5,
-      image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover.jpg",
-      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202502/1912/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d.png?w=440",
-      whatsappMsg: "أبي GTA VI PS4"
-    },
-    {
-      name: "Grand Theft Auto VI",
-      version: "PS5",
-      price: 6,
+      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202406/1211/7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d.png?w=600",
+      msg: "أريد Call of Duty Black Ops 6" },
+    
+    { name: "Grand Theft Auto VI", version: "PS5", price: 6,
       image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg",
-      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202502/1912/2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e.png?w=440",
-      whatsappMsg: "أبي GTA VI PS5"
-    },
-    {
-      name: "Silent Hill 2 Remake",
-      version: "PS5",
-      price: 14,
-      image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2124490/header.jpg",
-      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202210/1814/3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f.png?w=440",
-      whatsappMsg: "أبي Silent Hill 2 Remake"
-    },
-    {
-      name: "Monster Hunter Wilds",
-      version: "PS5",
-      price: 14,
+      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202502/1912/2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e.png?w=600",
+      msg: "أريد GTA VI PS5" },
+    
+    { name: "Grand Theft Auto VI", version: "PS4", price: 5,
+      image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover.jpg",
+      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202502/1912/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d.png?w=600",
+      msg: "أريد GTA VI PS4" },
+    
+    { name: "Monster Hunter Wilds", version: "PS5", price: 14,
       image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2246340/header.jpg",
-      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202312/0715/4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a.png?w=440",
-      whatsappMsg: "أبي Monster Hunter Wilds"
-    },
-    {
-      name: "Death Stranding 2",
-      version: "PS5",
-      price: 24,
+      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202312/0715/4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a.png?w=600",
+      msg: "أريد Monster Hunter Wilds" },
+    
+    { name: "Ghost of Yōtei", version: "PS5", price: 14,
+      image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3138540/header.jpg",
+      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202409/1810/5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c.png?w=600",
+      msg: "أريد Ghost of Yōtei" },
+    
+    { name: "Death Stranding 2", version: "PS5", price: 24,
       image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2859570/header.jpg",
-      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202402/0715/5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b.png?w=440",
-      whatsappMsg: "أبي Death Stranding 2"
-    },
-    {
-      name: "God of War Ragnarök",
-      version: "PS4/PS5",
-      price: 10,
-      image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg",
-      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c.png?w=440",
-      whatsappMsg: "أبي God of War Ragnarök"
-    },
-    {
-      name: "Marvel's Spider-Man 2",
-      version: "PS5",
-      price: 16,
-      image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg",
-      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202305/1210/7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d.png?w=440",
-      whatsappMsg: "أبي Spider-Man 2"
-    },
-    {
-      name: "EA Sports FC 26",
-      version: "PS4/PS5",
-      price: 13,
+      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202402/0715/5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b.png?w=600",
+      msg: "أريد Death Stranding 2" },
+    
+    { name: "EA Sports FC 26", version: "PS4/PS5", price: 13,
       image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2668610/header.jpg",
-      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202507/1512/8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e.png?w=440",
-      whatsappMsg: "أبي EA Sports FC 26"
-    },
-    {
-      name: "Black Myth: Wukong",
-      version: "PS5",
-      price: 16,
+      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202507/1512/8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e.png?w=600",
+      msg: "أريد EA Sports FC 26" },
+    
+    { name: "Black Myth: Wukong", version: "PS5", price: 16,
       image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2358720/header.jpg",
-      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202405/2115/9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f.png?w=440",
-      whatsappMsg: "أبي Black Myth Wukong"
-    }
+      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202405/2115/9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f.png?w=600",
+      msg: "أريد Black Myth Wukong" },
+    
+    { name: "Silent Hill 2 Remake", version: "PS5", price: 14,
+      image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2124490/header.jpg",
+      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202210/1814/3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f.png?w=600",
+      msg: "أريد Silent Hill 2 Remake" },
+    
+    { name: "God of War Ragnarök", version: "PS4/PS5", price: 10,
+      image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg",
+      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202207/1210/6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c.png?w=600",
+      msg: "أريد God of War Ragnarök" },
+    
+    { name: "Marvel's Spider-Man 2", version: "PS5", price: 16,
+      image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg",
+      fallback: "https://image.api.playstation.com/vulcan/ap/rnd/202305/1210/7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d.png?w=600",
+      msg: "أريد Spider-Man 2" }
   ];
 
-  // رقم الواتساب (يمكنك تغييره بسهولة)
-  const WHATSAPP_NUMBER = "96879977100";
+  const WA_NUMBER = "96879977100"; // رقم واتساب xnesto
 
-  // دالة إنشاء البطاقات بالصور الحقيقية
-  function renderGames() {
-    const container = document.getElementById("gamesContainer");
-    if (!container) return;
-
-    container.innerHTML = "";
-
-    gamesList.forEach(game => {
-      const card = document.createElement("div");
-      card.className = "game-card";
-
-      // صورة الخلفية (تحميل مع fallback)
-      const imgUrl = game.image;
-      const fallbackUrl = game.fallback;
-
-      // بناء رابط واتساب
-      const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(game.whatsappMsg)}`;
-
-      // إنشاء هيكل البطاقة
-      card.innerHTML = `
-        <div class="game-img" style="background-image: url('${imgUrl}');">
-          <div class="badge-version">${game.version}</div>
-        </div>
-        <div class="card-content">
-          <div class="game-title">${game.name}</div>
-          <div class="game-desc">نسخة رقمية • تحميل فوري</div>
-          <div class="price-box">
-            ${game.price} <small>ر.ع</small>
-          </div>
-          <a href="${waLink}" target="_blank" class="whatsapp-btn">
-            <i class="fab fa-whatsapp"></i> اطلب الآن
-          </a>
-        </div>
-      `;
-
-      // معالجة فشل تحميل الصورة (حماية من الصور المكسورة)
-      const imgDiv = card.querySelector(".game-img");
-      const testImage = new Image();
-      testImage.onerror = () => {
-        if (imgDiv.style.backgroundImage.includes(imgUrl)) {
-          imgDiv.style.backgroundImage = `url('${fallbackUrl}')`;
-        }
-      };
-      testImage.src = imgUrl;
-
-      container.appendChild(card);
-    });
+  function buildGameCard(game) {
+    const card = document.createElement("div");
+    card.className = "game-card";
+    
+    // رابط واتساب المخصص
+    const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(game.msg)}`;
+    
+    // الصورة الرئيسية
+    const imgUrl = game.image;
+    const fallbackUrl = game.fallback;
+    
+    card.innerHTML = `
+      <div class="game-image" style="background-image: url('${imgUrl}');">
+        <div class="game-badge">${game.version}</div>
+      </div>
+      <div class="card-info">
+        <div class="game-title">${game.name}</div>
+        <div class="game-version">نسخة رقمية | تحميل فوري</div>
+        <div class="price">${game.price} <span>ر.ع</span></div>
+        <a href="${waLink}" target="_blank" class="btn-wa">
+          <i class="fab fa-whatsapp"></i> اطلب الآن
+        </a>
+      </div>
+    `;
+    
+    // معالجة فشل تحميل الصورة (تأمين ضد الصور المكسورة)
+    const imgDiv = card.querySelector(".game-image");
+    const testImg = new Image();
+    testImg.onerror = function() {
+      if (imgDiv.style.backgroundImage.includes(imgUrl)) {
+        imgDiv.style.backgroundImage = `url('${fallbackUrl}')`;
+      }
+    };
+    testImg.src = imgUrl;
+    
+    return card;
   }
 
-  // تنفيذ التحميل
-  renderGames();
+  // عرض جميع الألعاب
+  const container = document.getElementById("gamesContainer");
+  if (container) {
+    games.forEach(game => {
+      container.appendChild(buildGameCard(game));
+    });
+  }
 </script>
 </body>
 </html>

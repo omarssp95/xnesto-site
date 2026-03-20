@@ -14,7 +14,6 @@
       padding: 1.5rem;
       min-height: 100vh;
     }
-    /* تخصيص xnesto */
     .header {
       text-align: center;
       background: linear-gradient(135deg, #0f0f2a, #0a0a1f);
@@ -23,22 +22,6 @@
       margin-bottom: 2rem;
       border: 1px solid rgba(255, 170, 68, 0.3);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      position: relative;
-      overflow: hidden;
-    }
-    .header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255,170,68,0.1) 0%, transparent 70%);
-      animation: pulse 8s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 0.3; }
-      50% { transform: scale(1.1); opacity: 0.5; }
     }
     .header h1 {
       font-size: 2.8rem;
@@ -46,16 +29,8 @@
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
-      letter-spacing: -0.5px;
-      position: relative;
-      z-index: 1;
     }
-    .header p {
-      color: #ffdd99;
-      font-size: 1rem;
-      position: relative;
-      z-index: 1;
-    }
+    .header p { color: #ffdd99; font-size: 1rem; }
     
     .control-bar {
       max-width: 1300px;
@@ -86,7 +61,6 @@
       color: #ccc;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.2s;
     }
     .lang-btn.active { background: #ffaa44; color: #0a0a1a; }
     .currency-selector {
@@ -115,7 +89,6 @@
       border-radius: 40px;
       cursor: pointer;
       font-size: 0.85rem;
-      transition: 0.2s;
     }
     .login-btn:hover, .logout-btn:hover { background: #ffaa44; color: #0a0a1a; }
     .user-badge {
@@ -129,7 +102,117 @@
       color: #ffaa66;
     }
     
-    /* شريط البحث */
+    /* نافذة تسجيل الدخول */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .modal-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .login-box {
+      background: #11152b;
+      border-radius: 1.5rem;
+      padding: 2rem;
+      text-align: center;
+      border: 2px solid #ffaa44;
+      width: 350px;
+      box-shadow: 0 0 30px rgba(255, 170, 68, 0.3);
+    }
+    .login-box i { font-size: 3rem; color: #ffaa44; margin-bottom: 1rem; }
+    .login-box h3 { color: #ffaa44; margin-bottom: 1rem; }
+    .login-box select, .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 40px;
+      background: #1e1e3a;
+      color: white;
+      border: 1px solid #ffaa44;
+      outline: none;
+    }
+    .login-box button {
+      background: #ffaa44;
+      border: none;
+      padding: 12px;
+      border-radius: 40px;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .login-error { color: #ff6666; margin-top: 10px; font-size: 0.8rem; }
+    .close-modal {
+      background: #444 !important;
+      color: white;
+    }
+    
+    /* لوحة تحكم الادمن */
+    .admin-panel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .admin-panel.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .admin-container {
+      background: #0a0c1a;
+      border-radius: 1.5rem;
+      width: 90%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 1.5rem;
+      border: 2px solid #ffaa44;
+    }
+    .admin-container h2 { text-align: center; color: #ffaa44; margin-bottom: 1rem; }
+    .admin-container p { text-align: center; color: #ffdd99; margin-bottom: 1rem; }
+    .admin-info {
+      background: #11152b;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .close-admin {
+      background: #ffaa44;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 40px;
+      color: #0a0a1a;
+      font-weight: bold;
+      display: block;
+      margin: 20px auto 0;
+      cursor: pointer;
+    }
+    
     .search-bar-container {
       max-width: 1300px;
       margin: 0 auto 1.5rem auto;
@@ -137,7 +220,6 @@
       backdrop-filter: blur(10px);
       padding: 12px 20px;
       border-radius: 60px;
-      border: 1px solid rgba(255, 170, 68, 0.2);
     }
     .search-box {
       display: flex;
@@ -147,7 +229,7 @@
       padding: 5px 15px;
       border-radius: 50px;
     }
-    .search-box i { color: #ffaa66; font-size: 1.1rem; }
+    .search-box i { color: #ffaa66; }
     #searchInput {
       flex: 1;
       background: transparent;
@@ -157,7 +239,6 @@
       font-size: 1rem;
       outline: none;
     }
-    #searchInput::placeholder { color: #8f9bcf; }
     .search-results-count {
       font-size: 0.8rem;
       color: #ffaa66;
@@ -166,7 +247,6 @@
       border-radius: 30px;
     }
     
-    /* تبويبات */
     .tabs-container {
       max-width: 1300px;
       margin: 0 auto 1.5rem auto;
@@ -183,18 +263,14 @@
       color: #ffdd99;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.2s;
       font-size: 1rem;
     }
     .tab-btn.active {
       background: #ffaa44;
       color: #0a0a1a;
       border-color: #ffaa44;
-      box-shadow: 0 0 15px rgba(255, 170, 68, 0.5);
     }
-    .tab-btn:hover:not(.active) { background: #2d2f6e; }
     
-    /* شبكة المنتجات */
     .games-grid, .giftcards-grid {
       max-width: 1300px;
       margin: 0 auto;
@@ -206,14 +282,12 @@
       background: #11152b;
       border-radius: 1.2rem;
       overflow: hidden;
-      transition: all 0.3s ease;
+      transition: 0.3s;
       border: 1px solid rgba(255, 170, 68, 0.2);
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
     }
     .game-card:hover, .giftcard-card:hover {
-      transform: translateY(-8px);
+      transform: translateY(-5px);
       border-color: #ffaa44;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
     }
     .game-image, .giftcard-image {
       width: 100%;
@@ -223,41 +297,21 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      background-size: cover;
-      background-position: center;
     }
-    .game-icon-large, .giftcard-icon {
-      font-size: 4rem;
-      text-shadow: 0 4px 10px rgba(0,0,0,0.5);
-      margin-bottom: 10px;
-    }
+    .game-icon-large, .giftcard-icon { font-size: 4rem; margin-bottom: 10px; }
     .game-badge, .giftcard-badge {
       position: absolute;
       bottom: 10px;
       right: 10px;
       background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(4px);
       padding: 4px 12px;
       border-radius: 20px;
       font-size: 0.7rem;
       color: #ffcc77;
-      font-weight: bold;
     }
-    .card-info {
-      padding: 1rem;
-      text-align: center;
-    }
-    .game-title, .giftcard-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 5px;
-      color: #fff;
-    }
-    .game-version, .giftcard-region {
-      font-size: 0.7rem;
-      color: #ffaa66;
-      margin-bottom: 8px;
-    }
+    .card-info { padding: 1rem; text-align: center; }
+    .game-title, .giftcard-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 5px; }
+    .game-version, .giftcard-region { font-size: 0.7rem; color: #ffaa66; margin-bottom: 8px; }
     .game-specs {
       background: rgba(0, 0, 0, 0.3);
       padding: 8px;
@@ -265,15 +319,9 @@
       margin: 10px 0;
       font-size: 0.7rem;
       color: #b9c5f0;
-      line-height: 1.5;
       border-right: 2px solid #ffaa44;
     }
-    .price {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: #ffaa44;
-      margin: 8px 0;
-    }
+    .price { font-size: 1.4rem; font-weight: 800; color: #ffaa44; margin: 8px 0; }
     .btn-wa {
       display: inline-flex;
       align-items: center;
@@ -287,9 +335,7 @@
       text-decoration: none;
       font-weight: bold;
       margin-top: 8px;
-      transition: 0.2s;
     }
-    .btn-wa:hover { background: #20b859; transform: scale(0.98); }
     .pagination {
       display: flex;
       justify-content: center;
@@ -304,23 +350,19 @@
       padding: 8px 16px;
       border-radius: 40px;
       cursor: pointer;
-      transition: 0.2s;
     }
     .page-btn.active { background: #ffaa44; color: #0a0a1a; }
-    .page-btn:hover:not(.active) { background: #2d2f6e; }
     .footer {
       text-align: center;
       margin-top: 3rem;
       padding: 1.5rem;
       color: #6f7bb3;
       border-top: 1px solid rgba(255, 170, 68, 0.2);
-      font-size: 0.8rem;
     }
     @media (max-width: 640px) {
       body { padding: 1rem; }
       .game-image, .giftcard-image { height: 150px; }
       .game-icon-large, .giftcard-icon { font-size: 2.5rem; }
-      .tab-btn { padding: 8px 16px; font-size: 0.8rem; }
     }
   </style>
 </head>
@@ -348,7 +390,7 @@
     </select>
   </div>
   <div class="auth-buttons" id="authButtons">
-    <button class="login-btn" id="showLoginBtn"><i class="fas fa-user-shield"></i> <span id="loginBtnText">تسجيل دخول</span></button>
+    <button class="login-btn" id="showLoginBtn"><i class="fas fa-user"></i> <span id="loginBtnText">تسجيل دخول</span></button>
   </div>
 </div>
 
@@ -370,37 +412,38 @@
 <div class="pagination" id="paginationContainer"></div>
 
 <div class="footer">
-  <i class="fas fa-bolt"></i> xnesto - أسرع متجر للألعاب وبطاقات الشحن في سلطنة عمان <i class="fas fa-heart" style="color: #ffaa44;"></i>
+  <i class="fas fa-bolt"></i> xnesto - أسرع متجر للألعاب وبطاقات الشحن في سلطنة عمان
 </div>
 
 <!-- نافذة تسجيل الدخول -->
-<div class="login-modal" id="loginModal" style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); backdrop-filter:blur(12px); align-items:center; justify-content:center; z-index:1000;">
-  <div class="login-box" style="background:#11152b; border-radius:1.5rem; padding:2rem; text-align:center; border:2px solid #ffaa44; width:350px; box-shadow:0 0 30px rgba(255,170,68,0.3);">
-    <i class="fas fa-crown" style="font-size: 3rem; color: #ffaa44; margin-bottom: 1rem;"></i>
-    <h3 style="color:#ffaa44; margin-bottom:1rem;">تسجيل دخول xnesto</h3>
-    <select id="userTypeSelect" style="width:100%; padding:12px; margin:10px 0; border-radius:40px; background:#1e1e3a; color:white; border:1px solid #ffaa44;">
+<div id="loginModal" class="modal-overlay">
+  <div class="login-box">
+    <i class="fas fa-user-shield"></i>
+    <h3>تسجيل الدخول إلى xnesto</h3>
+    <select id="userTypeSelect">
       <option value="user">👤 عميل / زائر</option>
       <option value="admin">👑 أدمن (مدير المتجر)</option>
     </select>
-    <div id="adminPasswordField" style="display:none;">
-      <input type="password" id="adminPassword" placeholder="كلمة السر" style="width:100%; padding:12px; margin:10px 0; border-radius:40px; background:#1e1e3a; color:white; border:1px solid #ffaa44;">
+    <div id="adminPasswordField" style="display: none;">
+      <input type="password" id="adminPassword" placeholder="كلمة السر" autocomplete="off">
     </div>
-    <button id="loginSubmitBtn" style="background:#ffaa44; border:none; padding:12px; border-radius:40px; font-weight:bold; width:100%; margin-top:10px; cursor:pointer; font-size:1rem;">🔓 دخول</button>
-    <div class="login-error" id="loginError" style="color:#ff6666; margin-top:10px;"></div>
-    <button id="closeLoginBtn" style="background:#444; border:none; padding:10px; border-radius:40px; width:100%; margin-top:10px; cursor:pointer;">✖ إغلاق</button>
+    <button id="loginSubmitBtn">دخول</button>
+    <div id="loginError" class="login-error"></div>
+    <button id="closeLoginBtn" class="close-modal">إغلاق</button>
   </div>
 </div>
 
 <!-- لوحة تحكم الادمن -->
-<div class="admin-panel" id="adminPanel" style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); backdrop-filter:blur(12px); align-items:center; justify-content:center; z-index:1001;">
-  <div class="admin-container" style="background:#0a0c1a; border-radius:1.5rem; width:90%; max-width:500px; max-height:80vh; overflow-y:auto; padding:1.5rem; border:2px solid #ffaa44;">
-    <h2 style="text-align:center; color:#ffaa44;"><i class="fas fa-edit"></i> لوحة تحكم xnesto</h2>
-    <p style="text-align:center; color:#ffdd99; margin-bottom:1rem;">مرحباً أيها المدير!</p>
-    <div id="adminGamesList" style="background:#11152b; border-radius:1rem; padding:1rem; margin-top:1rem;">
-      <p style="color:#ffaa66; text-align:center;"><i class="fas fa-check-circle"></i> تم تسجيل الدخول بنجاح</p>
-      <p style="color:#8f9bcf; text-align:center; font-size:0.8rem; margin-top:0.5rem;">يمكنك الآن تعديل الأسعار والمواصفات من الكود مباشرة</p>
+<div id="adminPanel" class="admin-panel">
+  <div class="admin-container">
+    <h2><i class="fas fa-edit"></i> لوحة تحكم xnesto</h2>
+    <p>مرحباً أيها المدير!</p>
+    <div class="admin-info">
+      <i class="fas fa-check-circle" style="color: #ffaa44; font-size: 2rem;"></i>
+      <p style="margin-top: 10px;">تم تسجيل الدخول بنجاح</p>
+      <p style="font-size: 0.8rem; color: #8f9bcf;">يمكنك الآن تعديل الأسعار والمواصفات من الكود مباشرة</p>
     </div>
-    <button class="close-admin" id="closeAdminBtn" style="background:#ffaa44; border:none; padding:10px 20px; border-radius:40px; color:#0a0a1a; font-weight:bold; display:block; margin:20px auto 0; cursor:pointer;">إغلاق</button>
+    <button id="closeAdminBtn" class="close-admin">إغلاق</button>
   </div>
 </div>
 
@@ -424,7 +467,7 @@
     { id: 15, nameAr: "Tekken 8", nameEn: "Tekken 8", version: "PS5", priceOMR: 12, icon: "🥊", bgColor: "#5a2d3a", specsAr: "🏷️ الحجم: 80GB | 🥊 لعبة قتال", specsEn: "📦 Size: 80GB | 🥊 Fighting Game", msgAr: "أريد Tekken 8", msgEn: "I want Tekken 8" }
   ];
 
-  // ==================== بطاقات الشحن (مع إضافة سلطنة عمان) ====================
+  // ==================== بطاقات الشحن ====================
   const giftCardsData = [
     { id: 1, nameAr: "بطاقة شحن أمريكي", nameEn: "US Gift Card", region: "USA", currency: "USD", priceOMR: 5, icon: "🇺🇸", bgColor: "#1a3a5a", values: ["10$", "25$", "50$", "100$"], msgAr: "أريد بطاقة شحن أمريكي", msgEn: "I want US Gift Card" },
     { id: 2, nameAr: "بطاقة شحن بريطاني", nameEn: "UK Gift Card", region: "UK", currency: "GBP", priceOMR: 6, icon: "🇬🇧", bgColor: "#1a4a6e", values: ["10£", "25£", "50£"], msgAr: "أريد بطاقة شحن بريطاني", msgEn: "I want UK Gift Card" },
@@ -439,7 +482,6 @@
     { id: 11, nameAr: "بطاقة شحن عماني", nameEn: "Oman Gift Card", region: "Oman", currency: "OMR", priceOMR: 5, icon: "🇴🇲", bgColor: "#2d6e6e", values: ["5ر.ع", "10ر.ع", "20ر.ع", "50ر.ع"], msgAr: "أريد بطاقة شحن عماني", msgEn: "I want Oman Gift Card" }
   ];
 
-  let nextGameId = 16;
   let currentUser = { type: "guest", name: "زائر" };
   let currentLang = "ar";
   let currentCurrency = "OMR";
@@ -453,22 +495,6 @@
   const exchangeRates = { OMR: 1, USD: 2.6, SAR: 9.75, QAR: 9.46, EUR: 2.4, AED: 9.55 };
   const currencySymbols = { OMR: "ر.ع", USD: "$", SAR: "ر.س", QAR: "ر.ق", EUR: "€", AED: "د.إ" };
   const WA_NUMBER = "96879977100";
-
-  function saveGamesToLocal() { localStorage.setItem("xnesto_games", JSON.stringify(gamesData)); }
-  function loadGamesFromLocal() {
-    const saved = localStorage.getItem("xnesto_games");
-    if (saved) { 
-      const parsed = JSON.parse(saved);
-      if (parsed.length > 0) {
-        gamesData.length = 0;
-        parsed.forEach(g => gamesData.push(g));
-        nextGameId = Math.max(...gamesData.map(g => g.id), 0) + 1;
-        filteredGames = [...gamesData];
-        updateSearchResults();
-      }
-    }
-  }
-  loadGamesFromLocal();
 
   function convertPrice(price, currency) {
     let converted = price * exchangeRates[currency];
@@ -501,8 +527,8 @@
     const currencySym = currencySymbols[currentCurrency];
     
     card.innerHTML = `
-      <div class="game-image" style="background: linear-gradient(135deg, ${game.bgColor || "#2d4a6e"}, ${game.bgColor ? game.bgColor + "cc" : "#1a2a3a"});">
-        <div class="game-icon-large">${game.icon || "🎮"}</div>
+      <div class="game-image" style="background: linear-gradient(135deg, ${game.bgColor}, ${game.bgColor}cc);">
+        <div class="game-icon-large">${game.icon}</div>
         <div class="game-badge">${game.version}</div>
       </div>
       <div class="card-info">
@@ -528,8 +554,8 @@
     const currencySym = currencySymbols[currentCurrency];
     
     cardDiv.innerHTML = `
-      <div class="giftcard-image" style="background: linear-gradient(135deg, ${card.bgColor || "#2d4a6e"}, ${card.bgColor ? card.bgColor + "cc" : "#1a2a3a"});">
-        <div class="giftcard-icon">${card.icon || "💳"}</div>
+      <div class="giftcard-image" style="background: linear-gradient(135deg, ${card.bgColor}, ${card.bgColor}cc);">
+        <div class="giftcard-icon">${card.icon}</div>
         <div class="giftcard-badge">${card.currency}</div>
       </div>
       <div class="card-info">
@@ -614,7 +640,7 @@
       welcomeMsg.innerHTML = currentLang === "ar" ? "🎮 أهلاً بك! يمكنك تصفح الألعاب والطلب عبر واتساب" : "🎮 Welcome! You can browse games and order via WhatsApp";
       document.getElementById("logoutBtn")?.addEventListener("click", logout);
     } else {
-      authDiv.innerHTML = `<button class="login-btn" id="showLoginBtn"><i class="fas fa-user-shield"></i> ${currentLang === "ar" ? "تسجيل دخول" : "Login"}</button>`;
+      authDiv.innerHTML = `<button class="login-btn" id="showLoginBtn"><i class="fas fa-user"></i> ${currentLang === "ar" ? "تسجيل دخول" : "Login"}</button>`;
       welcomeMsg.innerHTML = currentLang === "ar" ? "🎮 xnesto - ألعاب PS4/PS5 – بطاقات شحن – أسعار محدثة – رصيد فوري" : "🎮 xnesto - PS4/PS5 Games – Gift Cards – Updated Prices – Instant Credit";
       document.getElementById("showLoginBtn")?.addEventListener("click", () => showLoginModal());
     }
@@ -630,6 +656,12 @@
     document.getElementById("loginModal").classList.add("active");
   }
 
+  function closeLoginModal() {
+    document.getElementById("loginModal").classList.remove("active");
+    document.getElementById("loginError").innerHTML = "";
+    document.getElementById("adminPassword").value = "";
+  }
+
   function handleLogin() {
     const userType = document.getElementById("userTypeSelect").value;
     if (userType === "admin") {
@@ -637,25 +669,35 @@
       if (password === ADMIN_PASSWORD) {
         currentUser = { type: "admin", name: "Admin" };
         updateUIForUser();
-        document.getElementById("loginModal").classList.remove("active");
+        closeLoginModal();
         document.getElementById("adminPanel").classList.add("active");
       } else {
-        document.getElementById("loginError").textContent = currentLang === "ar" ? "❌ كلمة السر غير صحيحة" : "❌ Incorrect password";
+        document.getElementById("loginError").innerHTML = currentLang === "ar" ? "❌ كلمة السر غير صحيحة" : "❌ Incorrect password";
       }
     } else {
       currentUser = { type: "user", name: "عميل" };
       updateUIForUser();
-      document.getElementById("loginModal").classList.remove("active");
+      closeLoginModal();
     }
   }
 
   function initEvents() {
     document.getElementById("showLoginBtn")?.addEventListener("click", showLoginModal);
-    document.getElementById("closeLoginBtn")?.addEventListener("click", () => document.getElementById("loginModal").classList.remove("active"));
+    document.getElementById("closeLoginBtn")?.addEventListener("click", closeLoginModal);
     document.getElementById("loginSubmitBtn")?.addEventListener("click", handleLogin);
-    document.getElementById("closeAdminBtn")?.addEventListener("click", () => document.getElementById("adminPanel").classList.remove("active"));
+    document.getElementById("closeAdminBtn")?.addEventListener("click", () => {
+      document.getElementById("adminPanel").classList.remove("active");
+    });
     document.getElementById("userTypeSelect")?.addEventListener("change", (e) => {
       document.getElementById("adminPasswordField").style.display = e.target.value === "admin" ? "block" : "none";
+    });
+    
+    // إغلاق النافذة عند الضغط خارجها
+    document.getElementById("loginModal")?.addEventListener("click", (e) => {
+      if (e.target === document.getElementById("loginModal")) closeLoginModal();
+    });
+    document.getElementById("adminPanel")?.addEventListener("click", (e) => {
+      if (e.target === document.getElementById("adminPanel")) document.getElementById("adminPanel").classList.remove("active");
     });
     
     document.querySelectorAll(".lang-btn").forEach(btn => {

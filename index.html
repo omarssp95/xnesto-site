@@ -397,6 +397,7 @@
       background-size: cover;
       background-position: center;
       position: relative;
+      background-color: #1a1a2e;
     }
 
     .game-badge {
@@ -560,8 +561,8 @@
         <input type="text" id="newGameVersion" placeholder="الإصدار (PS5/PS4)">
         <input type="number" id="newGamePrice" placeholder="السعر (ر.ع)">
         <input type="text" id="newGameImage" placeholder="رابط الصورة">
-        <textarea id="newGameSpecsAr" rows="2" placeholder="المواصفات بالعربية (مثال: الحجم: 50GB، اللغة: عربية/إنجليزية)"></textarea>
-        <textarea id="newGameSpecsEn" rows="2" placeholder="Specifications in English (e.g., Size: 50GB, Language: Arabic/English)"></textarea>
+        <textarea id="newGameSpecsAr" rows="2" placeholder="المواصفات بالعربية"></textarea>
+        <textarea id="newGameSpecsEn" rows="2" placeholder="Specifications in English"></textarea>
         <button class="add-game-btn" id="addGameBtn"><i class="fas fa-save"></i> <span id="addBtnText">إضافة</span></button>
       </div>
     </div>
@@ -571,12 +572,12 @@
 </div>
 
 <script>
-  // ==================== قائمة الألعاب مع صور شغالة 100% ====================
+  // ==================== قائمة الألعاب مع صور مضمونة الشغل 100% ====================
   let gamesData = [
-    { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", version: "PS5/PS4", priceOMR: 14, image: "https://image.api.playstation.com/vulcan/ap/rnd/202410/0212/9e7f8c2a3b5d4e6f7a8b9c0d1e2f3a4b.png?w=600", specsAr: "🏷️ الحجم: 65GB | 🎮 اللغة: عربية/إنجليزية | 💾 يتطلب مساحة 70GB", specsEn: "📦 Size: 65GB | 🎮 Language: Arabic/English | 💾 Storage: 70GB", msgAr: "أريد Assassin's Creed Shadows", msgEn: "I want Assassin's Creed Shadows" },
+    { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", version: "PS5/PS4", priceOMR: 14, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", specsAr: "🏷️ الحجم: 65GB | 🎮 اللغة: عربية/إنجليزية | 💾 يتطلب مساحة 70GB", specsEn: "📦 Size: 65GB | 🎮 Language: Arabic/English | 💾 Storage: 70GB", msgAr: "أريد Assassin's Creed Shadows", msgEn: "I want Assassin's Creed Shadows" },
     { id: 2, nameAr: "Call of Duty: Black Ops 6", nameEn: "Call of Duty: Black Ops 6", version: "PS5/PS4", priceOMR: 22, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", specsAr: "🏷️ الحجم: 120GB | 🎮 اللغة: إنجليزية | 🔫 وضع زومبي + حملة", specsEn: "📦 Size: 120GB | 🎮 Language: English | 🧟 Zombies Mode + Campaign", msgAr: "أريد Call of Duty Black Ops 6", msgEn: "I want Call of Duty Black Ops 6" },
-    { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", version: "PS5", priceOMR: 6, image: "https://image.api.playstation.com/vulcan/ap/rnd/202502/1912/2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e.png?w=600", specsAr: "🏷️ الحجم: 150GB | 🎮 اللغة: عربية/إنجليزية | 🌍 عالم مفتوح ضخم", specsEn: "📦 Size: 150GB | 🎮 Language: Arabic/English | 🌍 Huge Open World", msgAr: "أريد GTA VI PS5", msgEn: "I want GTA VI PS5" },
-    { id: 4, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", version: "PS4", priceOMR: 5, image: "https://image.api.playstation.com/vulcan/ap/rnd/202502/1912/1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d.png?w=600", specsAr: "🏷️ الحجم: 120GB | 🎮 اللغة: عربية/إنجليزية | نسخة PS4", specsEn: "📦 Size: 120GB | 🎮 Language: Arabic/English | PS4 Version", msgAr: "أريد GTA VI PS4", msgEn: "I want GTA VI PS4" },
+    { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", version: "PS5", priceOMR: 6, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", specsAr: "🏷️ الحجم: 150GB | 🎮 اللغة: عربية/إنجليزية | 🌍 عالم مفتوح ضخم", specsEn: "📦 Size: 150GB | 🎮 Language: Arabic/English | 🌍 Huge Open World", msgAr: "أريد GTA VI PS5", msgEn: "I want GTA VI PS5" },
+    { id: 4, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", version: "PS4", priceOMR: 5, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover.jpg", specsAr: "🏷️ الحجم: 120GB | 🎮 اللغة: عربية/إنجليزية | نسخة PS4", specsEn: "📦 Size: 120GB | 🎮 Language: Arabic/English | PS4 Version", msgAr: "أريد GTA VI PS4", msgEn: "I want GTA VI PS4" },
     { id: 5, nameAr: "Monster Hunter Wilds", nameEn: "Monster Hunter Wilds", version: "PS5", priceOMR: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2246340/header.jpg", specsAr: "🏷️ الحجم: 75GB | 🎮 اللغة: إنجليزية | 🐉 صيد الوحوش + لعب جماعي", specsEn: "📦 Size: 75GB | 🎮 Language: English | 🐉 Monster Hunting + Multiplayer", msgAr: "أريد Monster Hunter Wilds", msgEn: "I want Monster Hunter Wilds" },
     { id: 6, nameAr: "Ghost of Yōtei", nameEn: "Ghost of Yōtei", version: "PS5", priceOMR: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3138540/header.jpg", specsAr: "🏷️ الحجم: 80GB | 🎮 اللغة: عربية/إنجليزية | 🗡️ عالم مفتوح - ساموراي", specsEn: "📦 Size: 80GB | 🎮 Language: Arabic/English | 🗡️ Open World - Samurai", msgAr: "أريد Ghost of Yōtei", msgEn: "I want Ghost of Yōtei" },
     { id: 7, nameAr: "Death Stranding 2", nameEn: "Death Stranding 2", version: "PS5", priceOMR: 24, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2859570/header.jpg", specsAr: "🏷️ الحجم: 100GB | 🎮 اللغة: عربية/إنجليزية | 🌊 مغامرة فريدة", specsEn: "📦 Size: 100GB | 🎮 Language: Arabic/English | 🌊 Unique Adventure", msgAr: "أريد Death Stranding 2", msgEn: "I want Death Stranding 2" },
@@ -587,10 +588,11 @@
     { id: 12, nameAr: "Marvel's Spider-Man 2", nameEn: "Marvel's Spider-Man 2", version: "PS5", priceOMR: 16, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", specsAr: "🏷️ الحجم: 98GB | 🎮 اللغة: عربية/إنجليزية | 🕷️ بيتر باركر + مايلز موراليس", specsEn: "📦 Size: 98GB | 🎮 Language: Arabic/English | 🕷️ Peter Parker + Miles Morales", msgAr: "أريد Spider-Man 2", msgEn: "I want Spider-Man 2" },
     { id: 13, nameAr: "Hogwarts Legacy", nameEn: "Hogwarts Legacy", version: "PS4/PS5", priceOMR: 11, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/990080/header.jpg", specsAr: "🏷️ الحجم: 85GB | 🎮 اللغة: عربية/إنجليزية | 🧙 عالم هاري بوتر المفتوح", specsEn: "📦 Size: 85GB | 🎮 Language: Arabic/English | 🧙 Open World Harry Potter", msgAr: "أريد Hogwarts Legacy", msgEn: "I want Hogwarts Legacy" },
     { id: 14, nameAr: "Final Fantasy VII Rebirth", nameEn: "Final Fantasy VII Rebirth", version: "PS5", priceOMR: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2909400/header.jpg", specsAr: "🏷️ الحجم: 145GB | 🎮 اللغة: عربية/إنجليزية | 🗡️ آر بي جي خيالية", specsEn: "📦 Size: 145GB | 🎮 Language: Arabic/English | 🗡️ Fantasy RPG", msgAr: "أريد Final Fantasy VII Rebirth", msgEn: "I want Final Fantasy VII Rebirth" },
-    { id: 15, nameAr: "Star Wars Outlaws", nameEn: "Star Wars Outlaws", version: "PS5", priceOMR: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2949960/header.jpg", specsAr: "🏷️ الحجم: 110GB | 🎮 اللغة: عربية/إنجليزية | 🌌 عالم حرب النجوم المفتوح", specsEn: "📦 Size: 110GB | 🎮 Language: Arabic/English | 🌌 Open World Star Wars", msgAr: "أريد Star Wars Outlaws", msgEn: "I want Star Wars Outlaws" }
+    { id: 15, nameAr: "Star Wars Outlaws", nameEn: "Star Wars Outlaws", version: "PS5", priceOMR: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2949960/header.jpg", specsAr: "🏷️ الحجم: 110GB | 🎮 اللغة: عربية/إنجليزية | 🌌 عالم حرب النجوم المفتوح", specsEn: "📦 Size: 110GB | 🎮 Language: Arabic/English | 🌌 Open World Star Wars", msgAr: "أريد Star Wars Outlaws", msgEn: "I want Star Wars Outlaws" },
+    { id: 16, nameAr: "Tekken 8", nameEn: "Tekken 8", version: "PS5", priceOMR: 12, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1778820/header.jpg", specsAr: "🏷️ الحجم: 80GB | 🎮 اللغة: عربية/إنجليزية | 🥊 لعبة قتال", specsEn: "📦 Size: 80GB | 🎮 Language: Arabic/English | 🥊 Fighting Game", msgAr: "أريد Tekken 8", msgEn: "I want Tekken 8" }
   ];
 
-  let nextId = 16;
+  let nextId = 17;
   let currentUser = { type: "guest", name: "زائر" };
   let currentLang = "ar";
   let currentCurrency = "OMR";
@@ -685,9 +687,9 @@
         </div>
         <div class="admin-specs">
           <label><i class="fas fa-info-circle"></i> المواصفات (عربي)</label>
-          <textarea id="specsAr-${game.id}" rows="2" placeholder="المواصفات بالعربية">${game.specsAr || ''}</textarea>
+          <textarea id="specsAr-${game.id}" rows="2">${game.specsAr || ''}</textarea>
           <label style="margin-top:8px;"><i class="fas fa-info-circle"></i> Specifications (English)</label>
-          <textarea id="specsEn-${game.id}" rows="2" placeholder="Specifications in English">${game.specsEn || ''}</textarea>
+          <textarea id="specsEn-${game.id}" rows="2">${game.specsEn || ''}</textarea>
         </div>
         <div class="admin-buttons">
           <button class="admin-save-btn" data-id="${game.id}"><i class="fas fa-save"></i> حفظ</button>
@@ -731,7 +733,7 @@
     const nameEn = document.getElementById("newGameNameEn").value;
     const version = document.getElementById("newGameVersion").value;
     const price = parseFloat(document.getElementById("newGamePrice").value);
-    const image = document.getElementById("newGameImage").value || "https://via.placeholder.com/600x400?text=New+Game";
+    const image = document.getElementById("newGameImage").value || "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/990080/header.jpg";
     const specsAr = document.getElementById("newGameSpecsAr").value;
     const specsEn = document.getElementById("newGameSpecsEn").value;
     

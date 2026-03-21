@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>xnesto – متجر الألعاب وبطاقات الشحن | PS4/PS5</title>
+  <title>Store PSN – إدارة المنتجات والتخفيضات</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -14,358 +14,205 @@
       padding: 1.5rem;
       min-height: 100vh;
     }
+    
+    /* Header */
     .header {
       text-align: center;
       background: linear-gradient(135deg, #0f0f2a, #0a0a1f);
-      padding: 2rem 1rem;
+      padding: 1.5rem 1rem;
       border-radius: 1.5rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       border: 1px solid rgba(255, 170, 68, 0.3);
-      position: relative;
-      overflow: hidden;
     }
-    .header::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255,170,68,0.1) 0%, transparent 70%);
-      animation: pulse 8s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.1); opacity: 0.5; } }
     .header h1 {
-      font-size: 2.8rem;
-      background: linear-gradient(135deg, #ffaa44, #ffcc88, #ffaa44);
+      font-size: 2.2rem;
+      background: linear-gradient(135deg, #ffaa44, #ffcc88);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
-      position: relative;
-      z-index: 1;
     }
-    .header p { color: #ffdd99; position: relative; z-index: 1; }
+    .header p { color: #ffdd99; font-size: 0.9rem; }
     
+    /* Control Bar */
     .control-bar {
-      max-width: 1300px;
-      margin: 0 auto 1.5rem auto;
+      max-width: 1400px;
+      margin: 0 auto 1rem auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 15px;
+      gap: 10px;
       background: rgba(15, 15, 42, 0.8);
       backdrop-filter: blur(10px);
-      padding: 12px 20px;
-      border-radius: 60px;
+      padding: 10px 20px;
+      border-radius: 50px;
       border: 1px solid rgba(255, 170, 68, 0.2);
     }
     .lang-switch {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       background: #1e1e3a;
-      padding: 5px;
-      border-radius: 50px;
+      padding: 4px;
+      border-radius: 40px;
     }
     .lang-btn {
       background: transparent;
       border: none;
-      padding: 8px 20px;
+      padding: 6px 16px;
       border-radius: 40px;
       color: #ccc;
       font-weight: bold;
       cursor: pointer;
+      font-size: 0.8rem;
     }
     .lang-btn.active { background: #ffaa44; color: #0a0a1a; }
     .currency-selector {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       background: #1e1e3a;
-      padding: 5px 15px;
-      border-radius: 50px;
+      padding: 4px 12px;
+      border-radius: 40px;
     }
     #currencySelect {
       background: #0a0c1a;
       border: 1px solid #ffaa44;
       color: #ffdd99;
-      padding: 8px 12px;
+      padding: 5px 10px;
       border-radius: 30px;
       font-weight: bold;
       cursor: pointer;
+      font-size: 0.8rem;
     }
-    .auth-buttons { display: flex; gap: 10px; }
+    .user-badge {
+      background: #1e1e3a;
+      padding: 6px 14px;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #ffaa66;
+      font-size: 0.8rem;
+    }
     .login-btn, .logout-btn {
       background: #2d2f6e;
       border: none;
       color: #ffaa66;
-      padding: 8px 16px;
+      padding: 6px 14px;
       border-radius: 40px;
       cursor: pointer;
-    }
-    .user-badge {
-      background: #1e1e3a;
-      padding: 8px 16px;
-      border-radius: 40px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #ffaa66;
+      font-size: 0.8rem;
     }
     
-    /* نافذة تسجيل الدخول */
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.95);
-      backdrop-filter: blur(12px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      visibility: hidden;
-      opacity: 0;
-      transition: all 0.3s ease;
-    }
-    .modal-overlay.active { visibility: visible; opacity: 1; }
-    .login-box {
-      background: #11152b;
-      border-radius: 1.5rem;
-      padding: 2rem;
-      text-align: center;
-      border: 2px solid #ffaa44;
-      width: 350px;
-    }
-    .login-box i { font-size: 3rem; color: #ffaa44; margin-bottom: 1rem; }
-    .login-box h3 { color: #ffaa44; margin-bottom: 1rem; }
-    .login-box select, .login-box input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 40px;
-      background: #1e1e3a;
-      color: white;
-      border: 1px solid #ffaa44;
-    }
-    .login-box button {
+    /* Admin Mode Indicator */
+    .admin-mode-badge {
       background: #ffaa44;
-      border: none;
-      padding: 12px;
-      border-radius: 40px;
-      font-weight: bold;
-      width: 100%;
-      margin-top: 10px;
-      cursor: pointer;
-    }
-    .login-error { color: #ff6666; margin-top: 10px; }
-    .close-modal { background: #444 !important; color: white; }
-    
-    /* لوحة تحكم الادمن */
-    .admin-panel {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.95);
-      backdrop-filter: blur(12px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1001;
-      visibility: hidden;
-      opacity: 0;
-      transition: all 0.3s ease;
-      overflow-y: auto;
-      padding: 2rem;
-    }
-    .admin-panel.active { visibility: visible; opacity: 1; }
-    .admin-container {
-      background: #0a0c1a;
-      border-radius: 1.5rem;
-      width: 100%;
-      max-width: 900px;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 1.5rem;
-      border: 2px solid #ffaa44;
-    }
-    .admin-container h2 { text-align: center; color: #ffaa44; margin-bottom: 1rem; }
-    .admin-games-list { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
-    .admin-game-item, .admin-gift-item {
-      background: #11152b;
-      border-radius: 1rem;
-      padding: 1rem;
-      border: 1px solid #2a2f55;
-    }
-    .admin-game-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    .admin-game-name { font-weight: bold; color: #ffaa66; }
-    .admin-price-input {
-      background: #1e1e3a;
-      border: 1px solid #ffaa44;
-      padding: 6px 12px;
-      border-radius: 30px;
-      width: 90px;
-      color: #ffdd99;
-    }
-    .admin-specs textarea, .admin-specs input {
-      width: 100%;
-      background: #1e1e3a;
-      border: 1px solid #ffaa44;
-      border-radius: 12px;
-      padding: 8px;
-      color: white;
-      margin: 5px 0;
-    }
-    .admin-specs label { font-size: 0.7rem; color: #ffaa66; display: block; margin-top: 8px; }
-    .admin-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px; }
-    .admin-save-btn, .admin-delete-btn {
-      padding: 6px 16px;
-      border-radius: 30px;
-      cursor: pointer;
-      font-weight: bold;
-      border: none;
-    }
-    .admin-save-btn { background: #ffaa44; color: #0a0a1a; }
-    .admin-delete-btn { background: #ff4444; color: white; }
-    .add-game-section {
-      background: #11152b;
-      border-radius: 1rem;
-      padding: 1rem;
-      margin-top: 1rem;
-    }
-    .add-game-section h3 { color: #ffaa44; margin-bottom: 1rem; }
-    .add-game-form {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .add-game-form input, .add-game-form textarea {
-      background: #1e1e3a;
-      border: 1px solid #ffaa44;
-      padding: 8px 12px;
-      border-radius: 30px;
-      color: white;
-      flex: 1;
-      min-width: 140px;
-    }
-    .add-game-form textarea { min-width: 200px; }
-    .add-game-btn {
-      background: #00cc88;
-      border: none;
-      padding: 8px 20px;
-      border-radius: 30px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .close-admin {
-      background: #ffaa44;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 40px;
       color: #0a0a1a;
+      padding: 5px 12px;
+      border-radius: 30px;
+      font-size: 0.7rem;
       font-weight: bold;
-      display: block;
-      margin: 20px auto 0;
-      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
     }
     
-    /* شريط البحث */
+    /* Search */
     .search-bar-container {
-      max-width: 1300px;
-      margin: 0 auto 1.5rem auto;
+      max-width: 1400px;
+      margin: 0 auto 1rem auto;
       background: rgba(15, 15, 42, 0.8);
-      padding: 12px 20px;
-      border-radius: 60px;
+      padding: 8px 20px;
+      border-radius: 50px;
     }
     .search-box {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       background: #1e1e3a;
       padding: 5px 15px;
-      border-radius: 50px;
+      border-radius: 40px;
     }
     #searchInput {
       flex: 1;
       background: transparent;
       border: none;
-      padding: 12px 0;
+      padding: 10px 0;
       color: white;
       outline: none;
     }
     .search-results-count {
       background: #2d2f6e;
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: 30px;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       color: #ffaa66;
     }
     
-    /* تبويبات */
+    /* Tabs */
     .tabs-container {
-      max-width: 1300px;
-      margin: 0 auto 1.5rem auto;
+      max-width: 1400px;
+      margin: 0 auto 1rem auto;
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
       justify-content: center;
     }
     .tab-btn {
       background: #1e1e3a;
       border: 1px solid rgba(255, 170, 68, 0.3);
-      padding: 12px 28px;
-      border-radius: 60px;
+      padding: 8px 20px;
+      border-radius: 40px;
       color: #ffdd99;
       font-weight: bold;
       cursor: pointer;
+      font-size: 0.85rem;
     }
     .tab-btn.active { background: #ffaa44; color: #0a0a1a; }
     
-    /* شبكة المنتجات */
-    .games-grid, .giftcards-grid {
-      max-width: 1300px;
+    /* Products Grid */
+    .products-grid {
+      max-width: 1400px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.8rem;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
     }
-    .game-card, .giftcard-card {
+    .product-card {
       background: #11152b;
-      border-radius: 1.2rem;
+      border-radius: 1rem;
       overflow: hidden;
       transition: 0.3s;
       border: 1px solid rgba(255, 170, 68, 0.2);
       position: relative;
     }
-    .game-card:hover, .giftcard-card:hover { transform: translateY(-5px); border-color: #ffaa44; }
+    .product-card:hover { transform: translateY(-4px); border-color: #ffaa44; }
     .discount-badge {
       position: absolute;
-      top: 10px;
-      left: 10px;
+      top: 8px;
+      left: 8px;
       background: #ff4444;
       color: white;
-      padding: 4px 12px;
+      padding: 4px 10px;
       border-radius: 20px;
       font-size: 0.7rem;
       font-weight: bold;
       z-index: 2;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
-    .game-image, .giftcard-image {
+    .timer-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.7);
+      color: #ffaa44;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 0.6rem;
+      z-index: 2;
+    }
+    .product-image {
       width: 100%;
-      height: 200px;
+      height: 160px;
       position: relative;
       display: flex;
       align-items: center;
@@ -373,25 +220,25 @@
       background-size: cover;
       background-position: center;
     }
-    .game-badge, .giftcard-badge {
+    .product-badge {
       position: absolute;
-      bottom: 10px;
-      right: 10px;
+      bottom: 8px;
+      right: 8px;
       background: rgba(0, 0, 0, 0.7);
-      padding: 4px 12px;
+      padding: 3px 10px;
       border-radius: 20px;
-      font-size: 0.7rem;
+      font-size: 0.6rem;
       color: #ffcc77;
     }
-    .card-info { padding: 1rem; text-align: center; }
-    .game-title, .giftcard-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 5px; }
-    .game-version, .giftcard-region { font-size: 0.7rem; color: #ffaa66; margin-bottom: 8px; }
-    .game-specs {
+    .card-info { padding: 0.8rem; }
+    .product-title { font-size: 1rem; font-weight: 700; margin-bottom: 4px; text-align: center; }
+    .product-category { font-size: 0.6rem; color: #ffaa66; margin-bottom: 6px; text-align: center; }
+    .product-details {
       background: rgba(0, 0, 0, 0.3);
-      padding: 8px;
-      border-radius: 12px;
-      margin: 10px 0;
-      font-size: 0.7rem;
+      padding: 6px;
+      border-radius: 10px;
+      margin: 8px 0;
+      font-size: 0.65rem;
       color: #b9c5f0;
       border-right: 2px solid #ffaa44;
     }
@@ -399,58 +246,152 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      margin: 8px 0;
-      flex-wrap: wrap;
+      gap: 8px;
+      margin: 6px 0;
     }
-    .old-price {
-      font-size: 0.9rem;
-      color: #888;
-      text-decoration: line-through;
-    }
-    .price {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: #ffaa44;
-    }
+    .old-price { font-size: 0.8rem; color: #888; text-decoration: line-through; }
+    .price { font-size: 1.2rem; font-weight: 800; color: #ffaa44; }
     .btn-wa {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       background: #25D366;
       color: #000;
       width: 100%;
-      padding: 10px 0;
+      padding: 8px 0;
       border-radius: 40px;
       text-decoration: none;
       font-weight: bold;
-      margin-top: 8px;
+      margin-top: 6px;
+      font-size: 0.8rem;
     }
+    
+    /* Admin Edit Section - لكل منتج */
+    .admin-edit-section {
+      background: #0a0c1a;
+      border-top: 1px solid #2a2f55;
+      padding: 0.8rem;
+      margin-top: 0.5rem;
+    }
+    .admin-edit-section h4 {
+      font-size: 0.7rem;
+      color: #ffaa66;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .edit-price-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .edit-price-row input {
+      background: #1e1e3a;
+      border: 1px solid #ffaa44;
+      border-radius: 30px;
+      padding: 6px 10px;
+      width: 90px;
+      color: white;
+      text-align: center;
+    }
+    .discount-buttons {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .discount-buttons button {
+      background: #2d2f6e;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 30px;
+      color: #ffaa66;
+      cursor: pointer;
+      font-size: 0.7rem;
+    }
+    .discount-buttons button.active { background: #ffaa44; color: #0a0a1a; }
+    .custom-discount-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .custom-discount-row input {
+      background: #1e1e3a;
+      border: 1px solid #ffaa44;
+      border-radius: 30px;
+      padding: 5px 8px;
+      width: 70px;
+      color: white;
+    }
+    .timer-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .timer-row input {
+      background: #1e1e3a;
+      border: 1px solid #ffaa44;
+      border-radius: 30px;
+      padding: 6px 10px;
+      flex: 1;
+      color: white;
+      font-size: 0.7rem;
+    }
+    .save-edit-btn {
+      background: #00cc88;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      font-size: 0.75rem;
+    }
+    .delete-product-btn {
+      background: #ff4444;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 6px;
+      font-size: 0.75rem;
+    }
+    
     .pagination {
       display: flex;
       justify-content: center;
-      gap: 10px;
-      margin-top: 2rem;
+      gap: 8px;
+      margin-top: 1.5rem;
       flex-wrap: wrap;
     }
     .page-btn {
       background: #1e1e3a;
       border: 1px solid #ffaa44;
       color: #ffdd99;
-      padding: 8px 16px;
-      border-radius: 40px;
+      padding: 6px 12px;
+      border-radius: 30px;
       cursor: pointer;
+      font-size: 0.8rem;
     }
     .page-btn.active { background: #ffaa44; color: #0a0a1a; }
-    .footer { text-align: center; margin-top: 3rem; padding: 1.5rem; color: #6f7bb3; border-top: 1px solid rgba(255, 170, 68, 0.2); }
-    @media (max-width: 640px) { body { padding: 1rem; } .game-image, .giftcard-image { height: 160px; } }
+    .footer { text-align: center; margin-top: 2rem; padding: 1rem; color: #6f7bb3; font-size: 0.7rem; border-top: 1px solid rgba(255, 170, 68, 0.2); }
+    
+    @media (max-width: 640px) { body { padding: 1rem; } .product-image { height: 140px; } .products-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body dir="rtl">
 
 <div class="header">
-  <h1>🎮 xnesto</h1>
+  <h1>🛒 Store PSN</h1>
   <p id="welcomeMsg">ألعاب PS4 / PS5 – بطاقات شحن – عروض وتخفيضات – رصيد فوري</p>
 </div>
 
@@ -471,583 +412,277 @@
     </select>
   </div>
   <div class="auth-buttons" id="authButtons">
-    <button class="login-btn" id="showLoginBtn"><i class="fas fa-user"></i> <span id="loginBtnText">تسجيل دخول</span></button>
+    <button class="login-btn" id="showLoginBtn"><i class="fas fa-user-shield"></i> <span id="loginBtnText">تسجيل دخول</span></button>
   </div>
 </div>
 
 <div class="search-bar-container">
   <div class="search-box">
     <i class="fas fa-search"></i>
-    <input type="text" id="searchInput" placeholder="🔍 ابحث عن لعبة أو بطاقة شحن...">
+    <input type="text" id="searchInput" placeholder="🔍 ابحث عن منتج...">
     <span class="search-results-count" id="searchCount">0</span>
   </div>
 </div>
 
 <div class="tabs-container">
-  <button class="tab-btn active" data-tab="games">🎮 ألعاب PS4/PS5</button>
-  <button class="tab-btn" data-tab="giftcards">💳 بطاقات شحن</button>
-  <button class="tab-btn" data-tab="offers">🔥 عروض وتخفيضات</button>
+  <button class="tab-btn active" data-category="games">🎮 ألعاب PS4/PS5</button>
+  <button class="tab-btn" data-category="giftcards">💳 بطاقات شحن</button>
+  <button class="tab-btn" data-category="offers">🔥 عروض وتخفيضات</button>
 </div>
 
-<div id="gamesSection" class="games-grid"></div>
-<div id="giftcardsSection" class="giftcards-grid" style="display: none;"></div>
-<div id="offersSection" class="games-grid" style="display: none;"></div>
+<div id="productsContainer" class="products-grid"></div>
 <div class="pagination" id="paginationContainer"></div>
 
 <div class="footer">
-  <i class="fas fa-bolt"></i> xnesto - أسرع متجر للألعاب وبطاقات الشحن في سلطنة عمان
-</div>
-
-<!-- نافذة تسجيل الدخول -->
-<div id="loginModal" class="modal-overlay">
-  <div class="login-box">
-    <i class="fas fa-user-shield"></i>
-    <h3>تسجيل الدخول إلى xnesto</h3>
-    <select id="userTypeSelect">
-      <option value="user">👤 عميل / زائر</option>
-      <option value="admin">👑 أدمن (مدير المتجر)</option>
-    </select>
-    <div id="adminPasswordField" style="display: none;">
-      <input type="password" id="adminPassword" placeholder="كلمة السر" autocomplete="off">
-    </div>
-    <button id="loginSubmitBtn">دخول</button>
-    <div id="loginError" class="login-error"></div>
-    <button id="closeLoginBtn" class="close-modal">إغلاق</button>
-  </div>
-</div>
-
-<!-- لوحة تحكم الادمن -->
-<div id="adminPanel" class="admin-panel">
-  <div class="admin-container">
-    <h2><i class="fas fa-edit"></i> لوحة تحكم xnesto - تعديل الأسعار والتخفيضات</h2>
-    <div id="adminGamesList" class="admin-games-list"></div>
-    <div id="adminGiftList" class="admin-games-list"></div>
-    
-    <div class="add-game-section">
-      <h3><i class="fas fa-plus-circle"></i> إضافة لعبة جديدة</h3>
-      <div class="add-game-form">
-        <input type="text" id="newGameNameAr" placeholder="الاسم بالعربية">
-        <input type="text" id="newGameNameEn" placeholder="Name in English">
-        <input type="text" id="newGameVersion" placeholder="الإصدار (PS5/PS4)">
-        <input type="number" id="newGamePrice" placeholder="السعر (ر.ع)" step="0.5">
-        <input type="number" id="newGameOldPrice" placeholder="السعر القديم (للخصم)" step="0.5">
-        <input type="text" id="newGameImage" placeholder="رابط الصورة (مباشر)">
-        <textarea id="newGameSpecsAr" rows="2" placeholder="المواصفات بالعربية"></textarea>
-        <textarea id="newGameSpecsEn" rows="2" placeholder="Specifications in English"></textarea>
-        <button class="add-game-btn" id="addGameBtn"><i class="fas fa-save"></i> إضافة اللعبة</button>
-      </div>
-    </div>
-    
-    <button id="closeAdminBtn" class="close-admin">إغلاق</button>
-  </div>
+  <i class="fas fa-bolt"></i> Store PSN - أسرع متجر للألعاب وبطاقات الشحن
 </div>
 
 <script>
-  // ==================== قائمة الألعاب مع تخفيضات ====================
-  let gamesData = [
-    { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", version: "PS5/PS4", priceOMR: 14, oldPrice: 20, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", bgColor: "#2d4a6e", specsAr: "🏷️ الحجم: 65GB | 🎮 اللغة: عربية/إنجليزية", specsEn: "📦 Size: 65GB | 🎮 Language: Arabic/English", msgAr: "أريد Assassin's Creed Shadows", msgEn: "I want Assassin's Creed Shadows" },
-    { id: 2, nameAr: "Call of Duty: Black Ops 6", nameEn: "Call of Duty: Black Ops 6", version: "PS5/PS4", priceOMR: 22, oldPrice: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", bgColor: "#5d3a1a", specsAr: "🏷️ الحجم: 120GB | 🎮 اللغة: إنجليزية", specsEn: "📦 Size: 120GB | 🎮 Language: English", msgAr: "أريد Call of Duty Black Ops 6", msgEn: "I want Call of Duty Black Ops 6" },
-    { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", version: "PS5", priceOMR: 6, oldPrice: 10, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", bgColor: "#2d5a4a", specsAr: "🏷️ الحجم: 150GB | 🌍 عالم مفتوح", specsEn: "📦 Size: 150GB | 🌍 Open World", msgAr: "أريد GTA VI PS5", msgEn: "I want GTA VI PS5" },
-    { id: 4, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", version: "PS4", priceOMR: 5, oldPrice: 8, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover.jpg", bgColor: "#2d5a4a", specsAr: "🏷️ الحجم: 120GB | نسخة PS4", specsEn: "📦 Size: 120GB | PS4 Version", msgAr: "أريد GTA VI PS4", msgEn: "I want GTA VI PS4" },
-    { id: 5, nameAr: "Monster Hunter Wilds", nameEn: "Monster Hunter Wilds", version: "PS5", priceOMR: 14, oldPrice: 20, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2246340/header.jpg", bgColor: "#3a5a2d", specsAr: "🏷️ الحجم: 75GB | 🐉 صيد الوحوش", specsEn: "📦 Size: 75GB | 🐉 Monster Hunting", msgAr: "أريد Monster Hunter Wilds", msgEn: "I want Monster Hunter Wilds" },
-    { id: 6, nameAr: "Ghost of Yōtei", nameEn: "Ghost of Yōtei", version: "PS5", priceOMR: 14, oldPrice: 20, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3138540/header.jpg", bgColor: "#4a2d5a", specsAr: "🏷️ الحجم: 80GB | 🗡️ عالم مفتوح", specsEn: "📦 Size: 80GB | 🗡️ Open World", msgAr: "أريد Ghost of Yōtei", msgEn: "I want Ghost of Yōtei" },
-    { id: 7, nameAr: "Death Stranding 2", nameEn: "Death Stranding 2", version: "PS5", priceOMR: 24, oldPrice: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2859570/header.jpg", bgColor: "#2d4a6e", specsAr: "🏷️ الحجم: 100GB | 🌊 مغامرة فريدة", specsEn: "📦 Size: 100GB | 🌊 Unique Adventure", msgAr: "أريد Death Stranding 2", msgEn: "I want Death Stranding 2" },
-    { id: 8, nameAr: "EA Sports FC 26", nameEn: "EA Sports FC 26", version: "PS4/PS5", priceOMR: 13, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2668610/header.jpg", bgColor: "#2d6e5a", specsAr: "🏷️ الحجم: 55GB | ⚽ أندية محدثة", specsEn: "📦 Size: 55GB | ⚽ Updated Clubs", msgAr: "أريد EA Sports FC 26", msgEn: "I want EA Sports FC 26" },
-    { id: 9, nameAr: "Black Myth: Wukong", nameEn: "Black Myth: Wukong", version: "PS5", priceOMR: 16, oldPrice: 22, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2358720/header.jpg", bgColor: "#5a3a2d", specsAr: "🏷️ الحجم: 90GB | 🐒 قصة المستهلك", specsEn: "📦 Size: 90GB | 🐒 Epic Action RPG", msgAr: "أريد Black Myth Wukong", msgEn: "I want Black Myth Wukong" },
-    { id: 10, nameAr: "Silent Hill 2 Remake", nameEn: "Silent Hill 2 Remake", version: "PS5", priceOMR: 14, oldPrice: 20, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2124490/header.jpg", bgColor: "#4a2d2d", specsAr: "🏷️ الحجم: 50GB | 👻 رعب نفسي", specsEn: "📦 Size: 50GB | 👻 Psychological Horror", msgAr: "أريد Silent Hill 2 Remake", msgEn: "I want Silent Hill 2 Remake" },
-    { id: 11, nameAr: "God of War Ragnarök", nameEn: "God of War Ragnarök", version: "PS4/PS5", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg", bgColor: "#5a3a4a", specsAr: "🏷️ الحجم: 85GB | 🪓 ملحمة إسكندنافية", specsEn: "📦 Size: 85GB | 🪓 Norse Saga", msgAr: "أريد God of War Ragnarök", msgEn: "I want God of War Ragnarök" },
-    { id: 12, nameAr: "Marvel's Spider-Man 2", nameEn: "Marvel's Spider-Man 2", version: "PS5", priceOMR: 16, oldPrice: 22, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", bgColor: "#2d4a6e", specsAr: "🏷️ الحجم: 98GB | 🕷️ بيتر + مايلز", specsEn: "📦 Size: 98GB | 🕷️ Peter + Miles", msgAr: "أريد Spider-Man 2", msgEn: "I want Spider-Man 2" },
-    { id: 13, nameAr: "Hogwarts Legacy", nameEn: "Hogwarts Legacy", version: "PS4/PS5", priceOMR: 11, oldPrice: 16, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/990080/header.jpg", bgColor: "#4a2d5a", specsAr: "🏷️ الحجم: 85GB | 🧙 عالم هاري بوتر", specsEn: "📦 Size: 85GB | 🧙 Harry Potter World", msgAr: "أريد Hogwarts Legacy", msgEn: "I want Hogwarts Legacy" },
-    { id: 14, nameAr: "Final Fantasy VII Rebirth", nameEn: "Final Fantasy VII Rebirth", version: "PS5", priceOMR: 18, oldPrice: 25, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2909400/header.jpg", bgColor: "#2d6e6e", specsAr: "🏷️ الحجم: 145GB | 🗡️ RPG خيالية", specsEn: "📦 Size: 145GB | 🗡️ Fantasy RPG", msgAr: "أريد Final Fantasy VII Rebirth", msgEn: "I want Final Fantasy VII Rebirth" },
-    { id: 15, nameAr: "Tekken 8", nameEn: "Tekken 8", version: "PS5", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1778820/header.jpg", bgColor: "#5a2d3a", specsAr: "🏷️ الحجم: 80GB | 🥊 لعبة قتال", specsEn: "📦 Size: 80GB | 🥊 Fighting Game", msgAr: "أريد Tekken 8", msgEn: "I want Tekken 8" }
-  ];
-
-  // ==================== بطاقات الشحن مع تخفيضات ====================
-  let giftCardsData = [
-    { id: 1, nameAr: "بطاقة شحن أمريكي", nameEn: "US Gift Card", region: "USA", currency: "USD", priceOMR: 5, oldPrice: 6, icon: "🇺🇸", bgColor: "#1a3a5a", values: ["10$", "25$", "50$", "100$"], msgAr: "أريد بطاقة شحن أمريكي", msgEn: "I want US Gift Card" },
-    { id: 2, nameAr: "بطاقة شحن بريطاني", nameEn: "UK Gift Card", region: "UK", currency: "GBP", priceOMR: 6, oldPrice: 7, icon: "🇬🇧", bgColor: "#1a4a6e", values: ["10£", "25£", "50£"], msgAr: "أريد بطاقة شحن بريطاني", msgEn: "I want UK Gift Card" },
-    { id: 3, nameAr: "بطاقة شحن تركي", nameEn: "Turkey Gift Card", region: "Turkey", currency: "TRY", priceOMR: 4, oldPrice: 5, icon: "🇹🇷", bgColor: "#4a5a2d", values: ["100₺", "250₺", "500₺"], msgAr: "أريد بطاقة شحن تركي", msgEn: "I want Turkey Gift Card" },
-    { id: 4, nameAr: "بطاقة شحن هندي", nameEn: "India Gift Card", region: "India", currency: "INR", priceOMR: 3.5, oldPrice: 4.5, icon: "🇮🇳", bgColor: "#4a6e2d", values: ["500₹", "1000₹", "2000₹"], msgAr: "أريد بطاقة شحن هندي", msgEn: "I want India Gift Card" },
-    { id: 5, nameAr: "بطاقة شحن إندونيسي", nameEn: "Indonesia Gift Card", region: "Indonesia", currency: "IDR", priceOMR: 4, oldPrice: 5, icon: "🇮🇩", bgColor: "#2d5a4a", values: ["50k", "100k", "200k"], msgAr: "أريد بطاقة شحن إندونيسي", msgEn: "I want Indonesia Gift Card" },
-    { id: 6, nameAr: "بطاقة شحن سعودي", nameEn: "Saudi Gift Card", region: "Saudi Arabia", currency: "SAR", priceOMR: 4.5, oldPrice: 5.5, icon: "🇸🇦", bgColor: "#2d6e4a", values: ["50ر.س", "100ر.س", "200ر.س"], msgAr: "أريد بطاقة شحن سعودي", msgEn: "I want Saudi Gift Card" },
-    { id: 7, nameAr: "بطاقة شحن قطري", nameEn: "Qatar Gift Card", region: "Qatar", currency: "QAR", priceOMR: 4.5, oldPrice: 5.5, icon: "🇶🇦", bgColor: "#4a6e2d", values: ["50ر.ق", "100ر.ق", "200ر.ق"], msgAr: "أريد بطاقة شحن قطري", msgEn: "I want Qatar Gift Card" },
-    { id: 8, nameAr: "بطاقة شحن إماراتي", nameEn: "UAE Gift Card", region: "UAE", currency: "AED", priceOMR: 5, oldPrice: 6, icon: "🇦🇪", bgColor: "#2d4a6e", values: ["50د.إ", "100د.إ", "200د.إ"], msgAr: "أريد بطاقة شحن إماراتي", msgEn: "I want UAE Gift Card" },
-    { id: 9, nameAr: "بطاقة شحن كويتي", nameEn: "Kuwait Gift Card", region: "Kuwait", currency: "KWD", priceOMR: 6, oldPrice: 7, icon: "🇰🇼", bgColor: "#5a3a2d", values: ["5د.ك", "10د.ك", "20د.ك"], msgAr: "أريد بطاقة شحن كويتي", msgEn: "I want Kuwait Gift Card" },
-    { id: 10, nameAr: "بطاقة شحن بحريني", nameEn: "Bahrain Gift Card", region: "Bahrain", currency: "BHD", priceOMR: 5.5, oldPrice: 6.5, icon: "🇧🇭", bgColor: "#4a2d5a", values: ["5د.ب", "10د.ب", "20د.ب"], msgAr: "أريد بطاقة شحن بحريني", msgEn: "I want Bahrain Gift Card" },
-    { id: 11, nameAr: "بطاقة شحن عماني", nameEn: "Oman Gift Card", region: "Oman", currency: "OMR", priceOMR: 5, oldPrice: 6, icon: "🇴🇲", bgColor: "#2d6e6e", values: ["5ر.ع", "10ر.ع", "20ر.ع", "50ر.ع"], msgAr: "أريد بطاقة شحن عماني", msgEn: "I want Oman Gift Card" }
-  ];
-
-  let nextGameId = 16;
-  let nextGiftId = 12;
+  // ==================== البيانات ====================
+  let products = [];
+  let nextId = 1;
   let currentUser = { type: "guest", name: "زائر" };
   let currentLang = "ar";
   let currentCurrency = "OMR";
   let currentPage = 1;
-  let currentTab = "games";
+  let currentCategory = "games";
   let searchQuery = "";
-  let filteredGames = [...gamesData];
-  let filteredGiftCards = [...giftCardsData];
-  let filteredOffers = [...gamesData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR), ...giftCardsData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR)];
-  const ITEMS_PER_PAGE = 8;
+  const ITEMS_PER_PAGE = 6;
   const ADMIN_PASSWORD = "admin123";
-
+  
   const exchangeRates = { OMR: 1, USD: 2.6, SAR: 9.75, QAR: 9.46, EUR: 2.4, AED: 9.55 };
   const currencySymbols = { OMR: "ر.ع", USD: "$", SAR: "ر.س", QAR: "ر.ق", EUR: "€", AED: "د.إ" };
   const WA_NUMBER = "96879977100";
-
-  function saveGamesToLocal() { localStorage.setItem("xnesto_games", JSON.stringify(gamesData)); }
-  function saveGiftsToLocal() { localStorage.setItem("xnesto_gifts", JSON.stringify(giftCardsData)); }
+  
+  const categoryColors = { games: "#2d4a6e", giftcards: "#1a3a5a" };
+  const categoryIcons = { games: "🎮", giftcards: "💳" };
+  
+  // تحميل وحفظ البيانات
+  function saveToLocal() { localStorage.setItem("store_psn_products", JSON.stringify(products)); }
   function loadFromLocal() {
-    const savedGames = localStorage.getItem("xnesto_games");
-    if (savedGames) { 
-      const parsed = JSON.parse(savedGames);
-      if (parsed.length > 0) {
-        gamesData.length = 0;
-        parsed.forEach(g => gamesData.push(g));
-        nextGameId = Math.max(...gamesData.map(g => g.id), 0) + 1;
-      }
+    const saved = localStorage.getItem("store_psn_products");
+    if (saved) {
+      products = JSON.parse(saved);
+      nextId = Math.max(...products.map(p => p.id), 0) + 1;
+    } else {
+      products = [
+        { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", category: "games", priceOMR: 14, oldPrice: 20, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ الحجم: 65GB | 🎮 اللغة: عربية/إنجليزية", detailsEn: "📦 Size: 65GB | 🎮 Language: Arabic/English", timer: null, msgAr: "أريد Assassin's Creed Shadows", msgEn: "I want Assassin's Creed Shadows" },
+        { id: 2, nameAr: "Call of Duty: Black Ops 6", nameEn: "Call of Duty: Black Ops 6", category: "games", priceOMR: 22, oldPrice: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ الحجم: 120GB | 🎮 اللغة: إنجليزية", detailsEn: "📦 Size: 120GB | 🎮 Language: English", timer: null, msgAr: "أريد Call of Duty Black Ops 6", msgEn: "I want Call of Duty Black Ops 6" },
+        { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", category: "games", priceOMR: 6, oldPrice: 10, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", detailsAr: "🏷️ الحجم: 150GB | 🌍 عالم مفتوح", detailsEn: "📦 Size: 150GB | 🌍 Open World", timer: null, msgAr: "أريد GTA VI PS5", msgEn: "I want GTA VI PS5" },
+        { id: 4, nameAr: "حساب Plus سنة", nameEn: "PS Plus Year", category: "giftcards", priceOMR: 23, oldPrice: 11.5, image: "", detailsAr: "اشتراك لمدة سنة | 12 Months Card", detailsEn: "12 Months Subscription", timer: null, msgAr: "أريد حساب Plus سنة", msgEn: "I want PS Plus Year", icon: "🎮" },
+        { id: 5, nameAr: "PSN 20$", nameEn: "PSN 20$", category: "giftcards", priceOMR: 7.7, oldPrice: 10, image: "", detailsAr: "بطاقة شحن أمريكي", detailsEn: "US Gift Card", timer: null, msgAr: "أريد PSN 20$", msgEn: "I want PSN 20$", icon: "💳" },
+        { id: 6, nameAr: "بطاقة شحن عماني", nameEn: "Oman Gift Card", category: "giftcards", priceOMR: 5, oldPrice: 6, image: "", detailsAr: "الفئات: 5ر.ع | 10ر.ع | 20ر.ع | 50ر.ع", detailsEn: "Values: 5 OMR | 10 OMR | 20 OMR | 50 OMR", timer: null, msgAr: "أريد بطاقة شحن عماني", msgEn: "I want Oman Gift Card", icon: "🇴🇲" }
+      ];
+      nextId = 7;
+      saveToLocal();
     }
-    const savedGifts = localStorage.getItem("xnesto_gifts");
-    if (savedGifts) {
-      const parsed = JSON.parse(savedGifts);
-      if (parsed.length > 0) {
-        giftCardsData.length = 0;
-        parsed.forEach(g => giftCardsData.push(g));
-        nextGiftId = Math.max(...giftCardsData.map(g => g.id), 0) + 1;
-      }
-    }
-    filteredGames = [...gamesData];
-    filteredGiftCards = [...giftCardsData];
-    filteredOffers = [...gamesData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR), ...giftCardsData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR)];
   }
   loadFromLocal();
-
-  function convertPrice(price, currency) {
-    return (price * exchangeRates[currency]).toFixed(2);
+  
+  function convertPrice(price) { return (price * exchangeRates[currentCurrency]).toFixed(2); }
+  function calcDiscount(oldPrice, newPrice) { if (!oldPrice || oldPrice <= newPrice) return 0; return Math.round((1 - newPrice / oldPrice) * 100); }
+  function getRemainingTime(timer) {
+    if (!timer) return null;
+    const end = new Date(timer);
+    const now = new Date();
+    const diff = end - now;
+    if (diff <= 0) return "انتهى";
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    if (days > 0) return `${days} يوم ${hours} ساعة`;
+    return `${hours} ساعة`;
   }
-
-  function updateSearchResults() {
+  
+  function getFilteredProducts() {
+    let filtered = [...products];
     const query = searchQuery.trim().toLowerCase();
-    if (query === "") {
-      filteredGames = [...gamesData];
-      filteredGiftCards = [...giftCardsData];
-      filteredOffers = [...gamesData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR), ...giftCardsData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR)];
-    } else {
-      filteredGames = gamesData.filter(game => 
-        game.nameAr.toLowerCase().includes(query) || 
-        game.nameEn.toLowerCase().includes(query)
-      );
-      filteredGiftCards = giftCardsData.filter(card =>
-        card.nameAr.toLowerCase().includes(query) ||
-        card.nameEn.toLowerCase().includes(query) ||
-        card.region.toLowerCase().includes(query)
-      );
-      filteredOffers = [...gamesData.filter(g => (g.oldPrice && g.oldPrice > g.priceOMR) && (g.nameAr.toLowerCase().includes(query) || g.nameEn.toLowerCase().includes(query))),
-        ...giftCardsData.filter(g => (g.oldPrice && g.oldPrice > g.priceOMR) && (g.nameAr.toLowerCase().includes(query) || g.nameEn.toLowerCase().includes(query)))];
-    }
-    currentPage = 1;
-    const count = currentTab === "games" ? filteredGames.length : (currentTab === "giftcards" ? filteredGiftCards.length : filteredOffers.length);
-    document.getElementById("searchCount").innerHTML = count;
-    if (currentTab === "games") renderGames();
-    else if (currentTab === "giftcards") renderGiftCards();
-    else renderOffers();
+    if (query) filtered = filtered.filter(p => p.nameAr.toLowerCase().includes(query) || p.nameEn.toLowerCase().includes(query));
+    if (currentCategory === "offers") filtered = filtered.filter(p => p.oldPrice && p.oldPrice > p.priceOMR);
+    else filtered = filtered.filter(p => p.category === currentCategory);
+    return filtered;
   }
-
-  function buildGameCard(game) {
+  
+  // بناء بطاقة المنتج مع قسم التعديل للأدمن
+  function buildProductCard(p) {
     const card = document.createElement("div");
-    card.className = "game-card";
-    const gameName = currentLang === "ar" ? game.nameAr : game.nameEn;
-    const specs = currentLang === "ar" ? game.specsAr : game.specsEn;
-    const whatsappMsg = currentLang === "ar" ? game.msgAr : game.msgEn;
-    const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`;
-    const convertedPrice = convertPrice(game.priceOMR, currentCurrency);
-    const currencySym = currencySymbols[currentCurrency];
-    const hasDiscount = game.oldPrice && game.oldPrice > game.priceOMR;
-    const convertedOldPrice = hasDiscount ? convertPrice(game.oldPrice, currentCurrency) : null;
-    const discountPercent = hasDiscount ? Math.round((1 - game.priceOMR / game.oldPrice) * 100) : 0;
+    card.className = "product-card";
+    const name = currentLang === "ar" ? p.nameAr : p.nameEn;
+    const details = currentLang === "ar" ? p.detailsAr : p.detailsEn;
+    const msg = currentLang === "ar" ? p.msgAr : p.msgEn;
+    const price = convertPrice(p.priceOMR);
+    const sym = currencySymbols[currentCurrency];
+    const hasDiscount = p.oldPrice && p.oldPrice > p.priceOMR;
+    const oldPrice = hasDiscount ? convertPrice(p.oldPrice) : null;
+    const discountPercent = hasDiscount ? calcDiscount(p.oldPrice, p.priceOMR) : 0;
+    const remaining = getRemainingTime(p.timer);
+    const categoryName = p.category === "games" ? (currentLang === "ar" ? "لعبة" : "Game") : (currentLang === "ar" ? "بطاقة شحن" : "Gift Card");
+    const bgColor = categoryColors[p.category] || "#2d4a6e";
+    const icon = p.icon || categoryIcons[p.category] || "🎮";
+    
+    let imgHtml = "";
+    if (p.image && p.image.trim()) {
+      imgHtml = `<div class="product-image" style="background-image: url('${p.image}');"><div class="product-badge">${categoryName}</div></div>`;
+    } else {
+      imgHtml = `<div class="product-image" style="background: linear-gradient(135deg, ${bgColor}, ${bgColor}cc);"><div style="font-size: 2.5rem;">${icon}</div><div class="product-badge">${categoryName}</div></div>`;
+    }
     
     card.innerHTML = `
       ${hasDiscount ? `<div class="discount-badge">🔥 خصم ${discountPercent}%</div>` : ''}
-      <div class="game-image" style="background-image: url('${game.image}'); background-size: cover; background-position: center;">
-        <div class="game-badge">${game.version}</div>
-      </div>
+      ${remaining ? `<div class="timer-badge">⏱️ ${remaining}</div>` : ''}
+      ${imgHtml}
       <div class="card-info">
-        <div class="game-title">${gameName}</div>
-        <div class="game-version">${currentLang === "ar" ? "نسخة رقمية | تحميل فوري" : "Digital Edition"}</div>
-        ${specs ? `<div class="game-specs"><i class="fas fa-info-circle"></i> ${specs}</div>` : ''}
+        <div class="product-title">${name}</div>
+        <div class="product-category">${categoryName}</div>
+        ${details ? `<div class="product-details"><i class="fas fa-info-circle"></i> ${details}</div>` : ''}
         <div class="price-container">
-          ${hasDiscount ? `<span class="old-price">${convertedOldPrice} ${currencySym}</span>` : ''}
-          <span class="price">${convertedPrice} <span>${currencySym}</span></span>
+          ${hasDiscount ? `<span class="old-price">${oldPrice} ${sym}</span>` : ''}
+          <span class="price">${price} ${sym}</span>
         </div>
-        <a href="${waLink}" target="_blank" class="btn-wa"><i class="fab fa-whatsapp"></i> ${currentLang === "ar" ? "اطلب الآن" : "Order Now"}</a>
+        <a href="https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}" target="_blank" class="btn-wa"><i class="fab fa-whatsapp"></i> ${currentLang === "ar" ? "اطلب الآن" : "Order Now"}</a>
       </div>
     `;
     
-    const imgDiv = card.querySelector(".game-image");
-    const testImg = new Image();
-    testImg.onerror = () => {
-      imgDiv.style.backgroundImage = "none";
-      imgDiv.style.background = `linear-gradient(135deg, ${game.bgColor || "#2d4a6e"}, ${game.bgColor ? game.bgColor + "cc" : "#1a2a3a"})`;
-      imgDiv.innerHTML = `<div style="font-size: 3rem; text-align: center;">🎮</div><div class="game-badge" style="position: absolute; bottom: 10px; right: 10px;">${game.version}</div>`;
-    };
-    testImg.src = game.image;
+    // إذا كان المستخدم أدمن، أضف قسم التعديل
+    if (currentUser.type === "admin") {
+      const editSection = document.createElement("div");
+      editSection.className = "admin-edit-section";
+      editSection.innerHTML = `
+        <h4><i class="fas fa-edit"></i> ${currentLang === "ar" ? "تعديل المنتج" : "Edit Product"}</h4>
+        <div class="edit-price-row">
+          <span style="font-size:0.7rem;">${currentLang === "ar" ? "السعر:" : "Price:"}</span>
+          <input type="number" id="edit-price-${p.id}" value="${p.priceOMR}" step="0.5" style="width:90px;">
+          <span>ر.ع</span>
+        </div>
+        <div class="discount-buttons">
+          <button data-discount="30" data-id="${p.id}">30%</button>
+          <button data-discount="20" data-id="${p.id}">20%</button>
+          <button data-discount="10" data-id="${p.id}">10%</button>
+          <button data-discount="0" data-id="${p.id}">0%</button>
+        </div>
+        <div class="custom-discount-row">
+          <span style="font-size:0.7rem;">${currentLang === "ar" ? "نسبة مخصصة:" : "Custom:"}</span>
+          <input type="number" id="custom-discount-${p.id}" step="1" min="0" max="100" placeholder="%" style="width:70px;">
+          <button class="apply-discount-btn" data-id="${p.id}" style="background:#ffaa44; border:none; padding:4px 10px; border-radius:20px; cursor:pointer; font-size:0.7rem;">${currentLang === "ar" ? "تطبيق" : "Apply"}</button>
+        </div>
+        <div class="timer-row">
+          <span style="font-size:0.7rem;">⏱️ ${currentLang === "ar" ? "عداد تنازلي:" : "Timer:"}</span>
+          <input type="datetime-local" id="edit-timer-${p.id}" value="${p.timer ? p.timer.slice(0, 16) : ''}">
+        </div>
+        <button class="save-edit-btn" data-id="${p.id}"><i class="fas fa-save"></i> ${currentLang === "ar" ? "حفظ التعديلات" : "Save Changes"}</button>
+        <button class="delete-product-btn" data-id="${p.id}"><i class="fas fa-trash"></i> ${currentLang === "ar" ? "حذف المنتج" : "Delete Product"}</button>
+      `;
+      card.appendChild(editSection);
+      
+      // ربط الأحداث
+      editSection.querySelectorAll(".discount-buttons button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const discount = parseInt(btn.getAttribute("data-discount"));
+          const priceInput = document.getElementById(`edit-price-${p.id}`);
+          const currentPrice = parseFloat(priceInput.value);
+          if (!isNaN(currentPrice) && currentPrice > 0) {
+            const newOldPrice = currentPrice / (1 - discount / 100);
+            document.getElementById(`custom-discount-${p.id}`).value = discount;
+            alert(`${currentLang === "ar" ? "سيتم تطبيق خصم" : "Applying"} ${discount}%: ${currentLang === "ar" ? "السعر القديم سيكون" : "old price will be"} ${newOldPrice.toFixed(2)} ر.ع`);
+          }
+        });
+      });
+      
+      editSection.querySelector(".apply-discount-btn")?.addEventListener("click", () => {
+        const discount = parseFloat(document.getElementById(`custom-discount-${p.id}`).value);
+        const priceInput = document.getElementById(`edit-price-${p.id}`);
+        const currentPrice = parseFloat(priceInput.value);
+        if (!isNaN(discount) && !isNaN(currentPrice) && currentPrice > 0) {
+          const newOldPrice = currentPrice / (1 - discount / 100);
+          alert(`${currentLang === "ar" ? "سيتم تطبيق خصم" : "Applying"} ${discount}%: ${currentLang === "ar" ? "السعر القديم سيكون" : "old price will be"} ${newOldPrice.toFixed(2)} ر.ع`);
+        }
+      });
+      
+      editSection.querySelector(".save-edit-btn")?.addEventListener("click", () => {
+        const newPrice = parseFloat(document.getElementById(`edit-price-${p.id}`).value);
+        const customDiscount = parseFloat(document.getElementById(`custom-discount-${p.id}`).value);
+        const newTimer = document.getElementById(`edit-timer-${p.id}`).value || null;
+        if (!isNaN(newPrice)) {
+          p.priceOMR = newPrice;
+          if (!isNaN(customDiscount) && customDiscount > 0) {
+            p.oldPrice = newPrice / (1 - customDiscount / 100);
+          } else if (customDiscount === 0) {
+            p.oldPrice = null;
+          }
+          p.timer = newTimer;
+          saveToLocal();
+          renderProducts();
+        }
+      });
+      
+      editSection.querySelector(".delete-product-btn")?.addEventListener("click", () => {
+        if (confirm(currentLang === "ar" ? "هل أنت متأكد من حذف هذا المنتج؟" : "Are you sure you want to delete this product?")) {
+          products = products.filter(x => x.id !== p.id);
+          saveToLocal();
+          renderProducts();
+        }
+      });
+    }
     
     return card;
   }
-
-  function buildGiftCard(card) {
-    const cardDiv = document.createElement("div");
-    cardDiv.className = "giftcard-card";
-    const cardName = currentLang === "ar" ? card.nameAr : card.nameEn;
-    const regionText = currentLang === "ar" ? `المنطقة: ${card.region}` : `Region: ${card.region}`;
-    const valuesText = currentLang === "ar" ? `الفئات: ${card.values.join(" | ")}` : `Values: ${card.values.join(" | ")}`;
-    const whatsappMsg = currentLang === "ar" ? card.msgAr : card.msgEn;
-    const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`;
-    const convertedPrice = convertPrice(card.priceOMR, currentCurrency);
-    const currencySym = currencySymbols[currentCurrency];
-    const hasDiscount = card.oldPrice && card.oldPrice > card.priceOMR;
-    const convertedOldPrice = hasDiscount ? convertPrice(card.oldPrice, currentCurrency) : null;
-    const discountPercent = hasDiscount ? Math.round((1 - card.priceOMR / card.oldPrice) * 100) : 0;
-    
-    cardDiv.innerHTML = `
-      ${hasDiscount ? `<div class="discount-badge">🔥 خصم ${discountPercent}%</div>` : ''}
-      <div class="giftcard-image" style="background: linear-gradient(135deg, ${card.bgColor}, ${card.bgColor}cc);">
-        <div style="font-size: 3rem;">${card.icon}</div>
-        <div class="giftcard-badge">${card.currency}</div>
-      </div>
-      <div class="card-info">
-        <div class="giftcard-title">${cardName}</div>
-        <div class="giftcard-region">${regionText}</div>
-        <div class="game-specs">${valuesText}</div>
-        <div class="price-container">
-          ${hasDiscount ? `<span class="old-price">${convertedOldPrice} ${currencySym}</span>` : ''}
-          <span class="price">${convertedPrice} <span>${currencySym}</span></span>
-        </div>
-        <a href="${waLink}" target="_blank" class="btn-wa"><i class="fab fa-whatsapp"></i> ${currentLang === "ar" ? "اطلب الآن" : "Order Now"}</a>
-      </div>
-    `;
-    return cardDiv;
-  }
-
-  function renderGames() {
-    const container = document.getElementById("gamesSection");
+  
+  function renderProducts() {
+    const container = document.getElementById("productsContainer");
     if (!container) return;
     container.innerHTML = "";
-    const totalPages = Math.ceil(filteredGames.length / ITEMS_PER_PAGE);
+    const filtered = getFilteredProducts();
+    const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
     if (currentPage > totalPages) currentPage = 1;
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    const pageItems = filteredGames.slice(start, start + ITEMS_PER_PAGE);
-    pageItems.forEach(item => container.appendChild(buildGameCard(item)));
-    renderPagination(totalPages);
-  }
-
-  function renderGiftCards() {
-    const container = document.getElementById("giftcardsSection");
-    if (!container) return;
-    container.innerHTML = "";
-    const totalPages = Math.ceil(filteredGiftCards.length / ITEMS_PER_PAGE);
-    if (currentPage > totalPages) currentPage = 1;
-    const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    const pageItems = filteredGiftCards.slice(start, start + ITEMS_PER_PAGE);
-    pageItems.forEach(item => container.appendChild(buildGiftCard(item)));
-    renderPagination(totalPages);
-  }
-
-  function renderOffers() {
-    const container = document.getElementById("offersSection");
-    if (!container) return;
-    container.innerHTML = "";
-    const totalPages = Math.ceil(filteredOffers.length / ITEMS_PER_PAGE);
-    if (currentPage > totalPages) currentPage = 1;
-    const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    const pageItems = filteredOffers.slice(start, start + ITEMS_PER_PAGE);
-    pageItems.forEach(item => {
-      if (item.version) container.appendChild(buildGameCard(item));
-      else container.appendChild(buildGiftCard(item));
-    });
-    renderPagination(totalPages);
-  }
-
-  function renderPagination(totalPages) {
+    filtered.slice(start, start + ITEMS_PER_PAGE).forEach(p => container.appendChild(buildProductCard(p)));
     const pagContainer = document.getElementById("paginationContainer");
-    if (!pagContainer) return;
-    pagContainer.innerHTML = "";
-    if (totalPages <= 1) return;
-    for (let i = 1; i <= totalPages; i++) {
-      const btn = document.createElement("button");
-      btn.className = "page-btn" + (i === currentPage ? " active" : "");
-      btn.textContent = i;
-      btn.onclick = () => { currentPage = i; if (currentTab === "games") renderGames(); else if (currentTab === "giftcards") renderGiftCards(); else renderOffers(); };
-      pagContainer.appendChild(btn);
-    }
-  }
-
-  function switchTab(tab) {
-    currentTab = tab;
-    currentPage = 1;
-    const gamesSection = document.getElementById("gamesSection");
-    const giftcardsSection = document.getElementById("giftcardsSection");
-    const offersSection = document.getElementById("offersSection");
-    const pagination = document.getElementById("paginationContainer");
-    
-    if (tab === "games") {
-      gamesSection.style.display = "grid";
-      giftcardsSection.style.display = "none";
-      offersSection.style.display = "none";
-      pagination.style.display = "flex";
-      renderGames();
-    } else if (tab === "giftcards") {
-      gamesSection.style.display = "none";
-      giftcardsSection.style.display = "grid";
-      offersSection.style.display = "none";
-      pagination.style.display = "flex";
-      renderGiftCards();
-    } else {
-      gamesSection.style.display = "none";
-      giftcardsSection.style.display = "none";
-      offersSection.style.display = "grid";
-      pagination.style.display = "flex";
-      renderOffers();
-    }
-    
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      if (btn.getAttribute("data-tab") === tab) btn.classList.add("active");
-      else btn.classList.remove("active");
-    });
-    const count = tab === "games" ? filteredGames.length : (tab === "giftcards" ? filteredGiftCards.length : filteredOffers.length);
-    document.getElementById("searchCount").innerHTML = count;
-  }
-
-  // ==================== وظائف الأدمن ====================
-  function renderAdminPanel() {
-    const gamesContainer = document.getElementById("adminGamesList");
-    const giftsContainer = document.getElementById("adminGiftList");
-    if (gamesContainer) {
-      gamesContainer.innerHTML = "<h3 style='color:#ffaa44; margin:1rem 0;'>🎮 الألعاب</h3>";
-      gamesData.forEach(game => {
-        const item = document.createElement("div");
-        item.className = "admin-game-item";
-        item.innerHTML = `
-          <div class="admin-game-header">
-            <div class="admin-game-name">${game.nameAr} (${game.version})</div>
-            <div><input type="number" class="admin-price-input" id="price-${game.id}" value="${game.priceOMR}" step="0.5"> <span>ر.ع</span></div>
-          </div>
-          <div class="admin-specs">
-            <label>💰 السعر القديم (للخصم)</label>
-            <input type="number" id="oldPrice-${game.id}" value="${game.oldPrice || ''}" step="0.5" placeholder="اتركه فارغاً إذا لا يوجد خصم">
-            <label><i class="fas fa-image"></i> رابط الصورة</label>
-            <input type="text" id="image-${game.id}" value="${game.image || ''}">
-            <label>📝 المواصفات (عربي)</label>
-            <textarea id="specsAr-${game.id}" rows="2">${game.specsAr || ''}</textarea>
-            <label>📝 Specifications (English)</label>
-            <textarea id="specsEn-${game.id}" rows="2">${game.specsEn || ''}</textarea>
-          </div>
-          <div class="admin-buttons">
-            <button class="admin-save-btn" data-id="${game.id}" data-type="game"><i class="fas fa-save"></i> حفظ</button>
-            <button class="admin-delete-btn" data-id="${game.id}" data-type="game"><i class="fas fa-trash"></i> حذف</button>
-          </div>
-        `;
-        gamesContainer.appendChild(item);
-      });
-    }
-    
-    if (giftsContainer) {
-      giftsContainer.innerHTML = "<h3 style='color:#ffaa44; margin:1rem 0;'>💳 بطاقات الشحن</h3>";
-      giftCardsData.forEach(card => {
-        const item = document.createElement("div");
-        item.className = "admin-game-item";
-        item.innerHTML = `
-          <div class="admin-game-header">
-            <div class="admin-game-name">${card.nameAr} (${card.region})</div>
-            <div><input type="number" class="admin-price-input" id="gift-price-${card.id}" value="${card.priceOMR}" step="0.5"> <span>ر.ع</span></div>
-          </div>
-          <div class="admin-specs">
-            <label>💰 السعر القديم (للخصم)</label>
-            <input type="number" id="gift-oldPrice-${card.id}" value="${card.oldPrice || ''}" step="0.5" placeholder="اتركه فارغاً إذا لا يوجد خصم">
-            <label>🏷️ الفئات (مثال: 10$, 25$)</label>
-            <input type="text" id="gift-values-${card.id}" value="${card.values.join(', ')}" placeholder="10$, 25$, 50$">
-          </div>
-          <div class="admin-buttons">
-            <button class="admin-save-btn" data-id="${card.id}" data-type="gift"><i class="fas fa-save"></i> حفظ</button>
-            <button class="admin-delete-btn" data-id="${card.id}" data-type="gift"><i class="fas fa-trash"></i> حذف</button>
-          </div>
-        `;
-        giftsContainer.appendChild(item);
-      });
-    }
-    
-    document.querySelectorAll(".admin-save-btn").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        const id = parseInt(btn.getAttribute("data-id"));
-        const type = btn.getAttribute("data-type");
-        if (type === "game") {
-          const newPrice = parseFloat(document.getElementById(`price-${id}`).value);
-          const newOldPrice = parseFloat(document.getElementById(`oldPrice-${id}`).value);
-          const newImage = document.getElementById(`image-${id}`).value;
-          const newSpecsAr = document.getElementById(`specsAr-${id}`).value;
-          const newSpecsEn = document.getElementById(`specsEn-${id}`).value;
-          const game = gamesData.find(g => g.id === id);
-          if (game) {
-            if (!isNaN(newPrice)) game.priceOMR = newPrice;
-            game.oldPrice = isNaN(newOldPrice) ? null : newOldPrice;
-            if (newImage) game.image = newImage;
-            game.specsAr = newSpecsAr;
-            game.specsEn = newSpecsEn;
-            saveGamesToLocal();
-          }
-        } else if (type === "gift") {
-          const newPrice = parseFloat(document.getElementById(`gift-price-${id}`).value);
-          const newOldPrice = parseFloat(document.getElementById(`gift-oldPrice-${id}`).value);
-          const newValues = document.getElementById(`gift-values-${id}`).value.split(',').map(v => v.trim());
-          const card = giftCardsData.find(c => c.id === id);
-          if (card) {
-            if (!isNaN(newPrice)) card.priceOMR = newPrice;
-            card.oldPrice = isNaN(newOldPrice) ? null : newOldPrice;
-            if (newValues.length > 0 && newValues[0] !== "") card.values = newValues;
-            saveGiftsToLocal();
-          }
+    if (pagContainer) {
+      pagContainer.innerHTML = "";
+      if (totalPages > 1) {
+        for (let i = 1; i <= totalPages; i++) {
+          const btn = document.createElement("button");
+          btn.className = "page-btn" + (i === currentPage ? " active" : "");
+          btn.textContent = i;
+          btn.onclick = () => { currentPage = i; renderProducts(); };
+          pagContainer.appendChild(btn);
         }
-        filteredGames = [...gamesData];
-        filteredGiftCards = [...giftCardsData];
-        filteredOffers = [...gamesData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR), ...giftCardsData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR)];
-        renderAdminPanel();
-        if (currentTab === "games") renderGames();
-        else if (currentTab === "giftcards") renderGiftCards();
-        else renderOffers();
-      });
-    });
-    
-    document.querySelectorAll(".admin-delete-btn").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        const id = parseInt(btn.getAttribute("data-id"));
-        const type = btn.getAttribute("data-type");
-        if (type === "game") {
-          gamesData = gamesData.filter(g => g.id !== id);
-          saveGamesToLocal();
-        } else if (type === "gift") {
-          const index = giftCardsData.findIndex(c => c.id === id);
-          if (index !== -1) giftCardsData.splice(index, 1);
-          saveGiftsToLocal();
-        }
-        filteredGames = [...gamesData];
-        filteredGiftCards = [...giftCardsData];
-        filteredOffers = [...gamesData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR), ...giftCardsData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR)];
-        renderAdminPanel();
-        if (currentTab === "games") renderGames();
-        else if (currentTab === "giftcards") renderGiftCards();
-        else renderOffers();
-      });
-    });
-  }
-
-  function addNewGame() {
-    const nameAr = document.getElementById("newGameNameAr").value;
-    const nameEn = document.getElementById("newGameNameEn").value;
-    const version = document.getElementById("newGameVersion").value;
-    const price = parseFloat(document.getElementById("newGamePrice").value);
-    const oldPrice = parseFloat(document.getElementById("newGameOldPrice").value);
-    const image = document.getElementById("newGameImage").value;
-    const specsAr = document.getElementById("newGameSpecsAr").value;
-    const specsEn = document.getElementById("newGameSpecsEn").value;
-    
-    if (!nameAr || !nameEn || !version || isNaN(price)) {
-      alert("يرجى ملء جميع الحقول الأساسية بشكل صحيح");
-      return;
+      }
     }
-    
-    const newGame = {
-      id: nextGameId++,
-      nameAr, nameEn, version,
-      priceOMR: price,
-      oldPrice: isNaN(oldPrice) ? null : oldPrice,
-      image: image || "https://via.placeholder.com/600x400?text=New+Game",
-      bgColor: "#2d4a6e",
-      specsAr: specsAr || "🏷️ مواصفات قريباً",
-      specsEn: specsEn || "📦 Specifications coming soon",
-      msgAr: `أريد ${nameAr}`,
-      msgEn: `I want ${nameEn}`
-    };
-    
-    gamesData.push(newGame);
-    filteredGames = [...gamesData];
-    filteredOffers = [...gamesData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR), ...giftCardsData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR)];
-    saveGamesToLocal();
-    renderAdminPanel();
-    if (currentTab === "games") renderGames();
-    else if (currentTab === "offers") renderOffers();
-    
-    document.getElementById("newGameNameAr").value = "";
-    document.getElementById("newGameNameEn").value = "";
-    document.getElementById("newGameVersion").value = "";
-    document.getElementById("newGamePrice").value = "";
-    document.getElementById("newGameOldPrice").value = "";
-    document.getElementById("newGameImage").value = "";
-    document.getElementById("newGameSpecsAr").value = "";
-    document.getElementById("newGameSpecsEn").value = "";
+    document.getElementById("searchCount").innerHTML = filtered.length;
   }
-
-  // ==================== وظائف تسجيل الدخول ====================
+  
+  // تسجيل الدخول
   function updateUIForUser() {
     const authDiv = document.getElementById("authButtons");
     const welcomeMsg = document.getElementById("welcomeMsg");
-    
     if (currentUser.type === "admin") {
-      authDiv.innerHTML = `<div class="user-badge"><i class="fas fa-crown"></i> ${currentLang === "ar" ? "مرحباً Admin" : "Welcome Admin"}</div><button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> ${currentLang === "ar" ? "خروج" : "Logout"}</button>`;
-      welcomeMsg.innerHTML = currentLang === "ar" ? "🎮 مرحباً بك أيها المدير! يمكنك تعديل الأسعار والتخفيضات" : "🎮 Welcome Admin! You can edit prices and discounts";
-      document.getElementById("logoutBtn")?.addEventListener("click", logout);
-    } else if (currentUser.type === "user") {
-      authDiv.innerHTML = `<div class="user-badge"><i class="fas fa-user"></i> ${currentLang === "ar" ? "مرحباً عميل" : "Welcome User"}</div><button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> ${currentLang === "ar" ? "خروج" : "Logout"}</button>`;
-      welcomeMsg.innerHTML = currentLang === "ar" ? "🎮 أهلاً بك! يمكنك تصفح الألعاب والطلب عبر واتساب" : "🎮 Welcome! You can browse games and order via WhatsApp";
+      authDiv.innerHTML = `<div class="user-badge"><i class="fas fa-crown"></i> ${currentLang === "ar" ? "مرحباً Admin - وضع التعديل نشط" : "Welcome Admin - Edit Mode Active"}</div><button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> ${currentLang === "ar" ? "خروج" : "Logout"}</button>`;
+      welcomeMsg.innerHTML = currentLang === "ar" ? "🛒 مرحباً بك أيها المدير! يمكنك تعديل أي منتج مباشرة من بطاقته" : "🛒 Welcome Admin! You can edit any product directly from its card";
       document.getElementById("logoutBtn")?.addEventListener("click", logout);
     } else {
-      authDiv.innerHTML = `<button class="login-btn" id="showLoginBtn"><i class="fas fa-user"></i> ${currentLang === "ar" ? "تسجيل دخول" : "Login"}</button>`;
-      welcomeMsg.innerHTML = currentLang === "ar" ? "🎮 xnesto - ألعاب PS4/PS5 – بطاقات شحن – عروض وتخفيضات – رصيد فوري" : "🎮 xnesto - PS4/PS5 Games – Gift Cards – Offers & Discounts – Instant Credit";
-      document.getElementById("showLoginBtn")?.addEventListener("click", () => showLoginModal());
+      authDiv.innerHTML = `<button class="login-btn" id="showLoginBtn"><i class="fas fa-user-shield"></i> <span id="loginBtnText">${currentLang === "ar" ? "تسجيل دخول" : "Login"}</span></button>`;
+      welcomeMsg.innerHTML = currentLang === "ar" ? "🛒 Store PSN - ألعاب PS4/PS5 – بطاقات شحن – عروض وتخفيضات – رصيد فوري" : "🛒 Store PSN - PS4/PS5 Games – Gift Cards – Offers & Discounts – Instant Credit";
+      document.getElementById("showLoginBtn")?.addEventListener("click", showLoginModal);
     }
+    renderProducts();
   }
-
-  function logout() {
-    currentUser = { type: "guest", name: "زائر" };
-    updateUIForUser();
-    document.getElementById("adminPanel").classList.remove("active");
-  }
-
-  function showLoginModal() { document.getElementById("loginModal").classList.add("active"); }
-  function closeLoginModal() {
-    document.getElementById("loginModal").classList.remove("active");
-    document.getElementById("loginError").innerHTML = "";
-    document.getElementById("adminPassword").value = "";
-  }
+  
+  function logout() { currentUser = { type: "guest", name: "زائر" }; updateUIForUser(); }
+  
+  // نافذة تسجيل الدخول
+  function showLoginModal() { document.getElementById("loginModal").style.display = "flex"; }
+  function closeLoginModal() { document.getElementById("loginModal").style.display = "none"; document.getElementById("loginError").innerHTML = ""; }
   function handleLogin() {
-    const userType = document.getElementById("userTypeSelect").value;
-    if (userType === "admin") {
-      const password = document.getElementById("adminPassword").value;
-      if (password === ADMIN_PASSWORD) {
-        currentUser = { type: "admin", name: "Admin" };
-        updateUIForUser();
-        closeLoginModal();
-        document.getElementById("adminPanel").classList.add("active");
-        renderAdminPanel();
-        document.getElementById("addGameBtn").onclick = addNewGame;
-      } else {
-        document.getElementById("loginError").innerHTML = currentLang === "ar" ? "❌ كلمة السر غير صحيحة" : "❌ Incorrect password";
-      }
-    } else {
-      currentUser = { type: "user", name: "عميل" };
-      updateUIForUser();
-      closeLoginModal();
-    }
+    const type = document.getElementById("loginUserType").value;
+    if (type === "admin") {
+      const pwd = document.getElementById("adminPasswordInput").value;
+      if (pwd === ADMIN_PASSWORD) { currentUser = { type: "admin", name: "Admin" }; updateUIForUser(); closeLoginModal(); }
+      else document.getElementById("loginError").innerHTML = "❌ كلمة السر غير صحيحة";
+    } else { currentUser = { type: "user", name: "User" }; updateUIForUser(); closeLoginModal(); }
   }
-
+  
+  // الأحداث
   function initEvents() {
-    document.getElementById("showLoginBtn")?.addEventListener("click", showLoginModal);
-    document.getElementById("closeLoginBtn")?.addEventListener("click", closeLoginModal);
-    document.getElementById("loginSubmitBtn")?.addEventListener("click", handleLogin);
-    document.getElementById("closeAdminBtn")?.addEventListener("click", () => { document.getElementById("adminPanel").classList.remove("active"); });
-    document.getElementById("userTypeSelect")?.addEventListener("change", (e) => {
-      document.getElementById("adminPasswordField").style.display = e.target.value === "admin" ? "block" : "none";
-    });
-    
     document.querySelectorAll(".lang-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         currentLang = btn.getAttribute("data-lang");
@@ -1055,43 +690,51 @@
         btn.classList.add("active");
         document.body.dir = currentLang === "ar" ? "rtl" : "ltr";
         updateUIForUser();
-        if (currentTab === "games") renderGames();
-        else if (currentTab === "giftcards") renderGiftCards();
-        else renderOffers();
-        updateTexts();
+        document.getElementById("currencyLabel").innerText = currentLang === "ar" ? "العملة:" : "Currency:";
+        document.getElementById("loginBtnText").innerText = currentLang === "ar" ? "تسجيل دخول" : "Login";
       });
     });
-    
-    document.getElementById("currencySelect")?.addEventListener("change", (e) => {
-      currentCurrency = e.target.value;
-      if (currentTab === "games") renderGames();
-      else if (currentTab === "giftcards") renderGiftCards();
-      else renderOffers();
-    });
-    
-    document.getElementById("searchInput")?.addEventListener("input", (e) => {
-      searchQuery = e.target.value;
-      updateSearchResults();
-    });
-    
+    document.getElementById("currencySelect")?.addEventListener("change", (e) => { currentCurrency = e.target.value; renderProducts(); });
+    document.getElementById("searchInput")?.addEventListener("input", (e) => { searchQuery = e.target.value; currentPage = 1; renderProducts(); });
     document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => switchTab(btn.getAttribute("data-tab")));
+      btn.addEventListener("click", () => {
+        currentCategory = btn.getAttribute("data-category");
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentPage = 1;
+        renderProducts();
+      });
     });
-  }
-
-  function updateTexts() {
-    document.getElementById("currencyLabel").innerText = currentLang === "ar" ? "العملة:" : "Currency:";
-    document.getElementById("loginBtnText").innerText = currentLang === "ar" ? "تسجيل دخول" : "Login";
-  }
-
-  function init() {
-    initEvents();
-    updateUIForUser();
-    switchTab("games");
-    updateTexts();
   }
   
-  init();
+  // إضافة نافذة تسجيل الدخول
+  const loginModalHtml = `
+  <div id="loginModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); backdrop-filter:blur(12px); align-items:center; justify-content:center; z-index:2000;">
+    <div style="background:#11152b; border-radius:1.5rem; padding:2rem; text-align:center; border:2px solid #ffaa44; width:320px;">
+      <i class="fas fa-user-shield" style="font-size:3rem; color:#ffaa44;"></i>
+      <h3 style="color:#ffaa44; margin:1rem 0;">${currentLang === "ar" ? "تسجيل الدخول" : "Login"}</h3>
+      <select id="loginUserType" style="width:100%; padding:10px; margin:10px 0; border-radius:40px; background:#1e1e3a; color:white; border:1px solid #ffaa44;">
+        <option value="user">👤 ${currentLang === "ar" ? "عميل / زائر" : "User / Guest"}</option>
+        <option value="admin">👑 ${currentLang === "ar" ? "أدمن (مدير)" : "Admin"}</option>
+      </select>
+      <div id="adminPasswordDiv" style="display:none;">
+        <input type="password" id="adminPasswordInput" placeholder="${currentLang === "ar" ? "كلمة السر" : "Password"}" style="width:100%; padding:10px; margin:10px 0; border-radius:40px; background:#1e1e3a; color:white; border:1px solid #ffaa44;">
+      </div>
+      <button id="loginSubmit" style="background:#ffaa44; border:none; padding:10px; border-radius:40px; width:100%; margin-top:10px; cursor:pointer;">${currentLang === "ar" ? "دخول" : "Login"}</button>
+      <div id="loginError" style="color:#ff6666; margin-top:10px;"></div>
+      <button id="closeLoginModal" style="background:#444; border:none; padding:8px; border-radius:40px; width:100%; margin-top:10px; cursor:pointer;">${currentLang === "ar" ? "إغلاق" : "Close"}</button>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML("beforeend", loginModalHtml);
+  
+  document.getElementById("closeLoginModal")?.addEventListener("click", closeLoginModal);
+  document.getElementById("loginSubmit")?.addEventListener("click", handleLogin);
+  document.getElementById("loginUserType")?.addEventListener("change", (e) => {
+    document.getElementById("adminPasswordDiv").style.display = e.target.value === "admin" ? "block" : "none";
+  });
+  
+  initEvents();
+  updateUIForUser();
 </script>
 </body>
 </html>

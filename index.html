@@ -1,1034 +1,1031 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xnesto Store - متجر بلايستيشن</title>
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #0a0f1e 0%, #1a1f2f 100%);
-            color: #fff;
-            min-height: 100vh;
-        }
-
-        /* Header */
-        header {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #003791;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .logo i {
-            color: #003791;
-            font-size: 28px;
-        }
-
-        .logo .xnesto {
-            color: #003791;
-            background: #fff;
-            padding: 3px 8px;
-            border-radius: 5px;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 20px;
-        }
-
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 15px;
-        }
-
-        nav ul li a:hover {
-            color: #003791;
-        }
-
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .user-btn, .admin-btn {
-            background: #003791;
-            padding: 6px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-        }
-
-        .admin-btn {
-            background: #ff4444;
-        }
-
-        .admin-btn:hover {
-            background: #cc0000;
-        }
-
-        .cart-icon {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #003791;
-            border-radius: 50%;
-            padding: 2px 5px;
-            font-size: 10px;
-        }
-
-        .language-selector {
-            display: flex;
-            gap: 5px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 3px;
-            border-radius: 8px;
-        }
-
-        .lang-btn {
-            padding: 4px 10px;
-            border: none;
-            background: transparent;
-            color: #fff;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 12px;
-        }
-
-        .lang-btn.active {
-            background: #003791;
-        }
-
-        .currency-selector {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 5px 10px;
-            border-radius: 8px;
-            border: none;
-            color: #fff;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0,55,145,0.3);
-            padding: 5px 12px;
-            border-radius: 20px;
-        }
-
-        .logout-btn {
-            background: #ff4444;
-            padding: 3px 8px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 11px;
-        }
-
-        /* Hero */
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=1859');
-            background-size: cover;
-            padding: 50px 20px;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 10px;
-        }
-
-        /* Modals */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: #1a1f2f;
-            padding: 25px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 450px;
-            text-align: center;
-            border: 2px solid #003791;
-        }
-
-        .modal-content h2 {
-            margin-bottom: 15px;
-            color: #003791;
-        }
-
-        .modal-content input, .modal-content textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 8px;
-            color: #fff;
-        }
-
-        .modal-content button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 8px;
-            background: #003791;
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close-modal {
-            background: #ff4444 !important;
-        }
-
-        /* Admin Panel */
-        .admin-panel {
-            display: none;
-            padding: 30px;
-            background: rgba(0,0,0,0.5);
-            border-bottom: 2px solid #003791;
-        }
-
-        .admin-panel.active {
-            display: block;
-        }
-
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .add-product-btn {
-            background: #003791;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .products-table {
-            background: rgba(255,255,255,0.05);
-            border-radius: 15px;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 13px;
-        }
-
-        th {
-            background: rgba(0,55,145,0.3);
-        }
-
-        .edit-btn, .delete-btn {
-            padding: 5px 10px;
-            margin: 0 3px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .edit-btn {
-            background: #ffa500;
-            color: #fff;
-        }
-
-        .delete-btn {
-            background: #ff4444;
-            color: #fff;
-        }
-
-        /* Sections */
-        .section {
-            padding: 40px 25px;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 28px;
-            margin-bottom: 30px;
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: #003791;
-            margin: 10px auto 0;
-        }
-
-        /* Games Grid */
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-            gap: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .game-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: transform 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .game-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .game-image {
-            height: 170px;
-            overflow: hidden;
-        }
-
-        .game-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .game-info {
-            padding: 12px;
-        }
-
-        .game-info h3 {
-            font-size: 15px;
-            margin-bottom: 5px;
-        }
-
-        .game-desc {
-            font-size: 12px;
-            opacity: 0.7;
-            margin-bottom: 8px;
-        }
-
-        .game-price {
-            color: #003791;
-            font-size: 18px;
-            font-weight: bold;
-            margin: 8px 0;
-        }
-
-        .buy-btn {
-            width: 100%;
-            padding: 8px;
-            background: transparent;
-            border: 2px solid #003791;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            font-size: 13px;
-            transition: all 0.3s;
-        }
-
-        .buy-btn:hover {
-            background: #003791;
-        }
-
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 40px;
-            flex-wrap: wrap;
-        }
-
-        .page-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px 15px;
-            border-radius: 8px;
-            color: #fff;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .page-btn:hover {
-            background: #003791;
-        }
-
-        .page-btn.active {
-            background: #003791;
-            border-color: #003791;
-        }
-
-        /* Gift Cards */
-        .gift-section {
-            background: rgba(0, 55, 145, 0.1);
-            padding: 40px 25px;
-        }
-
-        .gift-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .gift-card {
-            background: linear-gradient(135deg, rgba(0,55,145,0.2), rgba(0,0,0,0.5));
-            border-radius: 12px;
-            padding: 18px;
-            text-align: center;
-            border: 1px solid rgba(0,55,145,0.5);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .gift-card:hover {
-            transform: translateY(-3px);
-            border-color: #003791;
-        }
-
-        .gift-card i {
-            font-size: 35px;
-            color: #ffd700;
-        }
-
-        /* Top Up */
-        .topup-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .topup-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 30px 25px 15px;
-            border-top: 2px solid #003791;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 25px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-section h4 {
-            font-size: 16px;
-            margin-bottom: 12px;
-            color: #003791;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 12px;
-        }
-
-        .social-links a {
-            color: #fff;
-            font-size: 20px;
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 11px;
-        }
-
-        .whatsapp-float {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: #25D366;
-            color: #fff;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            text-align: center;
-            font-size: 25px;
-            line-height: 50px;
-            z-index: 1000;
-        }
-
-        @media (max-width: 768px) {
-            header {
-                padding: 10px 15px;
-                flex-direction: column;
-            }
-            .games-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            }
-            .game-image {
-                height: 140px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>xnesto – متجر الألعاب وبطاقات الشحن | PS4/PS5</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: linear-gradient(135deg, #0a0a1a 0%, #0a0a1a 100%);
+      font-family: 'Cairo', 'Segoe UI', Tahoma, system-ui, sans-serif;
+      color: #f0f0ff;
+      padding: 1.5rem;
+      min-height: 100vh;
+    }
+    .header {
+      text-align: center;
+      background: linear-gradient(135deg, #0f0f2a, #0a0a1f);
+      padding: 2rem 1rem;
+      border-radius: 1.5rem;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255, 170, 68, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,170,68,0.1) 0%, transparent 70%);
+      animation: pulse 8s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.1); opacity: 0.5; } }
+    .header h1 {
+      font-size: 2.8rem;
+      background: linear-gradient(135deg, #ffaa44, #ffcc88, #ffaa44);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      position: relative;
+      z-index: 1;
+    }
+    .header p { color: #ffdd99; position: relative; z-index: 1; }
+    
+    .control-bar {
+      max-width: 1300px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      background: rgba(15, 15, 42, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 12px 20px;
+      border-radius: 60px;
+      border: 1px solid rgba(255, 170, 68, 0.2);
+    }
+    .lang-switch {
+      display: flex;
+      gap: 10px;
+      background: #1e1e3a;
+      padding: 5px;
+      border-radius: 50px;
+    }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 40px;
+      color: #ccc;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .lang-btn.active { background: #ffaa44; color: #0a0a1a; }
+    .currency-selector {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #1e1e3a;
+      padding: 5px 15px;
+      border-radius: 50px;
+    }
+    #currencySelect {
+      background: #0a0c1a;
+      border: 1px solid #ffaa44;
+      color: #ffdd99;
+      padding: 8px 12px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .auth-buttons { display: flex; gap: 10px; }
+    .login-btn, .logout-btn {
+      background: #2d2f6e;
+      border: none;
+      color: #ffaa66;
+      padding: 8px 16px;
+      border-radius: 40px;
+      cursor: pointer;
+    }
+    .user-badge {
+      background: #1e1e3a;
+      padding: 8px 16px;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffaa66;
+    }
+    
+    /* نافذة تسجيل الدخول */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .modal-overlay.active { visibility: visible; opacity: 1; }
+    .login-box {
+      background: #11152b;
+      border-radius: 1.5rem;
+      padding: 2rem;
+      text-align: center;
+      border: 2px solid #ffaa44;
+      width: 350px;
+    }
+    .login-box i { font-size: 3rem; color: #ffaa44; margin-bottom: 1rem; }
+    .login-box h3 { color: #ffaa44; margin-bottom: 1rem; }
+    .login-box select, .login-box input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 40px;
+      background: #1e1e3a;
+      color: white;
+      border: 1px solid #ffaa44;
+    }
+    .login-box button {
+      background: #ffaa44;
+      border: none;
+      padding: 12px;
+      border-radius: 40px;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .login-error { color: #ff6666; margin-top: 10px; }
+    .close-modal { background: #444 !important; color: white; }
+    
+    /* لوحة تحكم الادمن */
+    .admin-panel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.3s ease;
+      overflow-y: auto;
+      padding: 2rem;
+    }
+    .admin-panel.active { visibility: visible; opacity: 1; }
+    .admin-container {
+      background: #0a0c1a;
+      border-radius: 1.5rem;
+      width: 100%;
+      max-width: 900px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.5rem;
+      border: 2px solid #ffaa44;
+    }
+    .admin-container h2 { text-align: center; color: #ffaa44; margin-bottom: 1rem; }
+    .admin-games-list { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
+    .admin-game-item {
+      background: #11152b;
+      border-radius: 1rem;
+      padding: 1rem;
+      border: 1px solid #2a2f55;
+    }
+    .admin-game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .admin-game-name { font-weight: bold; color: #ffaa66; }
+    .admin-price-input {
+      background: #1e1e3a;
+      border: 1px solid #ffaa44;
+      padding: 6px 12px;
+      border-radius: 30px;
+      width: 90px;
+      color: #ffdd99;
+    }
+    .admin-specs textarea, .admin-specs input {
+      width: 100%;
+      background: #1e1e3a;
+      border: 1px solid #ffaa44;
+      border-radius: 12px;
+      padding: 8px;
+      color: white;
+      margin: 5px 0;
+    }
+    .admin-specs label { font-size: 0.7rem; color: #ffaa66; display: block; margin-top: 8px; }
+    .admin-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px; }
+    .admin-save-btn, .admin-delete-btn {
+      padding: 6px 16px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      border: none;
+    }
+    .admin-save-btn { background: #ffaa44; color: #0a0a1a; }
+    .admin-delete-btn { background: #ff4444; color: white; }
+    .add-game-section {
+      background: #11152b;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+    .add-game-section h3 { color: #ffaa44; margin-bottom: 1rem; }
+    .add-game-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .add-game-form input, .add-game-form textarea {
+      background: #1e1e3a;
+      border: 1px solid #ffaa44;
+      padding: 8px 12px;
+      border-radius: 30px;
+      color: white;
+      flex: 1;
+      min-width: 140px;
+    }
+    .add-game-form textarea { min-width: 200px; }
+    .add-game-btn {
+      background: #00cc88;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .close-admin {
+      background: #ffaa44;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 40px;
+      color: #0a0a1a;
+      font-weight: bold;
+      display: block;
+      margin: 20px auto 0;
+      cursor: pointer;
+    }
+    
+    /* شريط البحث */
+    .search-bar-container {
+      max-width: 1300px;
+      margin: 0 auto 1.5rem auto;
+      background: rgba(15, 15, 42, 0.8);
+      padding: 12px 20px;
+      border-radius: 60px;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #1e1e3a;
+      padding: 5px 15px;
+      border-radius: 50px;
+    }
+    #searchInput {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 12px 0;
+      color: white;
+      outline: none;
+    }
+    .search-results-count {
+      background: #2d2f6e;
+      padding: 5px 12px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      color: #ffaa66;
+    }
+    
+    /* تبويبات */
+    .tabs-container {
+      max-width: 1300px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .tab-btn {
+      background: #1e1e3a;
+      border: 1px solid rgba(255, 170, 68, 0.3);
+      padding: 12px 28px;
+      border-radius: 60px;
+      color: #ffdd99;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .tab-btn.active { background: #ffaa44; color: #0a0a1a; }
+    
+    /* شبكة المنتجات */
+    .games-grid, .giftcards-grid {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.8rem;
+    }
+    .game-card, .giftcard-card {
+      background: #11152b;
+      border-radius: 1.2rem;
+      overflow: hidden;
+      transition: 0.3s;
+      border: 1px solid rgba(255, 170, 68, 0.2);
+      position: relative;
+    }
+    .game-card:hover, .giftcard-card:hover { transform: translateY(-5px); border-color: #ffaa44; }
+    .discount-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #ff4444;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .game-image, .giftcard-image {
+      width: 100%;
+      height: 200px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-size: cover;
+      background-position: center;
+    }
+    .game-badge, .giftcard-badge {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      color: #ffcc77;
+    }
+    .card-info { padding: 1rem; text-align: center; }
+    .game-title, .giftcard-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 5px; }
+    .game-version, .giftcard-region { font-size: 0.7rem; color: #ffaa66; margin-bottom: 8px; }
+    .game-specs {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px;
+      border-radius: 12px;
+      margin: 10px 0;
+      font-size: 0.7rem;
+      color: #b9c5f0;
+      border-right: 2px solid #ffaa44;
+    }
+    .price-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 8px 0;
+      flex-wrap: wrap;
+    }
+    .old-price {
+      font-size: 0.9rem;
+      color: #888;
+      text-decoration: line-through;
+    }
+    .price {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #ffaa44;
+    }
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #25D366;
+      color: #000;
+      width: 100%;
+      padding: 10px 0;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    .page-btn {
+      background: #1e1e3a;
+      border: 1px solid #ffaa44;
+      color: #ffdd99;
+      padding: 8px 16px;
+      border-radius: 40px;
+      cursor: pointer;
+    }
+    .page-btn.active { background: #ffaa44; color: #0a0a1a; }
+    .footer { text-align: center; margin-top: 3rem; padding: 1.5rem; color: #6f7bb3; border-top: 1px solid rgba(255, 170, 68, 0.2); }
+    @media (max-width: 640px) { body { padding: 1rem; } .game-image, .giftcard-image { height: 160px; } }
+  </style>
 </head>
-<body>
-    <header>
-        <div class="logo">
-            <i class="fab fa-playstation"></i>
-            <span><span class="xnesto">XNESTO</span> STORE</span>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#">الرئيسية</a></li>
-                <li><a href="#games">الألعاب</a></li>
-                <li><a href="#gift">بطاقات الهدايا</a></li>
-                <li><a href="#topup">شحن رصيد</a></li>
-            </ul>
-        </nav>
-        <div class="header-controls">
-            <div class="language-selector">
-                <button class="lang-btn active" onclick="switchLanguage('ar')">عربي</button>
-                <button class="lang-btn" onclick="switchLanguage('en')">EN</button>
-            </div>
-            <select class="currency-selector" id="currencySelect" onchange="changeCurrency(this.value)">
-                <option value="USD">🇺🇸 USD</option>
-                <option value="SAR">🇸🇦 SAR</option>
-                <option value="AED">🇦🇪 AED</option>
-                <option value="QAR">🇶🇦 QAR</option>
-                <option value="KWD">🇰🇼 KWD</option>
-                <option value="BHD">🇧🇭 BHD</option>
-                <option value="OMR">🇴🇲 OMR</option>
-                <option value="INR">🇮🇳 INR</option>
-                <option value="TRY">🇹🇷 TRY</option>
-                <option value="IDR">🇮🇩 IDR</option>
-            </select>
-            <div id="userSection" class="user-btn" onclick="openUserModal()">
-                <i class="fas fa-user"></i>
-                <span>تسجيل دخول</span>
-            </div>
-            <div id="adminSection" class="admin-btn" onclick="openAdminModal()">
-                <i class="fas fa-user-shield"></i>
-                <span>أدمن</span>
-            </div>
-            <div class="cart-icon">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="cart-count">0</span>
-            </div>
-        </div>
-    </header>
+<body dir="rtl">
 
-    <!-- Admin Login Modal -->
-    <div id="adminModal" class="modal">
-        <div class="modal-content">
-            <h2><i class="fas fa-user-shield"></i> دخول الأدمن</h2>
-            <input type="text" id="adminUsername" placeholder="اسم المستخدم">
-            <input type="password" id="adminPassword" placeholder="كلمة المرور">
-            <button onclick="loginAdmin()">دخول</button>
-            <button class="close-modal" onclick="closeAdminModal()">إلغاء</button>
-        </div>
+<div class="header">
+  <h1>🎮 xnesto</h1>
+  <p id="welcomeMsg">ألعاب PS4 / PS5 – بطاقات شحن – عروض وتخفيضات – رصيد فوري</p>
+</div>
+
+<div class="control-bar">
+  <div class="lang-switch">
+    <button class="lang-btn active" data-lang="ar">🇸🇦 العربية</button>
+    <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+  </div>
+  <div class="currency-selector">
+    <label><i class="fas fa-coins"></i> <span id="currencyLabel">العملة:</span></label>
+    <select id="currencySelect">
+      <option value="OMR">ريال عماني (OMR)</option>
+      <option value="USD">دولار أمريكي (USD)</option>
+      <option value="SAR">ريال سعودي (SAR)</option>
+      <option value="QAR">ريال قطري (QAR)</option>
+      <option value="EUR">يورو (EUR)</option>
+      <option value="AED">درهم إماراتي (AED)</option>
+    </select>
+  </div>
+  <div class="auth-buttons" id="authButtons">
+    <button class="login-btn" id="showLoginBtn"><i class="fas fa-user"></i> <span id="loginBtnText">تسجيل دخول</span></button>
+  </div>
+</div>
+
+<div class="search-bar-container">
+  <div class="search-box">
+    <i class="fas fa-search"></i>
+    <input type="text" id="searchInput" placeholder="🔍 ابحث عن لعبة أو بطاقة شحن...">
+    <span class="search-results-count" id="searchCount">0</span>
+  </div>
+</div>
+
+<div class="tabs-container">
+  <button class="tab-btn active" data-tab="games">🎮 ألعاب PS4/PS5</button>
+  <button class="tab-btn" data-tab="giftcards">💳 بطاقات شحن</button>
+  <button class="tab-btn" data-tab="offers">🔥 عروض وتخفيضات</button>
+</div>
+
+<div id="gamesSection" class="games-grid"></div>
+<div id="giftcardsSection" class="giftcards-grid" style="display: none;"></div>
+<div id="offersSection" class="games-grid" style="display: none;"></div>
+<div class="pagination" id="paginationContainer"></div>
+
+<div class="footer">
+  <i class="fas fa-bolt"></i> xnesto - أسرع متجر للألعاب وبطاقات الشحن في سلطنة عمان
+</div>
+
+<!-- نافذة تسجيل الدخول -->
+<div id="loginModal" class="modal-overlay">
+  <div class="login-box">
+    <i class="fas fa-user-shield"></i>
+    <h3>تسجيل الدخول إلى xnesto</h3>
+    <select id="userTypeSelect">
+      <option value="user">👤 عميل / زائر</option>
+      <option value="admin">👑 أدمن (مدير المتجر)</option>
+    </select>
+    <div id="adminPasswordField" style="display: none;">
+      <input type="password" id="adminPassword" placeholder="كلمة السر" autocomplete="off">
     </div>
+    <button id="loginSubmitBtn">دخول</button>
+    <div id="loginError" class="login-error"></div>
+    <button id="closeLoginBtn" class="close-modal">إغلاق</button>
+  </div>
+</div>
 
-    <!-- User Login Modal -->
-    <div id="userModal" class="modal">
-        <div class="modal-content">
-            <h2><i class="fas fa-user"></i> تسجيل دخول العميل</h2>
-            <input type="email" id="userEmail" placeholder="البريد الإلكتروني">
-            <input type="text" id="userName" placeholder="الاسم الكامل">
-            <button onclick="loginUser()">تسجيل دخول</button>
-            <button class="close-modal" onclick="closeUserModal()">إلغاء</button>
-        </div>
+<!-- لوحة تحكم الادمن -->
+<div id="adminPanel" class="admin-panel">
+  <div class="admin-container">
+    <h2><i class="fas fa-edit"></i> لوحة تحكم xnesto - تعديل الألعاب</h2>
+    <div id="adminGamesList" class="admin-games-list"></div>
+    
+    <div class="add-game-section">
+      <h3><i class="fas fa-plus-circle"></i> إضافة لعبة جديدة</h3>
+      <div class="add-game-form">
+        <input type="text" id="newGameNameAr" placeholder="الاسم بالعربية">
+        <input type="text" id="newGameNameEn" placeholder="Name in English">
+        <input type="text" id="newGameVersion" placeholder="الإصدار (PS5/PS4)">
+        <input type="number" id="newGamePrice" placeholder="السعر (ر.ع)" step="0.5">
+        <input type="number" id="newGameOldPrice" placeholder="السعر القديم (للخصم)" step="0.5">
+        <input type="text" id="newGameImage" placeholder="رابط الصورة (مباشر)">
+        <textarea id="newGameSpecsAr" rows="2" placeholder="المواصفات بالعربية"></textarea>
+        <textarea id="newGameSpecsEn" rows="2" placeholder="Specifications in English"></textarea>
+        <button class="add-game-btn" id="addGameBtn"><i class="fas fa-save"></i> إضافة اللعبة</button>
+      </div>
     </div>
+    
+    <button id="closeAdminBtn" class="close-admin">إغلاق</button>
+  </div>
+</div>
 
-    <!-- Product Form Modal (للأدمن) -->
-    <div id="productFormModal" class="modal">
-        <div class="modal-content">
-            <h2 id="formTitle">إضافة منتج جديد</h2>
-            <input type="text" id="productName" placeholder="اسم المنتج">
-            <input type="text" id="productImage" placeholder="رابط الصورة">
-            <input type="number" id="productPriceUSD" placeholder="السعر بالدولار">
-            <textarea id="productDesc" placeholder="وصف المنتج" rows="3"></textarea>
-            <button onclick="saveProduct()">حفظ</button>
-            <button class="close-modal" onclick="closeProductForm()">إلغاء</button>
+<script>
+  // ==================== قائمة الألعاب مع صور حقيقية وعروض ====================
+  let gamesData = [
+    { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", version: "PS5/PS4", priceOMR: 14, oldPrice: 20, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", bgColor: "#2d4a6e", specsAr: "🏷️ الحجم: 65GB | 🎮 اللغة: عربية/إنجليزية", specsEn: "📦 Size: 65GB | 🎮 Language: Arabic/English", msgAr: "أريد Assassin's Creed Shadows", msgEn: "I want Assassin's Creed Shadows" },
+    { id: 2, nameAr: "Call of Duty: Black Ops 6", nameEn: "Call of Duty: Black Ops 6", version: "PS5/PS4", priceOMR: 22, oldPrice: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", bgColor: "#5d3a1a", specsAr: "🏷️ الحجم: 120GB | 🎮 اللغة: إنجليزية", specsEn: "📦 Size: 120GB | 🎮 Language: English", msgAr: "أريد Call of Duty Black Ops 6", msgEn: "I want Call of Duty Black Ops 6" },
+    { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", version: "PS5", priceOMR: 6, oldPrice: 10, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", bgColor: "#2d5a4a", specsAr: "🏷️ الحجم: 150GB | 🌍 عالم مفتوح", specsEn: "📦 Size: 150GB | 🌍 Open World", msgAr: "أريد GTA VI PS5", msgEn: "I want GTA VI PS5" },
+    { id: 4, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", version: "PS4", priceOMR: 5, oldPrice: 8, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover.jpg", bgColor: "#2d5a4a", specsAr: "🏷️ الحجم: 120GB | نسخة PS4", specsEn: "📦 Size: 120GB | PS4 Version", msgAr: "أريد GTA VI PS4", msgEn: "I want GTA VI PS4" },
+    { id: 5, nameAr: "Monster Hunter Wilds", nameEn: "Monster Hunter Wilds", version: "PS5", priceOMR: 14, oldPrice: 20, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2246340/header.jpg", bgColor: "#3a5a2d", specsAr: "🏷️ الحجم: 75GB | 🐉 صيد الوحوش", specsEn: "📦 Size: 75GB | 🐉 Monster Hunting", msgAr: "أريد Monster Hunter Wilds", msgEn: "I want Monster Hunter Wilds" },
+    { id: 6, nameAr: "Ghost of Yōtei", nameEn: "Ghost of Yōtei", version: "PS5", priceOMR: 14, oldPrice: 20, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3138540/header.jpg", bgColor: "#4a2d5a", specsAr: "🏷️ الحجم: 80GB | 🗡️ عالم مفتوح", specsEn: "📦 Size: 80GB | 🗡️ Open World", msgAr: "أريد Ghost of Yōtei", msgEn: "I want Ghost of Yōtei" },
+    { id: 7, nameAr: "Death Stranding 2", nameEn: "Death Stranding 2", version: "PS5", priceOMR: 24, oldPrice: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2859570/header.jpg", bgColor: "#2d4a6e", specsAr: "🏷️ الحجم: 100GB | 🌊 مغامرة فريدة", specsEn: "📦 Size: 100GB | 🌊 Unique Adventure", msgAr: "أريد Death Stranding 2", msgEn: "I want Death Stranding 2" },
+    { id: 8, nameAr: "EA Sports FC 26", nameEn: "EA Sports FC 26", version: "PS4/PS5", priceOMR: 13, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2668610/header.jpg", bgColor: "#2d6e5a", specsAr: "🏷️ الحجم: 55GB | ⚽ أندية محدثة", specsEn: "📦 Size: 55GB | ⚽ Updated Clubs", msgAr: "أريد EA Sports FC 26", msgEn: "I want EA Sports FC 26" },
+    { id: 9, nameAr: "Black Myth: Wukong", nameEn: "Black Myth: Wukong", version: "PS5", priceOMR: 16, oldPrice: 22, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2358720/header.jpg", bgColor: "#5a3a2d", specsAr: "🏷️ الحجم: 90GB | 🐒 قصة المستهلك", specsEn: "📦 Size: 90GB | 🐒 Epic Action RPG", msgAr: "أريد Black Myth Wukong", msgEn: "I want Black Myth Wukong" },
+    { id: 10, nameAr: "Silent Hill 2 Remake", nameEn: "Silent Hill 2 Remake", version: "PS5", priceOMR: 14, oldPrice: 20, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2124490/header.jpg", bgColor: "#4a2d2d", specsAr: "🏷️ الحجم: 50GB | 👻 رعب نفسي", specsEn: "📦 Size: 50GB | 👻 Psychological Horror", msgAr: "أريد Silent Hill 2 Remake", msgEn: "I want Silent Hill 2 Remake" },
+    { id: 11, nameAr: "God of War Ragnarök", nameEn: "God of War Ragnarök", version: "PS4/PS5", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg", bgColor: "#5a3a4a", specsAr: "🏷️ الحجم: 85GB | 🪓 ملحمة إسكندنافية", specsEn: "📦 Size: 85GB | 🪓 Norse Saga", msgAr: "أريد God of War Ragnarök", msgEn: "I want God of War Ragnarök" },
+    { id: 12, nameAr: "Marvel's Spider-Man 2", nameEn: "Marvel's Spider-Man 2", version: "PS5", priceOMR: 16, oldPrice: 22, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", bgColor: "#2d4a6e", specsAr: "🏷️ الحجم: 98GB | 🕷️ بيتر + مايلز", specsEn: "📦 Size: 98GB | 🕷️ Peter + Miles", msgAr: "أريد Spider-Man 2", msgEn: "I want Spider-Man 2" },
+    { id: 13, nameAr: "Hogwarts Legacy", nameEn: "Hogwarts Legacy", version: "PS4/PS5", priceOMR: 11, oldPrice: 16, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/990080/header.jpg", bgColor: "#4a2d5a", specsAr: "🏷️ الحجم: 85GB | 🧙 عالم هاري بوتر", specsEn: "📦 Size: 85GB | 🧙 Harry Potter World", msgAr: "أريد Hogwarts Legacy", msgEn: "I want Hogwarts Legacy" },
+    { id: 14, nameAr: "Final Fantasy VII Rebirth", nameEn: "Final Fantasy VII Rebirth", version: "PS5", priceOMR: 18, oldPrice: 25, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2909400/header.jpg", bgColor: "#2d6e6e", specsAr: "🏷️ الحجم: 145GB | 🗡️ RPG خيالية", specsEn: "📦 Size: 145GB | 🗡️ Fantasy RPG", msgAr: "أريد Final Fantasy VII Rebirth", msgEn: "I want Final Fantasy VII Rebirth" },
+    { id: 15, nameAr: "Tekken 8", nameEn: "Tekken 8", version: "PS5", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1778820/header.jpg", bgColor: "#5a2d3a", specsAr: "🏷️ الحجم: 80GB | 🥊 لعبة قتال", specsEn: "📦 Size: 80GB | 🥊 Fighting Game", msgAr: "أريد Tekken 8", msgEn: "I want Tekken 8" }
+  ];
+
+  // بطاقات الشحن
+  const giftCardsData = [
+    { id: 1, nameAr: "بطاقة شحن أمريكي", nameEn: "US Gift Card", region: "USA", currency: "USD", priceOMR: 5, oldPrice: 6, icon: "🇺🇸", bgColor: "#1a3a5a", values: ["10$", "25$", "50$", "100$"], msgAr: "أريد بطاقة شحن أمريكي", msgEn: "I want US Gift Card" },
+    { id: 2, nameAr: "بطاقة شحن بريطاني", nameEn: "UK Gift Card", region: "UK", currency: "GBP", priceOMR: 6, oldPrice: 7, icon: "🇬🇧", bgColor: "#1a4a6e", values: ["10£", "25£", "50£"], msgAr: "أريد بطاقة شحن بريطاني", msgEn: "I want UK Gift Card" },
+    { id: 3, nameAr: "بطاقة شحن تركي", nameEn: "Turkey Gift Card", region: "Turkey", currency: "TRY", priceOMR: 4, oldPrice: 5, icon: "🇹🇷", bgColor: "#4a5a2d", values: ["100₺", "250₺", "500₺"], msgAr: "أريد بطاقة شحن تركي", msgEn: "I want Turkey Gift Card" },
+    { id: 4, nameAr: "بطاقة شحن هندي", nameEn: "India Gift Card", region: "India", currency: "INR", priceOMR: 3.5, oldPrice: 4.5, icon: "🇮🇳", bgColor: "#4a6e2d", values: ["500₹", "1000₹", "2000₹"], msgAr: "أريد بطاقة شحن هندي", msgEn: "I want India Gift Card" },
+    { id: 5, nameAr: "بطاقة شحن إندونيسي", nameEn: "Indonesia Gift Card", region: "Indonesia", currency: "IDR", priceOMR: 4, oldPrice: 5, icon: "🇮🇩", bgColor: "#2d5a4a", values: ["50k", "100k", "200k"], msgAr: "أريد بطاقة شحن إندونيسي", msgEn: "I want Indonesia Gift Card" },
+    { id: 6, nameAr: "بطاقة شحن سعودي", nameEn: "Saudi Gift Card", region: "Saudi Arabia", currency: "SAR", priceOMR: 4.5, oldPrice: 5.5, icon: "🇸🇦", bgColor: "#2d6e4a", values: ["50ر.س", "100ر.س", "200ر.س"], msgAr: "أريد بطاقة شحن سعودي", msgEn: "I want Saudi Gift Card" },
+    { id: 7, nameAr: "بطاقة شحن قطري", nameEn: "Qatar Gift Card", region: "Qatar", currency: "QAR", priceOMR: 4.5, oldPrice: 5.5, icon: "🇶🇦", bgColor: "#4a6e2d", values: ["50ر.ق", "100ر.ق", "200ر.ق"], msgAr: "أريد بطاقة شحن قطري", msgEn: "I want Qatar Gift Card" },
+    { id: 8, nameAr: "بطاقة شحن إماراتي", nameEn: "UAE Gift Card", region: "UAE", currency: "AED", priceOMR: 5, oldPrice: 6, icon: "🇦🇪", bgColor: "#2d4a6e", values: ["50د.إ", "100د.إ", "200د.إ"], msgAr: "أريد بطاقة شحن إماراتي", msgEn: "I want UAE Gift Card" },
+    { id: 9, nameAr: "بطاقة شحن كويتي", nameEn: "Kuwait Gift Card", region: "Kuwait", currency: "KWD", priceOMR: 6, oldPrice: 7, icon: "🇰🇼", bgColor: "#5a3a2d", values: ["5د.ك", "10د.ك", "20د.ك"], msgAr: "أريد بطاقة شحن كويتي", msgEn: "I want Kuwait Gift Card" },
+    { id: 10, nameAr: "بطاقة شحن بحريني", nameEn: "Bahrain Gift Card", region: "Bahrain", currency: "BHD", priceOMR: 5.5, oldPrice: 6.5, icon: "🇧🇭", bgColor: "#4a2d5a", values: ["5د.ب", "10د.ب", "20د.ب"], msgAr: "أريد بطاقة شحن بحريني", msgEn: "I want Bahrain Gift Card" },
+    { id: 11, nameAr: "بطاقة شحن عماني", nameEn: "Oman Gift Card", region: "Oman", currency: "OMR", priceOMR: 5, oldPrice: 6, icon: "🇴🇲", bgColor: "#2d6e6e", values: ["5ر.ع", "10ر.ع", "20ر.ع", "50ر.ع"], msgAr: "أريد بطاقة شحن عماني", msgEn: "I want Oman Gift Card" }
+  ];
+
+  let nextId = 16;
+  let currentUser = { type: "guest", name: "زائر" };
+  let currentLang = "ar";
+  let currentCurrency = "OMR";
+  let currentPage = 1;
+  let currentTab = "games";
+  let searchQuery = "";
+  let filteredGames = [...gamesData];
+  let filteredGiftCards = [...giftCardsData];
+  let filteredOffers = [...gamesData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR), ...giftCardsData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR)];
+  const ITEMS_PER_PAGE = 8;
+  const ADMIN_PASSWORD = "admin123";
+
+  const exchangeRates = { OMR: 1, USD: 2.6, SAR: 9.75, QAR: 9.46, EUR: 2.4, AED: 9.55 };
+  const currencySymbols = { OMR: "ر.ع", USD: "$", SAR: "ر.س", QAR: "ر.ق", EUR: "€", AED: "د.إ" };
+  const WA_NUMBER = "96879977100";
+
+  function saveGamesToLocal() { localStorage.setItem("xnesto_games", JSON.stringify(gamesData)); }
+  function loadGamesFromLocal() {
+    const saved = localStorage.getItem("xnesto_games");
+    if (saved) { 
+      const parsed = JSON.parse(saved);
+      if (parsed.length > 0) {
+        gamesData.length = 0;
+        parsed.forEach(g => gamesData.push(g));
+        nextId = Math.max(...gamesData.map(g => g.id), 0) + 1;
+        filteredGames = [...gamesData];
+        filteredOffers = [...gamesData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR), ...giftCardsData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR)];
+        updateSearchResults();
+      }
+    }
+  }
+  loadGamesFromLocal();
+
+  function convertPrice(price, currency) {
+    return (price * exchangeRates[currency]).toFixed(2);
+  }
+
+  function updateSearchResults() {
+    const query = searchQuery.trim().toLowerCase();
+    if (query === "") {
+      filteredGames = [...gamesData];
+      filteredGiftCards = [...giftCardsData];
+      filteredOffers = [...gamesData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR), ...giftCardsData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR)];
+    } else {
+      filteredGames = gamesData.filter(game => 
+        game.nameAr.toLowerCase().includes(query) || 
+        game.nameEn.toLowerCase().includes(query)
+      );
+      filteredGiftCards = giftCardsData.filter(card =>
+        card.nameAr.toLowerCase().includes(query) ||
+        card.nameEn.toLowerCase().includes(query) ||
+        card.region.toLowerCase().includes(query)
+      );
+      filteredOffers = [...gamesData.filter(g => (g.oldPrice && g.oldPrice > g.priceOMR) && (g.nameAr.toLowerCase().includes(query) || g.nameEn.toLowerCase().includes(query))),
+        ...giftCardsData.filter(g => (g.oldPrice && g.oldPrice > g.priceOMR) && (g.nameAr.toLowerCase().includes(query) || g.nameEn.toLowerCase().includes(query)))];
+    }
+    currentPage = 1;
+    const count = currentTab === "games" ? filteredGames.length : (currentTab === "giftcards" ? filteredGiftCards.length : filteredOffers.length);
+    document.getElementById("searchCount").innerHTML = count;
+    if (currentTab === "games") renderGames();
+    else if (currentTab === "giftcards") renderGiftCards();
+    else renderOffers();
+  }
+
+  function buildGameCard(game, isOffer = false) {
+    const card = document.createElement("div");
+    card.className = "game-card";
+    const gameName = currentLang === "ar" ? game.nameAr : game.nameEn;
+    const specs = currentLang === "ar" ? game.specsAr : game.specsEn;
+    const whatsappMsg = currentLang === "ar" ? game.msgAr : game.msgEn;
+    const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`;
+    const convertedPrice = convertPrice(game.priceOMR, currentCurrency);
+    const currencySym = currencySymbols[currentCurrency];
+    const hasDiscount = game.oldPrice && game.oldPrice > game.priceOMR;
+    const convertedOldPrice = hasDiscount ? convertPrice(game.oldPrice, currentCurrency) : null;
+    
+    card.innerHTML = `
+      ${hasDiscount ? `<div class="discount-badge">🔥 خصم ${Math.round((1 - game.priceOMR/game.oldPrice) * 100)}%</div>` : ''}
+      <div class="game-image" style="background-image: url('${game.image}'); background-size: cover; background-position: center;">
+        <div class="game-badge">${game.version}</div>
+      </div>
+      <div class="card-info">
+        <div class="game-title">${gameName}</div>
+        <div class="game-version">${currentLang === "ar" ? "نسخة رقمية | تحميل فوري" : "Digital Edition"}</div>
+        ${specs ? `<div class="game-specs"><i class="fas fa-info-circle"></i> ${specs}</div>` : ''}
+        <div class="price-container">
+          ${hasDiscount ? `<span class="old-price">${convertedOldPrice} ${currencySym}</span>` : ''}
+          <span class="price">${convertedPrice} <span>${currencySym}</span></span>
         </div>
-    </div>
+        <a href="${waLink}" target="_blank" class="btn-wa"><i class="fab fa-whatsapp"></i> ${currentLang === "ar" ? "اطلب الآن" : "Order Now"}</a>
+      </div>
+    `;
+    
+    const imgDiv = card.querySelector(".game-image");
+    const testImg = new Image();
+    testImg.onerror = () => {
+      imgDiv.style.backgroundImage = "none";
+      imgDiv.style.background = `linear-gradient(135deg, ${game.bgColor || "#2d4a6e"}, ${game.bgColor ? game.bgColor + "cc" : "#1a2a3a"})`;
+      imgDiv.innerHTML = `<div style="font-size: 3rem; text-align: center;">🎮</div><div class="game-badge" style="position: absolute; bottom: 10px; right: 10px;">${game.version}</div>`;
+    };
+    testImg.src = game.image;
+    
+    return card;
+  }
 
-    <!-- Admin Panel -->
-    <div id="adminPanel" class="admin-panel">
-        <div class="admin-header">
-            <h2><i class="fas fa-user-shield"></i> لوحة تحكم الأدمن</h2>
-            <button class="add-product-btn" onclick="openProductForm()">
-                <i class="fas fa-plus"></i> إضافة منتج جديد
-            </button>
-            <button class="add-product-btn" onclick="logoutAdmin()" style="background:#ff4444;">
-                <i class="fas fa-sign-out-alt"></i> تسجيل خروج
-            </button>
+  function buildGiftCard(card, isOffer = false) {
+    const cardDiv = document.createElement("div");
+    cardDiv.className = "giftcard-card";
+    const cardName = currentLang === "ar" ? card.nameAr : card.nameEn;
+    const regionText = currentLang === "ar" ? `المنطقة: ${card.region}` : `Region: ${card.region}`;
+    const valuesText = currentLang === "ar" ? `الفئات: ${card.values.join(" | ")}` : `Values: ${card.values.join(" | ")}`;
+    const whatsappMsg = currentLang === "ar" ? card.msgAr : card.msgEn;
+    const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(whatsappMsg)}`;
+    const convertedPrice = convertPrice(card.priceOMR, currentCurrency);
+    const currencySym = currencySymbols[currentCurrency];
+    const hasDiscount = card.oldPrice && card.oldPrice > card.priceOMR;
+    const convertedOldPrice = hasDiscount ? convertPrice(card.oldPrice, currentCurrency) : null;
+    
+    cardDiv.innerHTML = `
+      ${hasDiscount ? `<div class="discount-badge">🔥 خصم ${Math.round((1 - card.priceOMR/card.oldPrice) * 100)}%</div>` : ''}
+      <div class="giftcard-image" style="background: linear-gradient(135deg, ${card.bgColor}, ${card.bgColor}cc);">
+        <div style="font-size: 3rem;">${card.icon}</div>
+        <div class="giftcard-badge">${card.currency}</div>
+      </div>
+      <div class="card-info">
+        <div class="giftcard-title">${cardName}</div>
+        <div class="giftcard-region">${regionText}</div>
+        <div class="game-specs">${valuesText}</div>
+        <div class="price-container">
+          ${hasDiscount ? `<span class="old-price">${convertedOldPrice} ${currencySym}</span>` : ''}
+          <span class="price">${convertedPrice} <span>${currencySym}</span></span>
         </div>
-        <div class="products-table">
-            <table>
-                <thead>
-                    <tr><th>الصورة</th><th>اسم المنتج</th><th>السعر</th><th>الإجراءات</th></tr>
-                </thead>
-                <tbody id="adminTableBody"></tbody>
-            </table>
+        <a href="${waLink}" target="_blank" class="btn-wa"><i class="fab fa-whatsapp"></i> ${currentLang === "ar" ? "اطلب الآن" : "Order Now"}</a>
+      </div>
+    `;
+    return cardDiv;
+  }
+
+  function renderGames() {
+    const container = document.getElementById("gamesSection");
+    if (!container) return;
+    container.innerHTML = "";
+    const totalPages = Math.ceil(filteredGames.length / ITEMS_PER_PAGE);
+    if (currentPage > totalPages) currentPage = 1;
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    const pageItems = filteredGames.slice(start, start + ITEMS_PER_PAGE);
+    pageItems.forEach(item => container.appendChild(buildGameCard(item)));
+    renderPagination(totalPages);
+  }
+
+  function renderGiftCards() {
+    const container = document.getElementById("giftcardsSection");
+    if (!container) return;
+    container.innerHTML = "";
+    const totalPages = Math.ceil(filteredGiftCards.length / ITEMS_PER_PAGE);
+    if (currentPage > totalPages) currentPage = 1;
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    const pageItems = filteredGiftCards.slice(start, start + ITEMS_PER_PAGE);
+    pageItems.forEach(item => container.appendChild(buildGiftCard(item)));
+    renderPagination(totalPages);
+  }
+
+  function renderOffers() {
+    const container = document.getElementById("offersSection");
+    if (!container) return;
+    container.innerHTML = "";
+    const totalPages = Math.ceil(filteredOffers.length / ITEMS_PER_PAGE);
+    if (currentPage > totalPages) currentPage = 1;
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    const pageItems = filteredOffers.slice(start, start + ITEMS_PER_PAGE);
+    pageItems.forEach(item => {
+      if (item.version) container.appendChild(buildGameCard(item, true));
+      else container.appendChild(buildGiftCard(item, true));
+    });
+    renderPagination(totalPages);
+  }
+
+  function renderPagination(totalPages) {
+    const pagContainer = document.getElementById("paginationContainer");
+    if (!pagContainer) return;
+    pagContainer.innerHTML = "";
+    if (totalPages <= 1) return;
+    for (let i = 1; i <= totalPages; i++) {
+      const btn = document.createElement("button");
+      btn.className = "page-btn" + (i === currentPage ? " active" : "");
+      btn.textContent = i;
+      btn.onclick = () => { currentPage = i; if (currentTab === "games") renderGames(); else if (currentTab === "giftcards") renderGiftCards(); else renderOffers(); };
+      pagContainer.appendChild(btn);
+    }
+  }
+
+  function switchTab(tab) {
+    currentTab = tab;
+    currentPage = 1;
+    const gamesSection = document.getElementById("gamesSection");
+    const giftcardsSection = document.getElementById("giftcardsSection");
+    const offersSection = document.getElementById("offersSection");
+    const pagination = document.getElementById("paginationContainer");
+    
+    if (tab === "games") {
+      gamesSection.style.display = "grid";
+      giftcardsSection.style.display = "none";
+      offersSection.style.display = "none";
+      pagination.style.display = "flex";
+      renderGames();
+    } else if (tab === "giftcards") {
+      gamesSection.style.display = "none";
+      giftcardsSection.style.display = "grid";
+      offersSection.style.display = "none";
+      pagination.style.display = "flex";
+      renderGiftCards();
+    } else {
+      gamesSection.style.display = "none";
+      giftcardsSection.style.display = "none";
+      offersSection.style.display = "grid";
+      pagination.style.display = "flex";
+      renderOffers();
+    }
+    
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      if (btn.getAttribute("data-tab") === tab) btn.classList.add("active");
+      else btn.classList.remove("active");
+    });
+    const count = tab === "games" ? filteredGames.length : (tab === "giftcards" ? filteredGiftCards.length : filteredOffers.length);
+    document.getElementById("searchCount").innerHTML = count;
+  }
+
+  // ==================== وظائف الأدمن ====================
+  function renderAdminPanel() {
+    const container = document.getElementById("adminGamesList");
+    if (!container) return;
+    container.innerHTML = "";
+    gamesData.forEach(game => {
+      const item = document.createElement("div");
+      item.className = "admin-game-item";
+      item.innerHTML = `
+        <div class="admin-game-header">
+          <div class="admin-game-name">${game.nameAr} (${game.version})</div>
+          <div><input type="number" class="admin-price-input" id="price-${game.id}" value="${game.priceOMR}" step="0.5"> <span>ر.ع</span></div>
         </div>
-    </div>
-
-    <!-- Hero -->
-    <section class="hero">
-        <h1>XNESTO STORE</h1>
-        <p>أكبر متجر لألعاب PlayStation وبطاقات الهدايا والشحن الفوري</p>
-    </section>
-
-    <!-- Games Section with Pagination -->
-    <section id="games" class="section">
-        <h2 class="section-title">🎮 الألعاب المميزة 🎮</h2>
-        <div id="gamesGrid" class="games-grid"></div>
-        <div id="pagination" class="pagination"></div>
-    </section>
-
-    <!-- Gift Cards -->
-    <section id="gift" class="gift-section">
-        <h2 class="section-title">🎁 بطاقات الهدايا 🎁</h2>
-        <div id="giftGrid" class="gift-grid"></div>
-    </section>
-
-    <!-- Top Up -->
-    <section id="topup" class="section">
-        <h2 class="section-title">💰 شحن رصيد بلايستيشن 💰</h2>
-        <div id="topupGrid" class="topup-grid"></div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>XNESTO STORE</h4>
-                <p>متجر رقمي متخصص في ألعاب PlayStation</p>
-            </div>
-            <div class="footer-section">
-                <h4>تواصل معنا</h4>
-                <ul>
-                    <li><i class="fab fa-whatsapp"></i> <a href="https://wa.me/96879977100">+968 79977100</a></li>
-                    <li><i class="fab fa-instagram"></i> <a href="https://instagram.com/xnesto_">@xnesto_</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>تابعنا</h4>
-                <div class="social-links">
-                    <a href="https://instagram.com/xnesto_"><i class="fab fa-instagram"></i></a>
-                    <a href="https://wa.me/96879977100"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            </div>
+        <div class="admin-specs">
+          <label>السعر القديم (للخصم)</label>
+          <input type="number" id="oldPrice-${game.id}" value="${game.oldPrice || ''}" step="0.5" placeholder="اتركه فارغاً إذا لا يوجد خصم">
+          <label><i class="fas fa-image"></i> رابط الصورة</label>
+          <input type="text" id="image-${game.id}" value="${game.image || ''}">
+          <label>المواصفات (عربي)</label>
+          <textarea id="specsAr-${game.id}" rows="2">${game.specsAr || ''}</textarea>
+          <label>Specifications (English)</label>
+          <textarea id="specsEn-${game.id}" rows="2">${game.specsEn || ''}</textarea>
         </div>
-        <div class="copyright">
-            <p>© 2024 XNESTO STORE - جميع الحقوق محفوظة</p>
+        <div class="admin-buttons">
+          <button class="admin-save-btn" data-id="${game.id}"><i class="fas fa-save"></i> حفظ</button>
+          <button class="admin-delete-btn" data-id="${game.id}"><i class="fas fa-trash"></i> حذف</button>
         </div>
-    </footer>
+      `;
+      container.appendChild(item);
+    });
+    
+    document.querySelectorAll(".admin-save-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const id = parseInt(btn.getAttribute("data-id"));
+        const newPrice = parseFloat(document.getElementById(`price-${id}`).value);
+        const newOldPrice = parseFloat(document.getElementById(`oldPrice-${id}`).value);
+        const newImage = document.getElementById(`image-${id}`).value;
+        const newSpecsAr = document.getElementById(`specsAr-${id}`).value;
+        const newSpecsEn = document.getElementById(`specsEn-${id}`).value;
+        const game = gamesData.find(g => g.id === id);
+        if (game) {
+          if (!isNaN(newPrice)) game.priceOMR = newPrice;
+          game.oldPrice = isNaN(newOldPrice) ? null : newOldPrice;
+          if (newImage) game.image = newImage;
+          game.specsAr = newSpecsAr;
+          game.specsEn = newSpecsEn;
+          saveGamesToLocal();
+          renderAdminPanel();
+          filteredGames = [...gamesData];
+          filteredOffers = [...gamesData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR), ...giftCardsData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR)];
+          if (currentTab === "games") renderGames();
+          else if (currentTab === "offers") renderOffers();
+        }
+      });
+    });
+    
+    document.querySelectorAll(".admin-delete-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const id = parseInt(btn.getAttribute("data-id"));
+        gamesData = gamesData.filter(g => g.id !== id);
+        filteredGames = [...gamesData];
+        filteredOffers = [...gamesData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR), ...giftCardsData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR)];
+        saveGamesToLocal();
+        renderAdminPanel();
+        if (currentTab === "games") renderGames();
+        else if (currentTab === "offers") renderOffers();
+      });
+    });
+  }
 
-    <a href="https://wa.me/96879977100" class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+  function addNewGame() {
+    const nameAr = document.getElementById("newGameNameAr").value;
+    const nameEn = document.getElementById("newGameNameEn").value;
+    const version = document.getElementById("newGameVersion").value;
+    const price = parseFloat(document.getElementById("newGamePrice").value);
+    const oldPrice = parseFloat(document.getElementById("newGameOldPrice").value);
+    const image = document.getElementById("newGameImage").value;
+    const specsAr = document.getElementById("newGameSpecsAr").value;
+    const specsEn = document.getElementById("newGameSpecsEn").value;
+    
+    if (!nameAr || !nameEn || !version || isNaN(price)) {
+      alert("يرجى ملء جميع الحقول الأساسية بشكل صحيح");
+      return;
+    }
+    
+    const newGame = {
+      id: nextId++,
+      nameAr, nameEn, version,
+      priceOMR: price,
+      oldPrice: isNaN(oldPrice) ? null : oldPrice,
+      image: image || "https://via.placeholder.com/600x400?text=New+Game",
+      bgColor: "#2d4a6e",
+      specsAr: specsAr || "🏷️ مواصفات قريباً",
+      specsEn: specsEn || "📦 Specifications coming soon",
+      msgAr: `أريد ${nameAr}`,
+      msgEn: `I want ${nameEn}`
+    };
+    
+    gamesData.push(newGame);
+    filteredGames = [...gamesData];
+    filteredOffers = [...gamesData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR), ...giftCardsData.filter(g => g.oldPrice && g.oldPrice > g.priceOMR)];
+    saveGamesToLocal();
+    renderAdminPanel();
+    if (currentTab === "games") renderGames();
+    else if (currentTab === "offers") renderOffers();
+    
+    document.getElementById("newGameNameAr").value = "";
+    document.getElementById("newGameNameEn").value = "";
+    document.getElementById("newGameVersion").value = "";
+    document.getElementById("newGamePrice").value = "";
+    document.getElementById("newGameOldPrice").value = "";
+    document.getElementById("newGameImage").value = "";
+    document.getElementById("newGameSpecsAr").value = "";
+    document.getElementById("newGameSpecsEn").value = "";
+  }
 
-    <script>
-        // ========== البيانات ==========
-        let games = [
-            { id: 1, name: "God of War Ragnarök", image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300", priceUSD: 59.99, desc: "لعبة الأكشن والمغامرات الملحمية" },
-            { id: 2, name: "Spider-Man 2", image: "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=300", priceUSD: 69.99, desc: "مغامرات سبايدرمان في نيويورك" },
-            { id: 3, name: "Final Fantasy XVI", image: "https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=300", priceUSD: 79.99, desc: "لعبة الأدوار الأسطورية" },
-            { id: 4, name: "Call of Duty: MW III", image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=300", priceUSD: 69.99, desc: "أحدث أجزاء كول أوف ديوتي" },
-            { id: 5, name: "EA Sports FC 24", image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=300", priceUSD: 59.99, desc: "لعبة كرة القدم الأكثر مبيعاً" },
-            { id: 6, name: "The Last of Us Part I", image: "https://images.unsplash.com/photo-1486572788966-cfd3df1f5b42?w=300", priceUSD: 49.99, desc: "دراما البقاء على قيد الحياة" },
-            { id: 7, name: "Horizon Forbidden West", image: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1fdf?w=300", priceUSD: 49.99, desc: "مغامرات ألوي في الغرب المحرم" },
-            { id: 8, name: "Gran Turismo 7", image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=300", priceUSD: 59.99, desc: "لعبة السباقات الواقعية" },
-            { id: 9, name: "Resident Evil 4 Remake", image: "https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?w=300", priceUSD: 59.99, desc: "لعبة الرعب الكلاسيكية" },
-            { id: 10, name: "Star Wars Jedi: Survivor", image: "https://images.unsplash.com/photo-1581791059214-c32d904985b7?w=300", priceUSD: 69.99, desc: "مغامرات الجيداي" },
-            { id: 11, name: "Hogwarts Legacy", image: "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?w=300", priceUSD: 59.99, desc: "عالم هاري بوتر السحري" },
-            { id: 12, name: "Baldur's Gate 3", image: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=300", priceUSD: 69.99, desc: "لعبة الأدوار الحائزة على جوائز" },
-            { id: 13, name: "Cyberpunk 2077", image: "https://images.unsplash.com/photo-1542751110-97427bbecf20?w=300", priceUSD: 49.99, desc: "عالم مستقبلي مفتوح" },
-            { id: 14, name: "Elden Ring", image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300", priceUSD: 59.99, desc: "لعبة آر بي جي من فروم سوفت وير" },
-            { id: 15, name: "Diablo IV", image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300", priceUSD: 69.99, desc: "لعبة الأكشن والتحفير" },
-            { id: 16, name: "Assassin's Creed Mirage", image: "https://images.unsplash.com/photo-1581791059214-c32d904985b7?w=300", priceUSD: 49.99, desc: "عودة أصول أساسنز كريد" },
-            { id: 17, name: "Mortal Kombat 1", image: "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=300", priceUSD: 69.99, desc: "لعبة القتال الشهيرة" },
-            { id: 18, name: "Street Fighter 6", image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300", priceUSD: 59.99, desc: "أحدث إصدارات ستريت فايتر" },
-            { id: 19, name: "Tekken 8", image: "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=300", priceUSD: 69.99, desc: "لعبة القتال الأسطورية" },
-            { id: 20, name: "FIFA 24", image: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=300", priceUSD: 59.99, desc: "لعبة كرة القدم" },
-            { id: 21, name: "NBA 2K24", image: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?w=300", priceUSD: 59.99, desc: "لعبة كرة السلة" },
-            { id: 22, name: "WWE 2K24", image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300", priceUSD: 59.99, desc: "لعبة المصارعة" },
-            { id: 23, name: "F1 23", image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=300", priceUSD: 69.99, desc: "لعبة سباقات الفورمولا 1" },
-            { id: 24, name: "The Witcher 3", image: "https://images.unsplash.com/photo-1611996575749-79a3a250f948?w=300", priceUSD: 39.99, desc: "النسخة الكاملة مع الإضافات" }
-        ];
+  // ==================== وظائف تسجيل الدخول ====================
+  function updateUIForUser() {
+    const authDiv = document.getElementById("authButtons");
+    const welcomeMsg = document.getElementById("welcomeMsg");
+    
+    if (currentUser.type === "admin") {
+      authDiv.innerHTML = `<div class="user-badge"><i class="fas fa-crown"></i> ${currentLang === "ar" ? "مرحباً Admin" : "Welcome Admin"}</div><button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> ${currentLang === "ar" ? "خروج" : "Logout"}</button>`;
+      welcomeMsg.innerHTML = currentLang === "ar" ? "🎮 مرحباً بك أيها المدير! يمكنك تعديل الأسعار والحذف والإضافة" : "🎮 Welcome Admin! You can edit prices, delete and add games";
+      document.getElementById("logoutBtn")?.addEventListener("click", logout);
+    } else if (currentUser.type === "user") {
+      authDiv.innerHTML = `<div class="user-badge"><i class="fas fa-user"></i> ${currentLang === "ar" ? "مرحباً عميل" : "Welcome User"}</div><button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> ${currentLang === "ar" ? "خروج" : "Logout"}</button>`;
+      welcomeMsg.innerHTML = currentLang === "ar" ? "🎮 أهلاً بك! يمكنك تصفح الألعاب والطلب عبر واتساب" : "🎮 Welcome! You can browse games and order via WhatsApp";
+      document.getElementById("logoutBtn")?.addEventListener("click", logout);
+    } else {
+      authDiv.innerHTML = `<button class="login-btn" id="showLoginBtn"><i class="fas fa-user"></i> ${currentLang === "ar" ? "تسجيل دخول" : "Login"}</button>`;
+      welcomeMsg.innerHTML = currentLang === "ar" ? "🎮 xnesto - ألعاب PS4/PS5 – بطاقات شحن – عروض وتخفيضات – رصيد فوري" : "🎮 xnesto - PS4/PS5 Games – Gift Cards – Offers & Discounts – Instant Credit";
+      document.getElementById("showLoginBtn")?.addEventListener("click", () => showLoginModal());
+    }
+  }
 
-        // إضافة المزيد من الألعاب حتى 50+
-        for (let i = 25; i <= 52; i++) {
-            games.push({
-                id: i,
-                name: `لعبة مميزة ${i}`,
-                image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=300",
-                priceUSD: 49.99,
-                desc: `وصف اللعبة المميزة رقم ${i}`
-            });
-        }
+  function logout() {
+    currentUser = { type: "guest", name: "زائر" };
+    updateUIForUser();
+    document.getElementById("adminPanel").classList.remove("active");
+  }
 
-        const giftCards = [
-            { country: "أمريكا", flag: "🇺🇸", priceUSD: 50 },
-            { country: "السعودية", flag: "🇸🇦", priceUSD: 50 },
-            { country: "الإمارات", flag: "🇦🇪", priceUSD: 50 },
-            { country: "قطر", flag: "🇶🇦", priceUSD: 50 },
-            { country: "الكويت", flag: "🇰🇼", priceUSD: 50 },
-            { country: "البحرين", flag: "🇧🇭", priceUSD: 50 },
-            { country: "عمان", flag: "🇴🇲", priceUSD: 50 },
-            { country: "الهند", flag: "🇮🇳", priceUSD: 50 },
-            { country: "تركيا", flag: "🇹🇷", priceUSD: 50 },
-            { country: "إندونيسيا", flag: "🇮🇩", priceUSD: 50 }
-        ];
-        const topupAmounts = [10, 25, 50, 100];
+  function showLoginModal() { document.getElementById("loginModal").classList.add("active"); }
+  function closeLoginModal() {
+    document.getElementById("loginModal").classList.remove("active");
+    document.getElementById("loginError").innerHTML = "";
+    document.getElementById("adminPassword").value = "";
+  }
+  function handleLogin() {
+    const userType = document.getElementById("userTypeSelect").value;
+    if (userType === "admin") {
+      const password = document.getElementById("adminPassword").value;
+      if (password === ADMIN_PASSWORD) {
+        currentUser = { type: "admin", name: "Admin" };
+        updateUIForUser();
+        closeLoginModal();
+        document.getElementById("adminPanel").classList.add("active");
+        renderAdminPanel();
+        document.getElementById("addGameBtn").onclick = addNewGame;
+      } else {
+        document.getElementById("loginError").innerHTML = currentLang === "ar" ? "❌ كلمة السر غير صحيحة" : "❌ Incorrect password";
+      }
+    } else {
+      currentUser = { type: "user", name: "عميل" };
+      updateUIForUser();
+      closeLoginModal();
+    }
+  }
 
-        // ========== المتغيرات ==========
-        const exchangeRates = { USD: 1, SAR: 3.75, AED: 3.67, QAR: 3.64, KWD: 0.308, BHD: 0.376, OMR: 0.385, INR: 83.5, TRY: 32.5, IDR: 15700 };
-        const currencySymbols = { USD: '$', SAR: '﷼', AED: 'د.إ', QAR: '﷼', KWD: 'د.ك', BHD: 'د.ب', OMR: '﷼', INR: '₹', TRY: '₺', IDR: 'Rp' };
-        
-        let currentCurrency = 'USD';
-        let currentUser = null;
-        let isAdminLoggedIn = false;
-        let currentPage = 1;
-        const gamesPerPage = 12;
+  function initEvents() {
+    document.getElementById("showLoginBtn")?.addEventListener("click", showLoginModal);
+    document.getElementById("closeLoginBtn")?.addEventListener("click", closeLoginModal);
+    document.getElementById("loginSubmitBtn")?.addEventListener("click", handleLogin);
+    document.getElementById("closeAdminBtn")?.addEventListener("click", () => { document.getElementById("adminPanel").classList.remove("active"); });
+    document.getElementById("userTypeSelect")?.addEventListener("change", (e) => {
+      document.getElementById("adminPasswordField").style.display = e.target.value === "admin" ? "block" : "none";
+    });
+    
+    document.querySelectorAll(".lang-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        currentLang = btn.getAttribute("data-lang");
+        document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        document.body.dir = currentLang === "ar" ? "rtl" : "ltr";
+        updateUIForUser();
+        if (currentTab === "games") renderGames();
+        else if (currentTab === "giftcards") renderGiftCards();
+        else renderOffers();
+        updateTexts();
+      });
+    });
+    
+    document.getElementById("currencySelect")?.addEventListener("change", (e) => {
+      currentCurrency = e.target.value;
+      if (currentTab === "games") renderGames();
+      else if (currentTab === "giftcards") renderGiftCards();
+      else renderOffers();
+    });
+    
+    document.getElementById("searchInput")?.addEventListener("input", (e) => {
+      searchQuery = e.target.value;
+      updateSearchResults();
+    });
+    
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => switchTab(btn.getAttribute("data-tab")));
+    });
+  }
 
-        // ========== الوظائف ==========
-        function formatPrice(priceUSD) {
-            return `${currencySymbols[currentCurrency]} ${(priceUSD * exchangeRates[currentCurrency]).toFixed(2)}`;
-        }
+  function updateTexts() {
+    document.getElementById("currencyLabel").innerText = currentLang === "ar" ? "العملة:" : "Currency:";
+    document.getElementById("loginBtnText").innerText = currentLang === "ar" ? "تسجيل دخول" : "Login";
+  }
 
-        function changeCurrency(currency) {
-            currentCurrency = currency;
-            loadGames();
-            loadGiftCards();
-            loadTopUp();
-        }
-
-        // تحميل الألعاب مع صفحات
-        function loadGames() {
-            const start = (currentPage - 1) * gamesPerPage;
-            const end = start + gamesPerPage;
-            const currentGames = games.slice(start, end);
-            
-            const grid = document.getElementById('gamesGrid');
-            grid.innerHTML = currentGames.map(game => `
-                <div class="game-card">
-                    <div class="game-image"><img src="${game.image}" alt="${game.name}" onerror="this.src='https://via.placeholder.com/300x170?text=Game'"></div>
-                    <div class="game-info">
-                        <h3>${game.name}</h3>
-                        <div class="game-desc">${game.desc}</div>
-                        <div class="game-price">${formatPrice(game.priceUSD)}</div>
-                        <button class="buy-btn" onclick="buyProduct('game', ${game.id})"><i class="fab fa-whatsapp"></i> شراء عبر واتساب</button>
-                    </div>
-                </div>
-            `).join('');
-            
-            // أزرار الترقيم
-            const totalPages = Math.ceil(games.length / gamesPerPage);
-            const paginationDiv = document.getElementById('pagination');
-            let pagesHtml = '';
-            for (let i = 1; i <= totalPages; i++) {
-                pagesHtml += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
-            }
-            paginationDiv.innerHTML = pagesHtml;
-        }
-
-        function goToPage(page) {
-            currentPage = page;
-            loadGames();
-            document.getElementById('games').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function loadGiftCards() {
-            const grid = document.getElementById('giftGrid');
-            grid.innerHTML = giftCards.map(card => `
-                <div class="gift-card" onclick="buyProduct('gift', '${card.country}')">
-                    <i class="fas fa-gift"></i>
-                    <h3>${card.flag} بطاقة ${card.country}</h3>
-                    <div class="game-price">${formatPrice(card.priceUSD)}</div>
-                    <button class="buy-btn" style="margin-top:8px;"><i class="fab fa-whatsapp"></i> شراء</button>
-                </div>
-            `).join('');
-        }
-
-        function loadTopUp() {
-            const grid = document.getElementById('topupGrid');
-            grid.innerHTML = topupAmounts.map(amount => `
-                <div class="topup-card" onclick="buyProduct('topup', ${amount})">
-                    <i class="fas fa-coins"></i>
-                    <h3>PSN $${amount}</h3>
-                    <div class="game-price">${formatPrice(amount)}</div>
-                    <button class="buy-btn" style="margin-top:8px;"><i class="fab fa-whatsapp"></i> شحن</button>
-                </div>
-            `).join('');
-        }
-
-        // شراء المنتج مع تفاصيل كاملة
-        function buyProduct(type, id) {
-            if (!currentUser) {
-                alert('الرجاء تسجيل الدخول أولاً');
-                openUserModal();
-                return;
-            }
-            
-            let productName = '', priceUSD = 0, details = '';
-            if (type === 'game') {
-                const game = games.find(g => g.id === id);
-                productName = game.name;
-                priceUSD = game.priceUSD;
-                details = `🎮 اسم اللعبة: ${game.name}\n📝 الوصف: ${game.desc}`;
-            } else if (type === 'gift') {
-                productName = `بطاقة ${id}`;
-                priceUSD = 50;
-                details = `🎁 بطاقة هدايا ${id}`;
-            } else {
-                productName = `شحن رصيد PSN $${id}`;
-                priceUSD = id;
-                details = `💰 شحن رصيد بلايستيشن بقيمة $${id}`;
-            }
-            
-            const convertedPrice = priceUSD * exchangeRates[currentCurrency];
-            const message = `
-🛒 طلب شراء:
-━━━━━━━━━━━━━━━━
-${details}
-💰 السعر: ${currencySymbols[currentCurrency]} ${convertedPrice.toFixed(2)} (${currentCurrency})
-━━━━━━━━━━━━━━━━
-👤 معلومات العميل:
-📧 البريد: ${currentUser.email}
-👤 الاسم: ${currentUser.name}
-📅 التاريخ: ${new Date().toLocaleString('ar-SA')}
-━━━━━━━━━━━━━━━━
-الرجاء تأكيد الطلب وإرسال طريقة الدفع.
-            `;
-            window.open(`https://wa.me/96879977100?text=${encodeURIComponent(message)}`, '_blank');
-        }
-
-        // ========== وظائف الأدمن ==========
-        function openAdminModal() { document.getElementById('adminModal').style.display = 'flex'; }
-        function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
-        
-        function loginAdmin() {
-            const username = document.getElementById('adminUsername').value;
-            const password = document.getElementById('adminPassword').value;
-            if (username === 'admin' && password === 'admin123') {
-                isAdminLoggedIn = true;
-                closeAdminModal();
-                document.getElementById('adminPanel').classList.add('active');
-                loadAdminTable();
-                alert('تم تسجيل الدخول كأدمن بنجاح');
-            } else {
-                alert('اسم المستخدم أو كلمة المرور غير صحيحة');
-            }
-        }
-        
-        function logoutAdmin() {
-            isAdminLoggedIn = false;
-            document.getElementById('adminPanel').classList.remove('active');
-            alert('تم تسجيل الخروج من لوحة الأدمن');
-        }
-        
-        function loadAdminTable() {
-            const tbody = document.getElementById('adminTableBody');
-            tbody.innerHTML = games.map(game => `
-                <tr>
-                    <td><img src="${game.image}" width="40" height="40" style="border-radius:5px; object-fit:cover;"></td>
-                    <td>${game.name}</td>
-                    <td>$${game.priceUSD}</td>
-                    <td>
-                        <button class="edit-btn" onclick="editProduct(${game.id})">تعديل</button>
-                        <button class="delete-btn" onclick="deleteProduct(${game.id})">حذف</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-        
-        function openProductForm(productId = null) {
-            document.getElementById('productFormModal').style.display = 'flex';
-            if (productId) {
-                const game = games.find(g => g.id === productId);
-                if (game) {
-                    document.getElementById('formTitle').innerText = 'تعديل منتج';
-                    document.getElementById('productName').value = game.name;
-                    document.getElementById('productImage').value = game.image;
-                    document.getElementById('productPriceUSD').value = game.priceUSD;
-                    document.getElementById('productDesc').value = game.desc;
-                    window.currentEditId = productId;
-                }
-            } else {
-                document.getElementById('formTitle').innerText = 'إضافة منتج جديد';
-                document.getElementById('productName').value = '';
-                document.getElementById('productImage').value = '';
-                document.getElementById('productPriceUSD').value = '';
-                document.getElementById('productDesc').value = '';
-                window.currentEditId = null;
-            }
-        }
-        
-        function closeProductForm() { document.getElementById('productFormModal').style.display = 'none'; }
-        
-        function saveProduct() {
-            const productData = {
-                id: window.currentEditId || Date.now(),
-                name: document.getElementById('productName').value,
-                image: document.getElementById('productImage').value,
-                priceUSD: parseFloat(document.getElementById('productPriceUSD').value),
-                desc: document.getElementById('productDesc').value
-            };
-            if (window.currentEditId) {
-                const index = games.findIndex(g => g.id === window.currentEditId);
-                if (index !== -1) games[index] = productData;
-            } else {
-                games.push(productData);
-            }
-            closeProductForm();
-            loadGames();
-            if (isAdminLoggedIn) loadAdminTable();
-            alert('تم حفظ المنتج بنجاح');
-        }
-        
-        function editProduct(id) { openProductForm(id); }
-        
-        function deleteProduct(id) {
-            if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
-                games = games.filter(g => g.id !== id);
-                if (currentPage > Math.ceil(games.length / gamesPerPage)) currentPage = 1;
-                loadGames();
-                if (isAdminLoggedIn) loadAdminTable();
-                alert('تم حذف المنتج بنجاح');
-            }
-        }
-        
-        // ========== وظائف العميل ==========
-        function openUserModal() { document.getElementById('userModal').style.display = 'flex'; }
-        function closeUserModal() { document.getElementById('userModal').style.display = 'none'; }
-        
-        function loginUser() {
-            const email = document.getElementById('userEmail').value;
-            const name = document.getElementById('userName').value;
-            if (!email || !name) { alert('الرجاء إدخال البريد الإلكتروني والاسم'); return; }
-            currentUser = { email, name };
-            localStorage.setItem('xnesto_user', JSON.stringify(currentUser));
-            document.getElementById('userSection').innerHTML = `
-                <div class="user-info">
-                    <i class="fas fa-user-check"></i>
-                    <span>${name.split(' ')[0]}</span>
-                    <div class="logout-btn" onclick="logoutUser()">خروج</div>
-                </div>
-            `;
-            closeUserModal();
-            alert(`مرحباً ${name}! تم تسجيل الدخول بنجاح`);
-        }
-        
-        function loadUserFromStorage() {
-            const saved = localStorage.getItem('xnesto_user');
-            if (saved) {
-                currentUser = JSON.parse(saved);
-                document.getElementById('userSection').innerHTML = `
-                    <div class="user-info">
-                        <i class="fas fa-user-check"></i>
-                        <span>${currentUser.name.split(' ')[0]}</span>
-                        <div class="logout-btn" onclick="logoutUser()">خروج</div>
-                    </div>
-                `;
-            }
-        }
-        
-        function logoutUser() {
-            currentUser = null;
-            localStorage.removeItem('xnesto_user');
-            document.getElementById('userSection').innerHTML = `<div class="user-btn" onclick="openUserModal()"><i class="fas fa-user"></i><span>تسجيل دخول</span></div>`;
-            alert('تم تسجيل الخروج بنجاح');
-        }
-        
-        function switchLanguage(lang) {
-            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-        }
-        
-        // تحميل البيانات عند بدء التشغيل
-        document.addEventListener('DOMContentLoaded', () => {
-            loadGames();
-            loadGiftCards();
-            loadTopUp();
-            loadUserFromStorage();
-        });
-    </script>
+  function init() {
+    initEvents();
+    updateUIForUser();
+    switchTab("games");
+    updateTexts();
+  }
+  
+  init();
+</script>
 </body>
 </html>

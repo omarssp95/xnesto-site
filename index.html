@@ -558,6 +558,246 @@
       .product-image { height: 160px; } 
       .products-grid { grid-template-columns: 1fr; }
     }
+
+    /* ── CHECKOUT MODAL ── */
+    .checkout-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 3000;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+    .checkout-modal.active { display: block; }
+    .checkout-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      padding: 1rem 0 2rem;
+    }
+    .checkout-left {
+      flex: 1.5;
+      min-width: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .checkout-right {
+      flex: 1;
+      min-width: 260px;
+    }
+    .checkout-section {
+      background: #11152b;
+      border-radius: 1rem;
+      border: 1px solid rgba(255,170,68,0.25);
+      padding: 1rem 1.2rem;
+    }
+    .checkout-section h3 {
+      font-size: 0.9rem;
+      color: #ffaa66;
+      margin-bottom: 0.8rem;
+      text-align: right;
+      border-bottom: 1px solid rgba(255,170,68,0.2);
+      padding-bottom: 0.5rem;
+    }
+    .co-input {
+      width: 100%;
+      background: #1e1e3a;
+      border: 1px solid rgba(255,170,68,0.3);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: white;
+      font-size: 0.85rem;
+      font-family: 'Cairo', sans-serif;
+      margin-bottom: 10px;
+      outline: none;
+      transition: 0.2s;
+      text-align: right;
+    }
+    .co-input:focus { border-color: #ffaa44; }
+    .co-input::placeholder { color: #6f7bb3; }
+    .co-row {
+      display: flex;
+      gap: 8px;
+    }
+    .co-row .co-input { margin-bottom: 0; }
+    .phone-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .phone-flag {
+      background: #1e1e3a;
+      border: 1px solid rgba(255,170,68,0.3);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #ffaa66;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+    .phone-row .co-input { margin-bottom: 0; flex: 1; }
+    .coupon-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .coupon-row .co-input { margin-bottom: 0; flex: 1; }
+    .coupon-btn {
+      background: #ffaa44;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      color: #0a0a1a;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+    .payment-option {
+      background: #1e1e3a;
+      border: 2px solid rgba(255,170,68,0.2);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-bottom: 8px;
+    }
+    .payment-option.selected { border-color: #25D366; background: rgba(37,211,102,0.08); }
+    .payment-option input[type=radio] { accent-color: #25D366; width: 18px; height: 18px; }
+    .payment-option-info { flex: 1; text-align: right; }
+    .payment-option-info strong { display: block; font-size: 0.85rem; color: white; }
+    .payment-option-info span { font-size: 0.72rem; color: #6f7bb3; }
+    .payment-icon { font-size: 1.8rem; }
+
+    /* ORDER SUMMARY */
+    .order-summary {
+      background: #11152b;
+      border-radius: 1rem;
+      border: 1px solid rgba(255,170,68,0.25);
+      padding: 1rem 1.2rem;
+      position: sticky;
+      top: 10px;
+    }
+    .order-summary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 0.8rem;
+      color: #ffaa66;
+      border-bottom: 1px solid rgba(255,170,68,0.2);
+      padding-bottom: 0.5rem;
+    }
+    .order-product-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .order-product-img {
+      width: 55px;
+      height: 55px;
+      border-radius: 8px;
+      background: #1e1e3a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .order-product-img img { width: 100%; height: 100%; object-fit: cover; }
+    .order-product-info { flex: 1; text-align: right; }
+    .order-product-info .pname { font-size: 0.8rem; font-weight: 700; color: white; }
+    .order-product-info .pcat { font-size: 0.65rem; color: #6f7bb3; }
+    .order-qty {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #1e1e3a;
+      border-radius: 20px;
+      padding: 3px 8px;
+    }
+    .qty-btn {
+      background: none;
+      border: none;
+      color: #ffaa44;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 0 4px;
+    }
+    .qty-num { font-size: 0.8rem; color: white; min-width: 16px; text-align: center; }
+    .order-price { font-size: 0.9rem; font-weight: 700; color: #ffaa44; white-space: nowrap; }
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      margin-bottom: 6px;
+      color: #b9c5f0;
+    }
+    .summary-line.total {
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      border-top: 1px solid rgba(255,170,68,0.2);
+      margin-top: 8px;
+      padding-top: 8px;
+    }
+    .summary-line .saved { color: #00cc88; }
+    .summary-line .label { color: #6f7bb3; }
+    .checkout-submit-btn {
+      background: #25D366;
+      border: none;
+      width: 100%;
+      padding: 12px;
+      border-radius: 40px;
+      color: white;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s;
+    }
+    .checkout-submit-btn:hover { background: #1da851; }
+    .checkout-close-btn {
+      background: transparent;
+      border: 1px solid rgba(255,170,68,0.3);
+      width: 100%;
+      padding: 8px;
+      border-radius: 40px;
+      color: #ffaa66;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .warning-box {
+      background: rgba(255,170,0,0.1);
+      border: 1px solid rgba(255,170,0,0.4);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.75rem;
+      color: #ffcc77;
+      margin-bottom: 8px;
+    }
   </style>
 </head>
 <body dir="rtl">
@@ -637,6 +877,115 @@
     <i class="fab fa-whatsapp"></i> <span id="whatsappText">+96879977100</span>
   </div>
   <p>© 2025 xnesto - جميع الحقوق محفوظة</p>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div id="checkoutModal" class="checkout-modal">
+  <div class="checkout-wrap">
+    <!-- LEFT: FORM -->
+    <div class="checkout-left">
+
+      <!-- كوبون -->
+      <div class="checkout-section">
+        <h3><i class="fas fa-tag"></i> إضافة كوبون التخفيض</h3>
+        <div class="coupon-row">
+          <input class="co-input" id="couponInput" placeholder="أدخل كود الكوبون" type="text">
+          <button class="coupon-btn" onclick="applyCoupon()">تطبيق</button>
+        </div>
+        <div id="couponMsg" style="font-size:0.75rem;color:#00cc88;text-align:right;display:none;"></div>
+      </div>
+
+      <!-- تفاصيل الاتصال -->
+      <div class="checkout-section">
+        <h3><i class="fas fa-user"></i> تفاصيل الاتصال</h3>
+        <input class="co-input" id="coName" placeholder="الاسم الكامل" type="text">
+        <div class="phone-row">
+          <div class="phone-flag">🇴🇲 +968</div>
+          <input class="co-input" id="coPhone" placeholder="الهاتف" type="tel">
+        </div>
+        <input class="co-input" id="coEmail" placeholder="البريد الإلكتروني (اختياري)" type="email">
+      </div>
+
+      <!-- ملاحظة الطلب -->
+      <div class="checkout-section">
+        <h3><i class="fas fa-sticky-note"></i> ملاحظة الطلب</h3>
+        <textarea class="co-input" id="coNote" rows="3" placeholder="اكتب ملاحظة الطلب - (الوقت - التاريخ)" style="border-radius:8px; resize:none;"></textarea>
+      </div>
+
+      <!-- طريقة الدفع -->
+      <div class="checkout-section">
+        <h3><i class="fas fa-credit-card"></i> طريقة الدفع</h3>
+        <div class="warning-box">⚠️ يرجى اختيار طريقة الدفع لإكمال طلبك</div>
+        <label class="payment-option selected" id="payWa">
+          <input type="radio" name="payMethod" value="whatsapp" checked onchange="selectPay(this)">
+          <div class="payment-option-info">
+            <strong>واتساب</strong>
+            <span>سيتم تحويلك إلى رقم واتس اب الخاص بالبائع لتكملة عملية الشراء.</span>
+          </div>
+          <div class="payment-icon">💬</div>
+        </label>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: ORDER SUMMARY -->
+    <div class="checkout-right">
+      <div class="order-summary">
+        <div class="order-summary-header">
+          <span id="coStoreName">xnesto 🎮</span>
+          <span>ملخص الطلب</span>
+        </div>
+
+        <!-- المنتج -->
+        <div class="order-product-row">
+          <div class="order-price" id="coProductPrice"></div>
+          <div style="flex:1;">
+            <div class="order-qty">
+              <button class="qty-btn" onclick="changeQty(-1)">−</button>
+              <span class="qty-num" id="coQty">1</span>
+              <button class="qty-btn" onclick="changeQty(1)">+</button>
+            </div>
+          </div>
+          <div class="order-product-info">
+            <div class="pname" id="coProductName"></div>
+            <div class="pcat" id="coProductCat"></div>
+          </div>
+          <div class="order-product-img" id="coProductImg"></div>
+        </div>
+
+        <hr style="border-color:rgba(255,170,68,0.15);margin:10px 0;">
+
+        <!-- الأسعار -->
+        <div class="summary-line">
+          <span id="coSubtotal"></span>
+          <span class="label">الاجمالي الفرعي</span>
+        </div>
+        <div class="summary-line" id="coSavingRow" style="display:none;">
+          <span class="saved" id="coSaving"></span>
+          <span class="label">المبلغ الموفر</span>
+        </div>
+        <div class="summary-line">
+          <span>0.00 ر.ع</span>
+          <span class="label">الضريبة</span>
+        </div>
+        <div class="summary-line">
+          <span style="color:#ffaa44;">مجاني</span>
+          <span class="label">الشحن</span>
+        </div>
+        <div class="summary-line total">
+          <span id="coTotal"></span>
+          <span>المجموع الكلي</span>
+        </div>
+
+        <button class="checkout-submit-btn" onclick="submitOrder()">
+          <i class="fab fa-whatsapp"></i> إتمام الطلب عبر واتساب
+        </button>
+        <button class="checkout-close-btn" onclick="closeCheckout()">
+          <i class="fas fa-arrow-right"></i> العودة للمتجر
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div id="termsModal" class="terms-modal">
@@ -778,6 +1127,136 @@
     pendingOrder = { productName, waLink };
     document.getElementById("termsModal").style.display = "flex";
   }
+
+  // ── CHECKOUT ──
+  let checkoutProduct = null;
+  let checkoutQty = 1;
+  let couponDiscount = 0;
+
+  function openCheckout(productId) {
+    const p = products.find(x => x.id === productId);
+    if (!p) return;
+    checkoutProduct = p;
+    checkoutQty = 1;
+    couponDiscount = 0;
+
+    const name = currentLang === "ar" ? p.nameAr : p.nameEn;
+    const sym = currencySymbols[currentCurrency];
+
+    document.getElementById("coProductName").textContent = name;
+    document.getElementById("coProductCat").textContent = categoryNames[p.category] || p.category;
+    document.getElementById("coQty").textContent = 1;
+
+    // صورة المنتج
+    const imgDiv = document.getElementById("coProductImg");
+    if (p.image && p.image.trim()) {
+      imgDiv.innerHTML = `<img src="${p.image}" onerror="this.style.display='none';">`;
+    } else {
+      imgDiv.innerHTML = p.icon || "🎮";
+    }
+
+    document.getElementById("couponInput").value = "";
+    document.getElementById("couponMsg").style.display = "none";
+    document.getElementById("coName").value = "";
+    document.getElementById("coPhone").value = "";
+    document.getElementById("coEmail").value = "";
+    document.getElementById("coNote").value = "";
+
+    updateCheckoutPrices();
+    document.getElementById("checkoutModal").classList.add("active");
+  }
+
+  function updateCheckoutPrices() {
+    if (!checkoutProduct) return;
+    const p = checkoutProduct;
+    const sym = currencySymbols[currentCurrency];
+    const unitPrice = parseFloat(convertPrice(p.priceOMR));
+    const total = (unitPrice * checkoutQty * (1 - couponDiscount / 100)).toFixed(2);
+    const subtotal = (unitPrice * checkoutQty).toFixed(2);
+    const hasDisc = p.oldPrice && p.oldPrice > p.priceOMR;
+    const saving = hasDisc ? ((parseFloat(convertPrice(p.oldPrice)) - unitPrice) * checkoutQty + (unitPrice * checkoutQty * couponDiscount / 100)).toFixed(2) : (couponDiscount > 0 ? (unitPrice * checkoutQty * couponDiscount / 100).toFixed(2) : null);
+
+    document.getElementById("coProductPrice").textContent = `${(unitPrice * checkoutQty).toFixed(2)} ${sym}`;
+    document.getElementById("coSubtotal").textContent = `${subtotal} ${sym}`;
+    document.getElementById("coTotal").textContent = `${total} ${sym}`;
+
+    const savingRow = document.getElementById("coSavingRow");
+    if (saving && parseFloat(saving) > 0) {
+      savingRow.style.display = "flex";
+      document.getElementById("coSaving").textContent = `${saving} ${sym}`;
+    } else {
+      savingRow.style.display = "none";
+    }
+  }
+
+  function changeQty(delta) {
+    checkoutQty = Math.max(1, checkoutQty + delta);
+    document.getElementById("coQty").textContent = checkoutQty;
+    updateCheckoutPrices();
+  }
+
+  function applyCoupon() {
+    const code = document.getElementById("couponInput").value.trim().toUpperCase();
+    const msg = document.getElementById("couponMsg");
+    // كوبونات تجريبية
+    const coupons = { "XNESTO10": 10, "SAVE20": 20, "VIP15": 15 };
+    if (coupons[code]) {
+      couponDiscount = coupons[code];
+      msg.textContent = `✅ تم تطبيق كوبون خصم ${couponDiscount}%`;
+      msg.style.color = "#00cc88";
+      msg.style.display = "block";
+      updateCheckoutPrices();
+    } else {
+      msg.textContent = "❌ كوبون غير صحيح";
+      msg.style.color = "#ff6666";
+      msg.style.display = "block";
+      couponDiscount = 0;
+      updateCheckoutPrices();
+    }
+  }
+
+  function selectPay(radio) {
+    document.querySelectorAll(".payment-option").forEach(el => el.classList.remove("selected"));
+    radio.closest(".payment-option").classList.add("selected");
+  }
+
+  function submitOrder() {
+    const name = document.getElementById("coName").value.trim();
+    const phone = document.getElementById("coPhone").value.trim();
+    if (!name) { alert("يرجى إدخال الاسم الكامل"); return; }
+    if (!phone) { alert("يرجى إدخال رقم الهاتف"); return; }
+
+    const p = checkoutProduct;
+    const sym = currencySymbols[currentCurrency];
+    const productName = currentLang === "ar" ? p.nameAr : p.nameEn;
+    const unitPrice = parseFloat(convertPrice(p.priceOMR));
+    const total = (unitPrice * checkoutQty * (1 - couponDiscount / 100)).toFixed(2);
+    const note = document.getElementById("coNote").value.trim();
+    const email = document.getElementById("coEmail").value.trim();
+
+    let msg = `🛒 *طلب جديد من xnesto*\n\n`;
+    msg += `━━━━━━━━━━━━━━━━━━━━\n`;
+    msg += `👤 *الاسم:* ${name}\n`;
+    msg += `📞 *الهاتف:* +968${phone}\n`;
+    if (email) msg += `📧 *الإيميل:* ${email}\n`;
+    msg += `━━━━━━━━━━━━━━━━━━━━\n`;
+    msg += `🎮 *المنتج:* ${productName}\n`;
+    msg += `🔢 *الكمية:* ${checkoutQty}\n`;
+    msg += `💰 *السعر الكلي:* ${total} ${sym}\n`;
+    if (couponDiscount > 0) msg += `🏷️ *كوبون خصم:* ${couponDiscount}%\n`;
+    if (note) msg += `📝 *ملاحظة:* ${note}\n`;
+    msg += `━━━━━━━━━━━━━━━━━━━━\n`;
+    msg += `💳 *طريقة الدفع:* واتساب`;
+
+    const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+    window.open(waLink, "_blank");
+    closeCheckout();
+  }
+
+  function closeCheckout() {
+    document.getElementById("checkoutModal").classList.remove("active");
+    checkoutProduct = null;
+  }
   function closeTermsModal() {
     document.getElementById("termsModal").style.display = "none";
     pendingOrder = null;
@@ -889,9 +1368,7 @@
           ${hasDiscount ? `<span class="old-price">${oldPrice} ${sym}</span>` : ''}
           <span class="price">${price} ${sym}</span>
         </div>
-        <div class="btn-wa" onclick="showTermsModal('${name.replace(/'/g, "\\'")}', '${waLink}')">
-          <i class="fab fa-whatsapp"></i> ${currentLang === "ar" ? "اطلب الآن" : "Order Now"}
-        </div>
+        <div class="btn-wa" onclick="openCheckout(${p.id})"><i class="fab fa-whatsapp"></i> ${currentLang === "ar" ? "اطلب الآن" : "Order Now"}</div>
       </div>
     `;
     
@@ -1170,6 +1647,7 @@
   document.getElementById("whatsappText").innerHTML = `<a href="https://wa.me/${WA_NUMBER}" target="_blank" style="color:#ffaa66;text-decoration:none;">+${WA_NUMBER}</a>`;
   window.showTermsModal = showTermsModal;
   window.deleteCategory = deleteCategory;
+  window.openCheckout = openCheckout;
 </script>
 </body>
 </html>

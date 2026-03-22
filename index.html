@@ -137,6 +137,28 @@
       min-width: 150px;
     }
     .admin-add-body textarea { min-width: 200px; border-radius: 15px; }
+    
+    /* قسم رفع الصورة */
+    .image-upload-area {
+      background: #1e1e3a;
+      border: 2px dashed #ffaa44;
+      border-radius: 1rem;
+      padding: 0.8rem;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+      flex: 1;
+      min-width: 150px;
+    }
+    .image-upload-area:hover { background: #2d2f6e; }
+    .image-upload-area input { display: none; }
+    .image-preview {
+      margin-top: 8px;
+      max-width: 100%;
+      max-height: 80px;
+      border-radius: 8px;
+      display: none;
+    }
     .btn-add-product {
       background: #00cc88;
       border: none;
@@ -370,6 +392,16 @@
       color: white;
     }
     .edit-price-row input { width: 90px; flex: none; }
+    .edit-image-upload {
+      background: #1e1e3a;
+      border: 1px dashed #ffaa44;
+      border-radius: 30px;
+      padding: 6px 10px;
+      text-align: center;
+      cursor: pointer;
+      flex: 1;
+    }
+    .edit-image-upload input { display: none; }
     .discount-buttons {
       display: flex;
       gap: 6px;
@@ -562,7 +594,14 @@
     <input type="text" id="newNameEn" placeholder="Name in English">
     <select id="newCategorySelect"></select>
     <input type="number" id="newPrice" step="0.5" placeholder="السعر (ر.ع)">
-    <input type="text" id="newImage" placeholder="رابط الصورة (URL)">
+    
+    <!-- قسم رفع الصورة -->
+    <div class="image-upload-area" id="imageUploadArea">
+      <i class="fas fa-cloud-upload-alt"></i> اختر صورة من جهازك
+      <input type="file" id="newImageFile" accept="image/*">
+      <img id="newImagePreview" class="image-preview" alt="معاينة الصورة">
+    </div>
+    
     <textarea id="newDetails" rows="2" placeholder="تفاصيل المنتج (وصف، مواصفات...)"></textarea>
     <input type="number" id="newDiscount" step="1" placeholder="نسبة الخصم %">
     <input type="datetime-local" id="newTimer">
@@ -637,6 +676,8 @@
   let currentCategory = "games";
   let searchQuery = "";
   let pendingOrder = null;
+  let currentImageData = null; // لتخزين الصورة المرفوعة
+  let currentEditImageData = null; // لتخزين صورة التعديل
   const ITEMS_PER_PAGE = 6;
   const ADMIN_PASSWORD = "ssp1995";
   const WA_NUMBER = "96879977100";
@@ -810,6 +851,16 @@
     document.getElementById("newCategoryName").value = "";
   }
   
+  // دالة لرفع الصورة وتحويلها إلى Base64
+  function handleImageUpload(file, callback) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      callback(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+  
   function buildProductCard(p) {
     const card = document.createElement("div");
     card.className = "product-card";
@@ -870,8 +921,11 @@
           <span>ر.ع</span>
         </div>
         <div class="edit-image-row">
-          <span>🖼️ رابط الصورة:</span>
-          <input type="text" id="edit-image-${p.id}" value="${p.image || ''}" placeholder="https://...">
+          <span>🖼️ تغيير الصورة:</span>
+          <div class="edit-image-upload" id="edit-upload-${p.id}">
+            <i class="fas fa-cloud-upload-alt"></i> اختر صورة
+            <input type="file" id="edit-image-file-${p.id}" accept="image/*">
+          </div>
         </div>
         <div class="discount-buttons">
           <button data-discount="30" data-id="${p.id}">30%</button>
@@ -892,6 +946,20 @@
         <button class="delete-product-btn" data-id="${p.id}"><i class="fas fa-trash"></i> حذف المنتج</button>
       `;
       card.appendChild(editSection);
+      
+      // رفع الصورة للتعديل
+      const fileInput = document.getElementById(`edit-image-file-${p.id}`);
+      if (fileInput) {
+        fileInput.addEventListener("change", (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            handleImageUpload(file, (imageData) => {
+              p.tempImage = imageData;
+              alert("تم اختيار الصورة، اضغط حفظ لتطبيقها");
+            });
+          }
+        });
+      }
       
       editSection.querySelectorAll(".discount-buttons button").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -916,12 +984,14 @@
       
       editSection.querySelector(".save-edit-btn")?.addEventListener("click", () => {
         const newPrice = parseFloat(document.getElementById(`edit-price-${p.id}`).value);
-        const newImage = document.getElementById(`edit-image-${p.id}`).value;
         const customDiscount = parseFloat(document.getElementById(`custom-discount-${p.id}`).value);
         const newTimer = document.getElementById(`edit-timer-${p.id}`).value || null;
         if (!isNaN(newPrice)) {
           p.priceOMR = newPrice;
-          if (newImage !== undefined) p.image = newImage;
+          if (p.tempImage) {
+            p.image = p.tempImage;
+            delete p.tempImage;
+          }
           if (!isNaN(customDiscount) && customDiscount > 0) p.oldPrice = newPrice / (1 - customDiscount / 100);
           else if (customDiscount === 0) p.oldPrice = null;
           p.timer = newTimer;
@@ -971,15 +1041,16 @@
     const nameEn = document.getElementById("newNameEn").value;
     const category = document.getElementById("newCategorySelect").value;
     const price = parseFloat(document.getElementById("newPrice").value);
-    const image = document.getElementById("newImage").value;
     const details = document.getElementById("newDetails").value;
     const discount = parseFloat(document.getElementById("newDiscount").value);
     const timer = document.getElementById("newTimer").value || null;
+    const image = currentImageData || "";
+    
     if (!nameAr || !nameEn || isNaN(price)) { alert("يرجى ملء الحقول الأساسية"); return; }
     const newProduct = {
       id: nextId++, nameAr, nameEn, category, priceOMR: price,
       oldPrice: (!isNaN(discount) && discount > 0) ? price / (1 - discount / 100) : null,
-      image: image || "",
+      image: image,
       detailsAr: details, detailsEn: details, timer,
       msgAr: `أريد ${nameAr}`, msgEn: `I want ${nameEn}`,
       icon: category === "giftcards" ? "💳" : "🎮"
@@ -987,13 +1058,17 @@
     products.push(newProduct);
     saveToLocal();
     renderProducts();
+    
+    // reset form
     document.getElementById("newNameAr").value = "";
     document.getElementById("newNameEn").value = "";
     document.getElementById("newPrice").value = "";
-    document.getElementById("newImage").value = "";
     document.getElementById("newDetails").value = "";
     document.getElementById("newDiscount").value = "";
     document.getElementById("newTimer").value = "";
+    currentImageData = null;
+    document.getElementById("newImagePreview").style.display = "none";
+    document.getElementById("newImagePreview").src = "";
   }
   
   function updateUIForUser() {
@@ -1046,6 +1121,23 @@
     document.getElementById("addCategoryBtn")?.addEventListener("click", addNewCategory);
     document.getElementById("acceptTermsBtn")?.addEventListener("click", acceptTerms);
     document.getElementById("declineTermsBtn")?.addEventListener("click", closeTermsModal);
+    
+    // رفع الصورة
+    const uploadArea = document.getElementById("imageUploadArea");
+    const fileInput = document.getElementById("newImageFile");
+    const preview = document.getElementById("newImagePreview");
+    
+    uploadArea.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        handleImageUpload(file, (imageData) => {
+          currentImageData = imageData;
+          preview.src = imageData;
+          preview.style.display = "block";
+        });
+      }
+    });
   }
   
   const loginModalHtml = `

@@ -713,7 +713,8 @@
     { id: 24, nameAr: "بطاقة شحن كويتي", nameEn: "Kuwait Gift Card", category: "giftcards", priceOMR: 6, oldPrice: 7, image: "", detailsAr: "الفئات: 5د.ك | 10د.ك | 20د.ك", detailsEn: "Values: 5 KWD | 10 KWD | 20 KWD", timer: null, msgAr: "أريد بطاقة شحن كويتي", msgEn: "I want Kuwait Gift Card", icon: "🇰🇼" },
     { id: 25, nameAr: "بطاقة شحن بحريني", nameEn: "Bahrain Gift Card", category: "giftcards", priceOMR: 5.5, oldPrice: 6.5, image: "", detailsAr: "الفئات: 5د.ب | 10د.ب | 20د.ب", detailsEn: "Values: 5 BHD | 10 BHD | 20 BHD", timer: null, msgAr: "أريد بطاقة شحن بحريني", msgEn: "I want Bahrain Gift Card", icon: "🇧🇭" },
     { id: 26, nameAr: "حساب Plus سنة", nameEn: "PS Plus Year", category: "giftcards", priceOMR: 23, oldPrice: 11.5, image: "", detailsAr: "اشتراك لمدة سنة | 12 Months Card", detailsEn: "12 Months Subscription", timer: null, msgAr: "أريد حساب Plus سنة", msgEn: "I want PS Plus Year", icon: "🎮" },
-    { id: 27, nameAr: "PSN 20$", nameEn: "PSN 20$", category: "giftcards", priceOMR: 7.7, oldPrice: 10, image: "", detailsAr: "بطاقة شحن أمريكي", detailsEn: "US Gift Card", timer: null, msgAr: "أريد PSN 20$", msgEn: "I want PSN 20$", icon: "💳" }
+    { id: 27, nameAr: "PSN 20$", nameEn: "PSN 20$", category: "giftcards", priceOMR: 7.7, oldPrice: 10, image: "", detailsAr: "بطاقة شحن أمريكي", detailsEn: "US Gift Card", timer: null, msgAr: "أريد PSN 20$", msgEn: "I want PSN 20$", icon: "💳" },
+    { id: 28, nameAr: "بطاقة شحن عماني", nameEn: "Oman Gift Card", category: "giftcards", priceOMR: 5, oldPrice: 6, image: "", detailsAr: "الفئات: 5ر.ع | 10ر.ع | 20ر.ع", detailsEn: "Values: 5 OMR | 10 OMR | 20 OMR", timer: null, msgAr: "أريد بطاقة شحن عماني", msgEn: "I want Oman Gift Card", icon: "🇴🇲" }
   ];
   
   function loadFromLocal() {
@@ -723,7 +724,7 @@
       nextId = Math.max(...products.map(p => p.id), 0) + 1;
     } else {
       products = [...defaultGames, ...defaultGiftcards];
-      nextId = 28;
+      nextId = 29;
       saveToLocal();
     }
     const savedCats = localStorage.getItem("xnesto_categories");
@@ -1069,16 +1070,28 @@
     renderProducts();
   }
   
-  function logout() { currentUser = { type: "guest", name: "زائر" }; updateUIForUser(); }
+  function logout() { 
+    currentUser = { type: "guest", name: "زائر" }; 
+    localStorage.removeItem("xnesto_user");
+    updateUIForUser(); 
+  }
   function showLoginModal() { document.getElementById("loginModal").style.display = "flex"; }
   function closeLoginModal() { document.getElementById("loginModal").style.display = "none"; document.getElementById("loginError").innerHTML = ""; }
   function handleLogin() {
     const type = document.getElementById("loginUserType").value;
     if (type === "admin") {
       const pwd = document.getElementById("adminPasswordInput").value;
-      if (pwd === ADMIN_PASSWORD) { currentUser = { type: "admin", name: "Admin" }; updateUIForUser(); closeLoginModal(); }
+      if (pwd === ADMIN_PASSWORD) { 
+        currentUser = { type: "admin", name: "Admin" }; 
+        localStorage.setItem("xnesto_user", "admin");
+        updateUIForUser(); closeLoginModal(); 
+      }
       else document.getElementById("loginError").innerHTML = "❌ كلمة السر غير صحيحة";
-    } else { currentUser = { type: "user", name: "User" }; updateUIForUser(); closeLoginModal(); }
+    } else { 
+      currentUser = { type: "user", name: "User" }; 
+      localStorage.setItem("xnesto_user", "user");
+      updateUIForUser(); closeLoginModal(); 
+    }
   }
   
   function initEvents() {
@@ -1145,10 +1158,16 @@
   
   initEvents();
   renderTabs();
+
+  // ✅ استعادة تسجيل الدخول بعد التحديث
+  const savedUser = localStorage.getItem("xnesto_user");
+  if (savedUser === "admin") currentUser = { type: "admin", name: "Admin" };
+  else if (savedUser === "user") currentUser = { type: "user", name: "User" };
+
   updateUIForUser();
   renderProducts();
-  document.getElementById("instagramText").innerText = INSTA_USERNAME;
-  document.getElementById("whatsappText").innerText = WA_NUMBER;
+  document.getElementById("instagramText").innerHTML = `<a href="https://instagram.com/${INSTA_USERNAME}" target="_blank" style="color:#ffaa66;text-decoration:none;">${INSTA_USERNAME}</a>`;
+  document.getElementById("whatsappText").innerHTML = `<a href="https://wa.me/${WA_NUMBER}" target="_blank" style="color:#ffaa66;text-decoration:none;">+${WA_NUMBER}</a>`;
   window.showTermsModal = showTermsModal;
   window.deleteCategory = deleteCategory;
 </script>

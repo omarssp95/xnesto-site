@@ -519,10 +519,7 @@
       max-height: 80vh;
       overflow-y: auto;
     }
-    .terms-box h3 {
-      color: #ffaa44;
-      margin-bottom: 1rem;
-    }
+    .terms-box h3 { color: #ffaa44; margin-bottom: 1rem; }
     .terms-box p {
       text-align: right;
       line-height: 1.6;
@@ -591,7 +588,6 @@
   </div>
 </div>
 
-<!-- قسم إضافة منتج جديد (للأدمن فقط) -->
 <div id="adminAddSection" class="admin-add-section">
   <div class="admin-add-header">
     <h3><i class="fas fa-plus-circle"></i> إضافة منتج جديد</h3>
@@ -602,13 +598,11 @@
     <input type="text" id="newNameEn" placeholder="Name in English">
     <select id="newCategorySelect"></select>
     <input type="number" id="newPrice" step="0.5" placeholder="السعر (ر.ع)">
-    
     <div class="image-upload-area" id="imageUploadArea">
       <i class="fas fa-cloud-upload-alt"></i> 📸 اختر صورة من جهازك
       <input type="file" id="newImageFile" accept="image/*">
       <img id="newImagePreview" class="image-preview" alt="معاينة الصورة">
     </div>
-    
     <textarea id="newDetails" rows="2" placeholder="تفاصيل المنتج (وصف، مواصفات...)"></textarea>
     <input type="number" id="newDiscount" step="1" placeholder="نسبة الخصم %">
     <input type="datetime-local" id="newTimer">
@@ -616,7 +610,6 @@
   </div>
 </div>
 
-<!-- إدارة التصنيفات (للأدمن فقط) -->
 <div id="categoryManagement" class="category-management">
   <span><i class="fas fa-tags"></i> إدارة التصنيفات:</span>
   <div id="categoriesList"></div>
@@ -635,7 +628,6 @@
 </div>
 
 <div id="tabsContainer" class="tabs-container"></div>
-
 <div id="productsContainer" class="products-grid"></div>
 <div class="pagination" id="paginationContainer"></div>
 
@@ -669,7 +661,6 @@
 </div>
 
 <script>
-  // ==================== البيانات ====================
   let products = [];
   let categories = ["games", "giftcards"];
   let categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
@@ -689,11 +680,9 @@
   
   const exchangeRates = { OMR: 1, USD: 2.6, SAR: 9.75, QAR: 9.46, EUR: 2.4, AED: 9.55 };
   const currencySymbols = { OMR: "ر.ع", USD: "$", SAR: "ر.س", QAR: "ر.ق", EUR: "€", AED: "د.إ" };
-  
   const categoryColors = { games: "#2d4a6e", giftcards: "#1a3a5a" };
   const categoryIcons = { games: "🎮", giftcards: "💳" };
   
-  // جميع الألعاب (15 لعبة)
   const defaultGames = [
     { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", category: "games", priceOMR: 14, oldPrice: 20, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ الحجم: 65GB | 🎮 اللغة: عربية/إنجليزية", detailsEn: "📦 Size: 65GB | 🎮 Language: Arabic/English", timer: null, msgAr: "أريد Assassin's Creed Shadows", msgEn: "I want Assassin's Creed Shadows" },
     { id: 2, nameAr: "Call of Duty: Black Ops 6", nameEn: "Call of Duty: Black Ops 6", category: "games", priceOMR: 22, oldPrice: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ الحجم: 120GB | 🎮 اللغة: إنجليزية", detailsEn: "📦 Size: 120GB | 🎮 Language: English", timer: null, msgAr: "أريد Call of Duty Black Ops 6", msgEn: "I want Call of Duty Black Ops 6" },
@@ -712,7 +701,6 @@
     { id: 15, nameAr: "Tekken 8", nameEn: "Tekken 8", category: "games", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1778820/header.jpg", detailsAr: "🏷️ الحجم: 80GB | 🥊 لعبة قتال", detailsEn: "📦 Size: 80GB | 🥊 Fighting Game", timer: null, msgAr: "أريد Tekken 8", msgEn: "I want Tekken 8" }
   ];
   
-  // بطاقات الشحن
   const defaultGiftcards = [
     { id: 16, nameAr: "بطاقة شحن أمريكي", nameEn: "US Gift Card", category: "giftcards", priceOMR: 5, oldPrice: 6, image: "", detailsAr: "الفئات: 10$ | 25$ | 50$ | 100$", detailsEn: "Values: 10$ | 25$ | 50$ | 100$", timer: null, msgAr: "أريد بطاقة شحن أمريكي", msgEn: "I want US Gift Card", icon: "🇺🇸" },
     { id: 17, nameAr: "بطاقة شحن بريطاني", nameEn: "UK Gift Card", category: "giftcards", priceOMR: 6, oldPrice: 7, image: "", detailsAr: "الفئات: 10£ | 25£ | 50£", detailsEn: "Values: 10£ | 25£ | 50£", timer: null, msgAr: "أريد بطاقة شحن بريطاني", msgEn: "I want UK Gift Card", icon: "🇬🇧" },
@@ -789,16 +777,12 @@
     pendingOrder = { productName, waLink };
     document.getElementById("termsModal").style.display = "flex";
   }
-  
   function closeTermsModal() {
     document.getElementById("termsModal").style.display = "none";
     pendingOrder = null;
   }
-  
   function acceptTerms() {
-    if (pendingOrder) {
-      window.open(pendingOrder.waLink, "_blank");
-    }
+    if (pendingOrder) window.open(pendingOrder.waLink, "_blank");
     closeTermsModal();
   }
   
@@ -858,9 +842,7 @@
   function handleImageUpload(file, callback) {
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = function(e) {
-      callback(e.target.result);
-    };
+    reader.onload = function(e) { callback(e.target.result); };
     reader.readAsDataURL(file);
   }
   
@@ -881,17 +863,14 @@
     
     let imgHtml = "";
     if (p.image && p.image.trim()) {
-      imgHtml = `<div class="product-image" style="background-image: url('${p.image}'); background-size: contain; background-position: center; background-repeat: no-repeat; background-color: #0a0c1a;"><div class="product-badge">${categoryName}</div></div>`;
+      imgHtml = `<div class="product-image" style="background-image: url('${p.image}');"><div class="product-badge">${categoryName}</div></div>`;
     } else {
       imgHtml = `<div class="product-image" style="background: linear-gradient(135deg, ${bgColor}, ${bgColor}cc);"><div style="font-size: 2.5rem;">${icon}</div><div class="product-badge">${categoryName}</div></div>`;
     }
     
     let whatsappMsg = `🛒 *طلب شراء من xnesto*\n\n━━━━━━━━━━━━━━━━━━━━\n🎮 *المنتج:* ${name}\n🏷️ *التصنيف:* ${categoryName}\n`;
-    if (hasDiscount) {
-      whatsappMsg += `💰 *السعر الأصلي:* ${oldPrice} ${sym}\n🔥 *السعر بعد الخصم:* ${price} ${sym} (خصم ${discountPercent}%)\n`;
-    } else {
-      whatsappMsg += `💰 *السعر:* ${price} ${sym}\n`;
-    }
+    if (hasDiscount) whatsappMsg += `💰 *السعر الأصلي:* ${oldPrice} ${sym}\n🔥 *السعر بعد الخصم:* ${price} ${sym} (خصم ${discountPercent}%)\n`;
+    else whatsappMsg += `💰 *السعر:* ${price} ${sym}\n`;
     if (details) whatsappMsg += `📝 *المواصفات:* ${details}\n`;
     if (remaining) whatsappMsg += `⏱️ *انتهاء العرض:* ${remaining}\n`;
     whatsappMsg += `━━━━━━━━━━━━━━━━━━━━\n📦 *يرجى تأكيد الطلب مع إرسال طريقة الدفع*\n📞 للتواصل: xnesto_store`;
@@ -909,124 +888,108 @@
           ${hasDiscount ? `<span class="old-price">${oldPrice} ${sym}</span>` : ''}
           <span class="price">${price} ${sym}</span>
         </div>
-        <div class="btn-wa" onclick="showTermsModal('${name.replace(/'/g, "\\'")}', '${waLink}')"><i class="fab fa-whatsapp"></i> ${currentLang === "ar" ? "اطلب الآن" : "Order Now"}</div>
+        <div class="btn-wa" onclick="showTermsModal('${name.replace(/'/g, "\\'")}', '${waLink}')">
+          <i class="fab fa-whatsapp"></i> ${currentLang === "ar" ? "اطلب الآن" : "Order Now"}
+        </div>
       </div>
     `;
     
     if (currentUser.type === "admin") {
       const editSection = document.createElement("div");
       editSection.className = "admin-edit-section";
-      editSection.id = `edit-section-${p.id}`;
       editSection.innerHTML = `
         <h4><i class="fas fa-edit"></i> تعديل المنتج</h4>
         <div class="edit-price-row">
           <span>💰 السعر:</span>
-          <input type="number" class="edit-price" data-id="${p.id}" value="${p.priceOMR}" step="0.5">
+          <input type="number" class="edit-price-input" value="${p.priceOMR}" step="0.5">
           <span>ر.ع</span>
         </div>
         <div class="edit-image-row">
           <span>🖼️ تغيير الصورة:</span>
-          <div class="edit-image-upload" data-id="${p.id}" style="cursor:pointer;">
+          <div class="edit-image-upload" style="cursor:pointer;">
             <i class="fas fa-cloud-upload-alt"></i> اختر صورة
-            <input type="file" class="edit-image-file" data-id="${p.id}" accept="image/*" style="display:none;">
+            <input type="file" class="edit-image-file" accept="image/*" style="display:none;">
           </div>
-          <img class="edit-image-preview" data-id="${p.id}" style="display:none; max-width:100px; max-height:60px; margin-top:5px;">
         </div>
+        <img class="edit-image-preview" alt="معاينة">
         <div class="discount-buttons">
-          <button data-discount="30" data-id="${p.id}">30%</button>
-          <button data-discount="20" data-id="${p.id}">20%</button>
-          <button data-discount="10" data-id="${p.id}">10%</button>
-          <button data-discount="0" data-id="${p.id}">0%</button>
+          <button data-discount="30">30%</button>
+          <button data-discount="20">20%</button>
+          <button data-discount="10">10%</button>
+          <button data-discount="0">0%</button>
         </div>
         <div class="custom-discount-row">
           <span>🏷️ نسبة مخصصة:</span>
-          <input type="number" class="custom-discount" data-id="${p.id}" step="1" min="0" max="100" placeholder="%">
-          <button class="apply-discount-btn" data-id="${p.id}">تطبيق</button>
+          <input type="number" class="custom-discount-input" step="1" min="0" max="100" placeholder="%">
+          <button class="apply-discount-btn">تطبيق</button>
         </div>
         <div class="timer-row">
           <span>⏱️ عداد تنازلي:</span>
-          <input type="datetime-local" class="edit-timer" data-id="${p.id}" value="${p.timer ? p.timer.slice(0, 16) : ''}">
+          <input type="datetime-local" class="edit-timer-input" value="${p.timer ? p.timer.slice(0, 16) : ''}">
         </div>
-        <button class="save-edit-btn" data-id="${p.id}"><i class="fas fa-save"></i> حفظ التعديلات</button>
-        <button class="delete-product-btn" data-id="${p.id}"><i class="fas fa-trash"></i> حذف المنتج</button>
+        <button class="save-edit-btn"><i class="fas fa-save"></i> حفظ التعديلات</button>
+        <button class="delete-product-btn"><i class="fas fa-trash"></i> حذف المنتج</button>
       `;
       card.appendChild(editSection);
-      
-      // ربط الأحداث بعد إضافة العنصر للDOM
-      setTimeout(() => {
-        // رفع الصورة
-        const uploadDiv = editSection.querySelector(`.edit-image-upload[data-id="${p.id}"]`);
-        const fileInput = editSection.querySelector(`.edit-image-file[data-id="${p.id}"]`);
-        const previewImg = editSection.querySelector(`.edit-image-preview[data-id="${p.id}"]`);
-        
-        if (uploadDiv && fileInput) {
-          uploadDiv.addEventListener("click", () => fileInput.click());
-          fileInput.addEventListener("change", (e) => {
-            const file = e.target.files[0];
-            if (file) {
-              handleImageUpload(file, (imageData) => {
-                p.tempImage = imageData;
-                if (previewImg) {
-                  previewImg.src = imageData;
-                  previewImg.style.display = "block";
-                }
-                alert("✅ تم اختيار الصورة، اضغط 'حفظ التعديلات' لتطبيقها");
-              });
-            }
+
+      // ✅ الإصلاح: استخدام querySelector داخل editSection بدلاً من document.getElementById
+      const uploadDiv   = editSection.querySelector(".edit-image-upload");
+      const fileInput   = editSection.querySelector(".edit-image-file");
+      const previewImg  = editSection.querySelector(".edit-image-preview");
+      const priceInput  = editSection.querySelector(".edit-price-input");
+      const timerInput  = editSection.querySelector(".edit-timer-input");
+      const discInput   = editSection.querySelector(".custom-discount-input");
+
+      uploadDiv.addEventListener("click", () => fileInput.click());
+
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          handleImageUpload(file, (imageData) => {
+            p.tempImage = imageData;
+            previewImg.src = imageData;
+            previewImg.style.display = "block";
           });
         }
-        
-        // أزرار الخصم
-        editSection.querySelectorAll(`.discount-buttons button[data-id="${p.id}"]`).forEach(btn => {
-          btn.addEventListener("click", () => {
-            const discount = parseInt(btn.getAttribute("data-discount"));
-            const priceInput = editSection.querySelector(`.edit-price[data-id="${p.id}"]`);
-            const currentPrice = parseFloat(priceInput.value);
-            if (!isNaN(currentPrice) && currentPrice > 0) {
-              editSection.querySelector(`.custom-discount[data-id="${p.id}"]`).value = discount;
-            }
-          });
+      });
+
+      editSection.querySelectorAll(".discount-buttons button").forEach(btn => {
+        btn.addEventListener("click", () => {
+          discInput.value = btn.getAttribute("data-discount");
         });
-        
-        // تطبيق الخصم
-        editSection.querySelector(`.apply-discount-btn[data-id="${p.id}"]`)?.addEventListener("click", () => {
-          const discount = parseFloat(editSection.querySelector(`.custom-discount[data-id="${p.id}"]`).value);
-          const priceInput = editSection.querySelector(`.edit-price[data-id="${p.id}"]`);
-          const currentPrice = parseFloat(priceInput.value);
-          if (!isNaN(discount) && !isNaN(currentPrice) && currentPrice > 0) {
-            const newOldPrice = currentPrice / (1 - discount / 100);
-            alert(`سيتم تطبيق خصم ${discount}%، السعر القديم سيكون ${newOldPrice.toFixed(2)} ر.ع`);
-          }
-        });
-        
-        // حفظ التعديلات
-        editSection.querySelector(`.save-edit-btn[data-id="${p.id}"]`)?.addEventListener("click", () => {
-          const newPrice = parseFloat(editSection.querySelector(`.edit-price[data-id="${p.id}"]`).value);
-          const customDiscount = parseFloat(editSection.querySelector(`.custom-discount[data-id="${p.id}"]`).value);
-          const newTimer = editSection.querySelector(`.edit-timer[data-id="${p.id}"]`).value || null;
-          if (!isNaN(newPrice)) {
-            p.priceOMR = newPrice;
-            if (p.tempImage) {
-              p.image = p.tempImage;
-              delete p.tempImage;
-            }
-            if (!isNaN(customDiscount) && customDiscount > 0) p.oldPrice = newPrice / (1 - customDiscount / 100);
-            else if (customDiscount === 0) p.oldPrice = null;
-            p.timer = newTimer;
-            saveToLocal();
-            renderProducts();
-          }
-        });
-        
-        // حذف المنتج
-        editSection.querySelector(`.delete-product-btn[data-id="${p.id}"]`)?.addEventListener("click", () => {
-          if (confirm("هل أنت متأكد من حذف هذا المنتج؟")) {
-            products = products.filter(x => x.id !== p.id);
-            saveToLocal();
-            renderProducts();
-          }
-        });
-      }, 10);
+      });
+
+      editSection.querySelector(".apply-discount-btn").addEventListener("click", () => {
+        const discount = parseFloat(discInput.value);
+        const currentPrice = parseFloat(priceInput.value);
+        if (!isNaN(discount) && !isNaN(currentPrice) && currentPrice > 0) {
+          const newOldPrice = currentPrice / (1 - discount / 100);
+          alert(`سيتم تطبيق خصم ${discount}%، السعر القديم سيكون ${newOldPrice.toFixed(2)} ر.ع`);
+        }
+      });
+
+      editSection.querySelector(".save-edit-btn").addEventListener("click", () => {
+        const newPrice     = parseFloat(priceInput.value);
+        const customDisc   = parseFloat(discInput.value);
+        const newTimer     = timerInput.value || null;
+        if (!isNaN(newPrice)) {
+          p.priceOMR = newPrice;
+          if (p.tempImage) { p.image = p.tempImage; delete p.tempImage; }
+          if (!isNaN(customDisc) && customDisc > 0) p.oldPrice = newPrice / (1 - customDisc / 100);
+          else if (customDisc === 0) p.oldPrice = null;
+          p.timer = newTimer;
+          saveToLocal();
+          renderProducts();
+        }
+      });
+
+      editSection.querySelector(".delete-product-btn").addEventListener("click", () => {
+        if (confirm("هل أنت متأكد من حذف هذا المنتج؟")) {
+          products = products.filter(x => x.id !== p.id);
+          saveToLocal();
+          renderProducts();
+        }
+      });
     }
     return card;
   }
@@ -1065,20 +1028,17 @@
     const discount = parseFloat(document.getElementById("newDiscount").value);
     const timer = document.getElementById("newTimer").value || null;
     const image = currentImageData || "";
-    
     if (!nameAr || !nameEn || isNaN(price)) { alert("يرجى ملء الحقول الأساسية"); return; }
     const newProduct = {
       id: nextId++, nameAr, nameEn, category, priceOMR: price,
       oldPrice: (!isNaN(discount) && discount > 0) ? price / (1 - discount / 100) : null,
-      image: image,
-      detailsAr: details, detailsEn: details, timer,
+      image, detailsAr: details, detailsEn: details, timer,
       msgAr: `أريد ${nameAr}`, msgEn: `I want ${nameEn}`,
       icon: category === "giftcards" ? "💳" : "🎮"
     };
     products.push(newProduct);
     saveToLocal();
     renderProducts();
-    
     document.getElementById("newNameAr").value = "";
     document.getElementById("newNameEn").value = "";
     document.getElementById("newPrice").value = "";
@@ -1101,7 +1061,7 @@
       document.getElementById("logoutBtn")?.addEventListener("click", logout);
       renderCategoriesList();
     } else {
-      authDiv.innerHTML = `<button class="login-btn" id="showLoginBtn"><i class="fas fa-user-shield"></i> تسجيل دخول</button>`;
+      authDiv.innerHTML = `<button class="login-btn" id="showLoginBtn"><i class="fas fa-user-shield"></i> <span id="loginBtnText">تسجيل دخول</span></button>`;
       adminAdd.classList.remove("active");
       categoryMgmt.classList.remove("active");
       document.getElementById("showLoginBtn")?.addEventListener("click", showLoginModal);
@@ -1110,7 +1070,6 @@
   }
   
   function logout() { currentUser = { type: "guest", name: "زائر" }; updateUIForUser(); }
-  
   function showLoginModal() { document.getElementById("loginModal").style.display = "flex"; }
   function closeLoginModal() { document.getElementById("loginModal").style.display = "none"; document.getElementById("loginError").innerHTML = ""; }
   function handleLogin() {
@@ -1130,8 +1089,8 @@
         btn.classList.add("active");
         document.body.dir = currentLang === "ar" ? "rtl" : "ltr";
         updateUIForUser();
-        document.getElementById("currencyLabel").innerText = currentLang === "ar" ? "العملة:" : "Currency:";
-        document.getElementById("loginBtnText").innerText = currentLang === "ar" ? "تسجيل دخول" : "Login";
+        const currLabel = document.getElementById("currencyLabel");
+        if (currLabel) currLabel.innerText = currentLang === "ar" ? "العملة:" : "Currency:";
       });
     });
     document.getElementById("currencySelect")?.addEventListener("change", (e) => { currentCurrency = e.target.value; renderProducts(); });
@@ -1140,14 +1099,11 @@
     document.getElementById("addCategoryBtn")?.addEventListener("click", addNewCategory);
     document.getElementById("acceptTermsBtn")?.addEventListener("click", acceptTerms);
     document.getElementById("declineTermsBtn")?.addEventListener("click", closeTermsModal);
-    
+
     const uploadArea = document.getElementById("imageUploadArea");
-    const fileInput = document.getElementById("newImageFile");
-    const preview = document.getElementById("newImagePreview");
-    
-    if (uploadArea) {
-      uploadArea.addEventListener("click", () => fileInput.click());
-    }
+    const fileInput  = document.getElementById("newImageFile");
+    const preview    = document.getElementById("newImagePreview");
+    if (uploadArea) uploadArea.addEventListener("click", () => fileInput.click());
     if (fileInput) {
       fileInput.addEventListener("change", (e) => {
         const file = e.target.files[0];
@@ -1156,7 +1112,6 @@
             currentImageData = imageData;
             preview.src = imageData;
             preview.style.display = "block";
-            preview.style.maxHeight = "80px";
           });
         }
       });
@@ -1175,9 +1130,9 @@
       <div id="adminPasswordDiv" style="display:none;">
         <input type="password" id="adminPasswordInput" placeholder="كلمة السر" style="width:100%; padding:10px; margin:10px 0; border-radius:40px; background:#1e1e3a; color:white; border:1px solid #ffaa44;">
       </div>
-      <button id="loginSubmit" style="background:#ffaa44; border:none; padding:10px; border-radius:40px; width:100%; margin-top:10px; cursor:pointer;">دخول</button>
+      <button id="loginSubmit" style="background:#ffaa44; border:none; padding:10px; border-radius:40px; width:100%; margin-top:10px; cursor:pointer; font-weight:bold;">دخول</button>
       <div id="loginError" style="color:#ff6666; margin-top:10px;"></div>
-      <button id="closeLoginModal" style="background:#444; border:none; padding:8px; border-radius:40px; width:100%; margin-top:10px; cursor:pointer;">إغلاق</button>
+      <button id="closeLoginModal" style="background:#444; border:none; padding:8px; border-radius:40px; width:100%; margin-top:10px; cursor:pointer; color:white;">إغلاق</button>
     </div>
   </div>`;
   document.body.insertAdjacentHTML("beforeend", loginModalHtml);

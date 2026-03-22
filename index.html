@@ -8,7 +8,7 @@
     @media (min-width: 768px) { html { font-size: 15px; } }
     @media (min-width: 1200px) { html { font-size: 16px; } }
 
-    /* ── DEVICE BAR ── */
+
     .device-bar {
       background: #07071a;
       border-bottom: 1px solid rgba(255,170,68,0.2);
@@ -64,10 +64,11 @@
     .header {
       text-align: center;
       background: linear-gradient(135deg, #0f0f2a, #0a0a1f);
-      padding: 1.5rem 1rem;
+      padding: 0.5rem 1rem 1.5rem;
       border-radius: 1.5rem;
       margin-bottom: 1.5rem;
       border: 1px solid rgba(255, 170, 68, 0.3);
+      overflow: visible;
     }
     .header h1 {
       font-size: 2.5rem;
@@ -75,6 +76,41 @@
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
+    }
+    .logo-glow {
+      animation: logoPulse 2s ease-in-out infinite;
+    }
+    @keyframes logoPulse {
+      0%,100% { filter: drop-shadow(0 0 8px rgba(255,170,44,0.9)) drop-shadow(0 0 20px rgba(255,100,0,0.6)); }
+      50%      { filter: drop-shadow(0 0 16px rgba(255,200,44,1))  drop-shadow(0 0 35px rgba(255,140,0,0.9)); }
+    }
+    /* ── FIRE ── */
+    .fire-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 4px;
+      height: 55px;
+      margin-bottom: 4px;
+    }
+    .fire-flame {
+      width: 14px;
+      border-radius: 50% 50% 20% 20%;
+      animation: flicker 0.5s ease-in-out infinite alternate;
+      transform-origin: bottom center;
+    }
+    .fire-flame:nth-child(1) { background: linear-gradient(to top, #ff4400, #ffaa00, #ffff00); height: 25px; animation-delay: 0.0s; }
+    .fire-flame:nth-child(2) { background: linear-gradient(to top, #ff3300, #ff8800, #ffee00); height: 38px; animation-delay: 0.1s; }
+    .fire-flame:nth-child(3) { background: linear-gradient(to top, #ff4400, #ffaa00, #ffff00); height: 30px; animation-delay: 0.2s; }
+    .fire-flame:nth-child(4) { background: linear-gradient(to top, #ff2200, #ff6600, #ffdd00); height: 45px; animation-delay: 0.05s; }
+    .fire-flame:nth-child(5) { background: linear-gradient(to top, #ff3300, #ff9900, #ffff00); height: 52px; animation-delay: 0.15s; width: 18px; }
+    .fire-flame:nth-child(6) { background: linear-gradient(to top, #ff2200, #ff6600, #ffdd00); height: 45px; animation-delay: 0.0s; }
+    .fire-flame:nth-child(7) { background: linear-gradient(to top, #ff4400, #ffaa00, #ffff00); height: 30px; animation-delay: 0.2s; }
+    .fire-flame:nth-child(8) { background: linear-gradient(to top, #ff3300, #ff8800, #ffee00); height: 38px; animation-delay: 0.1s; }
+    .fire-flame:nth-child(9) { background: linear-gradient(to top, #ff4400, #ffaa00, #ffff00); height: 25px; animation-delay: 0.05s; }
+    @keyframes flicker {
+      0%   { transform: scaleX(1)   scaleY(1)   rotate(-4deg); opacity: 1;   }
+      100% { transform: scaleX(0.8) scaleY(1.2) rotate(4deg);  opacity: 0.8; }
     }
     .header p { color: #ffdd99; font-size: 0.9rem; }
     
@@ -291,7 +327,7 @@
     
     .tabs-container {
       max-width: 1400px;
-      margin: 0 auto 1rem auto;
+      margin: 0 auto 2rem auto;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
@@ -362,6 +398,8 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 1.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(255,170,68,0.15);
     }
     .product-card {
       background: #11152b;
@@ -917,7 +955,95 @@
       margin-bottom: 8px;
     }
   </style>
-</head>
+  <style>
+    /* ── HEADER ENHANCED ── */
+    .header {
+      position: relative;
+      overflow: hidden;
+    }
+    /* جزيئات عائمة */
+    .header-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      font-size: 1.4rem;
+      animation: floatParticle linear infinite;
+      opacity: 0.7;
+    }
+    @keyframes floatParticle {
+      0%   { transform: translateY(100%) rotate(0deg);   opacity: 0; }
+      10%  { opacity: 0.7; }
+      90%  { opacity: 0.7; }
+      100% { transform: translateY(-120%) rotate(360deg); opacity: 0; }
+    }
+
+    /* يد PS5 */
+    .ps5-controller {
+      font-size: 3.5rem;
+      display: inline-block;
+      animation: controllerFloat 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 12px rgba(0,100,255,0.6));
+      margin: 0.3rem 0;
+    }
+    @keyframes controllerFloat {
+      0%,100% { transform: translateY(0) rotate(-5deg); }
+      50%      { transform: translateY(-10px) rotate(5deg); }
+    }
+
+    /* ألعاب صغيرة تطير */
+    .floating-games {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin: 0.4rem 0;
+      flex-wrap: wrap;
+    }
+    .game-icon {
+      font-size: 1.3rem;
+      animation: gameFloat ease-in-out infinite;
+      filter: drop-shadow(0 0 6px rgba(255,170,44,0.5));
+    }
+    .game-icon:nth-child(1) { animation-duration: 2.1s; animation-delay: 0.0s; }
+    .game-icon:nth-child(2) { animation-duration: 2.5s; animation-delay: 0.3s; }
+    .game-icon:nth-child(3) { animation-duration: 1.9s; animation-delay: 0.6s; }
+    .game-icon:nth-child(4) { animation-duration: 2.3s; animation-delay: 0.1s; }
+    .game-icon:nth-child(5) { animation-duration: 2.7s; animation-delay: 0.4s; }
+    .game-icon:nth-child(6) { animation-duration: 2.0s; animation-delay: 0.8s; }
+    @keyframes gameFloat {
+      0%,100% { transform: translateY(0)    scale(1);    }
+      50%      { transform: translateY(-8px) scale(1.15); }
+    }
+
+    /* خط فاصل ذهبي بين التصنيفات والمنتجات */
+    .section-divider {
+      max-width: 1400px;
+      margin: 0 auto 1.8rem auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 4px;
+    }
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #ffaa44, transparent);
+    }
+    .divider-badge {
+      background: linear-gradient(135deg, #1e1e3a, #2d2f6e);
+      border: 1px solid rgba(255,170,68,0.4);
+      color: #ffaa44;
+      padding: 5px 16px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 0 12px rgba(255,170,44,0.2);
+    }
+  </style>
 <body dir="rtl">
 
 <!-- شريط اختيار الجهاز -->
@@ -933,10 +1059,160 @@
   </button>
 </div>
 
-<div class="header">
-  <h1>🎮 xnesto</h1>
-  <p id="welcomeMsg">ألعاب PS4 / PS5 – بطاقات شحن – عروض وتخفيضات – رصيد فوري</p>
+<div class="header" style="position:relative;overflow:hidden;padding:0;min-height:280px;background:linear-gradient(135deg,#02020a,#0a0a1f);border-radius:1.5rem;margin-bottom:1.5rem;border:1px solid rgba(255,170,68,0.3);">
+
+  <!-- هالة الطاقة -->
+  <div style="position:absolute;width:100%;height:100%;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(255,140,0,0.25),rgba(0,67,156,0.1),transparent 70%);filter:blur(40px);animation:pulseAura 4s infinite alternate;pointer-events:none;"></div>
+
+  <!-- النار في الأسفل -->
+  <div id="fire-container" style="position:absolute;bottom:0;width:100%;height:120px;z-index:2;pointer-events:none;"></div>
+
+  <!-- المحتوى الرئيسي -->
+  <div style="position:relative;z-index:10;padding:2rem 1rem 1.5rem;text-align:center;">
+
+    <!-- الشعار + يد التحكم -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;">
+      <span style="
+        font-size:clamp(2.5rem,10vw,5rem);
+        font-weight:900;
+        font-family:'Cairo',sans-serif;
+        background:linear-gradient(90deg,#ffcc66,#fff,#ffcc66);
+        background-size:200% auto;
+        -webkit-background-clip:text;
+        background-clip:text;
+        -webkit-text-fill-color:transparent;
+        animation:textShine 3s linear infinite;
+        filter:drop-shadow(0 0 20px rgba(255,204,102,0.7));
+        letter-spacing:3px;
+      ">xnesto</span>
+      <span style="
+        font-size:clamp(2rem,7vw,3.5rem);
+        display:inline-block;
+        filter:drop-shadow(0 0 15px #00439c);
+        animation:floatMain 3s infinite ease-in-out;
+      ">🎮</span>
+    </div>
+
+    <!-- ألعاب صغيرة تطفو -->
+    <div style="display:flex;justify-content:center;gap:14px;margin:0.5rem 0;">
+      <span style="font-size:1.3rem;animation:gameFloat 2.1s ease-in-out infinite;animation-delay:0s;">⚔️</span>
+      <span style="font-size:1.3rem;animation:gameFloat 2.5s ease-in-out infinite;animation-delay:0.3s;">🏆</span>
+      <span style="font-size:1.3rem;animation:gameFloat 1.9s ease-in-out infinite;animation-delay:0.6s;">🕹️</span>
+      <span style="font-size:1.3rem;animation:gameFloat 2.3s ease-in-out infinite;animation-delay:0.1s;">💥</span>
+      <span style="font-size:1.3rem;animation:gameFloat 2.7s ease-in-out infinite;animation-delay:0.4s;">🎯</span>
+      <span style="font-size:1.3rem;animation:gameFloat 2.0s ease-in-out infinite;animation-delay:0.8s;">🌟</span>
+    </div>
+
+    <!-- النص الإعلاني -->
+    <div style="
+      color:#fff;
+      font-size:clamp(0.75rem,2.5vw,1rem);
+      font-weight:700;
+      background:rgba(255,255,255,0.05);
+      padding:8px 24px;
+      border-radius:50px;
+      border:1px solid rgba(255,204,102,0.3);
+      backdrop-filter:blur(10px);
+      display:inline-block;
+      margin-top:0.5rem;
+      box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    " id="welcomeMsg">العب بذكاء، اشحن بأقل سعر – xnesto الاختيار الأول 🏆🔥</div>
+
+  </div>
+
+  <!-- جزيئات الأيقونات -->
+  <div id="particles-container" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:5;"></div>
 </div>
+
+<style>
+  @keyframes textShine { to { background-position: 200% center; } }
+  @keyframes floatMain {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-15px) rotate(5deg); }
+  }
+  @keyframes pulseAura {
+    0%   { transform: scale(1);   opacity: 0.3; }
+    100% { transform: scale(1.3); opacity: 0.6; }
+  }
+  @keyframes gameFloat {
+    0%,100% { transform: translateY(0)    scale(1);    }
+    50%      { transform: translateY(-8px) scale(1.15); }
+  }
+</style>
+
+<script>
+  // نار متحركة
+  const fc = document.getElementById('fire-container');
+  function createFire() {
+    if (!fc) return;
+    const f = document.createElement('div');
+    const size = Math.random() * 35 + 15;
+    Object.assign(f.style, {
+      position:'absolute', bottom:'0',
+      width: size+'px', height: size+'px',
+      background:'radial-gradient(circle,#fff,#ffcc66,#ff4500,transparent 70%)',
+      borderRadius:'50% 50% 20% 20%',
+      left: Math.random()*100+'%',
+      animation:'riseUp '+(Math.random()*0.5+0.8)+'s ease-in forwards',
+      mixBlendMode:'screen', pointerEvents:'none'
+    });
+    fc.appendChild(f);
+    setTimeout(()=>f.remove(), 1200);
+  }
+  // شرارات
+  function createSpark() {
+    if (!fc) return;
+    const s = document.createElement('div');
+    Object.assign(s.style, {
+      position:'absolute', width:'3px', height:'3px',
+      background:'#fff', borderRadius:'50%',
+      left: Math.random()*100+'%', bottom:'10px',
+      boxShadow:'0 0 8px #ffcc66', zIndex:'3'
+    });
+    fc.appendChild(s);
+    const anim = s.animate([
+      {transform:'translate(0,0)', opacity:1},
+      {transform:`translate(${(Math.random()-0.5)*150}px,-200px)`, opacity:0}
+    ], {duration:1500, easing:'ease-out'});
+    anim.onfinish = ()=>s.remove();
+  }
+  // أيقونات طائرة
+  const pc = document.getElementById('particles-container');
+  const icons = ['🎮','💿','⚡','⭐','🔥','🕹️','💎','💳'];
+  function createIcon() {
+    if (!pc) return;
+    const ic = document.createElement('div');
+    const mx = (Math.random()-0.5)*300, my = (Math.random()-0.5)*200;
+    const dur = Math.random()*4+4;
+    Object.assign(ic.style, {
+      position:'absolute',
+      fontSize: (Math.random()*16+14)+'px',
+      left: Math.random()*100+'%',
+      top:  Math.random()*100+'%',
+      opacity:'0',
+      animation:`iconDrift ${dur}s linear forwards`,
+      '--mx': mx+'px', '--my': my+'px'
+    });
+    ic.textContent = icons[Math.floor(Math.random()*icons.length)];
+    pc.appendChild(ic);
+    setTimeout(()=>ic.remove(), dur*1000);
+  }
+  setInterval(createFire, 100);
+  setInterval(createSpark, 200);
+  setInterval(createIcon, 600);
+</script>
+<style>
+  @keyframes riseUp {
+    0%   { transform: translateY(0) scale(1);   opacity:1; }
+    100% { transform: translateY(-130px) scale(0.1); opacity:0; }
+  }
+  @keyframes iconDrift {
+    0%   { transform:translate(0,0) rotate(0deg);   opacity:0; }
+    20%  { opacity:0.6; }
+    80%  { opacity:0.6; }
+    100% { transform:translate(var(--mx),var(--my)) rotate(360deg); opacity:0; }
+  }
+</style>
 
 <div class="control-bar">
   <div class="lang-switch">
@@ -999,6 +1275,14 @@
 </div>
 
 <div id="tabsContainer" class="tabs-container"></div>
+
+<!-- فاصل ذهبي -->
+<div class="section-divider">
+  <div class="divider-line"></div>
+  <div class="divider-badge">🎮 المنتجات المتاحة</div>
+  <div class="divider-line"></div>
+</div>
+
 <div id="productsContainer" class="products-grid"></div>
 <div class="pagination" id="paginationContainer"></div>
 
@@ -1889,3 +2173,4 @@
 </script>
 </body>
 </html>
+

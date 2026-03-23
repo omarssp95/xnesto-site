@@ -38,53 +38,6 @@
     .device-btn:hover:not(.active) { border-color: #ffaa44; color: #ffaa44; }
 
     /* حجم الجوال */
-    /* ── وضع النهار ── */
-    body.light-mode {
-      background: #f0f4ff !important;
-      color: #1a1a2e !important;
-    }
-    body.light-mode .header { background: linear-gradient(135deg, #1a3a7a, #0d2a6e) !important; }
-    body.light-mode .control-bar { background: rgba(255,255,255,0.95) !important; box-shadow: 0 2px 16px rgba(0,0,0,0.08); }
-    body.light-mode .lang-btn { color: #444 !important; }
-    body.light-mode .lang-btn.active { color: #0a0a1a !important; }
-    body.light-mode #currencySelect { background: #fff !important; color: #333 !important; }
-    body.light-mode .search-bar-container { background: rgba(255,255,255,0.95) !important; }
-    body.light-mode .search-box { background: #f0f4ff !important; }
-    body.light-mode #searchInput { color: #222 !important; }
-    body.light-mode .product-card { background: #ffffff !important; border-color: rgba(0,0,0,0.1) !important; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-    body.light-mode .product-title { color: #1a1a2e !important; }
-    body.light-mode .product-details { background: rgba(0,0,0,0.05) !important; color: #444 !important; }
-    body.light-mode .admin-add-section { background: rgba(255,255,255,0.98) !important; }
-    body.light-mode .admin-add-body input,
-    body.light-mode .admin-add-body select,
-    body.light-mode .admin-add-body textarea { background: #f0f4ff !important; color: #222 !important; }
-    body.light-mode .admin-edit-section { background: #f5f5ff !important; }
-    body.light-mode .page-btn { background: #fff !important; color: #333 !important; }
-    body.light-mode .page-btn.active { background: #ffaa44 !important; color: #0a0a1a !important; }
-    body.light-mode .footer { background: #1a3a7a !important; }
-    body.light-mode .tab-btn { background: #ffffff !important; border-color: rgba(0,0,0,0.15) !important; }
-    body.light-mode .section-divider .divider-badge { background: #fff !important; color: #1a3a7a !important; }
-    body.light-mode .device-bar { background: #1a3a7a !important; }
-    body.light-mode .login-btn { background: #e8eeff !important; color: #1a3a7a !important; }
-
-    /* ── زر الوضع ── */
-    .mode-toggle-btn {
-      background: transparent;
-      border: 1px solid rgba(255,170,68,0.4);
-      color: #ffaa66;
-      padding: 5px 14px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 0.8rem;
-      font-family: 'Cairo', sans-serif;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: 0.2s;
-    }
-    .mode-toggle-btn:hover { background: rgba(255,170,68,0.1); }
-
     body.view-mobile .products-grid { grid-template-columns: repeat(2, 1fr) !important; }
     body.view-mobile .header h1 { font-size: 1.6rem !important; }
     body.view-mobile .price { font-size: 0.95rem !important; }
@@ -404,7 +357,9 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      overflow: hidden;
+      object-fit: cover;
+      background-size: cover;
+      background-position: center;
     }
     .tab-btn-overlay {
       position: absolute;
@@ -1233,11 +1188,11 @@
   <button class="device-btn active" id="btnMobile" onclick="setView('mobile')">
     <i class="fas fa-mobile-alt"></i> جوال
   </button>
+  <button class="device-btn" id="btnTablet" onclick="setView('tablet')">
+    <i class="fas fa-tablet-alt"></i> تابلت
+  </button>
   <button class="device-btn" id="btnDesktop" onclick="setView('desktop')">
     <i class="fas fa-desktop"></i> كمبيوتر
-  </button>
-  <button class="mode-toggle-btn" id="modeToggleBtn" onclick="toggleMode()">
-    🌙 ليلي
   </button>
 </div>
 
@@ -1833,7 +1788,7 @@
     { id: 28, nameAr: "بطاقة شحن عماني", nameEn: "Oman Gift Card", category: "giftcards", priceOMR: 5, oldPrice: 6, image: "", detailsAr: "الفئات: 5ر.ع | 10ر.ع | 20ر.ع", detailsEn: "Values: 5 OMR | 10 OMR | 20 OMR", timer: null, msgAr: "أريد بطاقة شحن عماني", msgEn: "I want Oman Gift Card", icon: "🇴🇲" }
   ];
   
-  const DATA_VERSION = "v4";
+  const DATA_VERSION = "v3"; // غيّر هذا الرقم كلما أضفت منتجات جديدة
 
   function loadFromLocal() {
     const savedVersion = localStorage.getItem("xnesto_version");
@@ -2064,15 +2019,14 @@
 
   const categoryGradients = {
     all:       "linear-gradient(135deg, #0d1b3e, #1a3a7a)",
-    games:     "linear-gradient(135deg, #000428, #004e92)",
+    games:     "linear-gradient(135deg, #0a0a2e, #1a1a6e)",
     giftcards: "linear-gradient(135deg, #003a1a, #006a30)",
   };
 
-  // صور حقيقية لكل تصنيف
-  const categoryBgImages = {
-    all:       "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Playstation_logo_colour.svg/800px-Playstation_logo_colour.svg.png",
-    games:     "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/PlayStation_5_logo_and_wordmark.svg/800px-PlayStation_5_logo_and_wordmark.svg.png",
-    giftcards: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/PSN_store_logo_2022.svg/800px-PSN_store_logo_2022.svg.png",
+  const categoryEmojiBg = {
+    all:       "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Playstation_logo_colour.svg/512px-Playstation_logo_colour.svg.png",
+    games:     "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/PlayStation_5_logo_and_wordmark.svg/512px-PlayStation_5_logo_and_wordmark.svg.png",
+    giftcards: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/PSN_store_logo_2022.svg/512px-PSN_store_logo_2022.svg.png",
   };
 
   function renderTabs() {
@@ -2080,25 +2034,38 @@
     if (!container) return;
 
     const allCats = [
-      { key: "all",       name: "جميع المنتجات", sub: "كل المنتجات",    icon: "📦" },
-      ...categories.map(c => ({ key: c, name: categoryNames[c] || c, sub: categoryNames[c] || c, icon: c === "games" ? "🎮" : c === "giftcards" ? "💳" : "🏷️" }))
+      { key: "all",       name: "جميع المنتجات", sub: "كل المنتجات" },
+      ...categories.map(c => ({ key: c, name: categoryNames[c] || c, sub: categoryNames[c] || c }))
     ];
 
+    // صور PS جاهزة لكل تصنيف
+    const catBgImages = {
+      all:       "https://images.unsplash.com/photo-1580327344181-c1163234e5a0?w=400&q=80",
+      games:     "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&q=80",
+      giftcards: "https://images.unsplash.com/photo-1607853202273-797f1c22a38e?w=400&q=80",
+    };
+    const catIcons = {
+      all:       "🎮",
+      games:     "🕹️",
+      giftcards: "💳",
+    };
+
     container.innerHTML = allCats.map(cat => {
-      const grad  = categoryGradients[cat.key] || "linear-gradient(135deg, #1a0a4e, #2d1a6e)";
-      const img   = categoryBgImages[cat.key];
+      const grad = categoryGradients[cat.key] || "linear-gradient(135deg, #1a0a4e, #2d1a6e)";
+      const bgImg = catBgImages[cat.key];
+      const icon = catIcons[cat.key] || "🏷️";
       const isActive = currentCategory === cat.key;
 
-      const bgHtml = img
-        ? `<div class="tab-btn-bg" style="background:${grad};">
-             <img src="${img}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:18%;opacity:0.85;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.6));" onerror="this.style.display='none';">
-           </div>`
-        : `<div class="tab-btn-bg" style="background:${grad};display:flex;align-items:center;justify-content:center;font-size:3rem;">${cat.icon}</div>`;
+      const bgStyle = bgImg
+        ? `background-image:url('${bgImg}'); background-size:cover; background-position:center;`
+        : `background:${grad};`;
 
       return `
         <div class="tab-btn ${isActive ? "active" : ""}" onclick="setTab('${cat.key}')">
-          ${bgHtml}
+          <div class="tab-btn-bg" style="${bgStyle}"></div>
+          <div style="position:absolute;inset:0;background:${grad};opacity:0.55;"></div>
           <div class="tab-btn-overlay"></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);font-size:2.5rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.8));">${icon}</div>
           <div class="tab-btn-text">
             <span class="tab-btn-title">${cat.name}</span>
             <span class="tab-btn-sub">${cat.sub}</span>
@@ -2482,33 +2449,15 @@
   window.closeTermsModal = closeTermsModal;
   window.closeCheckout = closeCheckout;
 
-  // ── وضع ليلي / نهاري ──
-  function toggleMode() {
-    const isLight = document.body.classList.toggle("light-mode");
-    const btn = document.getElementById("modeToggleBtn");
-    if (isLight) {
-      btn.innerHTML = "☀️ نهاري";
-    } else {
-      btn.innerHTML = "🌙 ليلي";
-    }
-    localStorage.setItem("xnesto_mode", isLight ? "light" : "dark");
-  }
-  // استعادة الوضع المحفوظ
-  const savedMode = localStorage.getItem("xnesto_mode");
-  if (savedMode === "light") {
-    document.body.classList.add("light-mode");
-    document.getElementById("modeToggleBtn").innerHTML = "☀️ نهاري";
-  }
-  window.toggleMode = toggleMode;
+  // ── اختيار حجم العرض ──
   function setView(view) {
     document.body.classList.remove("view-mobile", "view-tablet", "view-desktop");
     document.body.classList.add("view-" + view);
     document.querySelectorAll(".device-btn").forEach(b => b.classList.remove("active"));
-    const btnId = "btn" + view.charAt(0).toUpperCase() + view.slice(1);
-    const btn = document.getElementById(btnId);
-    if (btn) btn.classList.add("active");
+    document.getElementById("btn" + view.charAt(0).toUpperCase() + view.slice(1)).classList.add("active");
     localStorage.setItem("xnesto_view", view);
   }
+  // استعادة آخر اختيار
   const savedView = localStorage.getItem("xnesto_view") || "mobile";
   setView(savedView);
 </script>

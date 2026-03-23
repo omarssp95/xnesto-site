@@ -1833,7 +1833,7 @@
     { id: 28, nameAr: "بطاقة شحن عماني", nameEn: "Oman Gift Card", category: "giftcards", priceOMR: 5, oldPrice: 6, image: "", detailsAr: "الفئات: 5ر.ع | 10ر.ع | 20ر.ع", detailsEn: "Values: 5 OMR | 10 OMR | 20 OMR", timer: null, msgAr: "أريد بطاقة شحن عماني", msgEn: "I want Oman Gift Card", icon: "🇴🇲" }
   ];
   
-  const DATA_VERSION = "v3";
+  const DATA_VERSION = "v4";
 
   function loadFromLocal() {
     const savedVersion = localStorage.getItem("xnesto_version");
@@ -2066,7 +2066,6 @@
     all:       "linear-gradient(135deg, #0d1b3e, #1a3a7a)",
     games:     "linear-gradient(135deg, #000428, #004e92)",
     giftcards: "linear-gradient(135deg, #003a1a, #006a30)",
-    psplus:    "linear-gradient(135deg, #1a0050, #4a0090)",
   };
 
   // صور حقيقية لكل تصنيف
@@ -2074,7 +2073,6 @@
     all:       "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Playstation_logo_colour.svg/800px-Playstation_logo_colour.svg.png",
     games:     "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/PlayStation_5_logo_and_wordmark.svg/800px-PlayStation_5_logo_and_wordmark.svg.png",
     giftcards: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/PSN_store_logo_2022.svg/800px-PSN_store_logo_2022.svg.png",
-    psplus:    "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/PlayStation_Plus_logo.svg/800px-PlayStation_Plus_logo.svg.png",
   };
 
   function renderTabs() {
@@ -2083,7 +2081,7 @@
 
     const allCats = [
       { key: "all",       name: "جميع المنتجات", sub: "كل المنتجات",    icon: "📦" },
-      ...categories.map(c => ({ key: c, name: categoryNames[c] || c, sub: categoryNames[c] || c, icon: c === "games" ? "🎮" : c === "giftcards" ? "💳" : c === "psplus" ? "🌟" : "🏷️" }))
+      ...categories.map(c => ({ key: c, name: categoryNames[c] || c, sub: categoryNames[c] || c, icon: c === "games" ? "🎮" : c === "giftcards" ? "💳" : "🏷️" }))
     ];
 
     container.innerHTML = allCats.map(cat => {
@@ -2516,3 +2514,4 @@
 </script>
 </body>
 </html>
+

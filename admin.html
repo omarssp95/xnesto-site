@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم xnesto 🛠️</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body { background: #0a0a1a; font-family: 'Cairo', sans-serif; color: white; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background: #1e1e3a; padding: 20px; border-radius: 15px; border: 1px solid #ffaa44; }
+        h2 { text-align: center; color: #ffaa44; }
+        .product-item { background: #2a2a4a; padding: 15px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #444; }
+        input { width: 100%; padding: 10px; margin: 5px 0; background: #0a0a1a; border: 1px solid #444; color: white; border-radius: 5px; box-sizing: border-box; }
+        .save-btn { width: 100%; padding: 15px; background: #28a745; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1rem; margin-top: 20px; }
+        .save-btn:disabled { background: #666; cursor: not-allowed; }
+        #status { text-align: center; margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>لوحة تحكم المتجر 🛠️</h2>
+        <div id="loginArea">
+            <input type="password" id="passInput" placeholder="أدخل كلمة السر">
+            <button onclick="checkPass()" class="save-btn" style="background:#ffaa44; color:#000;">دخول</button>
+        </div>
+        <div id="adminArea" style="display:none;">
+            <div id="productsList">جاري تحميل المنتجات...</div>
+            <button id="saveBtn" class="save-btn" onclick="saveData()">✅ حفظ التغييرات لجميع العملاء</button>
+            <div id="status"></div>
+        </div>
+    </div>
+
+    <script>
+        const GITHUB_TOKEN = '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';
+        const REPO = 'omarssp95/xnesto-site';
+        let productsData = null;
+
+        function checkPass() {
+            if (document.getElementById('passInput').value === 'ssp1995') {
+                document.getElementById('loginArea').style.display = 'none';
+                document.getElementById('adminArea').style.display = 'block';
+                loadData();
+            } else { alert('كلمة سر خاطئة!'); }
+        }
+
+        async function loadData() {
+            const res = await fetch(`products.json?t=${Date.now()}`);
+            productsData = await res.json();
+            render();
+        }
+
+        function render() {
+            const list = document.getElementById('productsList');
+            let html = '<h3>الألعاب:</h3>';
+            productsData.games.forEach((p, i) => {
+                html += `<div class="product-item">
+                    <input type="text" value="${p.nameAr}" onchange="productsData.games[${i}].nameAr = this.value">
+                    <input type="number" value="${p.priceOMR}" onchange="productsData.games[${i}].priceOMR = parseFloat(this.value)">
+                </div>`;
+            });
+            html += '<h3>بطاقات الشحن:</h3>';
+            productsData.giftcards.forEach((p, i) => {
+                html += `<div class="product-item">
+                    <input type="text" value="${p.nameAr}" onchange="productsData.giftcards[${i}].nameAr = this.value">
+                    <input type="number" value="${p.priceOMR}" onchange="productsData.giftcards[${i}].priceOMR = parseFloat(this.value)">
+                </div>`;
+            });
+            list.innerHTML = html;
+        }
+
+        async function saveData() {
+            const btn = document.getElementById('saveBtn');
+            const status = document.getElementById('status');
+            btn.disabled = true;
+            status.innerText = "جاري الحفظ في GitHub... انتظر ثوانٍ";
+
+            try {
+                const url = `https://api.github.com/repos/${REPO}/contents/products.json`;
+                const fileRes = await fetch(url, { headers: { 'Authorization': `token ${GITHUB_TOKEN}` } });
+                const fileData = await fileRes.json();
+
+                productsData.version = "v_" + Date.now();
+
+                const updateRes = await fetch(url, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: "تحديث من لوحة التحكم",
+                        content: btoa(unescape(encodeURIComponent(JSON.stringify(productsData, null, 2)))),
+                        sha: fileData.sha
+                    })
+                });
+
+                if (updateRes.ok) {
+                    status.style.color = "#28a745";
+                    status.innerText = "✅ تم الحفظ بنجاح! سيظهر التعديل للجميع الآن.";
+                } else { throw new Error("فشل التحديث"); }
+            } catch (e) {
+                status.style.color = "#ff4444";
+                status.innerText = "❌ خطأ في الحفظ: " + e.message;
+            }
+            btn.disabled = false;
+        }
+    </script>
+</body>
+</html>

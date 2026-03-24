@@ -97,13 +97,26 @@
             margin-bottom: 1rem;
         }
         
+        .logout-btn {
+            background: #ff4444;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            margin-right: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        
         .product-edit-form {
             background: #1e1e3a;
             padding: 0.5rem;
             border-radius: 0.5rem;
             margin-top: 0.5rem;
         }
-        .product-edit-form input {
+        .product-edit-form input, .product-edit-form textarea, .product-edit-form select {
             width: 100%;
             padding: 0.3rem;
             margin: 0.2rem 0;
@@ -132,6 +145,49 @@
             color: #ffaa44;
         }
         
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a1a;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-box {
+            background: #11152b;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            border: 2px solid #ffaa44;
+            text-align: center;
+            width: 90%;
+            max-width: 350px;
+        }
+        .login-box h2 { color: #ffaa44; margin-bottom: 1rem; }
+        .login-box input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-radius: 2rem;
+            background: #1e1e3a;
+            border: 1px solid #ffaa44;
+            color: white;
+        }
+        .login-box button {
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            border-radius: 2rem;
+            background: #ffaa44;
+            color: #0a0a1a;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+        
         @media (max-width: 640px) {
             body { padding: 0.5rem; }
             th, td { padding: 6px; font-size: 0.7rem; }
@@ -141,37 +197,49 @@
 </head>
 <body>
 
-<div class="header">
-    <h1>🔐 لوحة إدارة xnesto</h1>
-    <p>إضافة - تعديل - حذف المنتجات</p>
-</div>
-
-<a href="index.html" class="back-link"><i class="fas fa-arrow-right"></i> العودة للمتجر</a>
-
-<div class="admin-panel">
-    <h3>➕ إضافة منتج جديد</h3>
-    <div class="add-form">
-        <input type="text" id="newNameAr" placeholder="الاسم بالعربية">
-        <input type="text" id="newNameEn" placeholder="Name in English">
-        <select id="newCategory">
-            <option value="games">🎮 ألعاب PS4/PS5</option>
-            <option value="giftcards">💳 بطاقات شحن</option>
-        </select>
-        <input type="number" id="newPrice" step="0.5" placeholder="السعر (ر.ع)">
-        <input type="number" id="newOldPrice" step="0.5" placeholder="السعر القديم (اختياري)">
-        <input type="text" id="newImage" placeholder="رابط الصورة (URL)">
-        <textarea id="newDesc" rows="1" placeholder="وصف المنتج"></textarea>
-        <button class="btn-save" onclick="addProduct()">💾 إضافة المنتج</button>
+<div id="loginScreen" class="login-screen">
+    <div class="login-box">
+        <h2>🔐 تسجيل الدخول</h2>
+        <input type="password" id="adminPassword" placeholder="كلمة السر">
+        <button onclick="login()">دخول</button>
     </div>
 </div>
 
-<div id="productsTable" class="products-table">
-    <div class="loading">جاري التحميل...</div>
-</div>
+<div id="mainContent" style="display: none;">
+    <div class="header">
+        <h1>🔐 لوحة إدارة xnesto</h1>
+        <p>إضافة - تعديل - حذف المنتجات</p>
+    </div>
 
-<div class="footer">
-    <p>📞 واتساب: +96879977100 | 📸 انستقرام: xnesto_store</p>
-    <p style="font-size:0.7rem;">كلمة سر الأدمن: ssp1995</p>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem;">
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-right"></i> العودة للمتجر</a>
+        <button onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</button>
+    </div>
+
+    <div class="admin-panel">
+        <h3>➕ إضافة منتج جديد</h3>
+        <div class="add-form">
+            <input type="text" id="newNameAr" placeholder="الاسم بالعربية">
+            <input type="text" id="newNameEn" placeholder="Name in English">
+            <select id="newCategory">
+                <option value="games">🎮 ألعاب PS4/PS5</option>
+                <option value="giftcards">💳 بطاقات شحن</option>
+            </select>
+            <input type="number" id="newPrice" step="0.5" placeholder="السعر (ر.ع)">
+            <input type="number" id="newOldPrice" step="0.5" placeholder="السعر القديم (اختياري)">
+            <input type="text" id="newImage" placeholder="رابط الصورة (URL)">
+            <textarea id="newDesc" rows="1" placeholder="وصف المنتج"></textarea>
+            <button class="btn-save" onclick="addProduct()">💾 إضافة المنتج</button>
+        </div>
+    </div>
+
+    <div id="productsTable" class="products-table">
+        <div class="loading">جاري التحميل...</div>
+    </div>
+
+    <div class="footer">
+        <p>📞 واتساب: +96879977100 | 📸 انستقرام: xnesto_store</p>
+    </div>
 </div>
 
 <script>
@@ -185,18 +253,41 @@
     const productsRef = database.ref('products');
     
     let products = [];
-    let editModeId = null;
     const ADMIN_PASSWORD = "ssp1995";
+    const SESSION_KEY = "xnesto_admin_logged";
     
-    // التحقق من كلمة السر
-    function checkAuth() {
-        const pwd = prompt('🔐 أدخل كلمة سر الأدمن:');
-        if (pwd !== ADMIN_PASSWORD) {
-            alert('❌ كلمة السر غير صحيحة');
-            window.location.href = 'index.html';
-            return false;
+    // التحقق من الجلسة
+    function checkSession() {
+        const isLogged = localStorage.getItem(SESSION_KEY);
+        if (isLogged === "true") {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            loadProducts();
+        } else {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('mainContent').style.display = 'none';
         }
-        return true;
+    }
+    
+    // تسجيل الدخول
+    function login() {
+        const pwd = document.getElementById('adminPassword').value;
+        if (pwd === ADMIN_PASSWORD) {
+            localStorage.setItem(SESSION_KEY, "true");
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            loadProducts();
+        } else {
+            alert('❌ كلمة السر غير صحيحة');
+        }
+    }
+    
+    // تسجيل الخروج
+    function logout() {
+        localStorage.removeItem(SESSION_KEY);
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('mainContent').style.display = 'none';
+        document.getElementById('adminPassword').value = '';
     }
     
     // تحميل المنتجات
@@ -363,9 +454,7 @@
     }
     
     // بدء التشغيل
-    if (checkAuth()) {
-        loadProducts();
-    }
+    checkSession();
 </script>
 </body>
 </html>

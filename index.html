@@ -6,7 +6,6 @@
   <title>xnesto – متجر الألعاب وبطاقات الشحن | PS4/PS5</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    /* كل الكود الأصلي موجود كما هو - لم يتغير شيء في التصميم */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background: linear-gradient(135deg, #0a0a1a 0%, #0a0a1a 100%);
@@ -23,7 +22,6 @@
       border-radius: 1.5rem;
       margin-bottom: 1.5rem;
       border: 1px solid rgba(255, 170, 68, 0.3);
-      overflow: visible;
     }
     .header h1 {
       font-size: 2.5rem;
@@ -139,27 +137,6 @@
       min-width: 150px;
     }
     .admin-add-body textarea { min-width: 200px; border-radius: 15px; }
-    .image-upload-area {
-      background: #1e1e3a;
-      border: 2px dashed #ffaa44;
-      border-radius: 1rem;
-      padding: 0.8rem;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.2s;
-      flex: 1;
-      min-width: 150px;
-    }
-    .image-upload-area:hover { background: #2d2f6e; }
-    .image-upload-area input { display: none; }
-    .image-preview {
-      margin-top: 8px;
-      max-width: 100%;
-      max-height: 80px;
-      border-radius: 8px;
-      display: none;
-      object-fit: contain;
-    }
     .btn-add-product {
       background: #00cc88;
       border: none;
@@ -310,22 +287,22 @@
       color: #ffaa66;
       margin-bottom: 8px;
     }
-    .edit-price-row, .edit-image-row {
+    .edit-price-row {
       display: flex;
       align-items: center;
       gap: 8px;
       margin-bottom: 8px;
       flex-wrap: wrap;
     }
-    .edit-price-row input, .edit-image-row input {
+    .edit-price-row input {
       background: #1e1e3a;
       border: 1px solid #ffaa44;
       border-radius: 30px;
       padding: 6px 10px;
       flex: 1;
       color: white;
+      width: 90px;
     }
-    .edit-price-row input { width: 90px; flex: none; }
     .edit-image-url-row {
       margin-bottom: 8px;
     }
@@ -408,27 +385,8 @@
       .product-title { font-size: 0.85rem; }
       .price { font-size: 1rem; }
     }
-  </style>
-  <style>
-    /* تأثيرات النار والجزيئات (من الكود الأصلي) */
-    .fire-wrap {
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      gap: 4px;
-      height: 55px;
-      margin-bottom: 4px;
-    }
-    .fire-flame {
-      width: 14px;
-      border-radius: 50% 50% 20% 20%;
-      animation: flicker 0.5s ease-in-out infinite alternate;
-      transform-origin: bottom center;
-    }
-    @keyframes flicker {
-      0%   { transform: scaleX(1) scaleY(1) rotate(-4deg); opacity: 1; }
-      100% { transform: scaleX(0.8) scaleY(1.2) rotate(4deg); opacity: 0.8; }
-    }
+    
+    /* device bar */
     .device-bar {
       background: #07071a;
       border-bottom: 1px solid rgba(255,170,68,0.2);
@@ -563,10 +521,10 @@
 
 <script>
   // ==================== JSONBin Configuration ====================
-  const JSONBIN_BIN_ID = "67e1ac9b8960c979a58e6be0";
+  const JSONBIN_BIN_ID = "69c1e0c7b7ec241ddc981f9e";
   const JSONBIN_API_KEY = "$2a$10$aD0gMMNvbLNHdex117ujwu.CPDmeaAf8h2Bg.7c8CMwpF.DNob3Hu";
 
-  // ==================== المنتجات الافتراضية (كل الألعاب موجودة) ====================
+  // ==================== المنتجات الافتراضية ====================
   let products = [];
   let currentLang = "ar";
   let currentCurrency = "OMR";

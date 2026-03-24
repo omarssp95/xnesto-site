@@ -56,7 +56,7 @@
             flex-wrap: wrap;
             gap: 0.5rem;
         }
-        .add-form input, .add-form textarea {
+        .add-form input, .add-form textarea, .add-form select {
             background: #1e1e3a;
             border: 1px solid #ffaa44;
             border-radius: 2rem;
@@ -163,7 +163,7 @@
             margin-top: 0.5rem;
             border-radius: 0.5rem;
         }
-        .admin-edit input {
+        .admin-edit input, .admin-edit textarea {
             width: 100%;
             background: #1e1e3a;
             border: 1px solid #ffaa44;
@@ -173,6 +173,7 @@
             margin-bottom: 5px;
             font-size: 0.7rem;
         }
+        .admin-edit textarea { resize: vertical; }
         .edit-buttons {
             display: flex;
             gap: 5px;
@@ -267,11 +268,11 @@
 <script>
     // ==================== JSONBin Configuration ====================
     const BIN_ID = "69c1e0c7b7ec241ddc981f9e";
+    const MASTER_KEY = "$2a$10$aD0gMMNvbLNHdex117ujwu.CPDmeaAf8h2Bg.7c8CMwpF.DNob3Hu";
     const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
     const READ_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`;
     
     let products = [];
-    let currentLang = "ar";
     let currentCategory = "all";
     let searchQuery = "";
     let currentPage = 1;
@@ -280,13 +281,13 @@
     const ADMIN_PASSWORD = "ssp1995";
     const WA_NUMBER = "96879977100";
     
-    // ==================== تحميل المنتجات من JSONBin ====================
+    // ==================== تحميل المنتجات ====================
     async function loadProducts() {
         try {
             const response = await fetch(READ_URL + "?t=" + Date.now());
             if (response.ok) {
                 const data = await response.json();
-                if (data.record && data.record.products && data.record.products.length > 0) {
+                if (data.record && data.record.products && Array.isArray(data.record.products)) {
                     products = data.record.products;
                 } else {
                     products = [];
@@ -301,18 +302,24 @@
         renderProducts();
     }
     
-    // ==================== حفظ المنتجات إلى JSONBin ====================
+    // ==================== حفظ المنتجات ====================
     async function saveProducts() {
         try {
             const response = await fetch(API_URL, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-Master-Key": "$2a$10$aD0gMMNvbLNHdex117ujwu.CPDmeaAf8h2Bg.7c8CMwpF.DNob3Hu"
+                    "X-Master-Key": MASTER_KEY
                 },
                 body: JSON.stringify({ products: products })
             });
-            return response.ok;
+            if (response.ok) {
+                return true;
+            } else {
+                const error = await response.text();
+                console.error("Save error:", error);
+                return false;
+            }
         } catch (error) {
             console.error("Error saving:", error);
             return false;
@@ -324,7 +331,7 @@
         let filtered = [...products];
         if (searchQuery.trim()) {
             const query = searchQuery.toLowerCase();
-            filtered = filtered.filter(p => p.name.toLowerCase().includes(query));
+            filtered = filtered.filter(p => p.name && p.name.toLowerCase().includes(query));
         }
         if (currentCategory !== 'all') {
             filtered = filtered.filter(p => p.category === currentCategory);
@@ -340,49 +347,53 @@
         const pageProducts = filtered.slice(start, start + ITEMS_PER_PAGE);
         
         const container = document.getElementById('productsContainer');
-        container.innerHTML = pageProducts.map(p => {
-            const hasDiscount = p.oldPrice && p.oldPrice > p.price;
-            const discountPercent = hasDiscount ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
-            const categoryIcon = p.category === 'games' ? '🎮' : '💳';
-            
-            let imageHtml = '';
-            if (p.image && p.image.trim()) {
-                imageHtml = `<div class="product-image" style="background-image: url('${p.image}');"></div>`;
-            } else {
-                imageHtml = `<div class="product-image"><div>${categoryIcon}</div></div>`;
-            }
-            
-            return `
-                <div class="product-card">
-                    ${hasDiscount ? `<div class="discount-badge">🔥 -${discountPercent}%</div>` : ''}
-                    ${imageHtml}
-                    <div class="card-info">
-                        <div class="product-title">${p.name}</div>
-                        <div class="product-desc">${p.desc || ''}</div>
-                        <div class="price">
-                            ${hasDiscount ? `<span class="old-price">${p.oldPrice} ر.ع</span> ` : ''}
-                            ${p.price} ر.ع
-                        </div>
-                        <button class="btn-wa" onclick="buyProduct('${p.name}', ${p.price})">
-                            <i class="fab fa-whatsapp"></i> اطلب الآن
-                        </button>
-                    </div>
-                    ${adminMode ? `
-                        <div class="admin-edit">
-                            <input type="text" id="editName_${p.id}" value="${p.name.replace(/'/g, "\\'")}">
-                            <input type="number" id="editPrice_${p.id}" value="${p.price}" step="0.5">
-                            <input type="number" id="editOldPrice_${p.id}" value="${p.oldPrice || ''}" step="0.5">
-                            <input type="text" id="editImage_${p.id}" value="${p.image || ''}">
-                            <textarea id="editDesc_${p.id}" rows="1">${p.desc || ''}</textarea>
-                            <div class="edit-buttons">
-                                <button class="save-edit" onclick="updateProduct(${p.id})">💾 حفظ</button>
-                                <button class="delete-product" onclick="deleteProduct(${p.id})">🗑️ حذف</button>
+        if (pageProducts.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:2rem;">لا توجد منتجات حالياً</div>';
+        } else {
+            container.innerHTML = pageProducts.map(p => {
+                const hasDiscount = p.oldPrice && p.oldPrice > p.price;
+                const discountPercent = hasDiscount ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
+                const categoryIcon = p.category === 'games' ? '🎮' : '💳';
+                
+                let imageHtml = '';
+                if (p.image && p.image.trim()) {
+                    imageHtml = `<div class="product-image" style="background-image: url('${p.image}');"></div>`;
+                } else {
+                    imageHtml = `<div class="product-image"><div>${categoryIcon}</div></div>`;
+                }
+                
+                return `
+                    <div class="product-card">
+                        ${hasDiscount ? `<div class="discount-badge">🔥 -${discountPercent}%</div>` : ''}
+                        ${imageHtml}
+                        <div class="card-info">
+                            <div class="product-title">${escapeHtml(p.name)}</div>
+                            <div class="product-desc">${escapeHtml(p.desc || '')}</div>
+                            <div class="price">
+                                ${hasDiscount ? `<span class="old-price">${p.oldPrice} ر.ع</span> ` : ''}
+                                ${p.price} ر.ع
                             </div>
+                            <button class="btn-wa" onclick="buyProduct('${escapeHtml(p.name)}', ${p.price})">
+                                <i class="fab fa-whatsapp"></i> اطلب الآن
+                            </button>
                         </div>
-                    ` : ''}
-                </div>
-            `;
-        }).join('');
+                        ${adminMode ? `
+                            <div class="admin-edit">
+                                <input type="text" id="editName_${p.id}" value="${escapeHtml(p.name)}">
+                                <input type="number" id="editPrice_${p.id}" value="${p.price}" step="0.5">
+                                <input type="number" id="editOldPrice_${p.id}" value="${p.oldPrice || ''}" step="0.5">
+                                <input type="text" id="editImage_${p.id}" value="${escapeHtml(p.image || '')}">
+                                <textarea id="editDesc_${p.id}" rows="1">${escapeHtml(p.desc || '')}</textarea>
+                                <div class="edit-buttons">
+                                    <button class="save-edit" onclick="updateProduct(${p.id})">💾 حفظ</button>
+                                    <button class="delete-product" onclick="deleteProduct(${p.id})">🗑️ حذف</button>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
         
         // Pagination
         const pagContainer = document.getElementById('pagination');
@@ -395,6 +406,18 @@
         } else {
             pagContainer.innerHTML = '';
         }
+    }
+    
+    function escapeHtml(text) {
+        if (!text) return '';
+        return text.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
     }
     
     function goToPage(page) {
@@ -419,13 +442,20 @@
     function toggleAdmin() {
         const pwd = prompt('🔐 أدخل كلمة سر الأدمن:');
         if (pwd === ADMIN_PASSWORD) {
-            adminMode = !adminMode;
-            alert(adminMode ? '✅ وضع التعديل مفعل' : '❌ تم إيقاف وضع التعديل');
-            document.getElementById('adminPanel').classList.toggle('active', adminMode);
+            adminMode = true;
+            alert('✅ وضع التعديل مفعل');
+            document.getElementById('adminPanel').classList.add('active');
             renderProducts();
         } else if (pwd !== null) {
             alert('❌ كلمة السر غير صحيحة');
         }
+    }
+    
+    function exitAdmin() {
+        adminMode = false;
+        document.getElementById('adminPanel').classList.remove('active');
+        renderProducts();
+        alert('❌ تم إيقاف وضع التعديل');
     }
     
     async function addProduct() {
@@ -443,8 +473,12 @@
         
         const newProduct = {
             id: Date.now(),
-            name, price, oldPrice: oldPrice > price ? oldPrice : null,
-            image, desc, category
+            name: name,
+            price: price,
+            oldPrice: (oldPrice && oldPrice > price) ? oldPrice : null,
+            image: image,
+            desc: desc,
+            category: category
         };
         
         products.push(newProduct);
@@ -458,7 +492,8 @@
             alert('✅ تم إضافة المنتج بنجاح! (سيظهر للجميع فوراً)');
             renderProducts();
         } else {
-            alert('❌ حدث خطأ في الحفظ');
+            products.pop();
+            alert('❌ حدث خطأ في الحفظ. تأكد من اتصال الإنترنت.');
         }
     }
     
@@ -466,12 +501,22 @@
         const product = products.find(p => p.id === id);
         if (!product) return;
         
-        product.name = document.getElementById(`editName_${id}`).value;
-        product.price = parseFloat(document.getElementById(`editPrice_${id}`).value);
-        product.oldPrice = parseFloat(document.getElementById(`editOldPrice_${id}`).value) || null;
-        if (product.oldPrice && product.oldPrice <= product.price) product.oldPrice = null;
-        product.image = document.getElementById(`editImage_${id}`).value;
-        product.desc = document.getElementById(`editDesc_${id}`).value;
+        const newName = document.getElementById(`editName_${id}`).value;
+        const newPrice = parseFloat(document.getElementById(`editPrice_${id}`).value);
+        const newOldPrice = parseFloat(document.getElementById(`editOldPrice_${id}`).value) || null;
+        const newImage = document.getElementById(`editImage_${id}`).value;
+        const newDesc = document.getElementById(`editDesc_${id}`).value;
+        
+        if (!newName || isNaN(newPrice)) {
+            alert('الاسم والسعر مطلوبان');
+            return;
+        }
+        
+        product.name = newName;
+        product.price = newPrice;
+        product.oldPrice = (newOldPrice && newOldPrice > newPrice) ? newOldPrice : null;
+        product.image = newImage;
+        product.desc = newDesc;
         
         const saved = await saveProducts();
         if (saved) {
@@ -484,13 +529,16 @@
     
     async function deleteProduct(id) {
         if (confirm('⚠️ هل أنت متأكد من حذف هذا المنتج؟')) {
-            products = products.filter(p => p.id !== id);
-            const saved = await saveProducts();
-            if (saved) {
-                alert('✅ تم حذف المنتج بنجاح!');
-                renderProducts();
-            } else {
-                alert('❌ حدث خطأ في الحفظ');
+            const index = products.findIndex(p => p.id === id);
+            if (index !== -1) {
+                products.splice(index, 1);
+                const saved = await saveProducts();
+                if (saved) {
+                    alert('✅ تم حذف المنتج بنجاح!');
+                    renderProducts();
+                } else {
+                    alert('❌ حدث خطأ في الحفظ');
+                }
             }
         }
     }
@@ -501,6 +549,23 @@
         currentPage = 1;
         renderProducts();
     });
+    
+    // ==================== إضافة زر خروج من وضع الإدارة ====================
+    const adminPanel = document.getElementById('adminPanel');
+    if (adminPanel && !document.getElementById('exitAdminBtn')) {
+        const exitBtn = document.createElement('button');
+        exitBtn.id = 'exitAdminBtn';
+        exitBtn.textContent = '🚪 خروج من وضع الإدارة';
+        exitBtn.style.background = '#ff4444';
+        exitBtn.style.color = 'white';
+        exitBtn.style.border = 'none';
+        exitBtn.style.padding = '0.3rem 1rem';
+        exitBtn.style.borderRadius = '2rem';
+        exitBtn.style.marginTop = '0.5rem';
+        exitBtn.style.cursor = 'pointer';
+        exitBtn.onclick = exitAdmin;
+        adminPanel.appendChild(exitBtn);
+    }
     
     // ==================== التشغيل ====================
     loadProducts();

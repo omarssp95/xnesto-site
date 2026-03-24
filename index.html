@@ -286,7 +286,6 @@
             z-index: 999;
         }
         
-        /* مودال الشروط */
         .terms-modal {
             display: none;
             position: fixed;
@@ -501,7 +500,6 @@
     <i class="fab fa-whatsapp"></i>
 </a>
 
-<!-- مودال الشروط -->
 <div id="termsModal" class="terms-modal">
     <div class="terms-box">
         <h3><i class="fas fa-file-contract"></i> شروط وأحكام الشراء</h3>
@@ -519,7 +517,6 @@
 </div>
 
 <script>
-    // Firebase Configuration
     const firebaseConfig = { databaseURL: "https://xnesto-645bf-default-rtdb.asia-southeast1.firebasedatabase.app/" };
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
@@ -540,58 +537,58 @@
     const exchangeRates = { OMR: 1, USD: 2.6, SAR: 9.75, AED: 9.55 };
     const currencySymbols = { OMR: "ر.ع", USD: "$", SAR: "ر.س", AED: "د.إ" };
     
-    // ==================== 50 لعبة حقيقية متنوعة ====================
+    // ==================== 50 لعبة حقيقية متنوعة بصور مختلفة ====================
     const allGames = [
-        { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي | 🗡️ اليابان", detailsEn: "📦 65GB | 🎮 Arabic/English | 🗡️ Japan" },
-        { id: 2, nameAr: "Call of Duty: Black Ops 6", nameEn: "Call of Duty: Black Ops 6", priceOMR: 22, oldPrice: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي | 🔫 تصويب", detailsEn: "📦 120GB | 🎮 English | 🔫 Shooter" },
+        { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي | 🗡️ مغامرة في اليابان", detailsEn: "📦 65GB | 🎮 Arabic/English | 🗡️ Japan Adventure" },
+        { id: 2, nameAr: "Call of Duty: Black Ops 6", nameEn: "Call of Duty: Black Ops 6", priceOMR: 22, oldPrice: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي | 🔫 تصويب وتكتيك", detailsEn: "📦 120GB | 🎮 English | 🔫 Shooter" },
         { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", priceOMR: 6, oldPrice: 10, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", detailsAr: "🏷️ 150GB | 🌍 عالم مفتوح | 🚗 Vice City", detailsEn: "📦 150GB | 🌍 Open World | 🚗 Vice City" },
-        { id: 4, nameAr: "God of War Ragnarök", nameEn: "God of War Ragnarök", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg", detailsAr: "🏷️ 85GB | 🪓 ملحمة إسكندنافية", detailsEn: "📦 85GB | 🪓 Norse Saga" },
-        { id: 5, nameAr: "Spider-Man 2", nameEn: "Spider-Man 2", priceOMR: 16, oldPrice: 22, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", detailsAr: "🏷️ 98GB | 🕷️ بيتر + مايلز", detailsEn: "📦 98GB | 🕷️ Peter + Miles" },
-        { id: 6, nameAr: "Final Fantasy XVI", nameEn: "Final Fantasy XVI", priceOMR: 18, oldPrice: 25, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2909400/header.jpg", detailsAr: "🏷️ 145GB | 🗡️ RPG خيالية", detailsEn: "📦 145GB | 🗡️ Fantasy RPG" },
-        { id: 7, nameAr: "Tekken 8", nameEn: "Tekken 8", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1778820/header.jpg", detailsAr: "🏷️ 80GB | 🥊 لعبة قتال", detailsEn: "📦 80GB | 🥊 Fighting Game" },
-        { id: 8, nameAr: "The Last of Us Part II", nameEn: "The Last of Us Part II", priceOMR: 8, oldPrice: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1888930/header.jpg", detailsAr: "🏷️ 78GB | 🧟 بقاء ورعب", detailsEn: "📦 78GB | 🧟 Survival Horror" },
-        { id: 9, nameAr: "Red Dead Redemption 2", nameEn: "Red Dead Redemption 2", priceOMR: 9, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg", detailsAr: "🏷️ 150GB | 🤠 مغامرة غرب", detailsEn: "📦 150GB | 🤠 Western Adventure" },
-        { id: 10, nameAr: "Cyberpunk 2077", nameEn: "Cyberpunk 2077", priceOMR: 10, oldPrice: 16, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg", detailsAr: "🏷️ 70GB | 🌆 مستقبل مفتوح", detailsEn: "📦 70GB | 🌆 Open World Future" },
-        { id: 11, nameAr: "Elden Ring", nameEn: "Elden Ring", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg", detailsAr: "🏷️ 60GB | ⚔️ RPG خيالي", detailsEn: "📦 60GB | ⚔️ Fantasy RPG" },
-        { id: 12, nameAr: "Horizon Forbidden West", nameEn: "Horizon Forbidden West", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1151640/header.jpg", detailsAr: "🏷️ 96GB | 🦕 مغامرة مستقبلية", detailsEn: "📦 96GB | 🦕 Future Adventure" },
-        { id: 13, nameAr: "Ghost of Tsushima", nameEn: "Ghost of Tsushima", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2215430/header.jpg", detailsAr: "🏷️ 50GB | 🗡️ ساموراي", detailsEn: "📦 50GB | 🗡️ Samurai" },
-        { id: 14, nameAr: "Uncharted 4", nameEn: "Uncharted 4", priceOMR: 7, oldPrice: 12, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1659420/header.jpg", detailsAr: "🏷️ 50GB | 🏺 مغامرة", detailsEn: "📦 50GB | 🏺 Adventure" },
-        { id: 15, nameAr: "Bloodborne", nameEn: "Bloodborne", priceOMR: 8, oldPrice: 13, image: "https://upload.wikimedia.org/wikipedia/en/6/6a/Bloodborne_Cover_Wallpaper.jpg", detailsAr: "🏷️ 50GB | 🩸 رعب وأكشن", detailsEn: "📦 50GB | 🩸 Horror Action" },
-        { id: 16, nameAr: "Sekiro: Shadows Die Twice", nameEn: "Sekiro: Shadows Die Twice", priceOMR: 10, oldPrice: 16, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/814380/header.jpg", detailsAr: "🏷️ 25GB | ⛩️ ساموراي", detailsEn: "📦 25GB | ⛩️ Samurai Action" },
-        { id: 17, nameAr: "Dragon's Dogma 2", nameEn: "Dragon's Dogma 2", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2054970/header.jpg", detailsAr: "🏷️ 60GB | 🐉 RPG خيالي", detailsEn: "📦 60GB | 🐉 Fantasy RPG" },
-        { id: 18, nameAr: "Rise of the Ronin", nameEn: "Rise of the Ronin", priceOMR: 13, oldPrice: 19, image: "https://image.api.playstation.com/vulcan/ap/rnd/202310/1000/c9e9fbf7d3c3a7ab02cf37df3bfca60fc4ae6d45.png", detailsAr: "🏷️ 60GB | ⚔️ حصري PS5", detailsEn: "📦 60GB | ⚔️ PS5 Exclusive" },
-        { id: 19, nameAr: "Baldur's Gate 3", nameEn: "Baldur's Gate 3", priceOMR: 14, oldPrice: 20, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1086940/header.jpg", detailsAr: "🏷️ 150GB | 🧙 RPG خيالي", detailsEn: "📦 150GB | 🧙 Fantasy RPG" },
-        { id: 20, nameAr: "Starfield", nameEn: "Starfield", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1716740/header.jpg", detailsAr: "🏷️ 140GB | 🚀 فضاء مفتوح", detailsEn: "📦 140GB | 🚀 Space RPG" },
-        { id: 21, nameAr: "Diablo IV", nameEn: "Diablo IV", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2344520/header.jpg", detailsAr: "🏷️ 90GB | 😈 RPG مظلم", detailsEn: "📦 90GB | 😈 Dark RPG" },
-        { id: 22, nameAr: "Resident Evil 4 Remake", nameEn: "Resident Evil 4 Remake", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/header.jpg", detailsAr: "🏷️ 67GB | 🧟 رعب وأكشن", detailsEn: "📦 67GB | 🧟 Horror Action" },
-        { id: 23, nameAr: "Helldivers 2", nameEn: "Helldivers 2", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/553850/header.jpg", detailsAr: "🏷️ 100GB | 🪖 تعاوني", detailsEn: "📦 100GB | 🪖 Co-op Shooter" },
-        { id: 24, nameAr: "Gran Turismo 7", nameEn: "Gran Turismo 7", priceOMR: 11, oldPrice: 17, image: "https://image.api.playstation.com/vulcan/ap/rnd/202109/1321/nBW6AOVBgTYGhhUEVwklGPgr.png", detailsAr: "🏷️ 110GB | 🏎️ سباق سيارات", detailsEn: "📦 110GB | 🏎️ Racing" },
-        { id: 25, nameAr: "The Witcher 3", nameEn: "The Witcher 3", priceOMR: 7, oldPrice: 12, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/header.jpg", detailsAr: "🏷️ 50GB | 🗡️ RPG خيالي", detailsEn: "📦 50GB | 🗡️ Fantasy RPG" },
-        { id: 26, nameAr: "Death Stranding", nameEn: "Death Stranding", priceOMR: 8, oldPrice: 13, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1190460/header.jpg", detailsAr: "🏷️ 80GB | 🌊 مغامرة فريدة", detailsEn: "📦 80GB | 🌊 Unique Adventure" },
-        { id: 27, nameAr: "Returnal", nameEn: "Returnal", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1649240/header.jpg", detailsAr: "🏷️ 60GB | 👾 حصري PS5", detailsEn: "📦 60GB | 👾 PS5 Exclusive" },
-        { id: 28, nameAr: "Ratchet & Clank", nameEn: "Ratchet & Clank", priceOMR: 9, oldPrice: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1895880/header.jpg", detailsAr: "🏷️ 83GB | 🔧 مغامرة PS5", detailsEn: "📦 83GB | 🔧 PS5 Adventure" },
-        { id: 29, nameAr: "Demon's Souls", nameEn: "Demon's Souls", priceOMR: 9, oldPrice: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1259420/header.jpg", detailsAr: "🏷️ 66GB | ⚔️ حصري PS5", detailsEn: "📦 66GB | ⚔️ PS5 Exclusive" },
-        { id: 30, nameAr: "Mortal Kombat 1", nameEn: "Mortal Kombat 1", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1971870/header.jpg", detailsAr: "🏷️ 100GB | 🥊 قتال دموي", detailsEn: "📦 100GB | 🥊 Fighting" },
-        { id: 31, nameAr: "Street Fighter 6", nameEn: "Street Fighter 6", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1799460/header.jpg", detailsAr: "🏷️ 60GB | 🥊 قتال كلاسيكي", detailsEn: "📦 60GB | 🥊 Classic Fighting" },
-        { id: 32, nameAr: "WWE 2K24", nameEn: "WWE 2K24", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2285550/header.jpg", detailsAr: "🏷️ 55GB | 🤼 مصارعة", detailsEn: "📦 55GB | 🤼 Wrestling" },
-        { id: 33, nameAr: "NBA 2K24", nameEn: "NBA 2K24", priceOMR: 10, oldPrice: 16, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2338770/header.jpg", detailsAr: "🏷️ 150GB | 🏀 كرة سلة", detailsEn: "📦 150GB | 🏀 Basketball" },
-        { id: 34, nameAr: "FIFA 23", nameEn: "FIFA 23", priceOMR: 8, oldPrice: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1811260/header.jpg", detailsAr: "🏷️ 100GB | ⚽ كرة قدم", detailsEn: "📦 100GB | ⚽ Football" },
-        { id: 35, nameAr: "UFC 5", nameEn: "UFC 5", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2365960/header.jpg", detailsAr: "🏷️ 60GB | 🥊 فنون قتالية", detailsEn: "📦 60GB | 🥊 MMA" },
-        { id: 36, nameAr: "It Takes Two", nameEn: "It Takes Two", priceOMR: 8, oldPrice: 13, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1426210/header.jpg", detailsAr: "🏷️ 50GB | 👫 لعب ثنائي", detailsEn: "📦 50GB | 👫 Co-op" },
-        { id: 37, nameAr: "A Plague Tale Requiem", nameEn: "A Plague Tale Requiem", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1182480/header.jpg", detailsAr: "🏷️ 55GB | 🐀 مغامرة تاريخية", detailsEn: "📦 55GB | 🐀 Historical Adventure" },
-        { id: 38, nameAr: "Star Wars Jedi Survivor", nameEn: "Star Wars Jedi Survivor", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1775010/header.jpg", detailsAr: "🏷️ 130GB | ⚡ حرب النجوم", detailsEn: "📦 130GB | ⚡ Star Wars" },
-        { id: 39, nameAr: "Lies of P", nameEn: "Lies of P", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1627720/header.jpg", detailsAr: "🏷️ 30GB | 🪆 RPG أكشن", detailsEn: "📦 30GB | 🪆 Action RPG" },
-        { id: 40, nameAr: "Alan Wake 2", nameEn: "Alan Wake 2", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1874189/header.jpg", detailsAr: "🏷️ 90GB | 🔦 رعب نفسي", detailsEn: "📦 90GB | 🔦 Psychological Horror" },
-        { id: 41, nameAr: "Forspoken", nameEn: "Forspoken", priceOMR: 7, oldPrice: 12, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1680880/header.jpg", detailsAr: "🏷️ 60GB | ✨ سحر وخيال", detailsEn: "📦 60GB | ✨ Magic Fantasy" },
-        { id: 42, nameAr: "Gotham Knights", nameEn: "Gotham Knights", priceOMR: 9, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1496790/header.jpg", detailsAr: "🏷️ 45GB | 🦇 باتمان", detailsEn: "📦 45GB | 🦇 Batman" },
-        { id: 43, nameAr: "Suicide Squad", nameEn: "Suicide Squad", priceOMR: 8, oldPrice: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/315210/header.jpg", detailsAr: "🏷️ 65GB | 💥 أبطال خارقون", detailsEn: "📦 65GB | 💥 Superheroes" },
-        { id: 44, nameAr: "Armored Core VI", nameEn: "Armored Core VI", priceOMR: 11, oldPrice: 16, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1888160/header.jpg", detailsAr: "🏷️ 50GB | 🤖 روبوت أكشن", detailsEn: "📦 50GB | 🤖 Mech Action" },
-        { id: 45, nameAr: "Avatar Frontiers", nameEn: "Avatar Frontiers", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1580380/header.jpg", detailsAr: "🏷️ 90GB | 🌿 عالم مفتوح", detailsEn: "📦 90GB | 🌿 Open World" },
-        { id: 46, nameAr: "Prince of Persia", nameEn: "Prince of Persia", priceOMR: 9, oldPrice: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1951270/header.jpg", detailsAr: "🏷️ 10GB | 👑 مغامرة", detailsEn: "📦 10GB | 👑 Adventure" },
-        { id: 47, nameAr: "Crash Bandicoot 4", nameEn: "Crash Bandicoot 4", priceOMR: 8, oldPrice: 13, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1378990/header.jpg", detailsAr: "🏷️ 50GB | 🐺 منصات", detailsEn: "📦 50GB | 🐺 Platformer" },
-        { id: 48, nameAr: "Spyro Trilogy", nameEn: "Spyro Trilogy", priceOMR: 7, oldPrice: 12, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/996580/header.jpg", detailsAr: "🏷️ 50GB | 🐉 3 ألعاب", detailsEn: "📦 50GB | 🐉 3 Games" },
-        { id: 49, nameAr: "Sackboy Adventure", nameEn: "Sackboy Adventure", priceOMR: 8, oldPrice: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1497790/header.jpg", detailsAr: "🏷️ 12GB | 🧸 منصات عائلي", detailsEn: "📦 12GB | 🧸 Family" },
-        { id: 50, nameAr: "Kena Bridge of Spirits", nameEn: "Kena Bridge of Spirits", priceOMR: 8, oldPrice: 13, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1325200/header.jpg", detailsAr: "🏷️ 30GB | 🌸 مغامرة جميلة", detailsEn: "📦 30GB | 🌸 Beautiful Adventure" }
+        { id: 4, nameAr: "God of War Ragnarök", nameEn: "God of War Ragnarök", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg", detailsAr: "🏷️ 85GB | 🪓 ملحمة إسكندنافية | ⚔️ كريتوس", detailsEn: "📦 85GB | 🪓 Norse Saga | ⚔️ Kratos" },
+        { id: 5, nameAr: "Spider-Man 2", nameEn: "Spider-Man 2", priceOMR: 16, oldPrice: 22, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", detailsAr: "🏷️ 98GB | 🕷️ بيتر + مايلز | 🕸️ نيويورك", detailsEn: "📦 98GB | 🕷️ Peter + Miles | 🕸️ New York" },
+        { id: 6, nameAr: "Final Fantasy XVI", nameEn: "Final Fantasy XVI", priceOMR: 18, oldPrice: 25, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2909400/header.jpg", detailsAr: "🏷️ 145GB | 🗡️ RPG خيالية | 🔥 صراع العصور", detailsEn: "📦 145GB | 🗡️ Fantasy RPG | 🔥 Eikons War" },
+        { id: 7, nameAr: "Tekken 8", nameEn: "Tekken 8", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1778820/header.jpg", detailsAr: "🏷️ 80GB | 🥊 لعبة قتال | 👊 أقوى المقاتلين", detailsEn: "📦 80GB | 🥊 Fighting Game | 👊 Strongest Fighters" },
+        { id: 8, nameAr: "The Last of Us Part II", nameEn: "The Last of Us Part II", priceOMR: 8, oldPrice: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1888930/header.jpg", detailsAr: "🏷️ 78GB | 🧟 بقاء ورعب | 🎭 دراما مؤثرة", detailsEn: "📦 78GB | 🧟 Survival Horror | 🎭 Emotional Story" },
+        { id: 9, nameAr: "Red Dead Redemption 2", nameEn: "Red Dead Redemption 2", priceOMR: 9, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg", detailsAr: "🏷️ 150GB | 🤠 مغامرة غرب | 🌵 عالم مفتوح", detailsEn: "📦 150GB | 🤠 Western Adventure | 🌵 Open World" },
+        { id: 10, nameAr: "Cyberpunk 2077", nameEn: "Cyberpunk 2077", priceOMR: 10, oldPrice: 16, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg", detailsAr: "🏷️ 70GB | 🌆 مستقبل مفتوح | 🤖 سايبربنك", detailsEn: "📦 70GB | 🌆 Open World Future | 🤖 Cyberpunk" },
+        { id: 11, nameAr: "Elden Ring", nameEn: "Elden Ring", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg", detailsAr: "🏷️ 60GB | ⚔️ RPG خيالي | 🐉 عالم شاسع", detailsEn: "📦 60GB | ⚔️ Fantasy RPG | 🐉 Vast World" },
+        { id: 12, nameAr: "Horizon Forbidden West", nameEn: "Horizon Forbidden West", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1151640/header.jpg", detailsAr: "🏷️ 96GB | 🦕 مغامرة مستقبلية | 🏹 آلاوي", detailsEn: "📦 96GB | 🦕 Future Adventure | 🏹 Aloy" },
+        { id: 13, nameAr: "Ghost of Tsushima", nameEn: "Ghost of Tsushima", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2215430/header.jpg", detailsAr: "🏷️ 50GB | 🗡️ ساموراي | ⛩️ اليابان القديمة", detailsEn: "📦 50GB | 🗡️ Samurai | ⛩️ Ancient Japan" },
+        { id: 14, nameAr: "Uncharted 4", nameEn: "Uncharted 4", priceOMR: 7, oldPrice: 12, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1659420/header.jpg", detailsAr: "🏷️ 50GB | 🏺 مغامرة | 🗺️ ناثان دريك", detailsEn: "📦 50GB | 🏺 Adventure | 🗺️ Nathan Drake" },
+        { id: 15, nameAr: "Bloodborne", nameEn: "Bloodborne", priceOMR: 8, oldPrice: 13, image: "https://upload.wikimedia.org/wikipedia/en/6/6a/Bloodborne_Cover_Wallpaper.jpg", detailsAr: "🏷️ 50GB | 🩸 رعب وأكشن | 🏰 يارنهام", detailsEn: "📦 50GB | 🩸 Horror Action | 🏰 Yharnam" },
+        { id: 16, nameAr: "Sekiro: Shadows Die Twice", nameEn: "Sekiro: Shadows Die Twice", priceOMR: 10, oldPrice: 16, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/814380/header.jpg", detailsAr: "🏷️ 25GB | ⛩️ ساموراي | 🥋 نينجا", detailsEn: "📦 25GB | ⛩️ Samurai | 🥋 Ninja" },
+        { id: 17, nameAr: "Dragon's Dogma 2", nameEn: "Dragon's Dogma 2", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2054970/header.jpg", detailsAr: "🏷️ 60GB | 🐉 RPG خيالي | 🐲 تنانين", detailsEn: "📦 60GB | 🐉 Fantasy RPG | 🐲 Dragons" },
+        { id: 18, nameAr: "Rise of the Ronin", nameEn: "Rise of the Ronin", priceOMR: 13, oldPrice: 19, image: "https://image.api.playstation.com/vulcan/ap/rnd/202310/1000/c9e9fbf7d3c3a7ab02cf37df3bfca60fc4ae6d45.png", detailsAr: "🏷️ 60GB | ⚔️ حصري PS5 | 🗡️ رونين", detailsEn: "📦 60GB | ⚔️ PS5 Exclusive | 🗡️ Ronin" },
+        { id: 19, nameAr: "Baldur's Gate 3", nameEn: "Baldur's Gate 3", priceOMR: 14, oldPrice: 20, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1086940/header.jpg", detailsAr: "🏷️ 150GB | 🧙 RPG خيالي | 🎲 حائز على جوائز", detailsEn: "📦 150GB | 🧙 Fantasy RPG | 🎲 Award Winning" },
+        { id: 20, nameAr: "Starfield", nameEn: "Starfield", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1716740/header.jpg", detailsAr: "🏷️ 140GB | 🚀 فضاء مفتوح | 🌌 استكشاف الكواكب", detailsEn: "📦 140GB | 🚀 Space RPG | 🌌 Explore Planets" },
+        { id: 21, nameAr: "Diablo IV", nameEn: "Diablo IV", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2344520/header.jpg", detailsAr: "🏷️ 90GB | 😈 RPG مظلم | 👹 محاربة الشياطين", detailsEn: "📦 90GB | 😈 Dark RPG | 👹 Demon Hunting" },
+        { id: 22, nameAr: "Resident Evil 4", nameEn: "Resident Evil 4", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/header.jpg", detailsAr: "🏷️ 67GB | 🧟 رعب وأكشن | 🔫 ليون كينيدي", detailsEn: "📦 67GB | 🧟 Horror Action | 🔫 Leon Kennedy" },
+        { id: 23, nameAr: "Helldivers 2", nameEn: "Helldivers 2", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/553850/header.jpg", detailsAr: "🏷️ 100GB | 🪖 تعاوني | 🌌 حرب فضائية", detailsEn: "📦 100GB | 🪖 Co-op | 🌌 Space War" },
+        { id: 24, nameAr: "Gran Turismo 7", nameEn: "Gran Turismo 7", priceOMR: 11, oldPrice: 17, image: "https://image.api.playstation.com/vulcan/ap/rnd/202109/1321/nBW6AOVBgTYGhhUEVwklGPgr.png", detailsAr: "🏷️ 110GB | 🏎️ سباق سيارات | 🏁 محاكاة واقعية", detailsEn: "📦 110GB | 🏎️ Racing | 🏁 Realistic Simulation" },
+        { id: 25, nameAr: "The Witcher 3", nameEn: "The Witcher 3", priceOMR: 7, oldPrice: 12, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/header.jpg", detailsAr: "🏷️ 50GB | 🗡️ RPG خيالي | 🐺 جيرالت", detailsEn: "📦 50GB | 🗡️ Fantasy RPG | 🐺 Geralt" },
+        { id: 26, nameAr: "Death Stranding", nameEn: "Death Stranding", priceOMR: 8, oldPrice: 13, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1190460/header.jpg", detailsAr: "🏷️ 80GB | 🌊 مغامرة فريدة | 📦 هيديو كوجيما", detailsEn: "📦 80GB | 🌊 Unique Adventure | 📦 Hideo Kojima" },
+        { id: 27, nameAr: "Returnal", nameEn: "Returnal", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1649240/header.jpg", detailsAr: "🏷️ 60GB | 👾 حصري PS5 | 🔄 روغ لايك", detailsEn: "📦 60GB | 👾 PS5 Exclusive | 🔄 Roguelike" },
+        { id: 28, nameAr: "Ratchet & Clank", nameEn: "Ratchet & Clank", priceOMR: 9, oldPrice: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1895880/header.jpg", detailsAr: "🏷️ 83GB | 🔧 مغامرة PS5 | 🚀 أبعاد مختلفة", detailsEn: "📦 83GB | 🔧 PS5 Adventure | 🚀 Different Dimensions" },
+        { id: 29, nameAr: "Demon's Souls", nameEn: "Demon's Souls", priceOMR: 9, oldPrice: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1259420/header.jpg", detailsAr: "🏷️ 66GB | ⚔️ حصري PS5 | 💀 تحدي صعب", detailsEn: "📦 66GB | ⚔️ PS5 Exclusive | 💀 Challenging" },
+        { id: 30, nameAr: "Mortal Kombat 1", nameEn: "Mortal Kombat 1", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1971870/header.jpg", detailsAr: "🏷️ 100GB | 🥊 قتال دموي | 💀 fatalities", detailsEn: "📦 100GB | 🥊 Fighting | 💀 Fatalities" },
+        { id: 31, nameAr: "Street Fighter 6", nameEn: "Street Fighter 6", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1799460/header.jpg", detailsAr: "🏷️ 60GB | 🥊 قتال كلاسيكي | 👊 ريو و تشون لي", detailsEn: "📦 60GB | 🥊 Classic Fighting | 👊 Ryu & Chun-Li" },
+        { id: 32, nameAr: "WWE 2K24", nameEn: "WWE 2K24", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2285550/header.jpg", detailsAr: "🏷️ 55GB | 🤼 مصارعة | 🏆 رومان رينز", detailsEn: "📦 55GB | 🤼 Wrestling | 🏆 Roman Reigns" },
+        { id: 33, nameAr: "NBA 2K24", nameEn: "NBA 2K24", priceOMR: 10, oldPrice: 16, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2338770/header.jpg", detailsAr: "🏷️ 150GB | 🏀 كرة سلة | 🏆 كوبي براينت", detailsEn: "📦 150GB | 🏀 Basketball | 🏆 Kobe Bryant" },
+        { id: 34, nameAr: "EA Sports FC 24", nameEn: "EA Sports FC 24", priceOMR: 8, oldPrice: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1811260/header.jpg", detailsAr: "🏷️ 100GB | ⚽ كرة قدم | 🌟 أفضل الأندية", detailsEn: "📦 100GB | ⚽ Football | 🌟 Best Clubs" },
+        { id: 35, nameAr: "UFC 5", nameEn: "UFC 5", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2365960/header.jpg", detailsAr: "🏷️ 60GB | 🥊 فنون قتالية | 🏆 جونز ضد ميوتيتش", detailsEn: "📦 60GB | 🥊 MMA | 🏆 Jones vs Miocic" },
+        { id: 36, nameAr: "It Takes Two", nameEn: "It Takes Two", priceOMR: 8, oldPrice: 13, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1426210/header.jpg", detailsAr: "🏷️ 50GB | 👫 لعب ثنائي | 💑 قصة حب", detailsEn: "📦 50GB | 👫 Co-op | 💑 Love Story" },
+        { id: 37, nameAr: "A Plague Tale Requiem", nameEn: "A Plague Tale Requiem", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1182480/header.jpg", detailsAr: "🏷️ 55GB | 🐀 مغامرة تاريخية | 🐭 أميسيا", detailsEn: "📦 55GB | 🐀 Historical Adventure | 🐭 Amicia" },
+        { id: 38, nameAr: "Star Wars Jedi Survivor", nameEn: "Star Wars Jedi Survivor", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1775010/header.jpg", detailsAr: "🏷️ 130GB | ⚡ حرب النجوم | 🗡️ كال كيستيس", detailsEn: "📦 130GB | ⚡ Star Wars | 🗡️ Cal Kestis" },
+        { id: 39, nameAr: "Lies of P", nameEn: "Lies of P", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1627720/header.jpg", detailsAr: "🏷️ 30GB | 🪆 RPG أكشن | 🎭 بينوكيو المظلم", detailsEn: "📦 30GB | 🪆 Action RPG | 🎭 Dark Pinocchio" },
+        { id: 40, nameAr: "Alan Wake 2", nameEn: "Alan Wake 2", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1874189/header.jpg", detailsAr: "🏷️ 90GB | 🔦 رعب نفسي | 📖 قصة مشوقة", detailsEn: "📦 90GB | 🔦 Psychological Horror | 📖 Thrilling Story" },
+        { id: 41, nameAr: "Forspoken", nameEn: "Forspoken", priceOMR: 7, oldPrice: 12, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1680880/header.jpg", detailsAr: "🏷️ 60GB | ✨ سحر وخيال | 🧙 فراي هولاند", detailsEn: "📦 60GB | ✨ Magic Fantasy | 🧙 Frey Holland" },
+        { id: 42, nameAr: "Gotham Knights", nameEn: "Gotham Knights", priceOMR: 9, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1496790/header.jpg", detailsAr: "🏷️ 45GB | 🦇 باتمان | 🦸 باتجيرل روبن", detailsEn: "📦 45GB | 🦇 Batman | 🦸 Batgirl Robin" },
+        { id: 43, nameAr: "Suicide Squad", nameEn: "Suicide Squad", priceOMR: 8, oldPrice: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/315210/header.jpg", detailsAr: "🏷️ 65GB | 💥 أبطال خارقون | 🤪 هارلي كوين", detailsEn: "📦 65GB | 💥 Superheroes | 🤪 Harley Quinn" },
+        { id: 44, nameAr: "Armored Core VI", nameEn: "Armored Core VI", priceOMR: 11, oldPrice: 16, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1888160/header.jpg", detailsAr: "🏷️ 50GB | 🤖 روبوت أكشن | 🔫 معارك آلية", detailsEn: "📦 50GB | 🤖 Mech Action | 🔫 Mech Battles" },
+        { id: 45, nameAr: "Avatar Frontiers", nameEn: "Avatar Frontiers", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1580380/header.jpg", detailsAr: "🏷️ 90GB | 🌿 عالم مفتوح | 🧝 باندورا", detailsEn: "📦 90GB | 🌿 Open World | 🧝 Pandora" },
+        { id: 46, nameAr: "Prince of Persia", nameEn: "Prince of Persia", priceOMR: 9, oldPrice: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1951270/header.jpg", detailsAr: "🏷️ 10GB | 👑 مغامرة | 🗡️ أمير فارس", detailsEn: "📦 10GB | 👑 Adventure | 🗡️ Prince of Persia" },
+        { id: 47, nameAr: "Crash Bandicoot 4", nameEn: "Crash Bandicoot 4", priceOMR: 8, oldPrice: 13, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1378990/header.jpg", detailsAr: "🏷️ 50GB | 🐺 منصات | 🌀 كراش", detailsEn: "📦 50GB | 🐺 Platformer | 🌀 Crash" },
+        { id: 48, nameAr: "Spyro Trilogy", nameEn: "Spyro Trilogy", priceOMR: 7, oldPrice: 12, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/996580/header.jpg", detailsAr: "🏷️ 50GB | 🐉 3 ألعاب | 🔥 سبايرو", detailsEn: "📦 50GB | 🐉 3 Games | 🔥 Spyro" },
+        { id: 49, nameAr: "Sackboy Adventure", nameEn: "Sackboy Adventure", priceOMR: 8, oldPrice: 14, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1497790/header.jpg", detailsAr: "🏷️ 12GB | 🧸 منصات عائلي | 🎮 ليتل بيغ بلانيت", detailsEn: "📦 12GB | 🧸 Family Platformer | 🎮 Little Big Planet" },
+        { id: 50, nameAr: "Kena Bridge of Spirits", nameEn: "Kena Bridge of Spirits", priceOMR: 8, oldPrice: 13, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1325200/header.jpg", detailsAr: "🏷️ 30GB | 🌸 مغامرة جميلة | 🧚 كينا", detailsEn: "📦 30GB | 🌸 Beautiful Adventure | 🧚 Kena" }
     ];
     
     const giftCards = [
@@ -607,31 +604,21 @@
         { id: 110, nameAr: "🇮🇩 بطاقة شحن إندونيسي", nameEn: "🇮🇩 Indonesia Gift Card", category: "giftcards", priceOMR: 4, oldPrice: 5, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/50px-Flag_of_Indonesia.svg.png", detailsAr: "الفئات: 50k | 100k | 200k", detailsEn: "Values: 50k | 100k | 200k" }
     ];
     
-    for (let i = 0; i < allGames.length; i++) {
-        allGames[i].category = "games";
-    }
-    for (let i = 0; i < giftCards.length; i++) {
-        giftCards[i].category = "giftcards";
-    }
+    for (let i = 0; i < allGames.length; i++) allGames[i].category = "games";
+    for (let i = 0; i < giftCards.length; i++) giftCards[i].category = "giftcards";
     
     const allDefaultProducts = [...allGames, ...giftCards];
     
     function loadProducts() {
         productsRef.on('value', (snapshot) => {
             const data = snapshot.val();
-            if (data && Array.isArray(data) && data.length > 0) {
-                products = data;
-            } else {
-                products = JSON.parse(JSON.stringify(allDefaultProducts));
-                productsRef.set(products);
-            }
+            if (data && Array.isArray(data) && data.length > 0) products = data;
+            else { products = JSON.parse(JSON.stringify(allDefaultProducts)); productsRef.set(products); }
             renderProducts();
         });
     }
     
-    function formatPrice(price) {
-        return `${currencySymbols[currentCurrency]} ${(price * exchangeRates[currentCurrency]).toFixed(2)}`;
-    }
+    function formatPrice(price) { return `${currencySymbols[currentCurrency]} ${(price * exchangeRates[currentCurrency]).toFixed(2)}`; }
     
     function getFilteredProducts() {
         let filtered = [...products];
@@ -639,9 +626,7 @@
             const query = searchQuery.toLowerCase();
             filtered = filtered.filter(p => p.nameAr.toLowerCase().includes(query) || p.nameEn.toLowerCase().includes(query));
         }
-        if (currentCategory !== 'all') {
-            filtered = filtered.filter(p => p.category === currentCategory);
-        }
+        if (currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
         return filtered;
     }
     
@@ -651,12 +636,8 @@
         if (currentPage > totalPages) currentPage = 1;
         const start = (currentPage - 1) * ITEMS_PER_PAGE;
         const pageProducts = filtered.slice(start, start + ITEMS_PER_PAGE);
-        
         const container = document.getElementById('productsContainer');
-        if (pageProducts.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:2rem;">لا توجد منتجات حالياً</div>';
-            return;
-        }
+        if (pageProducts.length === 0) { container.innerHTML = '<div style="text-align:center; padding:2rem;">لا توجد منتجات حالياً</div>'; return; }
         
         container.innerHTML = pageProducts.map(p => {
             const name = currentLang === 'ar' ? p.nameAr : p.nameEn;
@@ -666,197 +647,62 @@
             const oldPrice = hasDiscount ? formatPrice(p.oldPrice) : null;
             const discountPercent = hasDiscount ? Math.round((1 - p.priceOMR / p.oldPrice) * 100) : 0;
             const categoryName = p.category === 'games' ? (currentLang === 'ar' ? '🎮 ألعاب PS4/PS5' : '🎮 Games') : (currentLang === 'ar' ? '💳 بطاقات شحن' : '💳 Gift Cards');
-            
-            let imageHtml = '';
-            if (p.image && p.image.trim()) {
-                imageHtml = `<div class="product-image" style="background-image: url('${p.image}');"><div class="product-badge">${categoryName}</div></div>`;
-            } else {
-                imageHtml = `<div class="product-image" style="background: linear-gradient(135deg, #1e3a5f, #0f2a4a); display: flex; align-items: center; justify-content: center;"><div style="font-size: 2.5rem;">${p.category === 'games' ? '🎮' : '💳'}</div><div class="product-badge">${categoryName}</div></div>`;
-            }
-            
-            return `
-                <div class="product-card">
-                    ${hasDiscount ? `<div class="discount-badge">🔥 -${discountPercent}%</div>` : ''}
-                    ${imageHtml}
-                    <div class="card-info">
-                        <div class="product-title">${escapeHtml(name)}</div>
-                        <div class="product-details">${escapeHtml(desc || '')}</div>
-                        <div class="price-container">
-                            ${hasDiscount ? `<span class="old-price">${oldPrice}</span>` : ''}
-                            <span class="price">${price}</span>
-                        </div>
-                        <button class="btn-wa" onclick="requestPurchase(${p.id}, '${escapeHtml(name)}', ${p.priceOMR})">
-                            <i class="fab fa-whatsapp"></i> ${currentLang === 'ar' ? 'اطلب الآن' : 'Order Now'}
-                        </button>
-                    </div>
-                </div>
-            `;
+            let imageHtml = p.image && p.image.trim() ? `<div class="product-image" style="background-image: url('${p.image}');"><div class="product-badge">${categoryName}</div></div>` : `<div class="product-image" style="background: linear-gradient(135deg, #1e3a5f, #0f2a4a); display: flex; align-items: center; justify-content: center;"><div style="font-size: 2.5rem;">${p.category === 'games' ? '🎮' : '💳'}</div><div class="product-badge">${categoryName}</div></div>`;
+            return `<div class="product-card">${hasDiscount ? `<div class="discount-badge">🔥 -${discountPercent}%</div>` : ''}${imageHtml}<div class="card-info"><div class="product-title">${escapeHtml(name)}</div><div class="product-details">${escapeHtml(desc || '')}</div><div class="price-container">${hasDiscount ? `<span class="old-price">${oldPrice}</span>` : ''}<span class="price">${price}</span></div><button class="btn-wa" onclick="requestPurchase(${p.id}, '${escapeHtml(name)}', ${p.priceOMR})"><i class="fab fa-whatsapp"></i> ${currentLang === 'ar' ? 'اطلب الآن' : 'Order Now'}</button></div></div>`;
         }).join('');
         
         const pagContainer = document.getElementById('pagination');
         if (totalPages > 1) {
             let pagesHtml = '';
-            for (let i = 1; i <= totalPages; i++) {
-                pagesHtml += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
-            }
+            for (let i = 1; i <= totalPages; i++) pagesHtml += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
             pagContainer.innerHTML = pagesHtml;
-        } else {
-            pagContainer.innerHTML = '';
-        }
+        } else pagContainer.innerHTML = '';
         document.getElementById('searchCount').innerHTML = filtered.length;
     }
     
-    function escapeHtml(text) {
-        if (!text) return '';
-        return text.replace(/[&<>]/g, function(m) {
-            if (m === '&') return '&amp;';
-            if (m === '<') return '&lt;';
-            if (m === '>') return '&gt;';
-            return m;
-        });
-    }
-    
-    function goToPage(page) {
-        currentPage = page;
-        renderProducts();
-    }
-    
-    function setCategory(cat) {
-        currentCategory = cat;
-        currentPage = 1;
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-        renderProducts();
-    }
+    function escapeHtml(text) { if (!text) return ''; return text.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m)); }
+    function goToPage(page) { currentPage = page; renderProducts(); }
+    function setCategory(cat) { currentCategory = cat; currentPage = 1; document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active')); event.target.classList.add('active'); renderProducts(); }
     
     function requestPurchase(id, name, priceOMR) {
-        if (!currentUser) {
-            alert('الرجاء تسجيل الدخول أولاً');
-            showLoginModal();
-            return;
-        }
+        if (!currentUser) { alert('الرجاء تسجيل الدخول أولاً'); showLoginModal(); return; }
         pendingProductData = { id, name, priceOMR };
         document.getElementById('termsCheck').checked = false;
         document.getElementById('acceptTermsBtn').classList.remove('enabled');
         document.getElementById('termsModal').style.display = 'flex';
     }
     
-    function toggleTermsAccept() {
-        const cb = document.getElementById('termsCheck');
-        cb.checked = !cb.checked;
-        const btn = document.getElementById('acceptTermsBtn');
-        if (cb.checked) btn.classList.add('enabled');
-        else btn.classList.remove('enabled');
-    }
-    
-    function closeTermsModal() {
-        document.getElementById('termsModal').style.display = 'none';
-        pendingProductData = null;
-    }
-    
+    function toggleTermsAccept() { const cb = document.getElementById('termsCheck'); cb.checked = !cb.checked; const btn = document.getElementById('acceptTermsBtn'); if (cb.checked) btn.classList.add('enabled'); else btn.classList.remove('enabled'); }
+    function closeTermsModal() { document.getElementById('termsModal').style.display = 'none'; pendingProductData = null; }
     function acceptTerms() {
-        if (!document.getElementById('termsCheck').checked) {
-            alert('يرجى الموافقة على الشروط والأحكام');
-            return;
-        }
+        if (!document.getElementById('termsCheck').checked) { alert('يرجى الموافقة على الشروط والأحكام'); return; }
         if (!pendingProductData) return;
-        
         const { name, priceOMR } = pendingProductData;
         const sym = currencySymbols[currentCurrency];
         const convertedPrice = (priceOMR * exchangeRates[currentCurrency]).toFixed(2);
         const message = `🛒 طلب شراء من xnesto\n━━━━━━━━━━━━━━━━━━━━\n🎮 المنتج: ${name}\n💰 السعر: ${sym} ${convertedPrice}\n👤 العميل: ${currentUser.name}\n📧 البريد: ${currentUser.email}\n━━━━━━━━━━━━━━━━━━━━\n📞 يرجى تأكيد الطلب وإرسال طريقة الدفع.\n\n✅ أوافق على شروط وأحكام المتجر.`;
-        
         window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
         closeTermsModal();
     }
     
-    function showLoginModal() {
-        const email = prompt('📧 أدخل بريدك الإلكتروني:');
-        const name = prompt('👤 أدخل اسمك:');
-        if (email && name) {
-            currentUser = { email, name };
-            localStorage.setItem('xnesto_customer', JSON.stringify(currentUser));
-            updateUserUI();
-            alert(`مرحباً ${name}! تم تسجيل الدخول بنجاح 🎉`);
-        }
-    }
+    function showLoginModal() { const email = prompt('📧 أدخل بريدك الإلكتروني:'); const name = prompt('👤 أدخل اسمك:'); if (email && name) { currentUser = { email, name }; localStorage.setItem('xnesto_customer', JSON.stringify(currentUser)); updateUserUI(); alert(`مرحباً ${name}! تم تسجيل الدخول بنجاح 🎉`); } }
+    function logoutCustomer() { currentUser = null; localStorage.removeItem('xnesto_customer'); updateUserUI(); alert('تم تسجيل الخروج بنجاح'); }
+    function updateUserUI() { const authDiv = document.getElementById('authButtons'); if (currentUser) authDiv.innerHTML = `<div class="user-info"><i class="fas fa-user-check"></i><span>${currentUser.name.split(' ')[0]}</span><button class="logout-btn-small" onclick="logoutCustomer()">خروج</button></div>`; else authDiv.innerHTML = `<button class="customer-btn" onclick="showLoginModal()"><i class="fas fa-user"></i> <span>تسجيل دخول</span></button>`; }
     
-    function logoutCustomer() {
-        currentUser = null;
-        localStorage.removeItem('xnesto_customer');
-        updateUserUI();
-        alert('تم تسجيل الخروج بنجاح');
-    }
+    function setLang(lang) { currentLang = lang; document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active')); event.target.classList.add('active'); renderProducts(); }
+    function setCurrency(currency) { currentCurrency = currency; renderProducts(); }
+    function toggleMode() { const isLight = document.body.classList.toggle('light-mode'); const btn = document.querySelector('.mode-toggle-btn'); btn.innerHTML = isLight ? '☀️ نهاري' : '🌙 ليلي'; localStorage.setItem('xnesto_mode', isLight ? 'light' : 'dark'); }
+    function setView(view) { document.body.classList.remove('view-mobile', 'view-desktop'); document.body.classList.add('view-' + view); localStorage.setItem('xnesto_view', view); }
     
-    function updateUserUI() {
-        const authDiv = document.getElementById('authButtons');
-        if (currentUser) {
-            authDiv.innerHTML = `
-                <div class="user-info">
-                    <i class="fas fa-user-check"></i>
-                    <span>${currentUser.name.split(' ')[0]}</span>
-                    <button class="logout-btn-small" onclick="logoutCustomer()">خروج</button>
-                </div>
-            `;
-        } else {
-            authDiv.innerHTML = `<button class="customer-btn" onclick="showLoginModal()"><i class="fas fa-user"></i> <span>تسجيل دخول</span></button>`;
-        }
-    }
-    
-    function setLang(lang) {
-        currentLang = lang;
-        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-        renderProducts();
-    }
-    
-    function setCurrency(currency) {
-        currentCurrency = currency;
-        renderProducts();
-    }
-    
-    function toggleMode() {
-        const isLight = document.body.classList.toggle('light-mode');
-        const btn = document.querySelector('.mode-toggle-btn');
-        btn.innerHTML = isLight ? '☀️ نهاري' : '🌙 ليلي';
-        localStorage.setItem('xnesto_mode', isLight ? 'light' : 'dark');
-    }
-    
-    function setView(view) {
-        document.body.classList.remove('view-mobile', 'view-desktop');
-        document.body.classList.add('view-' + view);
-        localStorage.setItem('xnesto_view', view);
-    }
-    
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-        searchQuery = e.target.value;
-        currentPage = 1;
-        renderProducts();
-    });
-    
-    const savedMode = localStorage.getItem('xnesto_mode');
-    if (savedMode === 'light') {
-        document.body.classList.add('light-mode');
-        document.querySelector('.mode-toggle-btn').innerHTML = '☀️ نهاري';
-    }
-    const savedView = localStorage.getItem('xnesto_view') || 'mobile';
-    setView(savedView);
-    
-    const savedCustomer = localStorage.getItem('xnesto_customer');
-    if (savedCustomer) {
-        currentUser = JSON.parse(savedCustomer);
-        updateUserUI();
-    }
-    
+    document.getElementById('searchInput').addEventListener('input', (e) => { searchQuery = e.target.value; currentPage = 1; renderProducts(); });
+    const savedMode = localStorage.getItem('xnesto_mode'); if (savedMode === 'light') { document.body.classList.add('light-mode'); document.querySelector('.mode-toggle-btn').innerHTML = '☀️ نهاري'; }
+    const savedView = localStorage.getItem('xnesto_view') || 'mobile'; setView(savedView);
+    const savedCustomer = localStorage.getItem('xnesto_customer'); if (savedCustomer) { currentUser = JSON.parse(savedCustomer); updateUserUI(); }
     document.getElementById('instagramText').innerHTML = `<a href="https://instagram.com/${INSTA_USERNAME}" target="_blank" style="color:#ffaa66;text-decoration:none;">${INSTA_USERNAME}</a>`;
     document.getElementById('whatsappText').innerHTML = `<a href="https://wa.me/${WA_NUMBER}" target="_blank" style="color:#ffaa66;text-decoration:none;">+${WA_NUMBER}</a>`;
     
     loadProducts();
-    
-    window.toggleTermsAccept = toggleTermsAccept;
-    window.closeTermsModal = closeTermsModal;
-    window.acceptTerms = acceptTerms;
-    window.requestPurchase = requestPurchase;
+    window.toggleTermsAccept = toggleTermsAccept; window.closeTermsModal = closeTermsModal; window.acceptTerms = acceptTerms; window.requestPurchase = requestPurchase;
 </script>
 </body>
 </html>

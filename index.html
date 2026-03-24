@@ -1,72 +1,66 @@
-<!-- 
-  هذا هو ملف index.html المحدث. 
-  لقد قمت بتعديل جزء الـ Script في الأسفل ليقوم بجلب المنتجات من ملف products.json.
--->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <!-- ... (نفس كود الـ head الأصلي) ... -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <!-- (يرجى نسخ جميع أكواد CSS الأصلية هنا) -->
+  <!-- ربط ملف الإدارة -->
+  <script src="admin.js"></script>
+  <title>xnesto – متجر الألعاب وبطاقات الشحن | PS4/PS5</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* سيتم وضع كل أكواد CSS الأصلية هنا عند النسخ النهائي */
+    /* ... (نفس التصميم الأصلي) ... */
+  </style>
 </head>
 <body>
-  <!-- ... (نفس كود الـ body الأصلي حتى بداية الـ script) ... -->
+  <!-- ... (نفس كود HTML الأصلي) ... -->
 
 <script>
-  // --- الجزء المحدث للتعامل مع ملف البيانات الخارجي ---
-  
+  // --- الجزء البرمجي المحدث ---
   let products = [];
-  let categories = ["games", "giftcards"];
-  let categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
-  let nextId = 1;
   let currentUser = { type: "guest", name: "زائر" };
-  // ... (باقي المتغيرات التعريفية الأصلية) ...
   const ADMIN_PASSWORD = "ssp1995";
   const WA_NUMBER = "96879977100";
 
-  // دالة لجلب البيانات من ملف JSON الخارجي
-  async function fetchExternalProducts() {
+  // دالة جلب البيانات من GitHub (تضمن رؤية التحديثات للجميع)
+  async function loadFromLocal() {
+    const url = `products.json?t=${new Date().getTime()}`;
     try {
-      const response = await fetch('products.json');
-      if (!response.ok) throw new Error('Could not fetch products.json');
-      const data = await response.json();
-      
-      // دمج المنتجات من الملف
-      const allProducts = [...data.games, ...data.giftcards];
-      
-      // التحقق من الإصدار لتحديث التخزين المحلي عند العميل
-      const savedVersion = localStorage.getItem("xnesto_version");
-      if (savedVersion !== data.version) {
-        products = allProducts;
-        localStorage.setItem("xnesto_version", data.version);
-        saveToLocal(); // حفظ النسخة الجديدة في متصفح العميل
-      } else {
-        // إذا كان نفس الإصدار، نأخذ ما هو مخزن في المتصفح (في حال أضاف العميل شيئاً لنفسه)
-        const saved = localStorage.getItem("xnesto_products");
-        products = saved ? JSON.parse(saved) : allProducts;
-      }
-      
-      renderProducts(); // عرض المنتجات بعد الجلب
-    } catch (error) {
-      console.error('Error loading products:', error);
-      // في حال فشل الجلب، نعتمد على ما هو مخزن محلياً
-      loadFromLocal();
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            products = [...data.games, ...data.giftcards];
+            localStorage.setItem("xnesto_version", data.version);
+            localStorage.setItem("xnesto_products", JSON.stringify(products));
+            renderProducts();
+            return;
+        }
+    } catch (e) { console.error("Fetch error:", e); }
+
+    // خيار احتياطي
+    const saved = localStorage.getItem("xnesto_products");
+    if (saved) {
+        products = JSON.parse(saved);
+    } else {
+        // البيانات الافتراضية هنا
+        products = []; 
+    }
+    renderProducts();
+  }
+
+  // دالة الحفظ المحدثة (ترسل لـ GitHub)
+  function saveToLocal() {
+    localStorage.setItem("xnesto_products", JSON.stringify(products));
+    // إذا كنت المسؤول، سيتم تحديث الملف على GitHub ليراه الجميع فوراً
+    if (typeof updateGitHubProducts === "function" && currentUser.type === 'admin') {
+        updateGitHubProducts(products); 
     }
   }
 
-  // استبدل دالة loadFromLocal الأصلية أو استدعِ fetchExternalProducts في البداية
-  window.onload = () => {
-    fetchExternalProducts();
-    // ... باقي استدعاءات onload الأصلية ...
-  };
+  // استدعاء الجلب عند التحميل
+  window.onload = loadFromLocal;
 
-  function saveToLocal() { 
-    localStorage.setItem("xnesto_products", JSON.stringify(products)); 
-  }
-  
-  // (باقي دوال الموقع الأصلية كما هي دون تغيير)
+  // ... (باقي الدوال الأصلية للموقع) ...
 </script>
 </body>
 </html>
-

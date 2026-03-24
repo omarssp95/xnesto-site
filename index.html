@@ -2,70 +2,1291 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🎮 XNESTO STORE - متجر PS5 عُمان 🎮</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+    html { font-size: 14px; }
+    @media (min-width: 768px) { html { font-size: 15px; } }
+    @media (min-width: 1200px) { html { font-size: 16px; } }
+
+
+    .device-bar {
+      background: #07071a;
+      border-bottom: 1px solid rgba(255,170,68,0.2);
+      padding: 6px 16px;
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+    }
+    .device-btn {
+      background: #1e1e3a;
+      border: 1px solid rgba(255,170,68,0.2);
+      color: #888;
+      padding: 5px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-family: 'Cairo', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: 0.2s;
+    }
+    .device-btn.active { background: #ffaa44; color: #0a0a1a; border-color: #ffaa44; font-weight: 700; }
+    .device-btn:hover:not(.active) { border-color: #ffaa44; color: #ffaa44; }
+
+    /* حجم الجوال */
+    body.view-mobile .products-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    body.view-mobile .header h1 { font-size: 1.6rem !important; }
+    body.view-mobile .price { font-size: 0.95rem !important; }
+    body.view-mobile .product-title { font-size: 0.78rem !important; }
+    body.view-mobile .product-image { height: 130px !important; }
+    body.view-mobile .card-info { padding: 0.5rem !important; }
+    body.view-mobile .btn-wa { font-size: 0.72rem !important; }
+
+    /* حجم الكمبيوتر */
+    body.view-desktop .products-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
+  </style>
+  <title>xnesto – متجر الألعاب وبطاقات الشحن | PS4/PS5</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    /* نفس الـ CSS الخاص بك - انسخه هنا للاختصار */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: linear-gradient(135deg, #0a0a1a 0%, #0a0a1a 100%); font-family: 'Cairo', sans-serif; color: #f0f0ff; padding: 1rem; }
-    /* ... باقي الـ CSS كما هو في كودك الأصلي ... */
-  </style>
-</head>
-<body>
-  <!-- نفس HTML الخاص بك -->
+    body {
+      background: linear-gradient(135deg, #0a0a1a 0%, #0a0a1a 100%);
+      font-family: 'Cairo', 'Segoe UI', Tahoma, system-ui, sans-serif;
+      color: #f0f0ff;
+      padding: 1.5rem;
+      min-height: 100vh;
+    }
+    
+    .header {
+      text-align: center;
+      background: linear-gradient(135deg, #0f0f2a, #0a0a1f);
+      padding: 0.5rem 1rem 1.5rem;
+      border-radius: 1.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255, 170, 68, 0.3);
+      overflow: visible;
+    }
+    .header h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #ffaa44, #ffcc88, #ffaa44);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .logo-glow {
+      animation: logoPulse 2s ease-in-out infinite;
+    }
+    @keyframes logoPulse {
+      0%,100% { filter: drop-shadow(0 0 8px rgba(255,170,44,0.9)) drop-shadow(0 0 20px rgba(255,100,0,0.6)); }
+      50%      { filter: drop-shadow(0 0 16px rgba(255,200,44,1))  drop-shadow(0 0 35px rgba(255,140,0,0.9)); }
+    }
+    /* ── FIRE ── */
+    .fire-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 4px;
+      height: 55px;
+      margin-bottom: 4px;
+    }
+    .fire-flame {
+      width: 14px;
+      border-radius: 50% 50% 20% 20%;
+      animation: flicker 0.5s ease-in-out infinite alternate;
+      transform-origin: bottom center;
+    }
+    .fire-flame:nth-child(1) { background: linear-gradient(to top, #ff4400, #ffaa00, #ffff00); height: 25px; animation-delay: 0.0s; }
+    .fire-flame:nth-child(2) { background: linear-gradient(to top, #ff3300, #ff8800, #ffee00); height: 38px; animation-delay: 0.1s; }
+    .fire-flame:nth-child(3) { background: linear-gradient(to top, #ff4400, #ffaa00, #ffff00); height: 30px; animation-delay: 0.2s; }
+    .fire-flame:nth-child(4) { background: linear-gradient(to top, #ff2200, #ff6600, #ffdd00); height: 45px; animation-delay: 0.05s; }
+    .fire-flame:nth-child(5) { background: linear-gradient(to top, #ff3300, #ff9900, #ffff00); height: 52px; animation-delay: 0.15s; width: 18px; }
+    .fire-flame:nth-child(6) { background: linear-gradient(to top, #ff2200, #ff6600, #ffdd00); height: 45px; animation-delay: 0.0s; }
+    .fire-flame:nth-child(7) { background: linear-gradient(to top, #ff4400, #ffaa00, #ffff00); height: 30px; animation-delay: 0.2s; }
+    .fire-flame:nth-child(8) { background: linear-gradient(to top, #ff3300, #ff8800, #ffee00); height: 38px; animation-delay: 0.1s; }
+    .fire-flame:nth-child(9) { background: linear-gradient(to top, #ff4400, #ffaa00, #ffff00); height: 25px; animation-delay: 0.05s; }
+    @keyframes flicker {
+      0%   { transform: scaleX(1)   scaleY(1)   rotate(-4deg); opacity: 1;   }
+      100% { transform: scaleX(0.8) scaleY(1.2) rotate(4deg);  opacity: 0.8; }
+    }
+    .header p { color: #ffdd99; font-size: 0.9rem; }
+    
+    .control-bar {
+      max-width: 1400px;
+      margin: 0 auto 1rem auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: rgba(15, 15, 42, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 10px 20px;
+      border-radius: 50px;
+      border: 1px solid rgba(255, 170, 68, 0.2);
+    }
+    .lang-switch {
+      display: flex;
+      gap: 8px;
+      background: #1e1e3a;
+      padding: 4px;
+      border-radius: 40px;
+    }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      padding: 6px 16px;
+      border-radius: 40px;
+      color: #ccc;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .lang-btn.active { background: #ffaa44; color: #0a0a1a; }
+    .currency-selector {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #1e1e3a;
+      padding: 4px 12px;
+      border-radius: 40px;
+    }
+    #currencySelect {
+      background: #0a0c1a;
+      border: 1px solid #ffaa44;
+      color: #ffdd99;
+      padding: 5px 10px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .user-badge {
+      background: #1e1e3a;
+      padding: 6px 14px;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #ffaa66;
+      font-size: 0.8rem;
+    }
+    .login-btn, .logout-btn {
+      background: #2d2f6e;
+      border: none;
+      color: #ffaa66;
+      padding: 6px 14px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    
+    .admin-add-section {
+      max-width: 1400px;
+      margin: 0 auto 1rem auto;
+      background: rgba(15, 15, 42, 0.9);
+      border-radius: 1rem;
+      border: 2px solid #ffaa44;
+      overflow: hidden;
+      display: none;
+    }
+    .admin-add-section.active { display: block; }
+    .admin-add-header {
+      background: #ffaa44;
+      padding: 0.8rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .admin-add-header h3 { color: #0a0a1a; font-size: 1rem; margin: 0; }
+    .admin-add-body {
+      padding: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .admin-add-body input, .admin-add-body select, .admin-add-body textarea {
+      background: #1e1e3a;
+      border: 1px solid #ffaa44;
+      border-radius: 30px;
+      padding: 8px 12px;
+      color: white;
+      font-size: 0.8rem;
+      flex: 1;
+      min-width: 150px;
+    }
+    .admin-add-body textarea { min-width: 200px; border-radius: 15px; }
+    
+    .image-upload-area {
+      background: #1e1e3a;
+      border: 2px dashed #ffaa44;
+      border-radius: 1rem;
+      padding: 0.8rem;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+      flex: 1;
+      min-width: 150px;
+    }
+    .image-upload-area:hover { background: #2d2f6e; }
+    .image-upload-area input { display: none; }
+    .image-preview {
+      margin-top: 8px;
+      max-width: 100%;
+      max-height: 80px;
+      border-radius: 8px;
+      display: none;
+      object-fit: contain;
+    }
+    .btn-add-product {
+      background: #00cc88;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .category-management {
+      max-width: 1400px;
+      margin: 0 auto 1rem auto;
+      background: rgba(15, 15, 42, 0.9);
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 170, 68, 0.3);
+      padding: 0.8rem 1rem;
+      display: none;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+    .category-management.active { display: flex; }
+    .category-management span { color: #ffaa66; font-size: 0.8rem; }
+    .category-badge {
+      background: #2d2f6e;
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .category-badge i { cursor: pointer; color: #ff6666; }
+    .add-category-input {
+      display: flex;
+      gap: 5px;
+    }
+    .add-category-input input {
+      background: #1e1e3a;
+      border: 1px solid #ffaa44;
+      border-radius: 30px;
+      padding: 4px 10px;
+      color: white;
+      width: 120px;
+    }
+    .add-category-input button {
+      background: #ffaa44;
+      border: none;
+      padding: 4px 12px;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+    
+    .search-bar-container {
+      max-width: 1400px;
+      margin: 0 auto 1rem auto;
+      background: rgba(15, 15, 42, 0.8);
+      padding: 8px 20px;
+      border-radius: 50px;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #1e1e3a;
+      padding: 5px 15px;
+      border-radius: 40px;
+    }
+    #searchInput {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 10px 0;
+      color: white;
+      outline: none;
+    }
+    .search-results-count {
+      background: #2d2f6e;
+      padding: 4px 10px;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      color: #ffaa66;
+    }
+    
+    .tabs-container {
+      max-width: 1400px;
+      margin: 0 auto 2rem auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 0 4px;
+    }
+    @media (max-width: 640px) {
+      .tabs-container { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    }
+    .tab-btn {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      aspect-ratio: 1/1;
+      transition: 0.25s;
+      background: #1e1e3a;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
+    }
+    .tab-btn:hover { transform: translateY(-3px); border-color: #ffaa44; }
+    .tab-btn.active { border-color: #ffaa44; box-shadow: 0 0 16px rgba(255,170,68,0.4); }
+    .tab-btn-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background-size: cover;
+      background-position: center;
+    }
+    .tab-btn-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+    }
+    .tab-btn-text {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 8px 6px;
+      width: 100%;
+    }
+    .tab-btn-title {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 900;
+      color: white;
+      line-height: 1.2;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+    }
+    .tab-btn-sub {
+      display: block;
+      font-size: 0.62rem;
+      color: rgba(255,255,255,0.65);
+      margin-top: 2px;
+    }
+    @media (max-width: 640px) {
+      .tab-btn-title { font-size: 0.75rem; }
+      .tab-btn-sub { font-size: 0.55rem; }
+    }
+    
+    .products-grid {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(255,170,68,0.15);
+    }
+    .product-card {
+      background: #11152b;
+      border-radius: 1rem;
+      overflow: hidden;
+      transition: 0.3s;
+      border: 1px solid rgba(255, 170, 68, 0.2);
+      position: relative;
+    }
+    .product-card:hover { transform: translateY(-4px); border-color: #ffaa44; }
+    .discount-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: #ff4444;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: bold;
+      z-index: 2;
+    }
+    .timer-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.7);
+      color: #ffaa44;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 0.6rem;
+      z-index: 2;
+    }
+    .product-image {
+      width: 100%;
+      height: 200px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: #0a0c1a;
+    }
+    .product-badge {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.6rem;
+      color: #ffcc77;
+      font-weight: bold;
+    }
+    .card-info { padding: 0.8rem; }
+    .product-title { font-size: 1rem; font-weight: 700; margin-bottom: 4px; text-align: center; }
+    .product-category { font-size: 0.6rem; color: #ffaa66; margin-bottom: 6px; text-align: center; }
+    .product-details {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 6px;
+      border-radius: 10px;
+      margin: 8px 0;
+      font-size: 0.65rem;
+      color: #b9c5f0;
+      border-right: 2px solid #ffaa44;
+    }
+    .price-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 6px 0;
+    }
+    .old-price { font-size: 0.8rem; color: #888; text-decoration: line-through; }
+    .price { font-size: 1.2rem; font-weight: 800; color: #ffaa44; }
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #25D366;
+      color: #000;
+      width: 100%;
+      padding: 8px 0;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      border: none;
+    }
+    
+    .admin-edit-section {
+      background: #0a0c1a;
+      border-top: 1px solid #2a2f55;
+      padding: 0.8rem;
+      margin-top: 0.5rem;
+    }
+    .admin-edit-section h4 {
+      font-size: 0.7rem;
+      color: #ffaa66;
+      margin-bottom: 8px;
+    }
+    .edit-price-row, .edit-image-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .edit-price-row input, .edit-image-row input {
+      background: #1e1e3a;
+      border: 1px solid #ffaa44;
+      border-radius: 30px;
+      padding: 6px 10px;
+      flex: 1;
+      color: white;
+    }
+    .edit-price-row input { width: 90px; flex: none; }
+    .edit-image-upload {
+      background: #1e1e3a;
+      border: 1px dashed #ffaa44;
+      border-radius: 30px;
+      padding: 6px 10px;
+      text-align: center;
+      cursor: pointer;
+      flex: 1;
+    }
+    .edit-image-upload input { display: none; }
+    .edit-image-preview {
+      margin-top: 5px;
+      max-width: 100%;
+      max-height: 60px;
+      border-radius: 8px;
+      display: none;
+      object-fit: contain;
+    }
+    .discount-buttons {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .discount-buttons button {
+      background: #2d2f6e;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 30px;
+      color: #ffaa66;
+      cursor: pointer;
+      font-size: 0.7rem;
+    }
+    .custom-discount-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .custom-discount-row input {
+      background: #1e1e3a;
+      border: 1px solid #ffaa44;
+      border-radius: 30px;
+      padding: 5px 8px;
+      width: 70px;
+      color: white;
+    }
+    .timer-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .timer-row input {
+      background: #1e1e3a;
+      border: 1px solid #ffaa44;
+      border-radius: 30px;
+      padding: 6px 10px;
+      flex: 1;
+      color: white;
+      font-size: 0.7rem;
+    }
+    .save-edit-btn {
+      background: #00cc88;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      font-size: 0.75rem;
+    }
+    .delete-product-btn {
+      background: #ff4444;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 6px;
+      font-size: 0.75rem;
+    }
+    
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .page-btn {
+      background: #1e1e3a;
+      border: 1px solid #ffaa44;
+      color: #ffdd99;
+      padding: 6px 12px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .page-btn.active { background: #ffaa44; color: #0a0a1a; }
+    
+    .terms-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(12px);
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+    .terms-box {
+      background: #11152b;
+      border-radius: 1.5rem;
+      padding: 2rem;
+      text-align: center;
+      border: 2px solid #ffaa44;
+      width: 90%;
+      max-width: 500px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .terms-box h3 { color: #ffaa44; margin-bottom: 1rem; }
+    .terms-box p {
+      text-align: right;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+      color: #b9c5f0;
+    }
+    .terms-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+    .terms-buttons button {
+      padding: 10px 20px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: bold;
+      border: none;
+    }
+    .accept-btn { background: #ffaa44; color: #0a0a1a; }
+    .decline-btn { background: #444; color: white; }
+    
+    .footer {
+      text-align: center;
+      margin-top: 2rem;
+      padding: 1.5rem;
+      color: #6f7bb3;
+      border-top: 1px solid rgba(255, 170, 68, 0.2);
+    }
+    .social-icons { margin-bottom: 0.5rem; }
+    .social-icons i { font-size: 1.2rem; margin: 0 8px; color: #ffaa66; }
+    
+    @media (max-width: 640px) { 
+      body { padding: 0.5rem; } 
+      .header { padding: 1rem 0.8rem; border-radius: 1rem; }
+      .header h1 { font-size: 1.6rem; }
+      .header p { font-size: 0.75rem; }
+      .product-image { height: 140px; } 
+      .products-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+      .product-title { font-size: 0.78rem; }
+      .price { font-size: 0.95rem; }
+      .old-price { font-size: 0.7rem; }
+      .btn-wa { font-size: 0.72rem; padding: 6px 0; }
+      .card-info { padding: 0.5rem; }
+      .product-details { font-size: 0.6rem; padding: 4px; }
+      .control-bar { padding: 8px 12px; border-radius: 30px; gap: 6px; }
+      .lang-btn { padding: 4px 10px; font-size: 0.72rem; }
+      #currencySelect { font-size: 0.72rem; padding: 4px 8px; }
+      .tabs-container { gap: 5px; }
+      .tab-btn { padding: 5px 12px; font-size: 0.75rem; }
+      .search-bar-container { padding: 6px 12px; }
+      #searchInput { font-size: 0.8rem; }
+      .discount-badge { font-size: 0.6rem; padding: 3px 7px; }
+      .admin-add-body { gap: 0.6rem; }
+      .admin-add-body input, .admin-add-body select, .admin-add-body textarea { font-size: 0.75rem; padding: 6px 10px; }
+      .checkout-wrap { flex-direction: column; gap: 0.8rem; padding: 0.5rem 0 1rem; }
+      .co-input { font-size: 0.8rem; padding: 8px 10px; }
+      .checkout-section { padding: 0.8rem; }
+      .checkout-section h3 { font-size: 0.8rem; }
+      .order-summary { position: static; }
+      .checkout-submit-btn { font-size: 0.85rem; padding: 10px; }
+    }
 
-  <script>
-    // الكود المُحسَّن - يعمل بدون GitHub تمامًا!
-    let products = []; // مصفوفة المنتجات
-    let currentLang = "ar", currentCurrency = "OMR", adminMode = false;
-    
-    // بيانات المنتجات الثابتة + الحفظ المحلي
-    const defaultProducts = [
-      { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", category: "games", price: 14, oldPrice: 20, image: "https://store.playstation.com/store/api/chihiro/00_09_12/image?w=320", descAr: "🏷️ الحجم: 65GB", descEn: "📦 Size: 65GB" },
-      // أضف باقي الألعاب + بطاقات الشحن هنا (12+ لعبة كما في كودك)
-      { id: 101, nameAr: "بطاقة شحن أمريكي", nameEn: "US Gift Card", category: "giftcards", price: 5, oldPrice: 6, image: "https://i.imgur.com/giftcard-us.png", descAr: "10$ | 25$ | 50$", descEn: "10$ | 25$ | 50$" }
-    ];
-    
-    // تحميل/حفظ محلي (يعمل للجميع!)
-    function loadProducts() {
-      const saved = localStorage.getItem('xnesto_products_v2');
-      if (saved) {
-        products = JSON.parse(saved);
-      } else {
-        products = [...defaultProducts];
-        saveProducts();
-      }
-      renderProducts();
+    /* ── CHECKOUT MODAL ── */
+    .checkout-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 3000;
+      overflow-y: auto;
+      padding: 1rem;
     }
-    
-    function saveProducts() {
-      localStorage.setItem('xnesto_products_v2', JSON.stringify(products));
-      console.log('✅ تم حفظ المنتجات محليًا');
+    .checkout-modal.active { display: block; }
+    .checkout-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      padding: 1rem 0 2rem;
     }
-    
-    // باقي الدوال كما هي: renderProducts, updateProduct, إلخ
-    async function updateProduct(id, btnElement) {
-      const product = products.find(p => p.id === id);
-      const newPrice = parseFloat(btnElement.closest('.product-card').querySelector('.edit-price-input').value);
-      const newImage = btnElement.closest('.product-card').querySelector('.edit-image-url').value.trim();
-      
-      if (!isNaN(newPrice)) product.price = newPrice;
-      if (newImage) product.image = newImage;
-      
-      saveProducts(); // حفظ فوري!
-      renderProducts();
-      alert('✅ تم تحديث المنتج للجميع!');
+    .checkout-left {
+      flex: 1.5;
+      min-width: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
-    
-    // إضافة منتج جديد مع saveProducts()
-    // حذف مع saveProducts()
-    
-    // باقي الكود (setLang, setCurrency, buyProduct, toggleAdmin مع كلمة سر جديدة "xnesto2026")
-    const ADMIN_PASSWORD = "xnesto2026"; // غيّرتها!
-    
-    // تهيئة
-    loadProducts();
-  </script>
-</body>
-</html>
+    .checkout-right {
+      flex: 1;
+      min-width: 260px;
+    }
+    .checkout-section {
+      background: #11152b;
+      border-radius: 1rem;
+      border: 1px solid rgba(255,170,68,0.25);
+      padding: 1rem 1.2rem;
+    }
+    .checkout-section h3 {
+      font-size: 0.9rem;
+      color: #ffaa66;
+      margin-bottom: 0.8rem;
+      text-align: right;
+      border-bottom: 1px solid rgba(255,170,68,0.2);
+      padding-bottom: 0.5rem;
+    }
+    .co-input {
+      width: 100%;
+      background: #1e1e3a;
+      border: 1px solid rgba(255,170,68,0.3);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: white;
+      font-size: 0.85rem;
+      font-family: 'Cairo', sans-serif;
+      margin-bottom: 10px;
+      outline: none;
+      transition: 0.2s;
+      text-align: right;
+    }
+    .co-input:focus { border-color: #ffaa44; }
+    .co-input::placeholder { color: #6f7bb3; }
+    .co-row {
+      display: flex;
+      gap: 8px;
+    }
+    .co-row .co-input { margin-bottom: 0; }
+    .phone-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .phone-flag {
+      background: #1e1e3a;
+      border: 1px solid rgba(255,170,68,0.3);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #ffaa66;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+    .phone-row .co-input { margin-bottom: 0; flex: 1; }
+    .coupon-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .coupon-row .co-input { margin-bottom: 0; flex: 1; }
+    .coupon-btn {
+      background: #ffaa44;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      color: #0a0a1a;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+    .payment-option {
+      background: #1e1e3a;
+      border: 2px solid rgba(255,170,68,0.2);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-bottom: 8px;
+    }
+    .payment-option.selected { border-color: #25D366; background: rgba(37,211,102,0.08); }
+    .payment-option input[type=radio] { accent-color: #25D366; width: 18px; height: 18px; }
+    .payment-option-info { flex: 1; text-align: right; }
+    .payment-option-info strong { display: block; font-size: 0.85rem; color: white; }
+    .payment-option-info span { font-size: 0.72rem; color: #6f7bb3; }
+    .payment-icon { font-size: 1.8rem; }
+
+    /* ORDER SUMMARY */
+    .order-summary {
+      background: #11152b;
+      border-radius: 1rem;
+      border: 1px solid rgba(255,170,68,0.25);
+      padding: 1rem 1.2rem;
+      position: sticky;
+      top: 10px;
+    }
+    .order-summary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 0.8rem;
+      color: #ffaa66;
+      border-bottom: 1px solid rgba(255,170,68,0.2);
+      padding-bottom: 0.5rem;
+    }
+    .order-product-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .order-product-img {
+      width: 55px;
+      height: 55px;
+      border-radius: 8px;
+      background: #1e1e3a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .order-product-img img { width: 100%; height: 100%; object-fit: cover; }
+    .order-product-info { flex: 1; text-align: right; }
+    .order-product-info .pname { font-size: 0.8rem; font-weight: 700; color: white; }
+    .order-product-info .pcat { font-size: 0.65rem; color: #6f7bb3; }
+    .order-qty {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #1e1e3a;
+      border-radius: 20px;
+      padding: 3px 8px;
+    }
+    .qty-btn {
+      background: none;
+      border: none;
+      color: #ffaa44;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 0 4px;
+    }
+    .qty-num { font-size: 0.8rem; color: white; min-width: 16px; text-align: center; }
+    .order-price { font-size: 0.9rem; font-weight: 700; color: #ffaa44; white-space: nowrap; }
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      margin-bottom: 6px;
+      color: #b9c5f0;
+    }
+    .summary-line.total {
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      border-top: 1px solid rgba(255,170,68,0.2);
+      margin-top: 8px;
+      padding-top: 8px;
+    }
+    .summary-line .saved { color: #00cc88; }
+    .summary-line .label { color: #6f7bb3; }
+    .checkout-submit-btn {
+      background: #25D366;
+      border: none;
+      width: 100%;
+      padding: 12px;
+      border-radius: 40px;
+      color: white;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s;
+    }
+    .checkout-submit-btn:hover { background: #1da851; }
+    .checkout-close-btn {
+      background: transparent;
+      border: 1px solid rgba(255,170,68,0.3);
+      width: 100%;
+      padding: 8px;
+      border-radius: 40px;
+      color: #ffaa66;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .warning-box {
+      background: rgba(255,170,0,0.1);
+      border: 1px solid rgba(255,170,0,0.4);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.75rem;
+      color: #ffcc77;
+      margin-bottom: 8px;
+    }
+  </style>
+  <style>
+    /* ── HEADER ENHANCED ── */
+    .header {
+      position: relative;
+      overflow: hidden;
+    }
+    /* جزيئات عائمة */
+    .header-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      font-size: 1.4rem;
+      animation: floatParticle linear infinite;
+      opacity: 0.7;
+    }
+    @keyframes floatParticle {
+      0%   { transform: translateY(100%) rotate(0deg);   opacity: 0; }
+      10%  { opacity: 0.7; }
+      90%  { opacity: 0.7; }
+      100% { transform: translateY(-120%) rotate(360deg); opacity: 0; }
+    }
+
+    /* يد PS5 */
+    .ps5-controller {
+      font-size: 3.5rem;
+      display: inline-block;
+      animation: controllerFloat 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 12px rgba(0,100,255,0.6));
+      margin: 0.3rem 0;
+    }
+    @keyframes controllerFloat {
+      0%,100% { transform: translateY(0) rotate(-5deg); }
+      50%      { transform: translateY(-10px) rotate(5deg); }
+    }
+
+    /* ألعاب صغيرة تطير */
+    .floating-games {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin: 0.4rem 0;
+      flex-wrap: wrap;
+    }
+    .game-icon {
+      font-size: 1.3rem;
+      animation: gameFloat ease-in-out infinite;
+      filter: drop-shadow(0 0 6px rgba(255,170,44,0.5));
+    }
+    .game-icon:nth-child(1) { animation-duration: 2.1s; animation-delay: 0.0s; }
+    .game-icon:nth-child(2) { animation-duration: 2.5s; animation-delay: 0.3s; }
+    .game-icon:nth-child(3) { animation-duration: 1.9s; animation-delay: 0.6s; }
+    .game-icon:nth-child(4) { animation-duration: 2.3s; animation-delay: 0.1s; }
+    .game-icon:nth-child(5) { animation-duration: 2.7s; animation-delay: 0.4s; }
+    .game-icon:nth-child(6) { animation-duration: 2.0s; animation-delay: 0.8s; }
+    @keyframes gameFloat {
+      0%,100% { transform: translateY(0)    scale(1);    }
+      50%      { transform: translateY(-8px) scale(1.15); }
+    }
+
+    /* خط فاصل ذهبي بين التصنيفات والمنتجات */
+    .section-divider {
+      max-width: 1400px;
+      margin: 0 auto 1.8rem auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 4px;
+    }
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #ffaa44, transparent);
+    }
+    .divider-badge {
+      background: linear-gradient(135deg, #1e1e3a, #2d2f6e);
+      border: 1px solid rgba(255,170,68,0.4);
+      color: #ffaa44;
+      padding: 5px 16px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 0 12px rgba(255,170,44,0.2);
+    }
+  </style>
+<body dir="rtl">
+
+<!-- شريط اختيار الجهاز -->
+<div class="device-bar">
+  <button class="device-btn active" id="btnMobile" onclick="setView('mobile')">
+    <i class="fas fa-mobile-alt"></i> جوال
+  </button>
+  <button class="device-btn" id="btnTablet" onclick="setView('tablet')">
+    <i class="fas fa-tablet-alt"></i> تابلت
+  </button>
+  <button class="device-btn" id="btnDesktop" onclick="setView('desktop')">
+    <i class="fas fa-desktop"></i> كمبيوتر
+  </button>
+</div>
+
+<div class="header" style="position:relative;overflow:hidden;padding:0;min-height:280px;background:linear-gradient(135deg,#02020a,#0a0a1f);border-radius:1.5rem;margin-bottom:1.5rem;border:1px solid rgba(255,170,68,0.3);">
+
+  <!-- هالة الطاقة -->
+  <div style="position:absolute;width:100%;height:100%;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(255,140,0,0.25),rgba(0,67,156,0.1),transparent 70%);filter:blur(40px);animation:pulseAura 4s infinite alternate;pointer-events:none;"></div>
+
+  <!-- النار في الأسفل -->
+  <div id="fire-container" style="position:absolute;bottom:0;width:100%;height:120px;z-index:2;pointer-events:none;"></div>
+
+  <!-- المحتوى الرئيسي -->
+  <div style="position:relative;z-index:10;padding:2rem 1rem 1.5rem;text-align:center;">
+
+    <!-- الشعار + يد التحكم -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;">
+      <span style="
+        font-size:clamp(2.5rem,10vw,5rem);
+        font-weight:900;
+        font-family:'Cairo',sans-serif;
+        background:linear-gradient(90deg,#ffcc66,#fff,#ffcc66);
+        background-size:200% auto;
+        -webkit-background-clip:text;
+        background-clip:text;
+        -webkit-text-fill-color:transparent;
+        animation:textShine 3s linear infinite;
+        filter:drop-shadow(0 0 20px rgba(255,204,102,0.7));
+        letter-spacing:3px;
+      ">xnesto</span>
+      <span style="
+        font-size:clamp(2rem,7vw,3.5rem);
+        display:inline-block;
+        filter:drop-shadow(0 0 15px #00439c);
+        animation:floatMain 3s infinite ease-in-out;
+      ">🎮</span>
+    </div>
+
+    <!-- ألعاب صغيرة تطفو -->
+    <div style="display:flex;justify-content:center;gap:14px;margin:0.5rem 0;">
+      <span style="font-size:1.3rem;animation:gameFloat 2.1s ease-in-out infinite;animation-delay:0s;">⚔️</span>
+      <span style="font-size:1.3rem;animation:gameFloat 2.5s ease-in-out infinite;animation-delay:0.3s;">🏆</span>
+      <span style="font-size:1.3rem;animation:gameFloat 1.9s ease-in-out infinite;animation-delay:0.6s;">🕹️</span>
+      <span style="font-size:1.3rem;animation:gameFloat 2.3s ease-in-out infinite;animation-delay:0.1s;">💥</span>
+      <span style="font-size:1.3rem;animation:gameFloat 2.7s ease-in-out infinite;animation-delay:0.4s;">🎯</span>
+      <span style="font-size:1.3rem;animation:gameFloat 2.0s ease-in-out infinite;animation-delay:0.8s;">🌟</span>
+    </div>
+
+    <!-- النص الإعلاني -->
+    <div style="
+      color:#fff;
+      font-size:clamp(0.75rem,2.5vw,1rem);
+      font-weight:700;
+      background:rgba(255,255,255,0.05);
+      padding:8px 24px;
+      border-radius:50px;
+      border:1px solid rgba(255,204,102,0.3);
+      backdrop-filter:blur(10px);
+      display:inline-block;
+      margin-top:0.5rem;
+      box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    " id="welcomeMsg">العب بذكاء، اشحن بأقل سعر – xnesto الاختيار الأول 🏆🔥</div>
+
+  </div>
+
+  <!-- جزيئات الأيقونات -->
+  <div id="particles-container" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:5;"></div>
+</div>
+
+<style>
+  @keyframes textShine { to { background-position: 200% center; } }
+  @keyframes floatMain {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-15px) rotate(5deg); }
+  }
+  @keyframes pulseAura {
+    0%   { transform: scale(1);   opacity: 0.3; }
+    100% { transform: scale(1.3); opacity: 0.6; }
+  }
+  @keyframes gameFloat {
+    0%,100% { transform: translateY(0)    scale(1);    }
+    50%      { transform: translateY(-8px) scale(1.15); }
+  }
+</style>
+
+<script>
+  // نار متحركة
+  const fc = document.getElementById('fire-container');
+  function createFire() {
+    if (!fc) return;
+    const f = document.createElement('div');
+    const size = Math.random() * 35 + 15;
+    Object.assign(f.style, {
+      position:'absolute', bottom:'0',
+      width: size+'px', height: size+'px',
+      background:'radial-gradient(circle,#fff,#ffcc66,#ff4500,transparent 70%)',
+      borderRadius:'50% 50% 20% 20%',
+      left: Math.random()*100+'%',
+      animation:'riseUp '+(Math.random()*0.5+0.8)+'s ease-in forwards',
+      mixBlendMode:'screen', pointerEvents:'none'
+    });
+    fc.appendChild(f);
+    setTimeout(()=>f.remove(), 1200);
+  }
+  // شرارات
+  function createSpark() {
+    if (!fc) return;
+    const s = document.createElement('div');
+    Object.assign(s.style, {
+      position:'absolute', width:'3px', height:'3px',
+      background:'#fff', borderRadius:'50%',
+      left: Math.random()*100+'%', bottom:'10px',
+      boxShadow:'0 0 8px #ffcc66', zIndex:'3'
+    });
+    fc.appendChild(s);
+    const anim = s.animate([
+      {transform:'translate(0,0)', opacity:1},
+      {transform:`translate(${(Math.random()-0.5)*150}px,-200px)`, opacity:0}
+    ], {duration:1500, easing:'ease-out'});
+    anim.onfinish = ()=>s.remove();
+  }
+  // أيقونات طائرة
+  const pc = document.getElementById('particles-container');
+  const icons = ['🎮','💿','⚡','⭐','🔥','🕹️','💎','💳'];
+  function createIcon() {
+    if (!pc) return;
+    const ic = document.createElement('div');
+    const mx = (Math.random()-0.5)*300, my = (Math.random()-0.5)*200;
+    const dur = Math.random()*4+4;
+    Object.assign(ic.style, {
+      position:'absolute',
+      fontSize: (Math.random()*16+14)+'px',
+      left: Math.random()*100+'%',
+      top:  Math.random()*100+'%',
+      opacity:'0',
+      animation:`iconDrift ${dur}s linear forwards`,
+      '--mx': mx+'px', '--my': my+'px'
+    });
+    ic.textContent = icons[Math.floor(Math.random()*icons.length)];
+    pc.appendChild(ic);
+    setTimeout(()=>ic.remove(), dur*1000);
+  }
+  setInterval(createFire, 100);
+  setInterval(createSpark, 200);
+  setInterval(createIcon, 600);
+</script>
+<style>
+  @keyframes riseUp {
+    0%   { transform: translateY(0) scale(1);   opacity:1; }
+    100% { transform: translateY(-130px) scale(0.1); opacity:0; }
+  }
+  @keyframes iconDrift {
+    0%   { transform:translate(0,0) rotate(0deg);   opacity:0; }
+    20%  { opacity:0.6; }
+    80%  { opacity:0.6; }
+    100% { transform:translate(var(--mx),var(--my)) rotate(360deg); opacity:0; }
+  }
+</style>
+
+<div class="control-bar">
+  <div class="lang-switch">
+    <button class="lang-btn active" data-lang="ar">🇸🇦 العربية</button>
+    <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+  </div>
+  <div class="currency-selector">
+    <label><i class="fas fa-coins"></i> <span id="currencyLabel">العملة:</span></label>
+    <select id="currencySelect">
+      <option value="OMR">ريال عماني (OMR)</option>
+      <option value="USD">دولار أمريكي (USD)</option>
+      <option value="SAR">ريال سعودي (SAR)</option>
+      <option value="QAR">ريال قطري (QAR)</option>
+      <option value="EUR">يورو (EUR)</option>
+      <option value="AED">درهم إماراتي (AED)</option>
+    </select>
+  </div>
+  <div class="auth-buttons" id="authButtons">
+    <button class="login-btn" id="showLoginBtn"><i class="fas fa-user-shield"></i> <span id="loginBtnText">تسجيل دخول</span></button>
+  </div>
+</div>
+
+<div id="adminAddSection" class="admin-add-section">
+  <div class="admin-add-header">
+    <h3><i class="fas fa-plus-circle"></i> إضافة منتج جديد</h3>
+    <span><i class="fas fa-lock-open"></i> وضع الإدارة</span>
+  </div>
+  <div class="admin-add-body">
+    <input type="text" id="newNameAr" placeholder="الاسم بالعربية">
+    <input type="text" id="newNameEn" placeholder="Name in English">
+    <select id="newCategorySelect"></select>
+    <input type="number" id="newPrice" step="0.5" placeholder="السعر (ر.ع)">
+    <div class="image-upload-area" id="imageUploadArea">
+      <i class="fas fa-cloud-upload-alt"></i> 📸 اختر صورة من جهازك
+      <input type="file" id="newImageFile" accept="image/*">
+      <img id="newImagePreview" class="image-preview" alt="معاينة الصورة">
+    </div>
+    <textarea id="newDetails" rows="2" placeholder="تفاصيل المنتج (وصف، مواصفات...)"></textarea>
+    <input type="number" id="newDiscount" step="1" placeholder="نسبة الخصم %">
+    <input type="datetime-local" id="newTimer">
+    <button id="addProductBtn" class="btn-add-product"><i class="fas fa-cloud-upload-alt"></i> إضافة المنتج</button>
+  </div>
+</div>
+
+<div id="categoryManagement" class="category-management">
+  <span><i class="fas fa-tags"></i> إدارة التصنيفات:</span>
+  <div id="categoriesList"></div>
+  <div class="add-category-input">
+    <input type="text" id="newCategoryName" placeholder="تصنيف جديد">
+    <button id="addCategoryBtn"><i class="fas fa-plus"></i> إضافة</button>
+  </div>
+</div>
+
+<div class="search-bar-container">
+  <div class="search-box">
+    <i class="fas fa-search"></i>
+    <input type="text" id="searchInput" placeholder="🔍 ابحث عن منتج...">
+    <span class="search-results-count" id="searchCount">0</span>
+  </div>
+</div>
+
+<div id="tabsContainer" class="tabs-container"></div>
+
+<!-- فاصل ذهبي -->
+<div class="section-divider">
+  <div class="divider-line"></div>
+  <div class="divider-badge">🎮 المنتجات المتاحة</div>
+  <div class="divider-line"></div>
+</div>
+
+<div id="productsContainer" class="products-grid"></div>
+<div class="pagination" id="paginationContainer"></div>
+
+<div class="footer">
+  <div class="social-icons">
+    <i class="fab fa-instagram"></i> <span id="instagramText">xnesto_store</span>
+    <i class="fab fa-whatsa

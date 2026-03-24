@@ -45,13 +45,6 @@
         .stat-value { font-size: 1.3rem; font-weight: bold; color: #ffaa44; }
         .stat-label { font-size: 0.65rem; opacity: 0.7; }
         
-        .stats-bar {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-            justify-content: center;
-        }
         .visitors-table {
             background: rgba(255,255,255,0.05);
             border-radius: 1rem;
@@ -108,6 +101,56 @@
         .back-link { background: #ffaa44; color: #0a0a1a; }
         .logout-btn { background: #ff4444; color: white; }
         .delete-all-btn { background: #aa0000; color: white; }
+        
+        /* قسم إدارة التصنيفات */
+        .categories-manager {
+            background: #11152b;
+            border: 1px solid rgba(255,170,68,0.3);
+            border-radius: 1rem;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .categories-manager h3 { color: #ffaa44; margin-bottom: 0.5rem; font-size: 1rem; }
+        .categories-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .category-badge {
+            background: #2d2f6e;
+            padding: 4px 12px;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .category-badge i { cursor: pointer; color: #ff6666; font-size: 0.7rem; }
+        .add-category-input {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .add-category-input input {
+            background: #1e1e3a;
+            border: 1px solid #ffaa44;
+            border-radius: 2rem;
+            padding: 0.4rem 0.8rem;
+            color: white;
+            flex: 1;
+            min-width: 120px;
+        }
+        .add-category-input button {
+            background: #ffaa44;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: bold;
+            color: #0a0a1a;
+        }
         
         .admin-panel {
             background: #11152b;
@@ -205,7 +248,7 @@
 
 <div class="header">
     <h1>🔐 لوحة إدارة xnesto <i class="fas fa-chart-line"></i></h1>
-    <p>إدارة المنتجات - المخزون - متابعة الزوار</p>
+    <p>إدارة المنتجات - المخزون - متابعة الزوار - التصنيفات</p>
 </div>
 
 <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem; justify-content: space-between;">
@@ -218,8 +261,8 @@
         <input type="text" id="searchInput" class="search-input" placeholder="🔍 بحث">
         <select id="filterCategory" class="filter-select">
             <option value="all">الكل</option>
-            <option value="games">🎮 ألعاب</option>
-            <option value="giftcards">💳 بطاقات</option>
+            <option value="games">🎮 ألعاب PS4/PS5</option>
+            <option value="giftcards">💳 بطاقات شحن</option>
         </select>
     </div>
 </div>
@@ -228,15 +271,22 @@
 <div id="visitorStats" class="stats-grid" style="display:none;"></div>
 <div id="visitorsTable" class="visitors-table" style="display:none;"></div>
 
+<!-- قسم إدارة التصنيفات -->
+<div id="categoriesManager" class="categories-manager" style="display:none;">
+    <h3><i class="fas fa-tags"></i> إدارة التصنيفات</h3>
+    <div id="categoriesList" class="categories-list"></div>
+    <div class="add-category-input">
+        <input type="text" id="newCategoryName" placeholder="تصنيف جديد (مثال: 🎮 ألعاب PS4)">
+        <button id="addCategoryBtn"><i class="fas fa-plus"></i> إضافة تصنيف</button>
+    </div>
+</div>
+
 <div id="adminPanel" class="admin-panel" style="display:none;">
     <h3>➕ إضافة منتج جديد</h3>
     <div class="add-form">
         <input type="text" id="newNameAr" placeholder="الاسم بالعربية">
         <input type="text" id="newNameEn" placeholder="Name in English">
-        <select id="newCategory">
-            <option value="games">🎮 ألعاب PS4/PS5</option>
-            <option value="giftcards">💳 بطاقات شحن</option>
-        </select>
+        <select id="newCategorySelect"></select>
         <input type="number" id="newPrice" step="0.5" placeholder="السعر">
         <input type="number" id="newOldPrice" step="0.5" placeholder="السعر القديم">
         <input type="number" id="newStock" step="1" placeholder="الكمية" value="99">
@@ -264,8 +314,11 @@
     const database = firebase.database();
     const productsRef = database.ref('products');
     const visitorsRef = database.ref('visitors');
+    const categoriesRef = database.ref('categories');
     
     let products = [];
+    let categories = ["games", "giftcards"];
+    let categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
     let currentImageData = null;
     let isLoggedIn = false;
     let selectedProducts = new Set();
@@ -274,7 +327,7 @@
     const ADMIN_PASSWORD = "ssp1995";
     const SESSION_KEY = "xnesto_admin_logged";
     
-    // ==================== 50 لعبة كاملة (محفوظة) ====================
+    // ==================== 50 لعبة كاملة ====================
     const defaultGames = [
         { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, stock: 50, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English" },
         { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English" },
@@ -288,18 +341,13 @@
         { id: 10, nameAr: "Cyberpunk 2077", nameEn: "Cyberpunk 2077", priceOMR: 10, oldPrice: 16, stock: 65, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg", detailsAr: "🏷️ 70GB | 🌆 مستقبل مفتوح", detailsEn: "📦 70GB | 🌆 Open World Future" }
     ];
     
-    // إضافة 40 لعبة إضافية
     for (let i = 11; i <= 50; i++) {
         defaultGames.push({
-            id: i,
-            nameAr: `لعبة PS5 مميزة ${i}`,
-            nameEn: `Premium PS5 Game ${i}`,
-            priceOMR: 9 + Math.floor(Math.random() * 10),
-            oldPrice: 12 + Math.floor(Math.random() * 10),
+            id: i, nameAr: `لعبة PS5 مميزة ${i}`, nameEn: `Premium PS5 Game ${i}`,
+            priceOMR: 9 + Math.floor(Math.random() * 10), oldPrice: 12 + Math.floor(Math.random() * 10),
             stock: 20 + Math.floor(Math.random() * 80),
             image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2358720/header.jpg",
-            detailsAr: `🏷️ لعبة رقم ${i}`,
-            detailsEn: `Game ${i}`
+            detailsAr: `🏷️ لعبة رقم ${i}`, detailsEn: `Game ${i}`
         });
     }
     
@@ -331,7 +379,6 @@
             referrer: document.referrer || "مباشر"
         };
         visitorsRef.push(visitorData);
-        
         const today = new Date().toDateString();
         database.ref('daily_visits/' + today.replace(/\s/g, '_')).transaction(c => (c || 0) + 1);
         database.ref('total_visits').transaction(c => (c || 0) + 1);
@@ -352,20 +399,98 @@
                 document.getElementById('visitorStats').style.display = 'grid';
             });
         });
-        
         visitorsRef.orderByKey().limitToLast(8).once('value', (snapshot) => {
             const visitors = snapshot.val();
             if (visitors) {
                 const list = Object.values(visitors).reverse();
                 document.getElementById('visitorsTable').innerHTML = `
                     <div style="padding:0.5rem; border-bottom:1px solid rgba(255,170,68,0.2);"><i class="fas fa-users"></i> آخر الزوار</div>
-                    <table><thead><tr><th>الوقت</th><th>التاريخ</th><th>المتصفح</th><th>المصدر</th></tr></thead><tbody>
+                     <table><thead><tr><th>الوقت</th><th>التاريخ</th><th>المتصفح</th><th>المصدر</th></tr></thead><tbody>
                         ${list.map(v => `<tr><td>${v.time || '-'}</td><td>${v.date || '-'}</td><td>${(v.userAgent || '').substring(0, 25)}...</td><td>${v.referrer === 'مباشر' ? '🔗 رابط' : '🔍 خارجي'}</td></tr>`).join('')}
                     </tbody></table>
                 `;
                 document.getElementById('visitorsTable').style.display = 'block';
             }
         });
+    }
+    
+    // ==================== وظائف التصنيفات ====================
+    function loadCategories() {
+        categoriesRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data && data.categories && data.names) {
+                categories = data.categories;
+                categoryNames = data.names;
+            } else {
+                categories = ["games", "giftcards"];
+                categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
+                saveCategories();
+            }
+            updateCategoriesUI();
+            updateCategorySelect();
+        });
+    }
+    
+    function saveCategories() {
+        categoriesRef.set({ categories: categories, names: categoryNames });
+    }
+    
+    function updateCategoriesUI() {
+        const container = document.getElementById('categoriesList');
+        container.innerHTML = categories.map(cat => `
+            <div class="category-badge">
+                ${categoryNames[cat] || cat}
+                <i class="fas fa-trash" onclick="deleteCategory('${cat}')"></i>
+            </div>
+        `).join('');
+    }
+    
+    function updateCategorySelect() {
+        const select = document.getElementById('newCategorySelect');
+        if (!select) return;
+        select.innerHTML = '';
+        categories.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            option.textContent = categoryNames[cat] || cat;
+            select.appendChild(option);
+        });
+        // إضافة خيار الفلترة
+        const filterSelect = document.getElementById('filterCategory');
+        if (filterSelect) {
+            const currentValue = filterSelect.value;
+            filterSelect.innerHTML = '<option value="all">الكل</option>';
+            categories.forEach(cat => {
+                filterSelect.innerHTML += `<option value="${cat}">${categoryNames[cat] || cat}</option>`;
+            });
+            filterSelect.value = currentValue;
+        }
+    }
+    
+    function addNewCategory() {
+        const newName = document.getElementById('newCategoryName').value.trim();
+        if (!newName) { alert('الرجاء إدخال اسم التصنيف'); return; }
+        const catKey = newName.replace(/\s/g, "_").toLowerCase();
+        if (categories.includes(catKey)) { alert('هذا التصنيف موجود مسبقاً'); return; }
+        categories.push(catKey);
+        categoryNames[catKey] = newName;
+        saveCategories();
+        updateCategoriesUI();
+        updateCategorySelect();
+        document.getElementById('newCategoryName').value = '';
+        alert('✅ تم إضافة التصنيف بنجاح!');
+    }
+    
+    function deleteCategory(cat) {
+        if (cat === "games" || cat === "giftcards") { alert("لا يمكن حذف التصنيفات الأساسية"); return; }
+        if (confirm(`⚠️ هل أنت متأكد من حذف التصنيف "${categoryNames[cat]}"؟`)) {
+            categories = categories.filter(c => c !== cat);
+            delete categoryNames[cat];
+            saveCategories();
+            updateCategoriesUI();
+            updateCategorySelect();
+            alert('✅ تم حذف التصنيف');
+        }
     }
     
     // ==================== وظائف الأدمن ====================
@@ -385,10 +510,12 @@
     
     function showAdminPanel() {
         document.getElementById('adminPanel').style.display = 'block';
+        document.getElementById('categoriesManager').style.display = 'block';
         document.getElementById('logoutBtn').style.display = 'inline-block';
         document.getElementById('deleteAllBtn').style.display = 'inline-block';
         loadProducts();
         loadVisitorStats();
+        loadCategories();
     }
     
     function logout() { localStorage.removeItem(SESSION_KEY); window.location.reload(); }
@@ -396,6 +523,7 @@
     
     document.getElementById('logoutBtn').onclick = logout;
     document.getElementById('deleteAllBtn').onclick = deleteAllProducts;
+    document.getElementById('addCategoryBtn').onclick = addNewCategory;
     document.getElementById('searchInput').addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase(); renderTable(); });
     document.getElementById('filterCategory').addEventListener('change', (e) => { filterCategory = e.target.value; renderTable(); });
     
@@ -423,17 +551,10 @@
             if (data && Array.isArray(data) && data.length > 0) products = data;
             else { products = JSON.parse(JSON.stringify(allDefaultProducts)); productsRef.set(products); }
             renderTable();
-            updateStats();
         });
     }
     
     function saveProducts() { productsRef.set(products); }
-    
-    function updateStats() {
-        const totalStock = products.reduce((sum, p) => sum + (p.stock || 0), 0);
-        const totalValue = products.reduce((sum, p) => sum + ((p.priceOMR || 0) * (p.stock || 0)), 0);
-        // stats already shown in visitor stats area
-    }
     
     function getFilteredProducts() {
         let filtered = [...products];
@@ -454,7 +575,10 @@
                 <button id="batchStockBtn" class="btn-sm" onclick="batchUpdateStock()">✏️ تعديل كمية المحدد</button>
             </div>
             <div style="overflow-x:auto;">
-                <table><thead><tr><th class="checkbox-col"></th><th>الصورة</th><th>الاسم</th><th>السعر</th><th>الكمية</th><th>التصنيف</th><th>إجراءات</th></tr></thead><tbody id="tableBody"></tbody></table>
+                 <table>
+                    <thead> <tr><th class="checkbox-col"></th><th>الصورة</th><th>الاسم</th><th>السعر</th><th>الكمية</th><th>التصنيف</th><th>إجراءات</th></tr> </thead>
+                    <tbody id="tableBody"></tbody>
+                 </table>
             </div>
         `;
         
@@ -466,10 +590,10 @@
                 <td>${escapeHtml(p.nameAr)}<br><small>${escapeHtml(p.nameEn)}</small></td>
                 <td>${p.priceOMR} ر.ع${p.oldPrice ? `<br><span style="text-decoration:line-through;">${p.oldPrice}</span>` : ''}</td>
                 <td><input type="number" class="stock-input" id="stock_${p.id}" value="${p.stock || 0}" min="0" step="1" onchange="updateStock(${p.id}, this.value)" style="${(p.stock || 0) === 0 ? 'border-color:#ff4444;' : ''}"><span class="${(p.stock || 0) === 0 ? 'out-stock' : (p.stock || 0) < 10 ? 'low-stock' : ''}" style="display:block;font-size:0.6rem;">${(p.stock || 0) === 0 ? 'نفذت' : (p.stock || 0) < 10 ? 'متبقي' : ''}</span></td>
-                <td>${p.category === 'games' ? '🎮 ألعاب' : '💳 بطاقات'}</td>
+                <td>${categoryNames[p.category] || p.category}</td>
                 <td><button class="edit-btn" onclick="openEditForm(${p.id})">✏️</button><button class="delete-btn" onclick="deleteProduct(${p.id})">🗑️</button></td>
             </tr>
-            <tr id="edit-form-${p.id}" style="display:none;"><td colspan="7"><div class="product-edit-form"><input type="text" id="editNameAr_${p.id}" value="${escapeHtml(p.nameAr)}"><input type="text" id="editNameEn_${p.id}" value="${escapeHtml(p.nameEn)}"><input type="number" id="editPrice_${p.id}" value="${p.priceOMR}" step="0.5"><input type="number" id="editOldPrice_${p.id}" value="${p.oldPrice || ''}" step="0.5"><input type="number" id="editStock_${p.id}" value="${p.stock || 0}" step="1"><div class="edit-image-upload" onclick="document.getElementById('editImageFile_${p.id}').click()"><i class="fas fa-cloud-upload-alt"></i> صورة<input type="file" id="editImageFile_${p.id}" accept="image/*" style="display:none;"></div><img id="editImagePreview_${p.id}" class="edit-image-preview"><input type="text" id="editImageUrl_${p.id}" value="${escapeHtml(p.image || '')}" placeholder="رابط الصورة"><textarea id="editDescAr_${p.id}" rows="1">${escapeHtml(p.detailsAr || '')}</textarea><textarea id="editDescEn_${p.id}" rows="1">${escapeHtml(p.detailsEn || '')}</textarea><select id="editCategory_${p.id}"><option value="games" ${p.category === 'games' ? 'selected' : ''}>🎮 ألعاب</option><option value="giftcards" ${p.category === 'giftcards' ? 'selected' : ''}>💳 بطاقات</option></select><button onclick="saveEdit(${p.id})" style="background:#00cc88;">💾 حفظ</button><button onclick="closeEditForm(${p.id})" style="background:#ff4444;">إلغاء</button></div></td></tr>
+            <tr id="edit-form-${p.id}" style="display:none;"><td colspan="7"><div class="product-edit-form"><input type="text" id="editNameAr_${p.id}" value="${escapeHtml(p.nameAr)}"><input type="text" id="editNameEn_${p.id}" value="${escapeHtml(p.nameEn)}"><input type="number" id="editPrice_${p.id}" value="${p.priceOMR}" step="0.5"><input type="number" id="editOldPrice_${p.id}" value="${p.oldPrice || ''}" step="0.5"><input type="number" id="editStock_${p.id}" value="${p.stock || 0}" step="1"><div class="edit-image-upload" onclick="document.getElementById('editImageFile_${p.id}').click()"><i class="fas fa-cloud-upload-alt"></i> صورة<input type="file" id="editImageFile_${p.id}" accept="image/*" style="display:none;"></div><img id="editImagePreview_${p.id}" class="edit-image-preview"><input type="text" id="editImageUrl_${p.id}" value="${escapeHtml(p.image || '')}" placeholder="رابط الصورة"><textarea id="editDescAr_${p.id}" rows="1">${escapeHtml(p.detailsAr || '')}</textarea><textarea id="editDescEn_${p.id}" rows="1">${escapeHtml(p.detailsEn || '')}</textarea><select id="editCategory_${p.id}">${categories.map(cat => `<option value="${cat}" ${p.category === cat ? 'selected' : ''}>${categoryNames[cat]}</option>`).join('')}</select><button onclick="saveEdit(${p.id})" style="background:#00cc88;">💾 حفظ</button><button onclick="closeEditForm(${p.id})" style="background:#ff4444;">إلغاء</button></div></td></tr>
         `).join('');
         
         products.forEach(p => {
@@ -555,7 +679,7 @@
     async function addProduct() {
         const nameAr = document.getElementById('newNameAr').value.trim();
         const nameEn = document.getElementById('newNameEn').value.trim();
-        const category = document.getElementById('newCategory').value;
+        const category = document.getElementById('newCategorySelect').value;
         const price = parseFloat(document.getElementById('newPrice').value);
         const oldPrice = parseFloat(document.getElementById('newOldPrice').value) || null;
         const stock = parseInt(document.getElementById('newStock').value) || 0;
@@ -583,6 +707,8 @@
     window.deleteProduct = deleteProduct;
     window.addProduct = addProduct;
     window.updateSelectedCount = updateSelectedCount;
+    window.deleteCategory = deleteCategory;
+    window.addNewCategory = addNewCategory;
 </script>
 </body>
 </html>

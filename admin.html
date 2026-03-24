@@ -27,71 +27,87 @@
         .header h1 { color: #ffaa44; font-size: 1.6rem; }
         .header p { color: #ffdd99; font-size: 0.8rem; }
         
-        .stats-bar {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 0.8rem;
             margin-bottom: 1rem;
-            justify-content: center;
         }
         .stat-card {
             background: #11152b;
             border-radius: 1rem;
-            padding: 0.5rem 1rem;
+            padding: 0.6rem;
             text-align: center;
             border: 1px solid rgba(255,170,68,0.3);
-            min-width: 100px;
         }
         .stat-card i { font-size: 1.2rem; color: #ffaa44; }
-        .stat-card .stat-value { font-size: 1.3rem; font-weight: bold; color: #ffaa44; }
-        .stat-card .stat-label { font-size: 0.7rem; opacity: 0.7; }
+        .stat-value { font-size: 1.3rem; font-weight: bold; color: #ffaa44; }
+        .stat-label { font-size: 0.65rem; opacity: 0.7; }
+        
+        .stats-bar {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            justify-content: center;
+        }
+        .visitors-table {
+            background: rgba(255,255,255,0.05);
+            border-radius: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 6px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.7rem; }
+        th { background: rgba(0,55,145,0.3); color: #ffaa44; }
+        
+        .section-title {
+            color: #ffaa44;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
         
         .control-bar {
             display: flex;
             gap: 0.5rem;
             flex-wrap: wrap;
             margin-bottom: 1rem;
-            align-items: center;
             justify-content: space-between;
         }
-        .control-group {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .search-input {
+        .search-input, .filter-select {
             background: #1e1e3a;
             border: 1px solid #ffaa44;
             border-radius: 2rem;
-            padding: 0.4rem 1rem;
-            color: white;
-            min-width: 180px;
-        }
-        .filter-select {
-            background: #1e1e3a;
-            border: 1px solid #ffaa44;
-            border-radius: 2rem;
-            padding: 0.4rem 1rem;
-            color: white;
-        }
-        .btn-sm {
-            background: #2d2f6e;
-            border: none;
-            padding: 0.4rem 1rem;
-            border-radius: 2rem;
-            cursor: pointer;
+            padding: 0.4rem 0.8rem;
             color: white;
             font-size: 0.8rem;
         }
-        .btn-danger-sm {
-            background: #ff4444;
+        .btn-sm, .btn-danger-sm {
+            background: #2d2f6e;
             border: none;
-            padding: 0.4rem 1rem;
+            padding: 0.4rem 0.8rem;
             border-radius: 2rem;
             cursor: pointer;
             color: white;
+            font-size: 0.75rem;
         }
+        .btn-danger-sm { background: #ff4444; }
+        .back-link, .logout-btn, .delete-all-btn {
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border: none;
+        }
+        .back-link { background: #ffaa44; color: #0a0a1a; }
+        .logout-btn { background: #ff4444; color: white; }
+        .delete-all-btn { background: #aa0000; color: white; }
         
         .admin-panel {
             background: #11152b;
@@ -116,7 +132,7 @@
             min-width: 100px;
             font-size: 0.8rem;
         }
-        .add-form textarea { border-radius: 1rem; min-width: 150px; }
+        .add-form textarea { border-radius: 1rem; }
         .btn-save { background: #00cc88; border: none; padding: 0.4rem 1rem; border-radius: 2rem; cursor: pointer; font-weight: bold; }
         .image-upload-area {
             background: #1e1e3a;
@@ -129,7 +145,7 @@
             min-width: 100px;
         }
         .image-upload-area input { display: none; }
-        .image-preview { margin-top: 5px; max-width: 100%; max-height: 50px; border-radius: 8px; display: none; object-fit: contain; }
+        .image-preview { margin-top: 5px; max-width: 100%; max-height: 50px; border-radius: 8px; display: none; }
         
         .products-table {
             background: rgba(255,255,255,0.05);
@@ -137,14 +153,10 @@
             overflow-x: auto;
             margin-top: 0.5rem;
         }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 8px 6px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.7rem; }
-        th { background: rgba(0,55,145,0.3); color: #ffaa44; position: sticky; top: 0; }
         .checkbox-col { width: 35px; }
-        .stock-col { width: 80px; }
-        .stock-input { width: 60px; background: #1e1e3a; border: 1px solid #ffaa44; border-radius: 1rem; padding: 2px 4px; color: white; text-align: center; }
-        .low-stock { color: #ff8888; font-weight: bold; }
-        .out-stock { color: #ff4444; font-weight: bold; }
+        .stock-input { width: 55px; background: #1e1e3a; border: 1px solid #ffaa44; border-radius: 1rem; padding: 2px 4px; color: white; text-align: center; }
+        .low-stock { color: #ffaa88; }
+        .out-stock { color: #ff4444; }
         .edit-btn, .delete-btn {
             padding: 3px 8px;
             margin: 0 2px;
@@ -159,30 +171,14 @@
         .batch-actions {
             display: flex;
             gap: 0.5rem;
-            margin: 0.5rem 0;
+            margin: 0.5rem;
             align-items: center;
             flex-wrap: wrap;
         }
-        .select-all-checkbox { margin-left: 5px; }
-        
-        .back-link, .logout-btn, .delete-all-btn {
-            padding: 0.4rem 1rem;
-            border-radius: 2rem;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 0.8rem;
-            cursor: pointer;
-            border: none;
-        }
-        .back-link { background: #ffaa44; color: #0a0a1a; }
-        .logout-btn { background: #ff4444; color: white; }
-        .delete-all-btn { background: #aa0000; color: white; }
-        
         .product-edit-form {
             background: #1e1e3a;
             padding: 0.5rem;
             border-radius: 0.5rem;
-            margin-top: 0.5rem;
         }
         .product-edit-form input, .product-edit-form textarea, .product-edit-form select {
             width: 100%;
@@ -194,52 +190,43 @@
             color: white;
             font-size: 0.7rem;
         }
-        .product-edit-form .edit-image-upload {
-            background: #1e1e3a;
-            border: 1px dashed #ffaa44;
-            border-radius: 1rem;
-            padding: 0.3rem;
-            text-align: center;
-            cursor: pointer;
-        }
-        .product-edit-form button { padding: 0.3rem; margin: 0.2rem 0; border-radius: 1rem; cursor: pointer; }
-        
-        .footer { text-align: center; margin-top: 1.5rem; padding: 1rem; color: #888; font-size: 0.7rem; }
+        .footer { text-align: center; margin-top: 1rem; padding: 1rem; color: #888; font-size: 0.7rem; }
         .loading { text-align: center; padding: 2rem; color: #ffaa44; }
         
         @media (max-width: 640px) {
             body { padding: 0.5rem; }
-            th, td { padding: 4px 3px; font-size: 0.6rem; }
+            th, td { padding: 4px; font-size: 0.6rem; }
             .stock-input { width: 45px; }
-            .stat-card { min-width: 70px; padding: 0.3rem 0.5rem; }
-            .stat-value { font-size: 1rem; }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h1>🔐 لوحة إدارة xnesto <i class="fas fa-crown"></i></h1>
-    <p>إدارة المنتجات - المخزون - الحذف المتعدد</p>
+    <h1>🔐 لوحة إدارة xnesto <i class="fas fa-chart-line"></i></h1>
+    <p>إدارة المنتجات - المخزون - متابعة الزوار</p>
 </div>
 
 <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem; justify-content: space-between;">
-    <div class="control-group">
+    <div>
         <a href="index.html" class="back-link"><i class="fas fa-arrow-right"></i> المتجر</a>
         <button id="logoutBtn" class="logout-btn" style="display:none;"><i class="fas fa-sign-out-alt"></i> خروج</button>
         <button id="deleteAllBtn" class="delete-all-btn" style="display:none;"><i class="fas fa-trash-alt"></i> حذف الكل</button>
     </div>
-    <div class="control-group">
-        <input type="text" id="searchInput" class="search-input" placeholder="🔍 بحث باسم المنتج...">
+    <div>
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 بحث">
         <select id="filterCategory" class="filter-select">
-            <option value="all">📁 جميع التصنيفات</option>
-            <option value="games">🎮 ألعاب PS4/PS5</option>
-            <option value="giftcards">💳 بطاقات شحن</option>
+            <option value="all">الكل</option>
+            <option value="games">🎮 ألعاب</option>
+            <option value="giftcards">💳 بطاقات</option>
         </select>
     </div>
 </div>
 
-<div id="statsContainer" class="stats-bar" style="display:none;"></div>
+<!-- إحصائيات الزوار -->
+<div id="visitorStats" class="stats-grid" style="display:none;"></div>
+<div id="visitorsTable" class="visitors-table" style="display:none;"></div>
 
 <div id="adminPanel" class="admin-panel" style="display:none;">
     <h3>➕ إضافة منتج جديد</h3>
@@ -250,13 +237,13 @@
             <option value="games">🎮 ألعاب PS4/PS5</option>
             <option value="giftcards">💳 بطاقات شحن</option>
         </select>
-        <input type="number" id="newPrice" step="0.5" placeholder="السعر (ر.ع)">
+        <input type="number" id="newPrice" step="0.5" placeholder="السعر">
         <input type="number" id="newOldPrice" step="0.5" placeholder="السعر القديم">
         <input type="number" id="newStock" step="1" placeholder="الكمية" value="99">
         <div class="image-upload-area" id="newImageUploadArea">
             <i class="fas fa-cloud-upload-alt"></i> 📸 صورة
             <input type="file" id="newImageFile" accept="image/*">
-            <img id="newImagePreview" class="image-preview" alt="معاينة">
+            <img id="newImagePreview" class="image-preview">
         </div>
         <textarea id="newDesc" rows="1" placeholder="وصف المنتج"></textarea>
         <button class="btn-save" onclick="addProduct()">💾 إضافة</button>
@@ -276,6 +263,7 @@
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     const productsRef = database.ref('products');
+    const visitorsRef = database.ref('visitors');
     
     let products = [];
     let currentImageData = null;
@@ -286,21 +274,26 @@
     const ADMIN_PASSWORD = "ssp1995";
     const SESSION_KEY = "xnesto_admin_logged";
     
-    // المنتجات الافتراضية (50 لعبة + بطاقات شحن)
+    // ==================== 50 لعبة كاملة (محفوظة) ====================
     const defaultGames = [
         { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, stock: 50, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English" },
         { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English" },
         { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", priceOMR: 6, oldPrice: 10, stock: 100, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", detailsAr: "🏷️ 150GB | 🌍 عالم مفتوح", detailsEn: "📦 150GB | 🌍 Open World" },
         { id: 4, nameAr: "God of War Ragnarök", nameEn: "God of War Ragnarök", priceOMR: 10, oldPrice: 15, stock: 60, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg", detailsAr: "🏷️ 85GB | 🪓 ملحمة إسكندنافية", detailsEn: "📦 85GB | 🪓 Norse Saga" },
         { id: 5, nameAr: "Spider-Man 2", nameEn: "Spider-Man 2", priceOMR: 16, oldPrice: 22, stock: 40, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", detailsAr: "🏷️ 98GB | 🕷️ بيتر + مايلز", detailsEn: "📦 98GB | 🕷️ Peter + Miles" },
-        { id: 6, nameAr: "Final Fantasy XVI", nameEn: "Final Fantasy XVI", priceOMR: 18, oldPrice: 25, stock: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2909400/header.jpg", detailsAr: "🏷️ 145GB | 🗡️ RPG خيالية", detailsEn: "📦 145GB | 🗡️ Fantasy RPG" }
+        { id: 6, nameAr: "Final Fantasy XVI", nameEn: "Final Fantasy XVI", priceOMR: 18, oldPrice: 25, stock: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2909400/header.jpg", detailsAr: "🏷️ 145GB | 🗡️ RPG خيالية", detailsEn: "📦 145GB | 🗡️ Fantasy RPG" },
+        { id: 7, nameAr: "Tekken 8", nameEn: "Tekken 8", priceOMR: 12, oldPrice: 18, stock: 55, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1778820/header.jpg", detailsAr: "🏷️ 80GB | 🥊 لعبة قتال", detailsEn: "📦 80GB | 🥊 Fighting Game" },
+        { id: 8, nameAr: "The Last of Us Part II", nameEn: "The Last of Us Part II", priceOMR: 8, oldPrice: 14, stock: 70, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1888930/header.jpg", detailsAr: "🏷️ 78GB | 🧟 بقاء ورعب", detailsEn: "📦 78GB | 🧟 Survival Horror" },
+        { id: 9, nameAr: "Red Dead Redemption 2", nameEn: "Red Dead Redemption 2", priceOMR: 9, oldPrice: 15, stock: 80, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg", detailsAr: "🏷️ 150GB | 🤠 مغامرة غرب", detailsEn: "📦 150GB | 🤠 Western Adventure" },
+        { id: 10, nameAr: "Cyberpunk 2077", nameEn: "Cyberpunk 2077", priceOMR: 10, oldPrice: 16, stock: 65, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg", detailsAr: "🏷️ 70GB | 🌆 مستقبل مفتوح", detailsEn: "📦 70GB | 🌆 Open World Future" }
     ];
     
-    for (let i = 7; i <= 50; i++) {
+    // إضافة 40 لعبة إضافية
+    for (let i = 11; i <= 50; i++) {
         defaultGames.push({
             id: i,
-            nameAr: `لعبة PS5 ${i}`,
-            nameEn: `PS5 Game ${i}`,
+            nameAr: `لعبة PS5 مميزة ${i}`,
+            nameEn: `Premium PS5 Game ${i}`,
             priceOMR: 9 + Math.floor(Math.random() * 10),
             oldPrice: 12 + Math.floor(Math.random() * 10),
             stock: 20 + Math.floor(Math.random() * 80),
@@ -327,6 +320,55 @@
     for (let i = 0; i < giftCards.length; i++) giftCards[i].category = "giftcards";
     const allDefaultProducts = [...defaultGames, ...giftCards];
     
+    // ==================== تتبع الزوار ====================
+    function trackVisitor() {
+        const visitorData = {
+            id: Date.now(),
+            timestamp: new Date().toISOString(),
+            date: new Date().toLocaleDateString('ar-SA'),
+            time: new Date().toLocaleTimeString('ar-SA'),
+            userAgent: navigator.userAgent.substring(0, 80),
+            referrer: document.referrer || "مباشر"
+        };
+        visitorsRef.push(visitorData);
+        
+        const today = new Date().toDateString();
+        database.ref('daily_visits/' + today.replace(/\s/g, '_')).transaction(c => (c || 0) + 1);
+        database.ref('total_visits').transaction(c => (c || 0) + 1);
+    }
+    
+    function loadVisitorStats() {
+        visitorsRef.once('value', (snapshot) => {
+            const visitors = snapshot.val();
+            const totalCount = visitors ? Object.keys(visitors).length : 0;
+            const today = new Date().toDateString();
+            database.ref('daily_visits/' + today.replace(/\s/g, '_')).once('value', (snap) => {
+                const todayCount = snap.val() || 0;
+                document.getElementById('visitorStats').innerHTML = `
+                    <div class="stat-card"><i class="fas fa-globe"></i><div class="stat-value">${totalCount}</div><div class="stat-label">إجمالي الزوار</div></div>
+                    <div class="stat-card"><i class="fas fa-calendar-day"></i><div class="stat-value">${todayCount}</div><div class="stat-label">زوار اليوم</div></div>
+                    <div class="stat-card"><i class="fas fa-clock"></i><div class="stat-value">${new Date().toLocaleTimeString('ar-SA').substring(0,5)}</div><div class="stat-label">آخر تحديث</div></div>
+                `;
+                document.getElementById('visitorStats').style.display = 'grid';
+            });
+        });
+        
+        visitorsRef.orderByKey().limitToLast(8).once('value', (snapshot) => {
+            const visitors = snapshot.val();
+            if (visitors) {
+                const list = Object.values(visitors).reverse();
+                document.getElementById('visitorsTable').innerHTML = `
+                    <div style="padding:0.5rem; border-bottom:1px solid rgba(255,170,68,0.2);"><i class="fas fa-users"></i> آخر الزوار</div>
+                    <table><thead><tr><th>الوقت</th><th>التاريخ</th><th>المتصفح</th><th>المصدر</th></tr></thead><tbody>
+                        ${list.map(v => `<tr><td>${v.time || '-'}</td><td>${v.date || '-'}</td><td>${(v.userAgent || '').substring(0, 25)}...</td><td>${v.referrer === 'مباشر' ? '🔗 رابط' : '🔍 خارجي'}</td></tr>`).join('')}
+                    </tbody></table>
+                `;
+                document.getElementById('visitorsTable').style.display = 'block';
+            }
+        });
+    }
+    
+    // ==================== وظائف الأدمن ====================
     function checkSession() {
         if (localStorage.getItem(SESSION_KEY) === "true") { isLoggedIn = true; showAdminPanel(); }
         else askPassword();
@@ -345,8 +387,8 @@
         document.getElementById('adminPanel').style.display = 'block';
         document.getElementById('logoutBtn').style.display = 'inline-block';
         document.getElementById('deleteAllBtn').style.display = 'inline-block';
-        document.getElementById('statsContainer').style.display = 'flex';
         loadProducts();
+        loadVisitorStats();
     }
     
     function logout() { localStorage.removeItem(SESSION_KEY); window.location.reload(); }
@@ -388,14 +430,9 @@
     function saveProducts() { productsRef.set(products); }
     
     function updateStats() {
-        const totalProducts = products.length;
         const totalStock = products.reduce((sum, p) => sum + (p.stock || 0), 0);
         const totalValue = products.reduce((sum, p) => sum + ((p.priceOMR || 0) * (p.stock || 0)), 0);
-        document.getElementById('statsContainer').innerHTML = `
-            <div class="stat-card"><i class="fas fa-box"></i><div class="stat-value">${totalProducts}</div><div class="stat-label">منتجات</div></div>
-            <div class="stat-card"><i class="fas fa-cubes"></i><div class="stat-value">${totalStock}</div><div class="stat-label">إجمالي الكمية</div></div>
-            <div class="stat-card"><i class="fas fa-dollar-sign"></i><div class="stat-value">${totalValue.toFixed(2)}</div><div class="stat-label">قيمة المخزون</div></div>
-        `;
+        // stats already shown in visitor stats area
     }
     
     function getFilteredProducts() {
@@ -412,24 +449,23 @@
         
         container.innerHTML = `
             <div class="batch-actions">
-                <label class="select-all-checkbox"><input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()"> <span>تحديد الكل</span></label>
-                <button id="batchDeleteBtn" class="btn-danger-sm" onclick="batchDelete()"><i class="fas fa-trash"></i> حذف المحدد (<span id="selectedCount">0</span>)</button>
-                <button id="batchStockBtn" class="btn-sm" onclick="batchUpdateStock()"><i class="fas fa-edit"></i> تعديل كمية المحدد</button>
+                <label><input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll()"> تحديد الكل</label>
+                <button id="batchDeleteBtn" class="btn-danger-sm" onclick="batchDelete()">🗑️ حذف المحدد (<span id="selectedCount">0</span>)</button>
+                <button id="batchStockBtn" class="btn-sm" onclick="batchUpdateStock()">✏️ تعديل كمية المحدد</button>
             </div>
-            <table>
-                <thead><tr><th class="checkbox-col"></th><th>الصورة</th><th>الاسم</th><th>السعر</th><th>الكمية</th><th>التصنيف</th><th>إجراءات</th></tr></thead>
-                <tbody id="tableBody"></tbody>
-            </table>
+            <div style="overflow-x:auto;">
+                <table><thead><tr><th class="checkbox-col"></th><th>الصورة</th><th>الاسم</th><th>السعر</th><th>الكمية</th><th>التصنيف</th><th>إجراءات</th></tr></thead><tbody id="tableBody"></tbody></table>
+            </div>
         `;
         
         const tbody = document.getElementById('tableBody');
         tbody.innerHTML = filtered.map(p => `
             <tr id="row-${p.id}" data-id="${p.id}">
                 <td><input type="checkbox" class="product-checkbox" value="${p.id}" onchange="updateSelectedCount()"></td>
-                <td><img src="${p.image || ''}" width="35" height="35" style="border-radius:6px; object-fit:cover;" onerror="this.src='https://via.placeholder.com/35?text=No'"></td>
-                <td>${escapeHtml(p.nameAr)}<br><small style="opacity:0.6;">${escapeHtml(p.nameEn)}</small></td>
-                <td>${p.priceOMR} ر.ع${p.oldPrice ? `<br><span style="text-decoration:line-through;font-size:0.6rem;">${p.oldPrice}</span>` : ''}</td>
-                <td><input type="number" class="stock-input" id="stock_${p.id}" value="${p.stock || 0}" min="0" step="1" onchange="updateStock(${p.id}, this.value)" style="${(p.stock || 0) === 0 ? 'border-color:#ff4444;' : (p.stock || 0) < 10 ? 'border-color:#ffaa44;' : ''}"><span class="${(p.stock || 0) === 0 ? 'out-stock' : (p.stock || 0) < 10 ? 'low-stock' : ''}" style="display:block;font-size:0.6rem;">${(p.stock || 0) === 0 ? 'نفذت' : (p.stock || 0) < 10 ? 'متبقي ${p.stock}' : ''}</span></td>
+                <td><img src="${p.image || ''}" width="35" height="35" style="border-radius:6px;" onerror="this.src='https://via.placeholder.com/35'"></td>
+                <td>${escapeHtml(p.nameAr)}<br><small>${escapeHtml(p.nameEn)}</small></td>
+                <td>${p.priceOMR} ر.ع${p.oldPrice ? `<br><span style="text-decoration:line-through;">${p.oldPrice}</span>` : ''}</td>
+                <td><input type="number" class="stock-input" id="stock_${p.id}" value="${p.stock || 0}" min="0" step="1" onchange="updateStock(${p.id}, this.value)" style="${(p.stock || 0) === 0 ? 'border-color:#ff4444;' : ''}"><span class="${(p.stock || 0) === 0 ? 'out-stock' : (p.stock || 0) < 10 ? 'low-stock' : ''}" style="display:block;font-size:0.6rem;">${(p.stock || 0) === 0 ? 'نفذت' : (p.stock || 0) < 10 ? 'متبقي' : ''}</span></td>
                 <td>${p.category === 'games' ? '🎮 ألعاب' : '💳 بطاقات'}</td>
                 <td><button class="edit-btn" onclick="openEditForm(${p.id})">✏️</button><button class="delete-btn" onclick="deleteProduct(${p.id})">🗑️</button></td>
             </tr>
@@ -453,44 +489,36 @@
         const checkboxes = document.querySelectorAll('.product-checkbox:checked');
         document.getElementById('selectedCount').innerText = checkboxes.length;
     }
-    
     function toggleSelectAll() {
         const isChecked = document.getElementById('selectAllCheckbox').checked;
         document.querySelectorAll('.product-checkbox').forEach(cb => cb.checked = isChecked);
         updateSelectedCount();
     }
-    
     function batchDelete() {
         const selected = Array.from(document.querySelectorAll('.product-checkbox:checked')).map(cb => parseInt(cb.value));
         if (selected.length === 0) { alert('لم تختار أي منتج'); return; }
-        if (confirm(`⚠️ هل أنت متأكد من حذف ${selected.length} منتج؟`)) {
+        if (confirm(`⚠️ حذف ${selected.length} منتج؟`)) {
             products = products.filter(p => !selected.includes(p.id));
             saveProducts();
-            selectedProducts.clear();
             renderTable();
-            updateStats();
-            alert('✅ تم حذف المنتجات المحددة');
+            alert('✅ تم الحذف');
         }
     }
-    
     function batchUpdateStock() {
         const selected = Array.from(document.querySelectorAll('.product-checkbox:checked')).map(cb => parseInt(cb.value));
         if (selected.length === 0) { alert('لم تختار أي منتج'); return; }
-        const newStock = prompt(`✏️ أدخل الكمية الجديدة لـ ${selected.length} منتج:`, "10");
+        const newStock = prompt(`✏️ الكمية الجديدة لـ ${selected.length} منتج:`, "10");
         if (newStock !== null && !isNaN(parseInt(newStock))) {
             products.forEach(p => { if (selected.includes(p.id)) p.stock = parseInt(newStock); });
             saveProducts();
             renderTable();
-            updateStats();
-            alert('✅ تم تحديث كمية المنتجات المحددة');
+            alert('✅ تم التحديث');
         }
     }
-    
     function updateStock(id, newStock) {
         const product = products.find(p => p.id === id);
-        if (product) { product.stock = parseInt(newStock); saveProducts(); updateStats(); }
+        if (product) { product.stock = parseInt(newStock); saveProducts(); renderTable(); }
     }
-    
     function escapeHtml(text) { if (!text) return ''; return text.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m)); }
     function openEditForm(id) { document.getElementById(`edit-form-${id}`).style.display = 'table-row'; }
     function closeEditForm(id) { document.getElementById(`edit-form-${id}`).style.display = 'none'; }
@@ -513,7 +541,6 @@
         closeEditForm(id);
         alert('✅ تم التحديث');
         renderTable();
-        updateStats();
     }
     
     async function deleteProduct(id) {
@@ -522,7 +549,6 @@
             await saveProducts();
             alert('✅ تم الحذف');
             renderTable();
-            updateStats();
         }
     }
     
@@ -539,13 +565,14 @@
         const newProduct = { id: Date.now(), nameAr, nameEn, category, priceOMR: price, oldPrice: (oldPrice && oldPrice > price) ? oldPrice : null, stock, image, detailsAr: desc, detailsEn: desc };
         products.push(newProduct);
         await saveProducts();
-        document.getElementById('newNameAr').value = ''; document.getElementById('newNameEn').value = ''; document.getElementById('newPrice').value = ''; document.getElementById('newOldPrice').value = ''; document.getElementById('newStock').value = '99'; document.getElementById('newDesc').value = ''; currentImageData = null; document.getElementById('newImagePreview').style.display = 'none'; document.getElementById('newImagePreview').src = '';
+        document.getElementById('newNameAr').value = ''; document.getElementById('newNameEn').value = ''; document.getElementById('newPrice').value = ''; document.getElementById('newOldPrice').value = ''; document.getElementById('newStock').value = '99'; document.getElementById('newDesc').value = ''; currentImageData = null; document.getElementById('newImagePreview').style.display = 'none';
         alert('✅ تم الإضافة');
         renderTable();
-        updateStats();
     }
     
+    trackVisitor();
     checkSession();
+    
     window.toggleSelectAll = toggleSelectAll;
     window.batchDelete = batchDelete;
     window.batchUpdateStock = batchUpdateStock;

@@ -17,7 +17,7 @@
     body { background: #0a0a1a; font-family: 'Cairo', sans-serif; color: #f0f0ff; margin: 0; min-height: 100vh; }
     .header { text-align: center; background: linear-gradient(135deg, #0f0f2a, #0a0a1f); padding: 2rem 1rem; border-radius: 0 0 2rem 2rem; border-bottom: 2px solid #ffaa44; }
     .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; padding: 2rem; max-width: 1400px; margin: 0 auto; }
-    .product-card { background: #1e1e3a; border-radius: 1.5rem; overflow: hidden; border: 1px solid rgba(255,170,68,0.2); transition: 0.3s; }
+    .product-card { background: #1e1e3a; border-radius: 1.5rem; overflow: hidden; border: 1px solid rgba(255,170,68,0.2); transition: 0.3s; position: relative; }
     .product-card:hover { transform: translateY(-5px); border-color: #ffaa44; }
     .product-image { width: 100%; height: 180px; object-fit: cover; background: #0a0a1a; }
     .product-info { padding: 1.2rem; }
@@ -26,8 +26,13 @@
     .old-price { text-decoration: line-through; color: #888; font-size: 0.9rem; margin-right: 0.5rem; }
     .btn-buy { background: #ffaa44; color: #0a0a1a; border: none; padding: 0.8rem; width: 100%; border-radius: 1rem; font-weight: 700; cursor: pointer; margin-top: 1rem; transition: 0.2s; }
     .btn-buy:hover { background: #ffcc88; }
-    .admin-panel { background: rgba(255,170,68,0.1); border: 1px dashed #ffaa44; padding: 1rem; margin: 1rem; border-radius: 1rem; display: none; }
-    .admin-active .admin-panel { display: block; }
+    
+    /* لوحة الإدارة */
+    .admin-panel { background: rgba(255,170,68,0.1); border: 1px dashed #ffaa44; padding: 1.5rem; margin: 1rem; border-radius: 1rem; display: none; text-align: center; }
+    body.admin-active .admin-panel { display: block; }
+    .edit-controls { display: none; margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 10px; }
+    body.admin-active .edit-controls { display: block; }
+    input { background: #2a2a4a; border: 1px solid #444; color: white; padding: 8px; border-radius: 5px; width: 100%; margin-bottom: 5px; }
   </style>
 </head>
 <body class="view-mobile">
@@ -39,13 +44,17 @@
   <header class="header">
     <h1>xnesto 🎮</h1>
     <p>متجر الألعاب وبطاقات الشحن الأسرع والأرخص 🚀</p>
-    <button onclick="loginAdmin()" style="background:transparent; border:1px solid #444; color:#666; padding:5px 10px; border-radius:10px; margin-top:10px; cursor:pointer;">دخول الإدارة</button>
+    <div id="loginSection">
+        <button id="loginBtn" onclick="loginAdmin()" style="background:transparent; border:1px solid #444; color:#666; padding:5px 15px; border-radius:10px; margin-top:10px; cursor:pointer;">دخول الإدارة</button>
+    </div>
   </header>
 
   <div id="adminPanel" class="admin-panel">
     <h3>لوحة تحكم المسؤول 🛠️</h3>
-    <button onclick="addNewProduct()" style="padding:10px; background:#ffaa44; border:none; border-radius:10px; cursor:pointer;">➕ إضافة منتج جديد</button>
-    <button onclick="logoutAdmin()" style="padding:10px; background:#ff4444; color:white; border:none; border-radius:10px; cursor:pointer;">خروج</button>
+    <p style="color:#ffaa44; font-size:0.9rem; margin-bottom:15px;">أي تعديل تقوم به هنا سيتم رفعه فوراً لـ GitHub ليراه العملاء</p>
+    <button onclick="saveChangesToGitHub()" style="padding:12px 25px; background:#28a745; color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold; font-size:1rem; margin-bottom:10px;"><i class="fas fa-cloud-upload-alt"></i> حفظ التغييرات لجميع العملاء ✅</button>
+    <br>
+    <button onclick="logoutAdmin()" style="padding:5px 15px; background:#ff4444; color:white; border:none; border-radius:10px; cursor:pointer; font-size:0.8rem;">تسجيل خروج</button>
   </div>
 
   <div id="productsContainer" class="products-grid">
@@ -54,7 +63,7 @@
 
   <script>
     let products = [];
-    let currentUser = { type: 'guest' };
+    let isAdmin = false;
 
     // جلب البيانات من GitHub
     async function loadProducts() {
@@ -73,7 +82,7 @@
 
     function renderProducts() {
       const container = document.getElementById('productsContainer');
-      container.innerHTML = products.map(p => `
+      container.innerHTML = products.map((p, index) => `
         <div class="product-card">
           <img src="${p.image || 'https://via.placeholder.com/300x180'}" class="product-image">
           <div class="product-info">
@@ -83,49 +92,71 @@
               ${p.oldPrice ? `<span class="old-price">${p.oldPrice} ر.ع</span>` : ''}
             </div>
             <button class="btn-buy" onclick="orderProduct(${p.id})">اطلب الآن 🛒</button>
-            ${currentUser.type === 'admin' ? `<button onclick="editProduct(${p.id})" style="margin-top:5px; width:100%; padding:5px; background:#444; color:white; border:none; border-radius:5px; cursor:pointer;">تعديل ✏️</button>` : ''}
+            
+            <!-- أدوات التعديل للمسؤول -->
+            <div class="edit-controls">
+                <input type="text" value="${p.nameAr}" onchange="updateProduct(${index}, 'nameAr', this.value)" placeholder="اسم المنتج">
+                <input type="number" value="${p.priceOMR}" onchange="updateProduct(${index}, 'priceOMR', this.value)" placeholder="السعر">
+                <input type="text" value="${p.image}" onchange="updateProduct(${index}, 'image', this.value)" placeholder="رابط الصورة">
+                <p style="font-size:0.7rem; color:#888;">سيتم الحفظ عند الضغط على زر الحفظ العلوي</p>
+            </div>
           </div>
         </div>
       `).join('');
     }
 
-    function setView(view) {
-      document.body.className = view === 'mobile' ? 'view-mobile' : 'view-desktop';
-      document.querySelectorAll('.device-btn').forEach(btn => btn.classList.remove('active'));
-      event.currentTarget.classList.add('active');
+    function updateProduct(index, field, value) {
+        if (field === 'priceOMR') value = parseFloat(value);
+        products[index][field] = value;
+        console.log("Updated product locally:", products[index]);
+    }
+
+    async function saveChangesToGitHub() {
+        if (typeof updateGitHubProducts === "function") {
+            const btn = event.currentTarget;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الرفع...';
+            btn.disabled = true;
+            
+            await updateGitHubProducts(products);
+            
+            btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> حفظ التغييرات لجميع العملاء ✅';
+            btn.disabled = false;
+        } else {
+            alert("خطأ: ملف admin.js غير موجود! تأكد من رفعه لـ GitHub.");
+        }
     }
 
     function loginAdmin() {
       const pass = prompt("أدخل كلمة سر المسؤول:");
       if (pass === "ssp1995") {
-        currentUser.type = 'admin';
+        isAdmin = true;
         document.body.classList.add('admin-active');
+        document.getElementById('loginSection').style.display = 'none';
         renderProducts();
-        alert("مرحباً بك أيها المسؤول!");
+        alert("مرحباً بك أيها المسؤول! يمكنك الآن تعديل المنتجات مباشرة من البطاقات ثم الضغط على زر الحفظ الأخضر.");
       } else {
         alert("كلمة سر خاطئة!");
       }
     }
 
     function logoutAdmin() {
-      currentUser.type = 'guest';
+      isAdmin = false;
       document.body.classList.remove('admin-active');
+      document.getElementById('loginSection').style.display = 'block';
       renderProducts();
+    }
+
+    function setView(view) {
+      document.body.className = view === 'mobile' ? 'view-mobile' : 'view-desktop';
+      if (isAdmin) document.body.classList.add('admin-active');
+      document.querySelectorAll('.device-btn').forEach(btn => btn.classList.remove('active'));
+      event.currentTarget.classList.add('active');
     }
 
     function orderProduct(id) {
       const p = products.find(x => x.id === id);
       const msg = encodeURIComponent(`مرحباً xnesto، أريد طلب: ${p.nameAr}`);
       window.open(`https://wa.me/96879977100?text=${msg}`, '_blank');
-    }
-
-    // هذه الدالة هي التي تربط مع ملف admin.js لتحديث GitHub
-    async function saveChanges() {
-      if (typeof updateGitHubProducts === "function") {
-        await updateGitHubProducts(products);
-      } else {
-        alert("خطأ: ملف admin.js غير موجود أو لم يتم رفعه بشكل صحيح!");
-      }
     }
 
     window.onload = loadProducts;

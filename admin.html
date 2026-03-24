@@ -59,6 +59,29 @@
             font-weight: bold;
         }
         
+        /* حقل رفع الصورة */
+        .image-upload-area {
+            background: #1e1e3a;
+            border: 2px dashed #ffaa44;
+            border-radius: 1rem;
+            padding: 0.8rem;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            flex: 1;
+            min-width: 150px;
+        }
+        .image-upload-area:hover { background: #2d2f6e; }
+        .image-upload-area input { display: none; }
+        .image-preview {
+            margin-top: 8px;
+            max-width: 100%;
+            max-height: 80px;
+            border-radius: 8px;
+            display: none;
+            object-fit: contain;
+        }
+        
         .products-table {
             background: rgba(255,255,255,0.05);
             border-radius: 1rem;
@@ -124,6 +147,23 @@
             background: #0a0c1a;
             border: 1px solid #ffaa44;
             color: white;
+        }
+        .product-edit-form .edit-image-upload {
+            background: #1e1e3a;
+            border: 1px dashed #ffaa44;
+            border-radius: 1rem;
+            padding: 0.3rem;
+            text-align: center;
+            cursor: pointer;
+            margin: 0.2rem 0;
+        }
+        .product-edit-form .edit-image-preview {
+            max-width: 100%;
+            max-height: 60px;
+            border-radius: 8px;
+            display: none;
+            object-fit: contain;
+            margin: 5px 0;
         }
         .product-edit-form button {
             padding: 0.3rem;
@@ -227,7 +267,14 @@
             </select>
             <input type="number" id="newPrice" step="0.5" placeholder="السعر (ر.ع)">
             <input type="number" id="newOldPrice" step="0.5" placeholder="السعر القديم (اختياري)">
-            <input type="text" id="newImage" placeholder="رابط الصورة (URL)">
+            
+            <!-- حقل رفع الصورة من الجهاز -->
+            <div class="image-upload-area" id="newImageUploadArea">
+                <i class="fas fa-cloud-upload-alt"></i> 📸 اختر صورة من جهازك
+                <input type="file" id="newImageFile" accept="image/*">
+                <img id="newImagePreview" class="image-preview" alt="معاينة الصورة">
+            </div>
+            
             <textarea id="newDesc" rows="1" placeholder="وصف المنتج"></textarea>
             <button class="btn-save" onclick="addProduct()">💾 إضافة المنتج</button>
         </div>
@@ -253,10 +300,42 @@
     const productsRef = database.ref('products');
     
     let products = [];
+    let currentImageData = null;
     const ADMIN_PASSWORD = "ssp1995";
     const SESSION_KEY = "xnesto_admin_logged";
     
-    // التحقق من الجلسة
+    // ==================== رفع الصورة وتحويلها إلى رابط (Base64) ====================
+    function handleImageUpload(file, callback) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            callback(e.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    // إعداد رفع الصورة للإضافة
+    const uploadArea = document.getElementById("newImageUploadArea");
+    const fileInput = document.getElementById("newImageFile");
+    const preview = document.getElementById("newImagePreview");
+    
+    if (uploadArea) {
+        uploadArea.addEventListener("click", () => fileInput.click());
+    }
+    if (fileInput) {
+        fileInput.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                handleImageUpload(file, (imageData) => {
+                    currentImageData = imageData;
+                    preview.src = imageData;
+                    preview.style.display = "block";
+                });
+            }
+        });
+    }
+    
+    // ==================== التحقق من الجلسة ====================
     function checkSession() {
         const isLogged = localStorage.getItem(SESSION_KEY);
         if (isLogged === "true") {
@@ -269,7 +348,6 @@
         }
     }
     
-    // تسجيل الدخول
     function login() {
         const pwd = document.getElementById('adminPassword').value;
         if (pwd === ADMIN_PASSWORD) {
@@ -282,7 +360,6 @@
         }
     }
     
-    // تسجيل الخروج
     function logout() {
         localStorage.removeItem(SESSION_KEY);
         document.getElementById('loginScreen').style.display = 'flex';
@@ -290,7 +367,7 @@
         document.getElementById('adminPassword').value = '';
     }
     
-    // تحميل المنتجات
+    // ==================== تحميل المنتجات ====================
     function loadProducts() {
         productsRef.on('value', (snapshot) => {
             const data = snapshot.val();
@@ -305,12 +382,12 @@
         });
     }
     
-    // حفظ المنتجات
+    // ==================== حفظ المنتجات ====================
     function saveProducts() {
         productsRef.set(products);
     }
     
-    // عرض الجدول
+    // ==================== عرض الجدول ====================
     function renderTable() {
         const container = document.getElementById('productsTable');
         if (products.length === 0) {
@@ -354,7 +431,15 @@
                         <input type="text" id="editNameEn_${p.id}" value="${escapeHtml(p.nameEn)}" placeholder="Name in English">
                         <input type="number" id="editPrice_${p.id}" value="${p.priceOMR}" step="0.5" placeholder="السعر">
                         <input type="number" id="editOldPrice_${p.id}" value="${p.oldPrice || ''}" step="0.5" placeholder="السعر القديم">
-                        <input type="text" id="editImage_${p.id}" value="${escapeHtml(p.image || '')}" placeholder="رابط الصورة">
+                        
+                        <!-- رفع صورة من الجهاز في التعديل -->
+                        <div class="edit-image-upload" id="editImageUpload_${p.id}" onclick="document.getElementById('editImageFile_${p.id}').click()">
+                            <i class="fas fa-cloud-upload-alt"></i> اختر صورة من جهازك
+                            <input type="file" id="editImageFile_${p.id}" accept="image/*" style="display:none;">
+                        </div>
+                        <img id="editImagePreview_${p.id}" class="edit-image-preview" alt="معاينة">
+                        <input type="text" id="editImageUrl_${p.id}" value="${escapeHtml(p.image || '')}" placeholder="أو أدخل رابط الصورة (URL)">
+                        
                         <textarea id="editDescAr_${p.id}" rows="1" placeholder="الوصف بالعربية">${escapeHtml(p.detailsAr || '')}</textarea>
                         <textarea id="editDescEn_${p.id}" rows="1" placeholder="Description in English">${escapeHtml(p.detailsEn || '')}</textarea>
                         <select id="editCategory_${p.id}">
@@ -367,6 +452,25 @@
                 </td>
             </tr>
         `).join('');
+        
+        // إضافة أحداث رفع الصورة لكل منتج في التعديل
+        products.forEach(p => {
+            const editFileInput = document.getElementById(`editImageFile_${p.id}`);
+            const editPreview = document.getElementById(`editImagePreview_${p.id}`);
+            if (editFileInput) {
+                editFileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        handleImageUpload(file, (imageData) => {
+                            editPreview.src = imageData;
+                            editPreview.style.display = "block";
+                            // تخزين مؤقت للصورة
+                            window.tempEditImage_${p.id} = imageData;
+                        });
+                    }
+                });
+            }
+        });
     }
     
     function escapeHtml(text) {
@@ -396,7 +500,16 @@
         product.priceOMR = parseFloat(document.getElementById(`editPrice_${id}`).value);
         product.oldPrice = parseFloat(document.getElementById(`editOldPrice_${id}`).value) || null;
         if (product.oldPrice && product.oldPrice <= product.priceOMR) product.oldPrice = null;
-        product.image = document.getElementById(`editImage_${id}`).value;
+        
+        // الصورة: إذا تم رفع صورة جديدة نستخدمها، وإلا نستخدم الرابط الموجود
+        const tempImage = window[`tempEditImage_${id}`];
+        if (tempImage) {
+            product.image = tempImage;
+            delete window[`tempEditImage_${id}`];
+        } else {
+            product.image = document.getElementById(`editImageUrl_${id}`).value;
+        }
+        
         product.detailsAr = document.getElementById(`editDescAr_${id}`).value;
         product.detailsEn = document.getElementById(`editDescEn_${id}`).value;
         product.category = document.getElementById(`editCategory_${id}`).value;
@@ -422,7 +535,7 @@
         const category = document.getElementById('newCategory').value;
         const price = parseFloat(document.getElementById('newPrice').value);
         const oldPrice = parseFloat(document.getElementById('newOldPrice').value) || null;
-        const image = document.getElementById('newImage').value.trim();
+        const image = currentImageData || "";
         const desc = document.getElementById('newDesc').value.trim();
         
         if (!nameAr || !nameEn || isNaN(price)) {
@@ -435,7 +548,8 @@
             nameAr, nameEn, category,
             priceOMR: price,
             oldPrice: (oldPrice && oldPrice > price) ? oldPrice : null,
-            image, detailsAr: desc, detailsEn: desc,
+            image: image,
+            detailsAr: desc, detailsEn: desc,
             msgAr: `أريد ${nameAr}`, msgEn: `I want ${nameEn}`
         };
         
@@ -446,8 +560,10 @@
         document.getElementById('newNameEn').value = '';
         document.getElementById('newPrice').value = '';
         document.getElementById('newOldPrice').value = '';
-        document.getElementById('newImage').value = '';
         document.getElementById('newDesc').value = '';
+        currentImageData = null;
+        document.getElementById('newImagePreview').style.display = 'none';
+        document.getElementById('newImagePreview').src = '';
         
         alert('✅ تم إضافة المنتج بنجاح! (سيظهر للجميع فوراً)');
         renderTable();

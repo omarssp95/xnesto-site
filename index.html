@@ -727,6 +727,115 @@
     loadProducts();
     const savedCustomer = localStorage.getItem('xnesto_customer');
     if (savedCustomer) { try { currentUser = JSON.parse(savedCustomer); updateUserUI(); } catch(e) {} }
+<script>
+    // ==================== إصلاح مشكلة الطلب والواتساب ====================
+    // التأكد من وجود المتغيرات
+    if (typeof WA_NUMBER === 'undefined') var WA_NUMBER = "96879977100";
+    if (typeof pendingOrderProduct === 'undefined') var pendingOrderProduct = null;
+    
+    // دالة عرض الشروط
+    function showTermsForProduct(productId, productName, productPrice) {
+        pendingOrderProduct = { 
+            id: productId, 
+            name: productName, 
+            price: productPrice, 
+            url: window.location.href 
+        };
+        var termsModal = document.getElementById('termsModal');
+        if (termsModal) {
+            termsModal.style.display = 'flex';
+            var termsCheck = document.getElementById('termsCheck');
+            var acceptBtn = document.getElementById('acceptTermsBtn');
+            if (termsCheck) termsCheck.checked = false;
+            if (acceptBtn) acceptBtn.classList.remove('enabled');
+        } else {
+            redirectToWhatsApp(pendingOrderProduct);
+        }
+    }
+    
+    // دالة التحويل للواتساب
+    function redirectToWhatsApp(product) {
+        var whatsappNumber = WA_NUMBER || "96879977100";
+        var message = "مرحباً، أرغب في شراء المنتج التالي:\n\n📦 المنتج: " + product.name + "\n💰 السعر: " + product.price + " ر.ع\n🔗 رابط المنتج: " + product.url + "\n\nأرجو تأكيد الطلب.";
+        var encodedMessage = encodeURIComponent(message);
+        var whatsappUrl = "https://wa.me/" + whatsappNumber + "?text=" + encodedMessage;
+        window.open(whatsappUrl, '_blank');
+    }
+    
+    // دالة إغلاق نافذة الشروط
+    function closeTermsModal() {
+        var termsModal = document.getElementById('termsModal');
+        if (termsModal) termsModal.style.display = 'none';
+        pendingOrderProduct = null;
+    }
+    
+    // دالة تفعيل زر الموافقة
+    function toggleTermsAccept() {
+        var check = document.getElementById('termsCheck');
+        var acceptBtn = document.getElementById('acceptTermsBtn');
+        if (check && acceptBtn) {
+            if (check.checked) {
+                acceptBtn.classList.add('enabled');
+            } else {
+                acceptBtn.classList.remove('enabled');
+            }
+        }
+    }
+    
+    // دالة الموافقة على الشروط
+    window.acceptTerms = function() {
+        var termsCheck = document.getElementById('termsCheck');
+        if (!termsCheck || !termsCheck.checked) {
+            alert('⚠️ يرجى الموافقة على الشروط أولاً');
+            return;
+        }
+        closeTermsModal();
+        if (pendingOrderProduct) {
+            redirectToWhatsApp(pendingOrderProduct);
+            pendingOrderProduct = null;
+        }
+    };
+    
+    // دالة الطلب الرئيسية
+    window.requestProduct = function(productId, productName, productPrice) {
+        showTermsForProduct(productId, productName, productPrice);
+    };
+    
+    // ربط الأزرار بعد تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+        var acceptBtn = document.getElementById('acceptTermsBtn');
+        var declineBtn = document.getElementById('declineTermsBtn');
+        var termsCheck = document.getElementById('termsCheck');
+        var checkboxRow = document.getElementById('termsCheckboxRow');
+        
+        if (acceptBtn) {
+            acceptBtn.onclick = function(e) {
+                e.preventDefault();
+                window.acceptTerms();
+            };
+        }
+        if (declineBtn) {
+            declineBtn.onclick = function(e) {
+                e.preventDefault();
+                closeTermsModal();
+            };
+        }
+        if (termsCheck) {
+            termsCheck.onchange = function() { toggleTermsAccept(); };
+        }
+        if (checkboxRow) {
+            checkboxRow.onclick = function(e) {
+                if (e.target !== termsCheck && e.target !== checkboxRow.querySelector('label')) {
+                    if (termsCheck) {
+                        termsCheck.checked = !termsCheck.checked;
+                        toggleTermsAccept();
+                    }
+                }
+            };
+        }
+    });
+    
+    console.log('✅ تم تفعيل نظام الطلب مع الشروط بنجاح');
 </script>
 </body>
 </html>

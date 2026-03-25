@@ -17,7 +17,6 @@
             min-height: 100vh;
         }
         
-        /* ==================== تحسينات الجوال ==================== */
         @media (max-width: 640px) {
             body { padding: 8px; }
             .header { padding: 1rem 0.8rem; border-radius: 1.2rem; margin-bottom: 12px; }
@@ -35,7 +34,7 @@
             #searchInput { font-size: 0.8rem; padding: 8px 0; }
             .tabs-container { gap: 8px; margin-bottom: 16px; }
             .tab-btn { padding: 6px 16px; font-size: 0.75rem; }
-            .products-grid { gap: 10px; }
+            .products-grid { gap: 10px; grid-template-columns: repeat(2, 1fr); }
             .product-card { border-radius: 12px; }
             .product-image { height: 140px; }
             .card-info { padding: 8px; }
@@ -44,27 +43,13 @@
             .price { font-size: 1rem; }
             .old-price { font-size: 0.65rem; }
             .btn-wa { padding: 6px; font-size: 0.7rem; }
-            .rating-stars .star { font-size: 0.65rem; }
-            .rating-count { font-size: 0.55rem; }
-            .rating-btn { padding: 2px 5px; font-size: 0.55rem; }
-            .section-divider { margin: 16px 0; }
-            .divider-line { height: 1px; }
-            .divider-badge { padding: 3px 12px; font-size: 0.7rem; }
             .best-sellers { padding: 12px; margin-bottom: 16px; border-radius: 1rem; }
-            .best-sellers-title { font-size: 1.1rem; margin-bottom: 12px; }
             .best-sellers-grid { gap: 8px; grid-template-columns: repeat(2, 1fr); }
-            .best-seller-card { padding: 6px; }
             .best-seller-card img { width: 55px; height: 55px; }
-            .best-seller-card .name { font-size: 0.7rem; }
-            .best-seller-card .sales { font-size: 0.6rem; }
-            .best-seller-rank { width: 22px; height: 22px; font-size: 0.65rem; top: -6px; right: -6px; }
-            .pagination { gap: 6px; margin-top: 16px; }
-            .page-btn { padding: 4px 10px; font-size: 0.7rem; }
             .footer { padding: 12px; margin-top: 16px; font-size: 0.65rem; }
             .whatsapp-float { width: 45px; height: 45px; font-size: 1.5rem; line-height: 45px; bottom: 15px; left: 15px; }
         }
         
-        /* ==================== هيدر ==================== */
         .header {
             position: relative;
             text-align: center;
@@ -110,7 +95,6 @@
         .stat-item i { color: #ffaa44; font-size: 0.7rem; }
         .stat-number { font-weight: bold; color: #ffaa44; }
         
-        /* ==================== فواصل الأقسام ==================== */
         .section-divider {
             display: flex;
             align-items: center;
@@ -134,7 +118,6 @@
             border: 1px solid rgba(255,170,68,0.3);
         }
         
-        /* ==================== قسم الأكثر مبيعاً ==================== */
         .best-sellers {
             background: linear-gradient(135deg, rgba(255,170,68,0.08), rgba(255,100,0,0.03));
             border-radius: 1.2rem;
@@ -142,9 +125,6 @@
             margin-bottom: 1.5rem;
             border: 1px solid rgba(255,170,68,0.2);
         }
-        .best-sellers-title { text-align: center; font-size: 1.1rem; font-weight: bold; margin-bottom: 1rem; }
-        .best-sellers-title i { color: #ffaa44; animation: pulseFire 1s ease-in-out infinite; }
-        @keyframes pulseFire { 0%, 100% { text-shadow: 0 0 2px #ffaa44; } 50% { text-shadow: 0 0 8px #ff6600; } }
         .best-sellers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
         .best-seller-card {
             background: rgba(0,0,0,0.4);
@@ -175,25 +155,8 @@
         }
         .best-seller-card img { width: 70px; height: 70px; border-radius: 0.8rem; margin-bottom: 6px; object-fit: cover; }
         .best-seller-card .name { font-size: 0.75rem; font-weight: bold; margin-bottom: 4px; }
-        .best-seller-card .sales { font-size: 0.6rem; color: #ffaa44; display: flex; align-items: center; justify-content: center; gap: 4px; }
-        .admin-sales-btn {
-            position: absolute;
-            bottom: 4px;
-            left: 4px;
-            background: #2d2f6e;
-            border: none;
-            border-radius: 20px;
-            padding: 2px 5px;
-            font-size: 0.5rem;
-            cursor: pointer;
-            color: white;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-        .best-seller-card:hover .admin-sales-btn { opacity: 1; }
-        .admin-sales-btn:hover { background: #00cc88; }
+        .best-seller-card .sales { font-size: 0.6rem; color: #ffaa44; }
         
-        /* ==================== أزرار التحكم ==================== */
         .control-bar {
             max-width: 1400px;
             margin: 0 auto 1rem auto;
@@ -226,7 +189,6 @@
         .tab-btn { background: #1e1e3a; border: 1px solid rgba(255,170,68,0.3); padding: 8px 18px; border-radius: 40px; cursor: pointer; font-weight: bold; transition: 0.2s; font-size: 0.8rem; }
         .tab-btn.active { background: #ffaa44; color: #0a0a1a; border-color: #ffaa44; }
         
-        /* ==================== المنتجات ==================== */
         .products-grid { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
         @media (max-width: 640px) { .products-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
         .product-card { background: #11152b; border-radius: 1rem; overflow: hidden; transition: 0.2s; border: 1px solid rgba(255, 170, 68, 0.2); position: relative; }
@@ -234,24 +196,13 @@
         .discount-badge { position: absolute; top: 6px; left: 6px; background: #ff4444; color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.6rem; font-weight: bold; z-index: 2; }
         .product-image { width: 100%; height: 170px; background-size: cover; background-position: center; position: relative; background-color: #1e1e3a; }
         @media (max-width: 640px) { .product-image { height: 130px; } }
-        .product-badge { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.7); padding: 2px 8px; border-radius: 20px; font-size: 0.55rem; }
         .card-info { padding: 10px; }
         .product-title { font-size: 0.9rem; font-weight: bold; margin-bottom: 4px; text-align: center; }
-        @media (max-width: 640px) { .product-title { font-size: 0.8rem; } }
         .product-details { font-size: 0.6rem; color: #b9c5f0; text-align: center; margin: 4px 0; }
         .price-container { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 6px 0; }
         .old-price { font-size: 0.7rem; color: #888; text-decoration: line-through; }
         .price { font-size: 1.1rem; font-weight: bold; color: #ffaa44; }
-        @media (max-width: 640px) { .price { font-size: 0.95rem; } }
         .btn-wa { width: 100%; background: #25D366; border: none; padding: 6px; border-radius: 40px; color: #000; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 0.7rem; }
-        
-        /* ==================== تقييمات ==================== */
-        .rating-stars { display: flex; justify-content: center; gap: 2px; margin: 4px 0; }
-        .star { font-size: 0.7rem; cursor: pointer; color: #555; }
-        .star.active { color: #ffaa44; }
-        .rating-count { font-size: 0.55rem; color: #888; text-align: center; }
-        .rating-input { display: flex; justify-content: center; gap: 4px; margin-top: 4px; }
-        .rating-btn { background: #2d2f6e; border: none; padding: 2px 5px; border-radius: 20px; font-size: 0.55rem; cursor: pointer; color: white; }
         
         .pagination { display: flex; justify-content: center; gap: 6px; margin-top: 1.2rem; flex-wrap: wrap; }
         .page-btn { background: #1e1e3a; border: 1px solid #ffaa44; color: #ffdd99; padding: 5px 10px; border-radius: 30px; cursor: pointer; font-size: 0.7rem; }
@@ -260,7 +211,6 @@
         .footer { text-align: center; margin-top: 1.5rem; padding: 1rem; color: #6f7bb3; border-top: 1px solid rgba(255, 170, 68, 0.2); font-size: 0.7rem; }
         .whatsapp-float { position: fixed; bottom: 15px; left: 15px; background: #25D366; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: white; text-decoration: none; z-index: 999; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
         
-        /* مودالات */
         .login-modal, .terms-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); align-items: center; justify-content: center; z-index: 5000; padding: 1rem; }
         .login-box, .terms-box { background: #11152b; border-radius: 1.2rem; padding: 1.2rem; border: 2px solid #ffaa44; width: 100%; max-width: 400px; text-align: center; max-height: 90vh; overflow-y: auto; }
         .login-box h2, .terms-box h3 { color: #ffaa44; margin-bottom: 0.8rem; font-size: 1.1rem; }
@@ -270,7 +220,7 @@
         .terms-item-row .t-num { background: #ffaa44; color: #0a0a1a; border-radius: 50%; width: 18px; height: 18px; min-width: 18px; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 900; }
         .terms-item-row p { font-size: 0.7rem; color: #b9c5f0; text-align: right; flex: 1; }
         .terms-checkbox-row { display: flex; align-items: center; gap: 6px; background: rgba(0,204,136,0.08); border-radius: 8px; padding: 8px; margin: 8px 0; cursor: pointer; }
-        .terms-checkbox-row input { width: 16px; height: 16px; accent-color: #00cc88; }
+        .terms-checkbox-row input { width: 16px; height: 16px; accent-color: #00cc88; cursor: pointer; }
         .terms-checkbox-row label { font-size: 0.7rem; color: #00cc88; font-weight: 700; cursor: pointer; }
         .accept-btn { opacity: 0.5; pointer-events: none; transition: 0.2s; }
         .accept-btn.enabled { opacity: 1; pointer-events: all; }
@@ -300,25 +250,21 @@
     <button class="mode-toggle-btn" onclick="toggleMode()">🌙 ليلي</button>
 </div>
 
-<!-- هيدر -->
 <div class="header">
     <div class="header-bg"></div>
     <div class="sparkles-container" id="sparklesContainer"></div>
     <div class="floating-icons" id="floatingIcons"></div>
-    
     <div class="logo-container">
         <div class="logo-glow"></div>
         <div class="main-logo"><i class="fab fa-playstation"></i> XNESTO <i class="fas fa-store"></i></div>
     </div>
     <div class="controller-icon"><i class="fas fa-gamepad"></i></div>
-    
     <div class="welcome-quotes">
         <div class="quote-badge"><i class="fas fa-tag"></i> أفضل الأسعار</div>
         <div class="quote-badge"><i class="fas fa-bolt"></i> توصيل فوري</div>
         <div class="quote-badge"><i class="fas fa-headset"></i> دعم 24/7</div>
         <div class="quote-badge"><i class="fas fa-shield-alt"></i> دفع آمن</div>
     </div>
-    
     <div class="stats-badge">
         <div class="stat-item"><i class="fas fa-gamepad"></i> <span class="stat-number">500+</span></div>
         <div class="stat-item"><i class="fas fa-users"></i> <span class="stat-number">10K+</span></div>
@@ -330,6 +276,7 @@
 <script>
     function createSparkles() {
         const container = document.getElementById('sparklesContainer');
+        if (!container) return;
         for (let i = 0; i < 30; i++) {
             const sparkle = document.createElement('div');
             sparkle.className = 'sparkle';
@@ -341,6 +288,7 @@
     }
     function createFloatingIcons() {
         const container = document.getElementById('floatingIcons');
+        if (!container) return;
         const icons = ['🎮', '🕹️', '💿', '⚡', '🎯', '🏆', '💎', '🌟'];
         for (let i = 0; i < 20; i++) {
             const icon = document.createElement('div');
@@ -383,19 +331,16 @@
     </div>
 </div>
 
-<!-- فاصل -->
 <div class="section-divider">
     <div class="divider-line"></div>
     <div class="divider-badge">🔥 الأكثر مبيعاً 🔥</div>
     <div class="divider-line"></div>
 </div>
 
-<!-- قسم الأكثر مبيعاً -->
 <div id="bestSellersSection" class="best-sellers" style="display:none;">
     <div id="bestSellersGrid" class="best-sellers-grid"></div>
 </div>
 
-<!-- فاصل -->
 <div class="section-divider">
     <div class="divider-line"></div>
     <div class="divider-badge">🎮 جميع المنتجات 🎮</div>
@@ -403,7 +348,6 @@
 </div>
 
 <div id="tabsContainer" class="tabs-container"></div>
-
 <div id="productsContainer" class="products-grid"></div>
 <div id="pagination" class="pagination"></div>
 
@@ -428,12 +372,10 @@
     </div>
 </div>
 
-<!-- نافذة الشروط الجديدة -->
 <div id="termsModal" class="terms-modal">
     <div class="terms-box">
         <h3><i class="fas fa-file-contract"></i> شروط الشراء</h3>
         
-        <!-- شروط عامة -->
         <div style="background: rgba(255,170,68,0.1); border-radius: 8px; padding: 6px 8px; margin-bottom: 8px;">
             <div style="color: #ffaa44; font-size: 0.7rem; font-weight: bold; margin-bottom: 4px;">📌 شروط عامة</div>
             <div class="terms-item-row"><div class="t-num">1</div><p>جميع المنتجات رقمية يتم تسليمها فور إتمام الدفع عبر واتساب.</p></div>
@@ -442,7 +384,6 @@
             <div class="terms-item-row"><div class="t-num">4</div><p>في حال وجود أي مشكلة تقنية، يرجى التواصل معنا خلال 24 ساعة.</p></div>
         </div>
         
-        <!-- شروط خاصة بالحسابات (الألعاب) -->
         <div style="background: rgba(0,204,136,0.08); border-radius: 8px; padding: 6px 8px; margin-bottom: 8px;">
             <div style="color: #00cc88; font-size: 0.7rem; font-weight: bold; margin-bottom: 4px;">🎮 شروط خاصة بالحسابات (الألعاب)</div>
             <div class="terms-item-row"><div class="t-num">5</div><p>الحساب المقدم هو حساب PlayStation يحتوي على اللعبة المطلوبة.</p></div>
@@ -453,7 +394,6 @@
             <div class="terms-item-row"><div class="t-num">10</div><p>إذا واجهت مشكلة في الدخول أو التحميل، راسلنا فورًا خلال 24 ساعة من الشراء.</p></div>
         </div>
         
-        <!-- شروط خاصة ببطاقات الشحن -->
         <div style="background: rgba(255,100,0,0.08); border-radius: 8px; padding: 6px 8px; margin-bottom: 8px;">
             <div style="color: #ff8844; font-size: 0.7rem; font-weight: bold; margin-bottom: 4px;">💳 شروط خاصة ببطاقات الشحن</div>
             <div class="terms-item-row"><div class="t-num">11</div><p>بطاقات الشحن يتم إرسال الكود مباشرة عبر واتساب.</p></div>
@@ -461,13 +401,13 @@
             <div class="terms-item-row"><div class="t-num">13</div><p>بطاقات الشحن غير قابلة للاسترجاع بعد إرسال الكود.</p></div>
         </div>
         
-        <div class="terms-checkbox-row" onclick="toggleTermsAccept()">
+        <div class="terms-checkbox-row" id="termsCheckboxRow">
             <input type="checkbox" id="termsCheck">
             <label>أقر بأنني قرأت وأوافق على جميع الشروط</label>
         </div>
         <div class="terms-buttons">
-            <button id="acceptTermsBtn" class="accept-btn" onclick="acceptTerms()">✅ أوافق وأكمل</button>
-            <button id="declineTermsBtn" class="decline-btn" onclick="closeTermsModal()">❌ إغلاق</button>
+            <button id="acceptTermsBtn" class="accept-btn">✅ أوافق وأكمل</button>
+            <button id="declineTermsBtn" class="decline-btn">❌ إغلاق</button>
         </div>
     </div>
 </div>
@@ -495,29 +435,27 @@
     let isAdmin = false;
     const ITEMS_PER_PAGE = 12;
     const WA_NUMBER = "96879977100";
-    const INSTA_USERNAME = "xnesto_store";
     const ADMIN_PASSWORD = "ssp1995";
     
     const exchangeRates = { OMR: 1, USD: 2.6, SAR: 9.75, AED: 9.55 };
     const currencySymbols = { OMR: "ر.ع", USD: "$", SAR: "ر.س", AED: "د.إ" };
     
-    // المنتجات
     const allGames = [
-        { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English", sales: 564 },
-        { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English", sales: 464 },
-        { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", priceOMR: 6, oldPrice: 10, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", detailsAr: "🏷️ 150GB | 🌍 عالم مفتوح", detailsEn: "📦 150GB | 🌍 Open World", sales: 588 },
-        { id: 4, nameAr: "God of War Ragnarök", nameEn: "God of War Ragnarök", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg", detailsAr: "🏷️ 85GB | 🪓 ملحمة إسكندنافية", detailsEn: "📦 85GB | 🪓 Norse Saga", sales: 274 },
-        { id: 5, nameAr: "Spider-Man 2", nameEn: "Spider-Man 2", priceOMR: 16, oldPrice: 22, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", detailsAr: "🏷️ 98GB | 🕷️ بيتر + مايلز", detailsEn: "📦 98GB | 🕷️ Peter + Miles", sales: 440 },
-        { id: 6, nameAr: "Elden Ring", nameEn: "Elden Ring", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg", detailsAr: "🏷️ 60GB | ⚔️ RPG خيالي", detailsEn: "📦 60GB | ⚔️ Fantasy RPG", sales: 520 },
-        { id: 7, nameAr: "Horizon Forbidden West", nameEn: "Horizon Forbidden West", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1151640/header.jpg", detailsAr: "🏷️ 96GB | 🦕 مغامرة مستقبلية", detailsEn: "📦 96GB | 🦕 Future Adventure", sales: 380 },
-        { id: 8, nameAr: "Ghost of Tsushima", nameEn: "Ghost of Tsushima", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2215430/header.jpg", detailsAr: "🏷️ 50GB | 🗡️ ساموراي", detailsEn: "📦 50GB | 🗡️ Samurai", sales: 312 }
+        { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English", sales: 564, category: "games" },
+        { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English", sales: 464, category: "games" },
+        { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", priceOMR: 6, oldPrice: 10, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", detailsAr: "🏷️ 150GB | 🌍 عالم مفتوح", detailsEn: "📦 150GB | 🌍 Open World", sales: 588, category: "games" },
+        { id: 4, nameAr: "God of War Ragnarök", nameEn: "God of War Ragnarök", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg", detailsAr: "🏷️ 85GB | 🪓 ملحمة إسكندنافية", detailsEn: "📦 85GB | 🪓 Norse Saga", sales: 274, category: "games" },
+        { id: 5, nameAr: "Spider-Man 2", nameEn: "Spider-Man 2", priceOMR: 16, oldPrice: 22, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", detailsAr: "🏷️ 98GB | 🕷️ بيتر + مايلز", detailsEn: "📦 98GB | 🕷️ Peter + Miles", sales: 440, category: "games" },
+        { id: 6, nameAr: "Elden Ring", nameEn: "Elden Ring", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg", detailsAr: "🏷️ 60GB | ⚔️ RPG خيالي", detailsEn: "📦 60GB | ⚔️ Fantasy RPG", sales: 520, category: "games" },
+        { id: 7, nameAr: "Horizon Forbidden West", nameEn: "Horizon Forbidden West", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1151640/header.jpg", detailsAr: "🏷️ 96GB | 🦕 مغامرة مستقبلية", detailsEn: "📦 96GB | 🦕 Future Adventure", sales: 380, category: "games" },
+        { id: 8, nameAr: "Ghost of Tsushima", nameEn: "Ghost of Tsushima", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2215430/header.jpg", detailsAr: "🏷️ 50GB | 🗡️ ساموراي", detailsEn: "📦 50GB | 🗡️ Samurai", sales: 312, category: "games" }
     ];
     for (let i = 9; i <= 50; i++) {
         allGames.push({
             id: i, nameAr: `لعبة PS5 مميزة ${i}`, nameEn: `Premium PS5 Game ${i}`,
             priceOMR: 9 + Math.floor(Math.random() * 10), oldPrice: 12 + Math.floor(Math.random() * 10),
             image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2358720/header.jpg",
-            detailsAr: `🏷️ لعبة رقم ${i}`, detailsEn: `Game ${i}`, sales: Math.floor(Math.random() * 300) + 100
+            detailsAr: `🏷️ لعبة رقم ${i}`, detailsEn: `Game ${i}`, sales: Math.floor(Math.random() * 300) + 100, category: "games"
         });
     }
     
@@ -528,65 +466,94 @@
         { id: 104, nameAr: "🇴🇲 بطاقة عماني", nameEn: "🇴🇲 Oman Card", category: "giftcards", priceOMR: 5, oldPrice: 6, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Oman.svg/30px-Flag_of_Oman.svg.png", detailsAr: "5ر.ع | 10ر.ع | 20ر.ع", detailsEn: "5 OMR | 10 OMR | 20 OMR", sales: 180 }
     ];
     
-    for (let i = 0; i < allGames.length; i++) allGames[i].category = "games";
     for (let i = 0; i < giftCards.length; i++) giftCards[i].category = "giftcards";
     const allDefaultProducts = [...allGames, ...giftCards];
     
-    // ==================== التحقق من الأدمن ====================
-    function checkAdmin() {
-        const savedAdmin = localStorage.getItem('xnesto_admin_mode');
-        if (savedAdmin === "true") isAdmin = true;
-    }
-    
-    function enableAdminMode() {
-        const pwd = prompt('🔐 أدخل كلمة سر الأدمن:');
-        if (pwd === ADMIN_PASSWORD) {
-            isAdmin = true;
-            localStorage.setItem('xnesto_admin_mode', 'true');
-            alert('✅ وضع الأدمن مفعل');
-            loadBestSellers();
-        } else if (pwd !== null) alert('❌ كلمة السر غير صحيحة');
-    }
-    
-    async function increaseSales(productId, productName) {
-        if (!isAdmin) { enableAdminMode(); return; }
-        const amount = prompt(`✏️ كم تريد إضافة للمبيعات؟\nالمنتج: ${productName}\nالمبيعات الحالية: ${products.find(p => p.id === productId)?.sales || 0}`, "10");
-        if (amount && !isNaN(parseInt(amount))) {
-            const product = products.find(p => p.id === productId);
-            if (product) {
-                product.sales = (product.sales || 0) + parseInt(amount);
-                await productsRef.set(products);
-                loadBestSellers();
-                renderProducts();
-                alert(`✅ تم إضافة ${amount} مبيعات`);
-            }
+    function toggleTermsAccept() {
+        const check = document.getElementById('termsCheck');
+        const acceptBtn = document.getElementById('acceptTermsBtn');
+        if (check && acceptBtn) {
+            if (check.checked) acceptBtn.classList.add('enabled');
+            else acceptBtn.classList.remove('enabled');
         }
     }
     
-    function loadBestSellers() {
-        const sorted = [...products].filter(p => p.category === 'games').sort((a, b) => (b.sales || 0) - (a.sales || 0)).slice(0, 8);
-        const section = document.getElementById('bestSellersSection');
-        const grid = document.getElementById('bestSellersGrid');
-        if (sorted.length > 0) {
-            section.style.display = 'block';
-            grid.innerHTML = sorted.map((p, index) => `
-                <div class="best-seller-card" onclick="scrollToProduct(${p.id})">
-                    <div class="best-seller-rank">${index + 1}</div>
-                    <img src="${p.image || 'https://via.placeholder.com/70'}" onerror="this.src='https://via.placeholder.com/70'">
-                    <div class="name">${currentLang === 'ar' ? p.nameAr : p.nameEn}</div>
-                    <div class="sales"><i class="fas fa-chart-line"></i> ${p.sales || 0}</div>
-                    ${isAdmin ? `<button class="admin-sales-btn" onclick="event.stopPropagation(); increaseSales(${p.id}, '${escapeHtml(p.nameAr)}')"><i class="fas fa-plus"></i></button>` : ''}
-                </div>
-            `).join('');
+    function closeTermsModal() {
+        const termsModal = document.getElementById('termsModal');
+        if (termsModal) termsModal.style.display = 'none';
+        pendingOrderProduct = null;
+    }
+    
+    function showTermsForProduct(productId, productName, productPrice) {
+        pendingOrderProduct = { id: productId, name: productName, price: productPrice, url: window.location.href };
+        const termsModal = document.getElementById('termsModal');
+        if (termsModal) {
+            termsModal.style.display = 'flex';
+            const termsCheck = document.getElementById('termsCheck');
+            const acceptBtn = document.getElementById('acceptTermsBtn');
+            if (termsCheck) termsCheck.checked = false;
+            if (acceptBtn) acceptBtn.classList.remove('enabled');
         }
     }
     
-    function scrollToProduct(id) {
-        const element = document.getElementById(`product-${id}`);
-        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    function redirectToWhatsApp(product) {
+        const whatsappNumber = WA_NUMBER;
+        const message = `مرحباً، أرغب في شراء المنتج التالي:\n\n📦 المنتج: ${product.name}\n💰 السعر: ${product.price} ر.ع\n🔗 رابط المنتج: ${product.url}\n\nأرجو تأكيد الطلب.`;
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+        window.open(whatsappUrl, '_blank');
     }
     
-    // ==================== باقي الوظائف ====================
+    window.requestProduct = function(productId, productName, productPrice) {
+        showTermsForProduct(productId, productName, productPrice);
+    };
+    
+    window.acceptTerms = function() {
+        const termsCheck = document.getElementById('termsCheck');
+        if (!termsCheck || !termsCheck.checked) {
+            alert('⚠️ يرجى الموافقة على الشروط أولاً');
+            return;
+        }
+        closeTermsModal();
+        if (pendingOrderProduct) {
+            redirectToWhatsApp(pendingOrderProduct);
+            pendingOrderProduct = null;
+        }
+    };
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const acceptBtn = document.getElementById('acceptTermsBtn');
+        const declineBtn = document.getElementById('declineTermsBtn');
+        const termsCheck = document.getElementById('termsCheck');
+        const checkboxRow = document.getElementById('termsCheckboxRow');
+        
+        if (acceptBtn) {
+            acceptBtn.onclick = function(e) {
+                e.preventDefault();
+                window.acceptTerms();
+            };
+        }
+        if (declineBtn) {
+            declineBtn.onclick = function(e) {
+                e.preventDefault();
+                closeTermsModal();
+            };
+        }
+        if (termsCheck) {
+            termsCheck.onchange = function() { toggleTermsAccept(); };
+        }
+        if (checkboxRow) {
+            checkboxRow.onclick = function(e) {
+                if (e.target !== termsCheck && e.target !== checkboxRow.querySelector('label')) {
+                    if (termsCheck) {
+                        termsCheck.checked = !termsCheck.checked;
+                        toggleTermsAccept();
+                    }
+                }
+            };
+        }
+    });
+    
     function loadCategories() {
         categoriesRef.on('value', (snapshot) => {
             const data = snapshot.val();
@@ -683,15 +650,12 @@
                             ${oldPrice ? `<span class="old-price">${oldPrice} ${currencySymbols[currentCurrency]}</span>` : ''}
                             <span class="price">${price} ${currencySymbols[currentCurrency]}</span>
                         </div>
-                        <div class="rating-stars" id="rating-${p.id}"></div>
-                        <div class="rating-count" id="rating-count-${p.id}"></div>
                         <button class="btn-wa" onclick="requestProduct(${p.id}, '${escapeHtml(name)}', ${p.priceOMR})"><i class="fab fa-whatsapp"></i> اطلب الآن</button>
                     </div>
                 </div>
             `;
         }).join('');
         
-        // pagination
         const paginationDiv = document.getElementById('pagination');
         if (totalPages > 1) {
             let pages = '';
@@ -720,64 +684,34 @@
         else btn.innerHTML = '🌙 ليلي';
     }
     
-    function toggleTermsAccept() {
-        const check = document.getElementById('termsCheck');
-        const acceptBtn = document.getElementById('acceptTermsBtn');
-        if (check.checked) acceptBtn.classList.add('enabled');
-        else acceptBtn.classList.remove('enabled');
-    }
-    
-    function closeTermsModal() {
-        document.getElementById('termsModal').style.display = 'none';
-        pendingOrderProduct = null;
-    }
-    
     function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
     
-    // ==================== نظام الطلب مع الشروط ====================
-    function showTermsForProduct(productId, productName, productPrice) {
-        pendingOrderProduct = { id: productId, name: productName, price: productPrice, url: window.location.href };
-        const termsModal = document.getElementById('termsModal');
-        if (termsModal) {
-            termsModal.style.display = 'flex';
-            const termsCheck = document.getElementById('termsCheck');
-            const acceptBtn = document.getElementById('acceptTermsBtn');
-            if (termsCheck) termsCheck.checked = false;
-            if (acceptBtn) acceptBtn.classList.remove('enabled');
+    function loadBestSellers() {
+        const sorted = [...products].filter(p => p.category === 'games').sort((a, b) => (b.sales || 0) - (a.sales || 0)).slice(0, 8);
+        const section = document.getElementById('bestSellersSection');
+        const grid = document.getElementById('bestSellersGrid');
+        if (sorted.length > 0 && section && grid) {
+            section.style.display = 'block';
+            grid.innerHTML = sorted.map((p, index) => `
+                <div class="best-seller-card" onclick="scrollToProduct(${p.id})">
+                    <div class="best-seller-rank">${index + 1}</div>
+                    <img src="${p.image || 'https://via.placeholder.com/70'}" onerror="this.src='https://via.placeholder.com/70'">
+                    <div class="name">${currentLang === 'ar' ? p.nameAr : p.nameEn}</div>
+                    <div class="sales"><i class="fas fa-chart-line"></i> ${p.sales || 0}</div>
+                </div>
+            `).join('');
         }
     }
     
-    function redirectToWhatsApp(product) {
-        const whatsappNumber = WA_NUMBER || "96879977100";
-        const message = `مرحباً، أرغب في شراء المنتج التالي:\n\n📦 *المنتج:* ${product.name}\n💰 *السعر:* ${product.price} ر.ع\n🔗 *رابط المنتج:* ${product.url}\n\nأرجو تأكيد الطلب.`;
-        const encodedMessage = encodeURIComponent(message);
-        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-        window.open(whatsappUrl, '_blank');
+    function scrollToProduct(id) {
+        const element = document.getElementById(`product-${id}`);
+        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
     
-    window.requestProduct = function(productId, productName, productPrice) {
-        showTermsForProduct(productId, productName, productPrice);
-    };
-    
-    window.acceptTerms = function() {
-        const termsCheck = document.getElementById('termsCheck');
-        if (!termsCheck || !termsCheck.checked) {
-            alert('⚠️ يرجى الموافقة على الشروط أولاً');
-            return;
-        }
-        closeTermsModal();
-        if (pendingOrderProduct) {
-            redirectToWhatsApp(pendingOrderProduct);
-            pendingOrderProduct = null;
-        }
-    };
-    
-    // تحميل البيانات
     loadCategories();
     loadProducts();
     const savedCustomer = localStorage.getItem('xnesto_customer');
     if (savedCustomer) { try { currentUser = JSON.parse(savedCustomer); updateUserUI(); } catch(e) {} }
-    checkAdmin();
 </script>
 </body>
 </html>

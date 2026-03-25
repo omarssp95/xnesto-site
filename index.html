@@ -616,147 +616,158 @@
     function logoutCustomer() { currentUser = null; localStorage.removeItem('xnesto_customer'); updateUserUI(); alert('تم تسجيل الخروج'); }
     function updateUserUI() {
         const authDiv = document.getElementById('authButtons');
-        if (currentUser) authDiv.innerHTML = `<div class="user-info"><i class="fas fa-user-check"></i><span>${currentUser.name.split(' ')[0]}</span><button class="logout-btn-small" onclick="logoutCustomer()">خروج</button></div>`;
-        else authDiv.innerHTML = `<button class="customer-btn" onclick="showLoginModal()"><i class="fas fa-user"></i> <span>تسجيل</span></button>`;
+        if (currentUser) {
+            authDiv.innerHTML = `<div class="user-info"><i class="fas fa-user-circle"></i> ${currentUser.name.split(' ')[0]}<button class="logout-btn-small" onclick="logoutCustomer()"><i class="fas fa-sign-out-alt"></i></button></div>`;
+        } else {
+            authDiv.innerHTML = `<button class="customer-btn" onclick="showLoginModal()"><i class="fas fa-user"></i> <span>تسجيل</span></button>`;
+        }
     }
+    
+    function setLang(lang) { currentLang = lang; document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active')); document.querySelector(`.lang-btn[data-lang="${lang}"]`).classList.add('active'); renderProducts(); loadBestSellers(); }
+    function setCurrency(currency) { currentCurrency = currency; renderProducts(); }
+    function setCategory(cat) { currentCategory = cat; currentPage = 1; renderTabs(); renderProducts(); }
     
     function loadProducts() {
         productsRef.on('value', (snapshot) => {
             const data = snapshot.val();
-            if (data && Array.isArray(data) && data.length > 0) products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
-            else { products = JSON.parse(JSON.stringify(allDefaultProducts)); products.forEach((p, idx) => { p.order = idx; }); productsRef.set(products); }
+            if (data && Array.isArray(data) && data.length > 0) products = data;
+            else products = JSON.parse(JSON.stringify(allDefaultProducts));
             renderProducts();
             loadBestSellers();
         });
     }
     
-    function formatPrice(price) { return `${currencySymbols[currentCurrency]} ${(price * exchangeRates[currentCurrency]).toFixed(2)}`; }
     function getFilteredProducts() {
         let filtered = [...products];
-        if (searchQuery.trim()) {
-            const query = searchQuery.toLowerCase();
-            filtered = filtered.filter(p => p.nameAr.toLowerCase().includes(query) || p.nameEn.toLowerCase().includes(query));
-        }
+        if (searchQuery) filtered = filtered.filter(p => p.nameAr.toLowerCase().includes(searchQuery) || p.nameEn.toLowerCase().includes(searchQuery));
         if (currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
         return filtered;
     }
     
-    async function getProductRating(productId) {
-        const snapshot = await ratingsRef.orderByChild('productId').equalTo(productId).once('value');
-        const ratings = snapshot.val();
-        if (!ratings) return { avg: 0, count: 0 };
-        const values = Object.values(ratings);
-        const avg = values.reduce((sum, r) => sum + r.rating, 0) / values.length;
-        return { avg: avg.toFixed(1), count: values.length };
-    }
-    
-    async function renderProducts() {
+    function renderProducts() {
         const filtered = getFilteredProducts();
         const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
-        if (currentPage > totalPages) currentPage = 1;
         const start = (currentPage - 1) * ITEMS_PER_PAGE;
-        const pageProducts = filtered.slice(start, start + ITEMS_PER_PAGE);
+        const paginated = filtered.slice(start, start + ITEMS_PER_PAGE);
         const container = document.getElementById('productsContainer');
-        if (pageProducts.length === 0) { container.innerHTML = '<div style="text-align:center; padding:2rem;">لا توجد منتجات</div>'; return; }
+        document.getElementById('searchCount').innerText = filtered.length;
         
-        let html = '';
-        for (const p of pageProducts) {
-            const rating = await getProductRating(p.id);
+        if (paginated.length === 0) { container.innerHTML = '<div class="loading">لا توجد منتجات</div>'; return; }
+        
+        container.innerHTML = paginated.map(p => {
+            const price = (p.priceOMR * exchangeRates[currentCurrency]).toFixed(2);
+            const oldPrice = p.oldPrice ? (p.oldPrice * exchangeRates[currentCurrency]).toFixed(2) : null;
             const name = currentLang === 'ar' ? p.nameAr : p.nameEn;
-            const desc = currentLang === 'ar' ? p.detailsAr : p.detailsEn;
-            const price = formatPrice(p.priceOMR);
-            const hasDiscount = p.oldPrice && p.oldPrice > p.priceOMR;
-            const oldPrice = hasDiscount ? formatPrice(p.oldPrice) : null;
-            const discountPercent = hasDiscount ? Math.round((1 - p.priceOMR / p.oldPrice) * 100) : 0;
-            const categoryName = categoryNames[p.category] || p.category;
-            let imageHtml = p.image && p.image.trim() ? `<div class="product-image" style="background-image: url('${p.image}');"><div class="product-badge">${categoryName}</div></div>` : `<div class="product-image" style="background: linear-gradient(135deg, #1e3a5f, #0f2a4a); display: flex; align-items: center; justify-content: center;"><div style="font-size: 2rem;">${p.category === 'games' ? '🎮' : '💳'}</div><div class="product-badge">${categoryName}</div></div>`;
-            
-            html += `<div class="product-card" id="product-${p.id}">
-                ${hasDiscount ? `<div class="discount-badge">-${discountPercent}%</div>` : ''}
-                ${imageHtml}
-                <div class="card-info">
-                    <div class="product-title">${escapeHtml(name)}</div>
-                    <div class="product-details">${escapeHtml(desc || '')}</div>
-                    <div class="rating-stars">${[1,2,3,4,5].map(s => `<i class="fas fa-star star ${rating.avg >= s ? 'active' : ''}"></i>`).join('')}</div>
-                    <div class="rating-count">${rating.count} تقييم (${rating.avg})</div>
-                    <div class="rating-input">${[1,2,3,4,5].map(s => `<button class="rating-btn" onclick="submitRating(${p.id}, ${s})">${s}⭐</button>`).join('')}</div>
-                    <div class="price-container">${hasDiscount ? `<span class="old-price">${oldPrice}</span>` : ''}<span class="price">${price}</span></div>
-                    <button class="btn-wa" onclick="requestPurchase(${p.id}, '${escapeHtml(name)}', ${p.priceOMR})"><i class="fab fa-whatsapp"></i> اطلب الآن</button>
+            const details = currentLang === 'ar' ? p.detailsAr : p.detailsEn;
+            const discount = p.oldPrice ? Math.round((1 - p.priceOMR / p.oldPrice) * 100) : 0;
+            return `
+                <div class="product-card" id="product-${p.id}">
+                    ${discount > 0 ? `<div class="discount-badge">-${discount}%</div>` : ''}
+                    <div class="product-image" style="background-image: url('${p.image || 'https://via.placeholder.com/170'}');"></div>
+                    <div class="card-info">
+                        <div class="product-title">${escapeHtml(name)}</div>
+                        <div class="product-details">${escapeHtml(details || '')}</div>
+                        <div class="price-container">
+                            ${oldPrice ? `<span class="old-price">${oldPrice} ${currencySymbols[currentCurrency]}</span>` : ''}
+                            <span class="price">${price} ${currencySymbols[currentCurrency]}</span>
+                        </div>
+                        <div class="rating-stars" id="rating-${p.id}"></div>
+                        <div class="rating-count" id="rating-count-${p.id}"></div>
+                        <button class="btn-wa" onclick="requestProduct(${p.id}, '${escapeHtml(name)}', ${p.priceOMR})"><i class="fab fa-whatsapp"></i> اطلب الآن</button>
+                    </div>
                 </div>
-            </div>`;
-        }
-        container.innerHTML = html;
+            `;
+        }).join('');
         
-        const pagContainer = document.getElementById('pagination');
+        // pagination
+        const paginationDiv = document.getElementById('pagination');
         if (totalPages > 1) {
-            let pagesHtml = '';
-            for (let i = 1; i <= totalPages; i++) pagesHtml += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
-            pagContainer.innerHTML = pagesHtml;
-        } else pagContainer.innerHTML = '';
-        document.getElementById('searchCount').innerHTML = filtered.length;
+            let pages = '';
+            for (let i = 1; i <= totalPages; i++) {
+                pages += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+            }
+            paginationDiv.innerHTML = pages;
+        } else { paginationDiv.innerHTML = ''; }
     }
     
-    function escapeHtml(text) { if (!text) return ''; return text.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m)); }
     function goToPage(page) { currentPage = page; renderProducts(); }
-    function setCategory(cat) { currentCategory = cat; currentPage = 1; renderTabs(); renderProducts(); }
     
-    async function submitRating(productId, rating) {
-        if (!currentUser) { alert('الرجاء تسجيل الدخول أولاً'); showLoginModal(); return; }
-        await ratingsRef.push({ userId: currentUser.email, productId, rating, timestamp: Date.now() });
-        alert('✅ تم إضافة تقييمك!');
-        renderProducts();
+    document.getElementById('searchInput').addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase(); currentPage = 1; renderProducts(); });
+    
+    function setView(view) {
+        document.body.classList.remove('view-mobile', 'view-desktop');
+        document.body.classList.add(`view-${view}`);
+        document.querySelectorAll('.device-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`.device-btn[onclick="setView('${view}')"]`).classList.add('active');
     }
     
-    async function requestPurchase(id, name, priceOMR) {
-        if (!currentUser) { alert('الرجاء تسجيل الدخول أولاً'); showLoginModal(); return; }
-        pendingProductData = { id, name, priceOMR };
-        document.getElementById('termsCheck').checked = false;
-        document.getElementById('acceptTermsBtn').classList.remove('enabled');
-        document.getElementById('termsModal').style.display = 'flex';
+    function toggleMode() {
+        document.body.classList.toggle('light-mode');
+        const btn = document.querySelector('.mode-toggle-btn');
+        if (document.body.classList.contains('light-mode')) btn.innerHTML = '☀️ نهاري';
+        else btn.innerHTML = '🌙 ليلي';
     }
     
-    function toggleTermsAccept() { const cb = document.getElementById('termsCheck'); cb.checked = !cb.checked; const btn = document.getElementById('acceptTermsBtn'); if (cb.checked) btn.classList.add('enabled'); else btn.classList.remove('enabled'); }
-    function closeTermsModal() { document.getElementById('termsModal').style.display = 'none'; pendingProductData = null; }
+    function toggleTermsAccept() {
+        const check = document.getElementById('termsCheck');
+        const acceptBtn = document.getElementById('acceptTermsBtn');
+        if (check.checked) acceptBtn.classList.add('enabled');
+        else acceptBtn.classList.remove('enabled');
+    }
     
-    async function acceptTerms() {
-        if (!document.getElementById('termsCheck').checked) { alert('يرجى الموافقة على الشروط'); return; }
-        if (!pendingProductData) return;
-        const { name, priceOMR, id } = pendingProductData;
-        const sym = currencySymbols[currentCurrency];
-        const convertedPrice = (priceOMR * exchangeRates[currentCurrency]).toFixed(2);
-        
-        const order = { id: Date.now(), customerName: currentUser.name, customerEmail: currentUser.email, productId: id, productName: name, price: priceOMR, convertedPrice: `${sym} ${convertedPrice}`, date: new Date().toLocaleString('ar-SA'), status: "قيد المعالجة" };
-        await ordersRef.push(order);
-        
-        const product = products.find(p => p.id === id);
-        if (product) { product.sales = (product.sales || 0) + 1; await productsRef.set(products); loadBestSellers(); }
-        
-        const message = `🛒 طلب شراء من xnesto\n━━━━━━━━━━━━━━━━━━━━\n🎮 المنتج: ${name}\n💰 السعر: ${sym} ${convertedPrice}\n👤 العميل: ${currentUser.name}\n📧 البريد: ${currentUser.email}\n📅 التاريخ: ${new Date().toLocaleString('ar-SA')}\n━━━━━━━━━━━━━━━━━━━━\n📞 يرجى تأكيد الطلب\n\n✅ أوافق على الشروط`;
-        window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+    function closeTermsModal() {
+        document.getElementById('termsModal').style.display = 'none';
+        pendingOrderProduct = null;
+    }
+    
+    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+    
+    // ==================== نظام الطلب مع الشروط ====================
+    let pendingOrderProduct = null;
+    
+    function showTermsForProduct(productId, productName, productPrice) {
+        pendingOrderProduct = { id: productId, name: productName, price: productPrice, url: window.location.href };
+        const termsModal = document.getElementById('termsModal');
+        if (termsModal) {
+            termsModal.style.display = 'flex';
+            const termsCheck = document.getElementById('termsCheck');
+            const acceptBtn = document.getElementById('acceptTermsBtn');
+            if (termsCheck) termsCheck.checked = false;
+            if (acceptBtn) acceptBtn.classList.remove('enabled');
+        }
+    }
+    
+    function redirectToWhatsApp(product) {
+        const whatsappNumber = WA_NUMBER || "96879977100";
+        const message = `مرحباً، أرغب في شراء المنتج التالي:\n\n📦 *المنتج:* ${product.name}\n💰 *السعر:* ${product.price} ر.ع\n🔗 *رابط المنتج:* ${product.url}\n\nأرجو تأكيد الطلب.`;
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+        window.open(whatsappUrl, '_blank');
+    }
+    
+    window.requestProduct = function(productId, productName, productPrice) {
+        showTermsForProduct(productId, productName, productPrice);
+    };
+    
+    window.acceptTerms = function() {
+        const termsCheck = document.getElementById('termsCheck');
+        if (!termsCheck || !termsCheck.checked) {
+            alert('⚠️ يرجى الموافقة على الشروط أولاً');
+            return;
+        }
         closeTermsModal();
-        alert('✅ تم إرسال طلبك! سنتواصل معك قريباً.');
-    }
+        if (pendingOrderProduct) {
+            redirectToWhatsApp(pendingOrderProduct);
+            pendingOrderProduct = null;
+        }
+    };
     
-    function setLang(lang) { currentLang = lang; document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active')); event.target.classList.add('active'); renderProducts(); loadBestSellers(); }
-    function setCurrency(currency) { currentCurrency = currency; renderProducts(); loadBestSellers(); }
-    function toggleMode() { const isLight = document.body.classList.toggle('light-mode'); const btn = document.querySelector('.mode-toggle-btn'); btn.innerHTML = isLight ? '☀️ نهاري' : '🌙 ليلي'; localStorage.setItem('xnesto_mode', isLight ? 'light' : 'dark'); }
-    function setView(view) { document.body.classList.remove('view-mobile', 'view-desktop'); document.body.classList.add('view-' + view); localStorage.setItem('xnesto_view', view); }
-    
-    document.getElementById('searchInput').addEventListener('input', (e) => { searchQuery = e.target.value; currentPage = 1; renderProducts(); });
-    const savedMode = localStorage.getItem('xnesto_mode'); if (savedMode === 'light') { document.body.classList.add('light-mode'); document.querySelector('.mode-toggle-btn').innerHTML = '☀️ نهاري'; }
-    const savedView = localStorage.getItem('xnesto_view') || 'mobile'; setView(savedView);
-    const savedCustomer = localStorage.getItem('xnesto_customer'); if (savedCustomer) { currentUser = JSON.parse(savedCustomer); updateUserUI(); }
-    document.getElementById('instagramText').innerHTML = `<a href="https://instagram.com/${INSTA_USERNAME}" target="_blank" style="color:#ffaa66;">${INSTA_USERNAME}</a>`;
-    document.getElementById('whatsappText').innerHTML = `<a href="https://wa.me/${WA_NUMBER}" target="_blank" style="color:#ffaa66;">+${WA_NUMBER}</a>`;
-    
-    checkAdmin();
+    // تحميل البيانات
     loadCategories();
     loadProducts();
-    
-    window.toggleTermsAccept = toggleTermsAccept; window.closeTermsModal = closeTermsModal; window.acceptTerms = acceptTerms; window.requestPurchase = requestPurchase;
-    window.showLoginModal = showLoginModal; window.closeLoginModal = closeLoginModal; window.loginCustomer = loginCustomer;
-    window.submitRating = submitRating; window.scrollToProduct = scrollToProduct;
-    window.increaseSales = increaseSales;
+    const savedCustomer = localStorage.getItem('xnesto_customer');
+    if (savedCustomer) { try { currentUser = JSON.parse(savedCustomer); updateUserUI(); } catch(e) {} }
+    checkAdmin();
 </script>
 </body>
 </html>

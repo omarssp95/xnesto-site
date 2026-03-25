@@ -17,11 +17,11 @@
             min-height: 100vh;
         }
         
-        /* ==================== هيدر جديد مع تأثيرات ==================== */
+        /* ==================== هيدر جديد ==================== */
         .header {
             position: relative;
             text-align: center;
-            background: linear-gradient(135deg, #0a0a1f, #0a0a2a);
+            background: linear-gradient(135deg, #0f0f2a, #0a0a1f);
             padding: 2rem 1rem;
             border-radius: 2rem;
             margin-bottom: 1.5rem;
@@ -29,22 +29,20 @@
             overflow: hidden;
         }
         
-        /* خلفية متحركة */
         .header-bg {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 20% 30%, rgba(255,100,0,0.15), transparent 70%),
-                        radial-gradient(circle at 80% 70%, rgba(0,100,200,0.1), transparent 70%);
+            background: radial-gradient(circle at 20% 30%, rgba(255,100,0,0.1), transparent 70%),
+                        radial-gradient(circle at 80% 70%, rgba(0,150,255,0.08), transparent 70%);
             animation: bgPulse 8s ease-in-out infinite;
             pointer-events: none;
         }
         
         @keyframes bgPulse {
             0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
+            50% { opacity: 1; transform: scale(1.03); }
         }
         
-        /* شعار متحرك */
         .logo-container {
             position: relative;
             display: inline-block;
@@ -54,14 +52,14 @@
         .logo-glow {
             position: absolute;
             inset: -20px;
-            background: radial-gradient(circle, rgba(255,170,68,0.4), transparent 70%);
+            background: radial-gradient(circle, rgba(255,170,68,0.3), transparent 70%);
             filter: blur(20px);
             animation: logoPulse 2s ease-in-out infinite;
         }
         
         @keyframes logoPulse {
-            0%, 100% { opacity: 0.5; transform: scale(0.9); }
-            50% { opacity: 1; transform: scale(1.1); }
+            0%, 100% { opacity: 0.4; transform: scale(0.95); }
+            50% { opacity: 0.8; transform: scale(1.05); }
         }
         
         .main-logo {
@@ -72,17 +70,53 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            text-shadow: 0 0 30px rgba(255,170,68,0.5);
-            letter-spacing: 5px;
-            animation: textGlow 3s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255,170,68,0.3);
+            letter-spacing: 3px;
         }
         
-        @keyframes textGlow {
-            0%, 100% { text-shadow: 0 0 20px rgba(255,170,68,0.3); }
-            50% { text-shadow: 0 0 40px rgba(255,170,68,0.7); }
+        .controller-icon {
+            font-size: 3rem;
+            display: inline-block;
+            animation: controllerFloat 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 12px rgba(0,100,255,0.5));
+            margin: 0 10px;
         }
         
-        /* ألعاب متحركة حول الهيدر */
+        @keyframes controllerFloat {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-8px) rotate(3deg); }
+        }
+        
+        /* جزيئات متوهجة */
+        .sparkles-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, #ffaa44, #ff8844, #ff6600);
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkleFloat 3s linear infinite;
+            box-shadow: 0 0 8px #ffaa44;
+        }
+        
+        @keyframes sparkleFloat {
+            0% { transform: translateY(100%) scale(0); opacity: 0; }
+            20% { opacity: 0.8; transform: translateY(50%) scale(1); }
+            80% { opacity: 0.6; transform: translateY(-50%) scale(0.8); }
+            100% { transform: translateY(-100%) scale(0); opacity: 0; }
+        }
+        
+        /* أيقونات طائرة */
         .floating-icons {
             position: absolute;
             width: 100%;
@@ -95,76 +129,76 @@
         
         .float-icon {
             position: absolute;
-            font-size: 1.5rem;
-            opacity: 0.6;
-            animation: floatIcon 12s linear infinite;
+            font-size: 1.3rem;
+            opacity: 0.5;
+            animation: floatIcon 10s linear infinite;
         }
         
         @keyframes floatIcon {
             0% { transform: translateY(100%) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
             100% { transform: translateY(-100%) rotate(360deg); opacity: 0; }
         }
         
-        /* النار */
-        .fire-container {
+        /* عبارات ترحيبية (معدلة) */
+        .welcome-quotes {
             display: flex;
             justify-content: center;
-            gap: 8px;
-            margin-top: 15px;
-            margin-bottom: 10px;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 15px 0 10px;
         }
         
-        .flame {
-            width: 20px;
-            height: 30px;
-            background: linear-gradient(to top, #ff4400, #ffaa00, #ffff00);
-            border-radius: 50% 50% 20% 20%;
-            animation: flicker 0.3s ease-in-out infinite alternate;
-            transform-origin: bottom center;
-        }
-        
-        .flame:nth-child(1) { height: 35px; width: 18px; animation-delay: 0s; }
-        .flame:nth-child(2) { height: 50px; width: 22px; animation-delay: 0.1s; }
-        .flame:nth-child(3) { height: 65px; width: 28px; animation-delay: 0.05s; background: linear-gradient(to top, #ff6600, #ffcc44, #ffff88); }
-        .flame:nth-child(4) { height: 45px; width: 20px; animation-delay: 0.15s; }
-        .flame:nth-child(5) { height: 55px; width: 24px; animation-delay: 0.08s; }
-        .flame:nth-child(6) { height: 38px; width: 18px; animation-delay: 0.2s; }
-        
-        @keyframes flicker {
-            0% { transform: scaleY(1) rotate(-2deg); opacity: 0.9; }
-            100% { transform: scaleY(1.2) rotate(3deg); opacity: 1; }
-        }
-        
-        /* يد التحكم PS5 */
-        .controller-icon {
-            font-size: 3rem;
-            display: inline-block;
-            animation: controllerFloat 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 15px rgba(0,100,255,0.6));
-            margin: 0 10px;
-        }
-        
-        @keyframes controllerFloat {
-            0%, 100% { transform: translateY(0) rotate(-5deg); }
-            50% { transform: translateY(-10px) rotate(5deg); }
-        }
-        
-        /* نص ترحيبي */
-        .welcome-text {
-            font-size: 0.9rem;
-            color: #ffdd99;
+        .quote-badge {
             background: rgba(0,0,0,0.4);
-            display: inline-block;
+            backdrop-filter: blur(8px);
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            border: 1px solid rgba(255,170,68,0.3);
+            animation: badgeGlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes badgeGlow {
+            0%, 100% { border-color: rgba(255,170,68,0.3); box-shadow: 0 0 5px rgba(255,170,68,0.2); }
+            50% { border-color: rgba(255,170,68,0.8); box-shadow: 0 0 15px rgba(255,170,68,0.4); }
+        }
+        
+        .quote-badge i {
+            margin-left: 5px;
+            color: #ffaa44;
+        }
+        
+        /* إحصائيات */
+        .stats-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0,0,0,0.3);
             padding: 5px 20px;
             border-radius: 40px;
             margin-top: 10px;
             backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,170,68,0.3);
         }
         
-        /* باقي الكود الأصلي كما هو (لم يتغير) */
+        .stat-item {
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .stat-item i {
+            color: #ffaa44;
+        }
+        
+        .stat-number {
+            font-weight: bold;
+            color: #ffaa44;
+        }
+        
+        /* باقي الكود الأصلي كما هو */
         .header h1, .header p { display: none; }
         
         .control-bar {
@@ -603,7 +637,9 @@
             .price { font-size: 1rem; }
             .main-logo { font-size: 2rem; }
             .controller-icon { font-size: 2rem; }
-            .flame:nth-child(3) { height: 45px; }
+            .quote-badge { font-size: 0.6rem; padding: 4px 10px; }
+            .stats-badge { gap: 8px; padding: 4px 12px; }
+            .stat-item { font-size: 0.6rem; }
         }
     </style>
 </head>
@@ -618,12 +654,17 @@
 <!-- ==================== هيدر جديد ==================== -->
 <div class="header">
     <div class="header-bg"></div>
+    
+    <!-- جزيئات متوهجة -->
+    <div class="sparkles-container" id="sparklesContainer"></div>
+    
+    <!-- أيقونات طائرة -->
     <div class="floating-icons" id="floatingIcons"></div>
     
     <div class="logo-container">
         <div class="logo-glow"></div>
         <div class="main-logo">
-            <i class="fab fa-playstation"></i> XNESTO <i class="fas fa-gamepad"></i>
+            <i class="fab fa-playstation"></i> XNESTO <i class="fas fa-store"></i>
         </div>
     </div>
     
@@ -631,26 +672,44 @@
         <i class="fas fa-gamepad"></i>
     </div>
     
-    <div class="fire-container">
-        <div class="flame"></div>
-        <div class="flame"></div>
-        <div class="flame"></div>
-        <div class="flame"></div>
-        <div class="flame"></div>
-        <div class="flame"></div>
+    <!-- عبارات ترحيبية (معدلة) -->
+    <div class="welcome-quotes">
+        <div class="quote-badge"><i class="fas fa-tag"></i> أفضل الأسعار</div>
+        <div class="quote-badge"><i class="fas fa-bolt"></i> توصيل فوري</div>
+        <div class="quote-badge"><i class="fas fa-headset"></i> دعم 24/7</div>
+        <div class="quote-badge"><i class="fas fa-shield-alt"></i> دفع آمن 100%</div>
     </div>
     
-    <div class="welcome-text">
-        <i class="fas fa-crown"></i> أفضل العروض الحصرية | شحن فوري | دعم 24/7 <i class="fas fa-bolt"></i>
+    <!-- إحصائيات -->
+    <div class="stats-badge">
+        <div class="stat-item"><i class="fas fa-gamepad"></i> <span class="stat-number">500+</span> لعبة</div>
+        <div class="stat-item"><i class="fas fa-users"></i> <span class="stat-number">10K+</span> عميل</div>
+        <div class="stat-item"><i class="fas fa-star"></i> <span class="stat-number">4.9</span> تقييم</div>
+        <div class="stat-item"><i class="fas fa-clock"></i> <span class="stat-number">24/7</span> دعم</div>
     </div>
 </div>
 
 <script>
+    // إنشاء جزيئات متوهجة
+    function createSparkles() {
+        const container = document.getElementById('sparklesContainer');
+        for (let i = 0; i < 40; i++) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.animationDelay = Math.random() * 5 + 's';
+            sparkle.style.animationDuration = 2 + Math.random() * 2 + 's';
+            sparkle.style.width = 3 + Math.random() * 5 + 'px';
+            sparkle.style.height = sparkle.style.width;
+            container.appendChild(sparkle);
+        }
+    }
+    
     // إنشاء أيقونات طائرة
     function createFloatingIcons() {
         const container = document.getElementById('floatingIcons');
-        const icons = ['🎮', '🕹️', '💿', '⚡', '🔥', '🎯', '🏆', '💎', '🌟', '🎲'];
-        for (let i = 0; i < 20; i++) {
+        const icons = ['🎮', '🕹️', '💿', '⚡', '🎯', '🏆', '💎', '🌟', '🎲', '🔊', '📀', '🎧'];
+        for (let i = 0; i < 25; i++) {
             const icon = document.createElement('div');
             icon.className = 'float-icon';
             icon.textContent = icons[Math.floor(Math.random() * icons.length)];
@@ -661,6 +720,8 @@
             container.appendChild(icon);
         }
     }
+    
+    createSparkles();
     createFloatingIcons();
 </script>
 

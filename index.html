@@ -413,68 +413,19 @@
 </div>
 
 <script>
-    const firebaseConfig = { databaseURL: "https://xnesto-645bf-default-rtdb.asia-southeast1.firebasedatabase.app/" };
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-    const productsRef = database.ref('products');
-    const customersRef = database.ref('customers');
-    const categoriesRef = database.ref('categories');
-    const ratingsRef = database.ref('ratings');
-    const ordersRef = database.ref('orders');
-    
-    let products = [];
-    let categories = [];
-    let categoryNames = {};
-    let currentUser = null;
-    let currentLang = "ar";
-    let currentCurrency = "OMR";
-    let currentPage = 1;
-    let currentCategory = "all";
-    let searchQuery = "";
+    // ==================== دوال الشروط والطلب (المضافة لحل المشكلة) ====================
     let pendingOrderProduct = null;
-    let isAdmin = false;
-    const ITEMS_PER_PAGE = 12;
     const WA_NUMBER = "96879977100";
-    const ADMIN_PASSWORD = "ssp1995";
-    
-    const exchangeRates = { OMR: 1, USD: 2.6, SAR: 9.75, AED: 9.55 };
-    const currencySymbols = { OMR: "ر.ع", USD: "$", SAR: "ر.س", AED: "د.إ" };
-    
-    const allGames = [
-        { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English", sales: 564, category: "games" },
-        { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English", sales: 464, category: "games" },
-        { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", priceOMR: 6, oldPrice: 10, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", detailsAr: "🏷️ 150GB | 🌍 عالم مفتوح", detailsEn: "📦 150GB | 🌍 Open World", sales: 588, category: "games" },
-        { id: 4, nameAr: "God of War Ragnarök", nameEn: "God of War Ragnarök", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg", detailsAr: "🏷️ 85GB | 🪓 ملحمة إسكندنافية", detailsEn: "📦 85GB | 🪓 Norse Saga", sales: 274, category: "games" },
-        { id: 5, nameAr: "Spider-Man 2", nameEn: "Spider-Man 2", priceOMR: 16, oldPrice: 22, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", detailsAr: "🏷️ 98GB | 🕷️ بيتر + مايلز", detailsEn: "📦 98GB | 🕷️ Peter + Miles", sales: 440, category: "games" },
-        { id: 6, nameAr: "Elden Ring", nameEn: "Elden Ring", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg", detailsAr: "🏷️ 60GB | ⚔️ RPG خيالي", detailsEn: "📦 60GB | ⚔️ Fantasy RPG", sales: 520, category: "games" },
-        { id: 7, nameAr: "Horizon Forbidden West", nameEn: "Horizon Forbidden West", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1151640/header.jpg", detailsAr: "🏷️ 96GB | 🦕 مغامرة مستقبلية", detailsEn: "📦 96GB | 🦕 Future Adventure", sales: 380, category: "games" },
-        { id: 8, nameAr: "Ghost of Tsushima", nameEn: "Ghost of Tsushima", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2215430/header.jpg", detailsAr: "🏷️ 50GB | 🗡️ ساموراي", detailsEn: "📦 50GB | 🗡️ Samurai", sales: 312, category: "games" }
-    ];
-    for (let i = 9; i <= 50; i++) {
-        allGames.push({
-            id: i, nameAr: `لعبة PS5 مميزة ${i}`, nameEn: `Premium PS5 Game ${i}`,
-            priceOMR: 9 + Math.floor(Math.random() * 10), oldPrice: 12 + Math.floor(Math.random() * 10),
-            image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2358720/header.jpg",
-            detailsAr: `🏷️ لعبة رقم ${i}`, detailsEn: `Game ${i}`, sales: Math.floor(Math.random() * 300) + 100, category: "games"
-        });
-    }
-    
-    const giftCards = [
-        { id: 101, nameAr: "🇺🇸 بطاقة أمريكي", nameEn: "🇺🇸 US Card", category: "giftcards", priceOMR: 5, oldPrice: 6, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/30px-Flag_of_the_United_States.svg.png", detailsAr: "10$ | 25$ | 50$ | 100$", detailsEn: "10$ | 25$ | 50$ | 100$", sales: 244 },
-        { id: 102, nameAr: "🇸🇦 بطاقة سعودي", nameEn: "🇸🇦 Saudi Card", category: "giftcards", priceOMR: 4.5, oldPrice: 5.5, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/30px-Flag_of_Saudi_Arabia.svg.png", detailsAr: "50ر.س | 100ر.س | 200ر.س", detailsEn: "50 SAR | 100 SAR | 200 SAR", sales: 210 },
-        { id: 103, nameAr: "🇦🇪 بطاقة إماراتي", nameEn: "🇦🇪 UAE Card", category: "giftcards", priceOMR: 5, oldPrice: 6, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_United_Arab_Emirates.svg/30px-Flag_of_the_United_Arab_Emirates.svg.png", detailsAr: "50د.إ | 100د.إ | 200د.إ", detailsEn: "50 AED | 100 AED | 200 AED", sales: 195 },
-        { id: 104, nameAr: "🇴🇲 بطاقة عماني", nameEn: "🇴🇲 Oman Card", category: "giftcards", priceOMR: 5, oldPrice: 6, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Oman.svg/30px-Flag_of_Oman.svg.png", detailsAr: "5ر.ع | 10ر.ع | 20ر.ع", detailsEn: "5 OMR | 10 OMR | 20 OMR", sales: 180 }
-    ];
-    
-    for (let i = 0; i < giftCards.length; i++) giftCards[i].category = "giftcards";
-    const allDefaultProducts = [...allGames, ...giftCards];
     
     function toggleTermsAccept() {
         const check = document.getElementById('termsCheck');
         const acceptBtn = document.getElementById('acceptTermsBtn');
         if (check && acceptBtn) {
-            if (check.checked) acceptBtn.classList.add('enabled');
-            else acceptBtn.classList.remove('enabled');
+            if (check.checked) {
+                acceptBtn.classList.add('enabled');
+            } else {
+                acceptBtn.classList.remove('enabled');
+            }
         }
     }
     
@@ -485,7 +436,12 @@
     }
     
     function showTermsForProduct(productId, productName, productPrice) {
-        pendingOrderProduct = { id: productId, name: productName, price: productPrice, url: window.location.href };
+        pendingOrderProduct = { 
+            id: productId, 
+            name: productName, 
+            price: productPrice, 
+            url: window.location.href 
+        };
         const termsModal = document.getElementById('termsModal');
         if (termsModal) {
             termsModal.style.display = 'flex';
@@ -521,6 +477,7 @@
         }
     };
     
+    // ربط الأزرار بعد تحميل الصفحة
     document.addEventListener('DOMContentLoaded', function() {
         const acceptBtn = document.getElementById('acceptTermsBtn');
         const declineBtn = document.getElementById('declineTermsBtn');
@@ -553,6 +510,61 @@
             };
         }
     });
+    
+    // ==================== باقي كود المتجر الأصلي ====================
+    const firebaseConfig = { databaseURL: "https://xnesto-645bf-default-rtdb.asia-southeast1.firebasedatabase.app/" };
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const productsRef = database.ref('products');
+    const customersRef = database.ref('customers');
+    const categoriesRef = database.ref('categories');
+    const ratingsRef = database.ref('ratings');
+    const ordersRef = database.ref('orders');
+    
+    let products = [];
+    let categories = [];
+    let categoryNames = {};
+    let currentUser = null;
+    let currentLang = "ar";
+    let currentCurrency = "OMR";
+    let currentPage = 1;
+    let currentCategory = "all";
+    let searchQuery = "";
+    let isAdmin = false;
+    const ITEMS_PER_PAGE = 12;
+    const ADMIN_PASSWORD = "ssp1995";
+    
+    const exchangeRates = { OMR: 1, USD: 2.6, SAR: 9.75, AED: 9.55 };
+    const currencySymbols = { OMR: "ر.ع", USD: "$", SAR: "ر.س", AED: "د.إ" };
+    
+    const allGames = [
+        { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English", sales: 564, category: "games" },
+        { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English", sales: 464, category: "games" },
+        { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", priceOMR: 6, oldPrice: 10, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", detailsAr: "🏷️ 150GB | 🌍 عالم مفتوح", detailsEn: "📦 150GB | 🌍 Open World", sales: 588, category: "games" },
+        { id: 4, nameAr: "God of War Ragnarök", nameEn: "God of War Ragnarök", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg", detailsAr: "🏷️ 85GB | 🪓 ملحمة إسكندنافية", detailsEn: "📦 85GB | 🪓 Norse Saga", sales: 274, category: "games" },
+        { id: 5, nameAr: "Spider-Man 2", nameEn: "Spider-Man 2", priceOMR: 16, oldPrice: 22, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", detailsAr: "🏷️ 98GB | 🕷️ بيتر + مايلز", detailsEn: "📦 98GB | 🕷️ Peter + Miles", sales: 440, category: "games" },
+        { id: 6, nameAr: "Elden Ring", nameEn: "Elden Ring", priceOMR: 12, oldPrice: 18, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg", detailsAr: "🏷️ 60GB | ⚔️ RPG خيالي", detailsEn: "📦 60GB | ⚔️ Fantasy RPG", sales: 520, category: "games" },
+        { id: 7, nameAr: "Horizon Forbidden West", nameEn: "Horizon Forbidden West", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1151640/header.jpg", detailsAr: "🏷️ 96GB | 🦕 مغامرة مستقبلية", detailsEn: "📦 96GB | 🦕 Future Adventure", sales: 380, category: "games" },
+        { id: 8, nameAr: "Ghost of Tsushima", nameEn: "Ghost of Tsushima", priceOMR: 11, oldPrice: 17, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2215430/header.jpg", detailsAr: "🏷️ 50GB | 🗡️ ساموراي", detailsEn: "📦 50GB | 🗡️ Samurai", sales: 312, category: "games" }
+    ];
+    for (let i = 9; i <= 50; i++) {
+        allGames.push({
+            id: i, nameAr: `لعبة PS5 مميزة ${i}`, nameEn: `Premium PS5 Game ${i}`,
+            priceOMR: 9 + Math.floor(Math.random() * 10), oldPrice: 12 + Math.floor(Math.random() * 10),
+            image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2358720/header.jpg",
+            detailsAr: `🏷️ لعبة رقم ${i}`, detailsEn: `Game ${i}`, sales: Math.floor(Math.random() * 300) + 100, category: "games"
+        });
+    }
+    
+    const giftCards = [
+        { id: 101, nameAr: "🇺🇸 بطاقة أمريكي", nameEn: "🇺🇸 US Card", category: "giftcards", priceOMR: 5, oldPrice: 6, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/30px-Flag_of_the_United_States.svg.png", detailsAr: "10$ | 25$ | 50$ | 100$", detailsEn: "10$ | 25$ | 50$ | 100$", sales: 244 },
+        { id: 102, nameAr: "🇸🇦 بطاقة سعودي", nameEn: "🇸🇦 Saudi Card", category: "giftcards", priceOMR: 4.5, oldPrice: 5.5, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/30px-Flag_of_Saudi_Arabia.svg.png", detailsAr: "50ر.س | 100ر.س | 200ر.س", detailsEn: "50 SAR | 100 SAR | 200 SAR", sales: 210 },
+        { id: 103, nameAr: "🇦🇪 بطاقة إماراتي", nameEn: "🇦🇪 UAE Card", category: "giftcards", priceOMR: 5, oldPrice: 6, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_United_Arab_Emirates.svg/30px-Flag_of_the_United_Arab_Emirates.svg.png", detailsAr: "50د.إ | 100د.إ | 200د.إ", detailsEn: "50 AED | 100 AED | 200 AED", sales: 195 },
+        { id: 104, nameAr: "🇴🇲 بطاقة عماني", nameEn: "🇴🇲 Oman Card", category: "giftcards", priceOMR: 5, oldPrice: 6, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Oman.svg/30px-Flag_of_Oman.svg.png", detailsAr: "5ر.ع | 10ر.ع | 20ر.ع", detailsEn: "5 OMR | 10 OMR | 20 OMR", sales: 180 }
+    ];
+    
+    for (let i = 0; i < giftCards.length; i++) giftCards[i].category = "giftcards";
+    const allDefaultProducts = [...allGames, ...giftCards];
     
     function loadCategories() {
         categoriesRef.on('value', (snapshot) => {
@@ -629,6 +641,7 @@
         const start = (currentPage - 1) * ITEMS_PER_PAGE;
         const paginated = filtered.slice(start, start + ITEMS_PER_PAGE);
         const container = document.getElementById('productsContainer');
+        if (!container) return;
         document.getElementById('searchCount').innerText = filtered.length;
         
         if (paginated.length === 0) { container.innerHTML = '<div class="loading">لا توجد منتجات</div>'; return; }
@@ -657,31 +670,33 @@
         }).join('');
         
         const paginationDiv = document.getElementById('pagination');
-        if (totalPages > 1) {
+        if (totalPages > 1 && paginationDiv) {
             let pages = '';
             for (let i = 1; i <= totalPages; i++) {
                 pages += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
             }
             paginationDiv.innerHTML = pages;
-        } else { paginationDiv.innerHTML = ''; }
+        } else if (paginationDiv) { paginationDiv.innerHTML = ''; }
     }
     
     function goToPage(page) { currentPage = page; renderProducts(); }
     
-    document.getElementById('searchInput').addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase(); currentPage = 1; renderProducts(); });
+    document.getElementById('searchInput')?.addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase(); currentPage = 1; renderProducts(); });
     
     function setView(view) {
         document.body.classList.remove('view-mobile', 'view-desktop');
         document.body.classList.add(`view-${view}`);
         document.querySelectorAll('.device-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelector(`.device-btn[onclick="setView('${view}')"]`).classList.add('active');
+        document.querySelector(`.device-btn[onclick="setView('${view}')"]`)?.classList.add('active');
     }
     
     function toggleMode() {
         document.body.classList.toggle('light-mode');
         const btn = document.querySelector('.mode-toggle-btn');
-        if (document.body.classList.contains('light-mode')) btn.innerHTML = '☀️ نهاري';
-        else btn.innerHTML = '🌙 ليلي';
+        if (btn) {
+            if (document.body.classList.contains('light-mode')) btn.innerHTML = '☀️ نهاري';
+            else btn.innerHTML = '🌙 ليلي';
+        }
     }
     
     function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }

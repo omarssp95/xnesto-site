@@ -198,7 +198,14 @@
         .price { font-size: 1.1rem; font-weight: 800; color: #ffaa44; }
         .btn-wa { width: 100%; background: #25D366; border: none; padding: 6px; border-radius: 40px; color: #000; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 0.7rem; }
         
-        .pagination { display: flex; justify: center; gap: 6px; margin-top: 1.2rem; flex-wrap: wrap; }
+        /* تعديل أرقام الصفحات لتكون في المنتصف */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 1.2rem;
+            flex-wrap: wrap;
+        }
         .page-btn { background: #1e1e3a; border: 1px solid #ffaa44; color: #ffdd99; padding: 5px 10px; border-radius: 30px; cursor: pointer; font-size: 0.7rem; }
         .page-btn.active { background: #ffaa44; color: #0a0a1a; }
         
@@ -400,7 +407,7 @@
 </div>
 
 <script>
-    // ==================== دوال الشروط والطلب ====================
+    // ==================== دوال الشروط والطلب (تم التعديل) ====================
     let pendingOrderProduct = null;
     const WA_NUMBER = "96879977100";
     
@@ -422,11 +429,16 @@
         pendingOrderProduct = null;
     }
     
+    // دالة عرض الشروط - معدلة
     function showTermsForProduct(productId, productName, productPrice) {
+        // التأكد من أن السعر رقم صحيح
+        let priceValue = parseFloat(productPrice);
+        if (isNaN(priceValue)) priceValue = 0;
+        
         pendingOrderProduct = { 
             id: productId, 
             name: productName, 
-            price: productPrice, 
+            price: priceValue,
             url: window.location.href 
         };
         const termsModal = document.getElementById('termsModal');
@@ -439,16 +451,22 @@
         }
     }
     
+    // دالة التحويل إلى واتساب
     function redirectToWhatsApp(product) {
         const whatsappNumber = WA_NUMBER;
-        const message = `مرحباً xnesto، أرغب في شراء:\n\n📦 المنتج: ${product.name}\n💰 السعر: ${product.price} ر.ع\n\n✅ لقد قرأت الشروط وأوافق عليها.`;
+        const priceText = product.price + " ر.ع";
+        const message = `مرحباً xnesto، أرغب في شراء:\n\n📦 المنتج: ${product.name}\n💰 السعر: ${priceText}\n\n✅ لقد قرأت الشروط وأوافق عليها.`;
         const encodedMessage = encodeURIComponent(message);
         const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
         window.open(whatsappUrl, '_blank');
     }
     
+    // دالة الطلب الرئيسية - معدلة
     window.requestProduct = function(productId, productName, productPrice) {
-        showTermsForProduct(productId, productName, productPrice);
+        // التأكد من صحة البيانات
+        let priceValue = parseFloat(productPrice);
+        if (isNaN(priceValue)) priceValue = 0;
+        showTermsForProduct(productId, productName, priceValue);
     };
     
     window.acceptTerms = function() {
@@ -655,14 +673,14 @@
     function escapeHtml(text) { if (!text) return ''; return text.toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
     
     function setView(view) { document.body.classList.remove('view-mobile', 'view-desktop'); document.body.classList.add('view-' + view); document.querySelectorAll('.device-btn').forEach(btn => btn.classList.remove('active')); event.currentTarget.classList.add('active'); }
-    function toggleMode() { document.body.classList.toggle('light-mode'); const btn = document.querySelector('.mode-toggle-btn'); btn.innerHTML = document.body.classList.contains('light-mode') ? '☀️ نهاري' : '🌙 ليلي'; }
+    function toggleMode() { document.body.classList.toggle('light-mode'); const btn = document.querySelector('.mode-toggle-btn'); btn.innerHTML = document.body.classList.contains('light-mode') ? '🌞 نهاري' : '🌙 ليلي'; }
     
+    // البحث
     document.getElementById('searchInput').addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase(); currentPage = 1; renderProducts(); });
     
+    // تشغيل
     loadCategories();
     loadProducts();
 </script>
-
 </body>
 </html>
-

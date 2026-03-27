@@ -101,37 +101,6 @@
             cursor: pointer;
             font-size: 0.8rem;
         }
-        .customer-btn {
-            background: #2d2f6e;
-            border: none;
-            color: #ffaa66;
-            padding: 6px 14px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .user-info {
-            background: #1e1e3a;
-            padding: 6px 14px;
-            border-radius: 40px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #ffaa66;
-            font-size: 0.8rem;
-        }
-        .logout-btn-small {
-            background: #ff4444;
-            border: none;
-            color: white;
-            padding: 3px 10px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.7rem;
-        }
         
         .search-bar-container {
             max-width: 1400px;
@@ -255,6 +224,11 @@
             gap: 6px;
             font-size: 0.85rem;
         }
+        .btn-wa.disabled {
+            background: #888;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
         
         .pagination {
             display: flex;
@@ -296,52 +270,6 @@
             text-decoration: none;
             z-index: 999;
         }
-        
-        .login-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            backdrop-filter: blur(12px);
-            align-items: center;
-            justify-content: center;
-            z-index: 5000;
-            padding: 1rem;
-        }
-        .login-box {
-            background: #11152b;
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            border: 2px solid #ffaa44;
-            width: 100%;
-            max-width: 380px;
-            text-align: center;
-        }
-        .login-box h2 { color: #ffaa44; margin-bottom: 1rem; }
-        .login-box input {
-            width: 100%;
-            padding: 0.8rem;
-            margin: 0.5rem 0;
-            border-radius: 2rem;
-            background: #1e1e3a;
-            border: 1px solid #ffaa44;
-            color: white;
-        }
-        .login-box button {
-            width: 100%;
-            padding: 0.8rem;
-            margin-top: 0.5rem;
-            border-radius: 2rem;
-            background: #ffaa44;
-            color: #0a0a1a;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-        }
-        .login-error { color: #ff6666; font-size: 0.7rem; margin-top: 0.5rem; }
         
         .terms-modal {
             display: none;
@@ -510,9 +438,6 @@
             <option value="EUR">🇪🇺 يورو</option>
         </select>
     </div>
-    <div class="auth-buttons" id="authButtons">
-        <button class="customer-btn" onclick="showLoginModal()"><i class="fas fa-user"></i> <span>تسجيل دخول</span></button>
-    </div>
 </div>
 
 <div class="search-bar-container">
@@ -540,17 +465,6 @@
     <i class="fab fa-whatsapp"></i>
 </a>
 
-<div id="loginModal" class="login-modal">
-    <div class="login-box">
-        <h2><i class="fas fa-user-plus"></i> تسجيل دخول العميل</h2>
-        <input type="email" id="loginEmail" placeholder="البريد الإلكتروني (example@email.com)">
-        <input type="text" id="loginName" placeholder="الاسم الكامل">
-        <div id="loginError" class="login-error"></div>
-        <button onclick="loginCustomer()">تسجيل دخول / إنشاء حساب</button>
-        <button onclick="closeLoginModal()" style="background:#444; color:white;">إلغاء</button>
-    </div>
-</div>
-
 <div id="termsModal" class="terms-modal">
     <div class="terms-box">
         <h3><i class="fas fa-file-contract"></i> شروط وأحكام الشراء</h3>
@@ -562,7 +476,7 @@
         <div class="terms-item-row"><div class="t-num">6</div><p>xnesto غير مسؤول عن أي حظر أو تعليق لحساب PlayStation بسبب مخالفة شروط سوني.</p></div>
         <div class="terms-item-row"><div class="t-num">7</div><p>وقت التسليم من 5 دقائق إلى 24 ساعة حسب التوفر والوقت.</p></div>
         <div class="terms-checkbox-row" onclick="toggleTermsAccept()"><input type="checkbox" id="termsCheck"><label for="termsCheck">أقر بأنني قرأت وأوافق على جميع الشروط والأحكام أعلاه</label></div>
-        <div class="terms-buttons"><button id="acceptTermsBtn" class="accept-btn" onclick="acceptTerms()">✅ أوافق وأكمل الطلب</button><button id="declineTermsBtn" class="decline-btn" onclick="closeTermsModal()">❌ إغلاق</button></div>
+        <div class="terms-buttons"><button id="acceptTermsBtn" class="accept-btn" onclick="acceptTerms()">✅ أوافق وأكمل الطلب</button><button id="declineTermsBtn" class="decline-btn" onclick="closeTermsModal()">❌ إلغاء</button></div>
     </div>
 </div>
 
@@ -571,13 +485,11 @@
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     const productsRef = database.ref('products');
-    const customersRef = database.ref('customers');
     const categoriesRef = database.ref('categories');
     
     let products = [];
     let categories = [];
     let categoryNames = {};
-    let currentUser = null;
     let currentLang = "ar";
     let currentCurrency = "OMR";
     let currentPage = 1;
@@ -592,7 +504,7 @@
     const exchangeRates = { OMR: 1, SAR: 9.75, AED: 9.55, KWD: 0.79, BHD: 0.98, QAR: 9.46, USD: 2.6, EUR: 2.4 };
     const currencySymbols = { OMR: "ر.ع", SAR: "ر.س", AED: "د.إ", KWD: "د.ك", BHD: "د.ب", QAR: "ر.ق", USD: "$", EUR: "€" };
     
-    // ==================== 50 لعبة كاملة (محفوظة للاستخدام الافتراضي) ====================
+    // ==================== 50 لعبة كاملة ====================
     const allGames = [
         { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, stock: 50, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English", category: "games" },
         { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English", category: "games" },
@@ -740,7 +652,7 @@
                 `<div class="product-image" style="background-image: url('${p.image}'); background-size: cover; background-position: center;"><div class="product-badge">${categoryName}</div></div>` : 
                 `<div class="product-image" style="background: linear-gradient(135deg, #1e3a5f, #0f2a4a); display: flex; align-items: center; justify-content: center;"><div style="font-size: 2.5rem;">${p.category === 'games' ? '🎮' : '💳'}</div><div class="product-badge">${categoryName}</div></div>`;
             
-            return `<div class="product-card">${hasDiscount ? `<div class="discount-badge">🔥 -${discountPercent}%</div>` : ''}${imageHtml}<div class="card-info"><div class="product-title">${escapeHtml(name)}</div><div class="product-details">${escapeHtml(desc || '')}</div><div class="price-container">${hasDiscount ? `<span class="old-price">${oldPrice}</span>` : ''}<span class="price">${price}</span></div>${!isOutOfStock ? `<button class="btn-wa" onclick="requestPurchase(${p.id}, '${escapeHtml(name)}', ${p.priceOMR})"><i class="fab fa-whatsapp"></i> ${currentLang === 'ar' ? 'اطلب الآن' : 'Order Now'}</button>` : `<button class="btn-wa" disabled style="background:#888;"><i class="fas fa-times-circle"></i> ${currentLang === 'ar' ? 'نفذت الكمية' : 'Out of Stock'}</button>`}</div></div>`;
+            return `<div class="product-card">${hasDiscount ? `<div class="discount-badge">🔥 -${discountPercent}%</div>` : ''}${imageHtml}<div class="card-info"><div class="product-title">${escapeHtml(name)}</div><div class="product-details">${escapeHtml(desc || '')}</div><div class="price-container">${hasDiscount ? `<span class="old-price">${oldPrice}</span>` : ''}<span class="price">${price}</span></div>${!isOutOfStock ? `<button class="btn-wa" onclick="requestPurchase(${p.id}, '${escapeHtml(name)}', ${p.priceOMR})"><i class="fab fa-whatsapp"></i> ${currentLang === 'ar' ? 'اطلب الآن' : 'Order Now'}</button>` : `<button class="btn-wa disabled" disabled><i class="fas fa-times-circle"></i> ${currentLang === 'ar' ? 'نفذت الكمية' : 'Out of Stock'}</button>`}</div></div>`;
         }).join('');
         
         const pagContainer = document.getElementById('pagination');
@@ -756,81 +668,8 @@
     function goToPage(page) { currentPage = page; renderProducts(); window.scrollTo({ top: 400, behavior: 'smooth' }); }
     function setCategory(cat) { currentCategory = cat; currentPage = 1; renderTabs(); renderProducts(); }
     
-    function validateEmail(email) {
-        const re = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
-        return re.test(email);
-    }
-    
-    function showLoginModal() {
-        document.getElementById('loginModal').style.display = 'flex';
-        document.getElementById('loginError').innerHTML = '';
-    }
-    
-    function closeLoginModal() {
-        document.getElementById('loginModal').style.display = 'none';
-    }
-    
-    async function loginCustomer() {
-        const email = document.getElementById('loginEmail').value.trim();
-        const name = document.getElementById('loginName').value.trim();
-        const errorDiv = document.getElementById('loginError');
-        
-        if (!email || !name) {
-            errorDiv.innerHTML = '⚠️ الرجاء إدخال البريد الإلكتروني والاسم';
-            return;
-        }
-        if (!validateEmail(email)) {
-            errorDiv.innerHTML = '⚠️ البريد الإلكتروني غير صحيح (example@domain.com)';
-            return;
-        }
-        
-        const snapshot = await customersRef.orderByChild('email').equalTo(email).once('value');
-        if (snapshot.exists()) {
-            const data = snapshot.val();
-            const customer = Object.values(data)[0];
-            if (customer.name !== name) {
-                errorDiv.innerHTML = '⚠️ الاسم غير مطابق للبريد المسجل';
-                return;
-            }
-            currentUser = { email, name };
-        } else {
-            currentUser = { email, name };
-            await customersRef.push({ email, name, joinedAt: Date.now() });
-        }
-        localStorage.setItem('xnesto_customer', JSON.stringify({ email, name }));
-        updateUserUI();
-        closeLoginModal();
-        alert(`مرحباً ${name}! تم تسجيل الدخول بنجاح 🎉`);
-    }
-    
-    function logoutCustomer() {
-        currentUser = null;
-        localStorage.removeItem('xnesto_customer');
-        updateUserUI();
-        alert('تم تسجيل الخروج بنجاح');
-    }
-    
-    function updateUserUI() {
-        const authDiv = document.getElementById('authButtons');
-        if (currentUser) {
-            authDiv.innerHTML = `
-                <div class="user-info">
-                    <i class="fas fa-user-check"></i>
-                    <span>${currentUser.name.split(' ')[0]}</span>
-                    <button class="logout-btn-small" onclick="logoutCustomer()">خروج</button>
-                </div>
-            `;
-        } else {
-            authDiv.innerHTML = `<button class="customer-btn" onclick="showLoginModal()"><i class="fas fa-user"></i> <span>تسجيل دخول</span></button>`;
-        }
-    }
-    
+    // ==================== طلب المنتج مع الشروط فقط ====================
     function requestPurchase(id, name, priceOMR) {
-        if (!currentUser) {
-            alert('الرجاء تسجيل الدخول أولاً');
-            showLoginModal();
-            return;
-        }
         pendingProductData = { id, name, priceOMR };
         document.getElementById('termsCheck').checked = false;
         document.getElementById('acceptTermsBtn').classList.remove('enabled');
@@ -859,7 +698,7 @@
         const { name, priceOMR } = pendingProductData;
         const sym = currencySymbols[currentCurrency];
         const convertedPrice = (priceOMR * exchangeRates[currentCurrency]).toFixed(2);
-        const message = `🛒 طلب شراء من xnesto\n━━━━━━━━━━━━━━━━━━━━\n🎮 المنتج: ${name}\n💰 السعر: ${sym} ${convertedPrice}\n👤 العميل: ${currentUser.name}\n📧 البريد: ${currentUser.email}\n━━━━━━━━━━━━━━━━━━━━\n📞 يرجى تأكيد الطلب وإرسال طريقة الدفع.\n\n✅ أوافق على شروط وأحكام المتجر.`;
+        const message = `🛒 طلب شراء من xnesto\n━━━━━━━━━━━━━━━━━━━━\n🎮 المنتج: ${name}\n💰 السعر: ${sym} ${convertedPrice}\n━━━━━━━━━━━━━━━━━━━━\n📞 يرجى تأكيد الطلب وإرسال طريقة الدفع.\n\n✅ أوافق على شروط وأحكام المتجر.`;
         window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
         closeTermsModal();
     }
@@ -903,11 +742,7 @@
     }
     const savedView = localStorage.getItem('xnesto_view') || 'mobile'; 
     setView(savedView);
-    const savedCustomer = localStorage.getItem('xnesto_customer'); 
-    if (savedCustomer) { 
-        currentUser = JSON.parse(savedCustomer); 
-        updateUserUI(); 
-    }
+    
     document.getElementById('instagramText').innerHTML = `<a href="https://instagram.com/${INSTA_USERNAME}" target="_blank" style="color:#ffaa66;text-decoration:none;">${INSTA_USERNAME}</a>`;
     document.getElementById('whatsappText').innerHTML = `<a href="https://wa.me/${WA_NUMBER}" target="_blank" style="color:#ffaa66;text-decoration:none;">+${WA_NUMBER}</a>`;
     
@@ -917,9 +752,6 @@
     window.closeTermsModal = closeTermsModal; 
     window.acceptTerms = acceptTerms; 
     window.requestPurchase = requestPurchase;
-    window.showLoginModal = showLoginModal; 
-    window.closeLoginModal = closeLoginModal; 
-    window.loginCustomer = loginCustomer;
     window.setLang = setLang;
     window.setCurrency = setCurrency;
     window.setCategory = setCategory;

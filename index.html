@@ -17,7 +17,6 @@
             min-height: 100vh;
         }
         
-        /* عرض المنتجات حسب الجهاز */
         @media (max-width: 640px) {
             body { padding: 0.5rem; }
             .products-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 0.8rem; }
@@ -271,7 +270,6 @@
             z-index: 999;
         }
         
-        /* نافذة الشروط الجديدة */
         .modal {
             display: none;
             position: fixed;
@@ -456,7 +454,7 @@
     <i class="fab fa-whatsapp"></i>
 </a>
 
-<!-- نافذة الشروط الجديدة -->
+<!-- نافذة الشروط -->
 <div id="termsModal" class="modal" style="display:none;">
     <div class="modal-content">
         <h3>📋 شروط الشراء والاستخدام</h3>
@@ -483,14 +481,10 @@
 
 <script>
     const firebaseConfig = { databaseURL: "https://xnesto-645bf-default-rtdb.asia-southeast1.firebasedatabase.app/" };
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-    const productsRef = database.ref('products');
-    const categoriesRef = database.ref('categories');
     
     let products = [];
-    let categories = [];
-    let categoryNames = {};
+    let categories = ["games", "giftcards"];
+    let categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
     let currentLang = "ar";
     let currentCurrency = "OMR";
     let currentPage = 1;
@@ -505,7 +499,7 @@
     const exchangeRates = { OMR: 1, SAR: 9.75, AED: 9.55, KWD: 0.79, BHD: 0.98, QAR: 9.46, USD: 2.6, EUR: 2.4 };
     const currencySymbols = { OMR: "ر.ع", SAR: "ر.س", AED: "د.إ", KWD: "د.ك", BHD: "د.ب", QAR: "ر.ق", USD: "$", EUR: "€" };
     
-    // ==================== 50 لعبة كاملة ====================
+    // ==================== المنتجات الافتراضية (تظهر فوراً) ====================
     const allGames = [
         { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, stock: 50, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English", category: "games" },
         { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English", category: "games" },
@@ -535,63 +529,68 @@
     
     const allDefaultProducts = [...allGames, ...giftCards];
     
-    // ==================== تحميل المنتجات ====================
-    let firebaseLoaded = false;
-    
+    // ==================== عرض المنتجات فوراً ====================
     function displayProductsImmediately() {
-        const container = document.getElementById('productsContainer');
-        if (container) {
-            container.innerHTML = '<div style="text-align:center; padding:2rem;"><i class="fas fa-spinner fa-spin"></i> جاري تحميل المنتجات...</div>';
-        }
+        // عرض المنتجات المحلية فوراً (بدون انتظار Firebase)
+        products = JSON.parse(JSON.stringify(allDefaultProducts));
+        products.forEach((p, idx) => { p.order = idx; });
+        renderTabs();
+        renderProducts();
         
-        productsRef.once('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data && Array.isArray(data) && data.length > 0) {
-                products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
-            } else {
-                products = JSON.parse(JSON.stringify(allDefaultProducts));
-                products.forEach((p, idx) => { p.order = idx; });
+        // ثم محاولة تحميل البيانات من Firebase في الخلفية
+        setTimeout(() => {
+            try {
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                const database = firebase.database();
+                const productsRef = database.ref('products');
+                const categoriesRef = database.ref('categories');
+                
+                // تحميل التصنيفات
+                categoriesRef.once('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if (data && data.categories && data.names) {
+                        categories = data.categories;
+                        categoryNames = data.names;
+                        renderTabs();
+                    }
+                });
+                
+                // تحميل المنتجات وتحديثها إذا وجدت
+                productsRef.once('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if (data && Array.isArray(data) && data.length > 0) {
+                        products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
+                        renderProducts();
+                        renderTabs();
+                        console.log('✅ تم تحديث المنتجات من Firebase');
+                    }
+                });
+                
+                // الاستماع للتغييرات المستقبلية
+                productsRef.on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if (data && Array.isArray(data) && data.length > 0) {
+                        products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
+                        renderProducts();
+                    }
+                });
+                
+                categoriesRef.on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if (data && data.categories && data.names) {
+                        categories = data.categories;
+                        categoryNames = data.names;
+                        renderTabs();
+                    }
+                });
+                
+            } catch(e) {
+                console.log("Firebase error:", e);
             }
-            renderProducts();
-            firebaseLoaded = true;
-        }).catch(() => {
-            products = JSON.parse(JSON.stringify(allDefaultProducts));
-            renderProducts();
-        });
-        
-        categoriesRef.once('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data && data.categories && data.names) {
-                categories = data.categories;
-                categoryNames = data.names;
-            } else {
-                categories = ["games", "giftcards"];
-                categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
-            }
-            renderTabs();
-        }).catch(() => {
-            categories = ["games", "giftcards"];
-            categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
-            renderTabs();
-        });
+        }, 50);
     }
-    
-    productsRef.on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data && Array.isArray(data) && data.length > 0 && firebaseLoaded) {
-            products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
-            renderProducts();
-        }
-    });
-    
-    categoriesRef.on('value', (snapshot) => {
-        const data = snapshot.val();
-        if (data && data.categories && data.names) {
-            categories = data.categories;
-            categoryNames = data.names;
-            if (firebaseLoaded) renderTabs();
-        }
-    });
     
     function renderTabs() {
         const container = document.getElementById('tabsContainer');
@@ -650,7 +649,7 @@
             return `<div class="product-card">${hasDiscount ? `<div class="discount-badge">🔥 -${discountPercent}%</div>` : ''}${imageHtml}<div class="card-info"><div class="product-title">${escapeHtml(name)}</div><div class="product-details">${escapeHtml(desc || '')}</div><div class="price-container">${hasDiscount ? `<span class="old-price">${oldPrice}</span>` : ''}<span class="price">${price}</span></div>${!isOutOfStock ? `<button class="btn-wa" data-id="${p.id}" data-name="${escapeHtml(name)}" data-price="${p.priceOMR}"><i class="fab fa-whatsapp"></i> ${currentLang === 'ar' ? 'اطلب الآن' : 'Order Now'}</button>` : `<button class="btn-wa disabled" disabled><i class="fas fa-times-circle"></i> ${currentLang === 'ar' ? 'نفذت الكمية' : 'Out of Stock'}</button>`}</div></div>`;
         }).join('');
         
-        // إضافة حدث النقر للأزرار (معالجة موحدة)
+        // إضافة حدث النقر للأزرار
         document.querySelectorAll('.btn-wa:not(.disabled)').forEach(btn => {
             btn.onclick = (e) => {
                 e.preventDefault();
@@ -744,6 +743,7 @@
     document.getElementById('instagramText').innerHTML = `<a href="https://instagram.com/${INSTA_USERNAME}" target="_blank" style="color:#ffaa66;text-decoration:none;">${INSTA_USERNAME}</a>`;
     document.getElementById('whatsappText').innerHTML = `<a href="https://wa.me/${WA_NUMBER}" target="_blank" style="color:#ffaa66;text-decoration:none;">+${WA_NUMBER}</a>`;
     
+    // عرض المنتجات فوراً
     displayProductsImmediately();
     
     window.toggleMode = toggleMode;

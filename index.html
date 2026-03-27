@@ -19,45 +19,44 @@
             font-weight: 400;
             line-height: 1.5;
             text-rendering: optimizeLegibility;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
         
+        /* استعلامات الوسائط - عرض المنتجات */
         @media (max-width: 640px) {
             body { padding: 8px; }
-            .header { padding: 1rem 0.8rem; border-radius: 1.2rem; margin-bottom: 12px; }
-            .main-logo { font-size: 1.8rem; letter-spacing: 2px; }
-            .controller-icon { font-size: 1.8rem; }
-            .quote-badge { font-size: 0.6rem; padding: 4px 10px; }
-            .stats-badge { gap: 10px; padding: 4px 12px; }
-            .stat-item { font-size: 0.6rem; }
-            .control-bar { padding: 8px 12px; border-radius: 40px; gap: 8px; }
-            .lang-btn { padding: 4px 12px; font-size: 0.7rem; }
-            #currencySelect { padding: 4px 8px; font-size: 0.7rem; }
-            .search-bar-container { padding: 6px 12px; margin-bottom: 12px; }
-            .search-box { padding: 4px 12px; }
-            #searchInput { font-size: 0.8rem; padding: 8px 0; }
-            .tabs-container { gap: 8px; margin-bottom: 16px; }
-            .tab-btn { padding: 6px 16px; font-size: 0.75rem; }
-            /* عرض 3 منتجات في الجوال */
-            .products-grid { gap: 10px; grid-template-columns: repeat(3, 1fr); }
-            .product-image { height: 140px; }
-            .card-info { padding: 8px; }
-            .product-title { font-size: 0.75rem; }
-            .product-details { font-size: 0.55rem; margin: 4px 0; }
-            .price { font-size: 0.85rem; }
-            .old-price { font-size: 0.6rem; }
-            .btn-wa { padding: 6px; font-size: 0.65rem; }
-            .best-sellers { padding: 12px; margin-bottom: 16px; border-radius: 1rem; }
-            .best-sellers-grid { gap: 8px; grid-template-columns: repeat(2, 1fr); }
-            .best-seller-card img { width: 55px; height: 55px; }
-            .footer { padding: 12px; margin-top: 16px; font-size: 0.65rem; }
-            .whatsapp-float { width: 45px; height: 45px; font-size: 1.5rem; line-height: 45px; bottom: 15px; left: 15px; }
+            .products-grid { 
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            .product-image { 
+                height: 130px;
+                background-size: contain !important;
+                background-repeat: no-repeat !important;
+                background-position: center !important;
+            }
+            .product-title { font-size: 0.7rem; }
+            .product-details { font-size: 0.55rem; }
+            .price { font-size: 0.8rem; }
+            .old-price { font-size: 0.55rem; }
+            .btn-wa { font-size: 0.6rem; padding: 5px; }
+            .card-info { padding: 6px; }
         }
         
-        /* عرض 4 منتجات في الكمبيوتر */
-        @media (min-width: 641px) {
-            .products-grid { grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .products-grid { 
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+        }
+        
+        @media (min-width: 1025px) {
+            .products-grid { 
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
         }
         
         .header {
@@ -188,20 +187,39 @@
         .tab-btn { background: #1e1e3a; border: 1px solid rgba(255,170,68,0.3); padding: 8px 18px; border-radius: 40px; cursor: pointer; font-weight: 700; transition: 0.2s; font-size: 0.8rem; color: #f0f0ff; }
         .tab-btn.active { background: #ffaa44; color: #0a0a1a; border-color: #ffaa44; }
         
-        .products-grid { display: grid; gap: 12px; max-width: 1400px; margin: 0 auto; }
-        .product-card { background: rgba(15, 15, 42, 0.7); border-radius: 1rem; border: 1px solid rgba(255, 170, 68, 0.15); overflow: hidden; transition: all 0.3s; position: relative; }
+        .products-grid { 
+            display: grid;
+            max-width: 1400px; 
+            margin: 0 auto; 
+        }
+        .product-card { 
+            background: rgba(15, 15, 42, 0.7); 
+            border-radius: 1rem; 
+            border: 1px solid rgba(255, 170, 68, 0.15); 
+            overflow: hidden; 
+            transition: all 0.3s; 
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
         .product-card:hover { transform: translateY(-5px); border-color: #ffaa44; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
         .product-card.out-of-stock { opacity: 0.7; filter: grayscale(0.3); }
-        .product-image { height: 160px; background-size: cover; background-position: center; position: relative; }
+        .product-image { 
+            height: 160px; 
+            background-size: cover; 
+            background-position: center; 
+            position: relative;
+            background-repeat: no-repeat;
+        }
         .discount-badge { position: absolute; top: 8px; left: 8px; background: #ff4444; color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.6rem; font-weight: bold; z-index: 10; }
         .out-of-stock-badge { position: absolute; top: 8px; right: 8px; background: #ff4444; color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.6rem; font-weight: bold; z-index: 10; }
-        .card-info { padding: 10px; }
-        .product-title { font-size: 0.95rem; font-weight: 800; margin-bottom: 4px; text-align: center; letter-spacing: 0.3px; }
-        .product-details { font-size: 0.65rem; color: #b9c5f0; text-align: center; margin: 6px 0; font-weight: 500; }
+        .card-info { padding: 10px; flex: 1; display: flex; flex-direction: column; }
+        .product-title { font-size: 0.9rem; font-weight: 800; margin-bottom: 4px; text-align: center; }
+        .product-details { font-size: 0.65rem; color: #b9c5f0; text-align: center; margin: 6px 0; }
         .price-container { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 6px 0; flex-wrap: wrap; }
-        .old-price { font-size: 0.75rem; color: #888; text-decoration: line-through; }
-        .price { font-size: 1.1rem; font-weight: 900; color: #ffaa44; letter-spacing: 0.5px; }
-        .btn-wa { width: 100%; background: #25D366; border: none; padding: 8px; border-radius: 40px; color: #000; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 0.75rem; transition: all 0.2s; letter-spacing: 0.3px; }
+        .old-price { font-size: 0.7rem; color: #888; text-decoration: line-through; }
+        .price { font-size: 1rem; font-weight: 900; color: #ffaa44; }
+        .btn-wa { width: 100%; background: #25D366; border: none; padding: 8px; border-radius: 40px; color: #000; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 0.7rem; transition: all 0.2s; margin-top: auto; }
         .btn-wa:hover { background: #20b859; transform: scale(1.02); }
         .btn-wa.disabled { background: #888; cursor: not-allowed; opacity: 0.6; pointer-events: none; }
         
@@ -284,33 +302,25 @@
         .device-btn.active { background: #ffaa44; color: #0a0a1a; border-color: #ffaa44; }
         .mode-toggle-btn { background: transparent; border: 1px solid rgba(255,170,68,0.4); color: #ffaa66; padding: 4px 12px; border-radius: 20px; cursor: pointer; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; gap: 4px; }
         
-        /* وضع النهاري - تحسين الخطوط */
-        body.light-mode { background: #f0f4ff !important; color: #1a1a2e !important; font-weight: 500; }
+        body.light-mode { background: #f0f4ff !important; color: #1a1a2e !important; }
         body.light-mode .header { background: linear-gradient(135deg, #1a3a7a, #0d2a6e) !important; }
         body.light-mode .control-bar { background: rgba(255,255,255,0.95) !important; }
         body.light-mode .product-card { background: #ffffff !important; }
-        body.light-mode .product-title { font-weight: 800; color: #1a1a2e; }
-        body.light-mode .price { font-weight: 900; color: #ff8844; }
-        body.light-mode .product-details { font-weight: 500; color: #4a4a6a; }
-        body.light-mode .btn-wa { font-weight: 800; background: #25D366; color: #000; }
-        body.light-mode .tab-btn { font-weight: 700; color: #1a1a2e; }
-        body.light-mode .page-btn { font-weight: 700; }
-        body.light-mode .quote-badge { font-weight: 600; background: rgba(255,255,255,0.8); color: #1a1a2e; }
-        body.light-mode .stat-item { font-weight: 600; }
-        body.light-mode .footer { background: #1a3a7a !important; }
-        body.light-mode .device-bar { background: #1a3a7a !important; }
+        body.light-mode .product-title { color: #1a1a2e; }
+        body.light-mode .price { color: #ff8844; }
+        body.light-mode .product-details { color: #4a4a6a; }
+        body.light-mode .btn-wa { background: #25D366; color: #000; }
+        body.light-mode .tab-btn { color: #1a1a2e; }
         body.light-mode .best-seller-card { background: rgba(255,255,255,0.9); color: #1a1a2e; }
-        body.light-mode .best-seller-card .name { color: #1a1a2e; }
         body.light-mode .terms-box { background: #ffffff; color: #1a1a2e; }
         body.light-mode .terms-item-row p { color: #333; }
-        body.light-mode .search-results-count { background: #ddd; color: #333; }
     </style>
 </head>
 <body>
 
 <div class="device-bar">
-    <button class="device-btn active" onclick="setView('mobile')"><i class="fas fa-mobile-alt"></i> جوال</button>
-    <button class="device-btn" onclick="setView('desktop')"><i class="fas fa-desktop"></i> كمبيوتر</button>
+    <button class="device-btn active" onclick="setView('mobile')"><i class="fas fa-mobile-alt"></i> <span class="view-text-mobile">جوال</span></button>
+    <button class="device-btn" onclick="setView('desktop')"><i class="fas fa-desktop"></i> <span class="view-text-desktop">كمبيوتر</span></button>
     <button class="mode-toggle-btn" onclick="toggleMode()">🌙 ليلي</button>
 </div>
 
@@ -322,16 +332,16 @@
     </div>
     <div class="controller-icon"><i class="fas fa-gamepad"></i></div>
     <div class="welcome-quotes">
-        <div class="quote-badge"><i class="fas fa-tag"></i> أفضل الأسعار</div>
-        <div class="quote-badge"><i class="fas fa-bolt"></i> توصيل فوري</div>
-        <div class="quote-badge"><i class="fas fa-headset"></i> دعم 24/7</div>
-        <div class="quote-badge"><i class="fas fa-shield-alt"></i> دفع آمن</div>
+        <div class="quote-badge" id="quote-best-price"><i class="fas fa-tag"></i> أفضل الأسعار</div>
+        <div class="quote-badge" id="quote-fast-delivery"><i class="fas fa-bolt"></i> توصيل فوري</div>
+        <div class="quote-badge" id="quote-support"><i class="fas fa-headset"></i> دعم 24/7</div>
+        <div class="quote-badge" id="quote-secure"><i class="fas fa-shield-alt"></i> دفع آمن</div>
     </div>
     <div class="stats-badge">
-        <div class="stat-item"><i class="fas fa-gamepad"></i> <span class="stat-number">500+</span></div>
-        <div class="stat-item"><i class="fas fa-users"></i> <span class="stat-number">10K+</span></div>
-        <div class="stat-item"><i class="fas fa-star"></i> <span class="stat-number">4.9</span></div>
-        <div class="stat-item"><i class="fas fa-clock"></i> <span class="stat-number">24/7</span></div>
+        <div class="stat-item"><i class="fas fa-gamepad"></i> <span class="stat-number">500+</span> <span id="stat-products-label">منتج</span></div>
+        <div class="stat-item"><i class="fas fa-users"></i> <span class="stat-number">10K+</span> <span id="stat-customers-label">عميل</span></div>
+        <div class="stat-item"><i class="fas fa-star"></i> <span class="stat-number">4.9</span> <span id="stat-rating-label">تقييم</span></div>
+        <div class="stat-item"><i class="fas fa-clock"></i> <span class="stat-number">24/7</span> <span id="stat-support-label">دعم</span></div>
     </div>
 </div>
 
@@ -365,7 +375,7 @@
 
 <div class="section-divider">
     <div class="divider-line"></div>
-    <div class="divider-badge">🔥 الأكثر مبيعاً 🔥</div>
+    <div class="divider-badge" id="bestseller-title">🔥 الأكثر مبيعاً 🔥</div>
     <div class="divider-line"></div>
 </div>
 
@@ -375,7 +385,7 @@
 
 <div class="section-divider">
     <div class="divider-line"></div>
-    <div class="divider-badge">🎮 جميع المنتجات 🎮</div>
+    <div class="divider-badge" id="all-products-title">🎮 جميع المنتجات 🎮</div>
     <div class="divider-line"></div>
 </div>
 
@@ -388,41 +398,158 @@
         <i class="fab fa-instagram"></i> <span id="instagramText">xnesto_store</span>
         <i class="fab fa-whatsapp"></i> <span id="whatsappText">+96879977100</span>
     </div>
-    <p>© 2025 xnesto - جميع الحقوق محفوظة</p>
+    <p id="copyright">© 2025 xnesto - جميع الحقوق محفوظة</p>
 </div>
 
 <a href="https://wa.me/96879977100" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 <div id="termsModal" class="terms-modal">
     <div class="terms-box">
-        <h3><i class="fas fa-file-contract"></i> شروط الشراء والاستخدام</h3>
-        <p style="font-size: 0.8rem; color: #ffaa44; margin-bottom: 10px; font-weight: bold;">يرجى قراءة الشروط بعناية قبل الشراء:</p>
-        <div class="terms-item-row success"><div class="t-num">✓</div><p>الحساب نظيف 100% — يحتوي على اللعبة المطلوبة فقط.</p></div>
-        <div class="terms-section-title">📖 طريقة الاستخدام:</div>
-        <div class="terms-item-row"><div class="t-num">1</div><p>سجل الدخول بالحساب على جهازك.</p></div>
-        <div class="terms-item-row"><div class="t-num">2</div><p>اذهب إلى Library ← نزّل اللعبة.</p></div>
-        <div class="terms-item-row"><div class="t-num">3</div><p>بعد انتهاء التنزيل، سجل الخروج فوراً والعب من حسابك الأساسي.</p></div>
-        <div class="terms-section-title">🚫 ممنوع تماماً:</div>
-        <div class="terms-item-row warning"><div class="t-num">!</div><p>تغيير كلمة السر أو ربط بطاقة بنكية.</p></div>
-        <div class="terms-item-row warning"><div class="t-num">!</div><p>الدخول من أكثر من جهاز أو مشاركة الحساب.</p></div>
-        <div class="terms-section-title">🛡️ الضمان:</div>
-        <div class="terms-item-row success"><div class="t-num">7</div><p>ضمان لمدة 7 أيام. المنتجات الرقمية لا تسترد بعد التسليم.</p></div>
-        <div class="terms-item-row warning"><div class="t-num">!</div><p>xnesto غير مسؤول عن مخالفة شروط سوني.</p></div>
+        <h3 id="terms-title"><i class="fas fa-file-contract"></i> شروط الشراء والاستخدام</h3>
+        <p id="terms-note" style="font-size: 0.8rem; color: #ffaa44; margin-bottom: 10px; font-weight: bold;">يرجى قراءة الشروط بعناية قبل الشراء:</p>
+        <div class="terms-item-row success"><div class="t-num">✓</div><p id="terms-clean">الحساب نظيف 100% — يحتوي على اللعبة المطلوبة فقط.</p></div>
+        <div class="terms-section-title" id="terms-how-title">📖 طريقة الاستخدام:</div>
+        <div class="terms-item-row"><div class="t-num">1</div><p id="terms-step1">سجل الدخول بالحساب على جهازك.</p></div>
+        <div class="terms-item-row"><div class="t-num">2</div><p id="terms-step2">اذهب إلى Library ← نزّل اللعبة.</p></div>
+        <div class="terms-item-row"><div class="t-num">3</div><p id="terms-step3">بعد انتهاء التنزيل، سجل الخروج فوراً والعب من حسابك الأساسي.</p></div>
+        <div class="terms-section-title" id="terms-forbidden-title">🚫 ممنوع تماماً:</div>
+        <div class="terms-item-row warning"><div class="t-num">!</div><p id="terms-forbidden1">تغيير كلمة السر أو ربط بطاقة بنكية.</p></div>
+        <div class="terms-item-row warning"><div class="t-num">!</div><p id="terms-forbidden2">الدخول من أكثر من جهاز أو مشاركة الحساب.</p></div>
+        <div class="terms-section-title" id="terms-warranty-title">🛡️ الضمان:</div>
+        <div class="terms-item-row success"><div class="t-num">7</div><p id="terms-warranty">ضمان لمدة 7 أيام. المنتجات الرقمية لا تسترد بعد التسليم.</p></div>
+        <div class="terms-item-row warning"><div class="t-num">!</div><p id="terms-responsibility">xnesto غير مسؤول عن مخالفة شروط سوني.</p></div>
         <div class="terms-checkbox-row" id="termsCheckboxRow">
             <input type="checkbox" id="termsCheck">
-            <label>أقر بأنني قرأت وأوافق على جميع الشروط</label>
+            <label id="terms-agree">أقر بأنني قرأت وأوافق على جميع الشروط</label>
         </div>
         <div class="terms-buttons">
-            <button id="acceptTermsBtn" class="accept-btn">✅ أوافق وأكمل الطلب</button>
-            <button id="declineTermsBtn" class="decline-btn">❌ إلغاء</button>
+            <button id="acceptTermsBtn" class="accept-btn" id="terms-accept-btn">✅ أوافق وأكمل الطلب</button>
+            <button id="declineTermsBtn" class="decline-btn" id="terms-cancel-btn">❌ إلغاء</button>
         </div>
     </div>
 </div>
 
 <script>
+    // ==================== بيانات الترجمة ====================
+    const translations = {
+        ar: {
+            // النصوص الثابتة
+            quoteBestPrice: "أفضل الأسعار",
+            quoteFastDelivery: "توصيل فوري",
+            quoteSupport: "دعم 24/7",
+            quoteSecure: "دفع آمن",
+            statProducts: "منتج",
+            statCustomers: "عميل",
+            statRating: "تقييم",
+            statSupport: "دعم",
+            bestsellerTitle: "🔥 الأكثر مبيعاً 🔥",
+            allProductsTitle: "🎮 جميع المنتجات 🎮",
+            searchPlaceholder: "🔍 ابحث عن منتج...",
+            copyright: "© 2025 xnesto - جميع الحقوق محفوظة",
+            viewMobile: "جوال",
+            viewDesktop: "كمبيوتر",
+            orderNow: "اطلب الآن",
+            outOfStock: "نفذت الكمية",
+            // شروط الشراء
+            termsTitle: "شروط الشراء والاستخدام",
+            termsNote: "يرجى قراءة الشروط بعناية قبل الشراء:",
+            termsClean: "الحساب نظيف 100% — يحتوي على اللعبة المطلوبة فقط.",
+            termsHowTitle: "📖 طريقة الاستخدام:",
+            termsStep1: "سجل الدخول بالحساب على جهازك.",
+            termsStep2: "اذهب إلى Library ← نزّل اللعبة.",
+            termsStep3: "بعد انتهاء التنزيل، سجل الخروج فوراً والعب من حسابك الأساسي.",
+            termsForbiddenTitle: "🚫 ممنوع تماماً:",
+            termsForbidden1: "تغيير كلمة السر أو ربط بطاقة بنكية.",
+            termsForbidden2: "الدخول من أكثر من جهاز أو مشاركة الحساب.",
+            termsWarrantyTitle: "🛡️ الضمان:",
+            termsWarranty: "ضمان لمدة 7 أيام. المنتجات الرقمية لا تسترد بعد التسليم.",
+            termsResponsibility: "xnesto غير مسؤول عن مخالفة شروط سوني.",
+            termsAgree: "أقر بأنني قرأت وأوافق على جميع الشروط",
+            acceptBtn: "✅ أوافق وأكمل الطلب",
+            cancelBtn: "❌ إلغاء"
+        },
+        en: {
+            quoteBestPrice: "Best Prices",
+            quoteFastDelivery: "Fast Delivery",
+            quoteSupport: "24/7 Support",
+            quoteSecure: "Secure Payment",
+            statProducts: "Products",
+            statCustomers: "Customers",
+            statRating: "Rating",
+            statSupport: "Support",
+            bestsellerTitle: "🔥 Best Sellers 🔥",
+            allProductsTitle: "🎮 All Products 🎮",
+            searchPlaceholder: "🔍 Search products...",
+            copyright: "© 2025 xnesto - All Rights Reserved",
+            viewMobile: "Mobile",
+            viewDesktop: "Desktop",
+            orderNow: "Order Now",
+            outOfStock: "Out of Stock",
+            termsTitle: "Purchase Terms & Conditions",
+            termsNote: "Please read carefully before purchasing:",
+            termsClean: "100% clean account — contains only the requested game.",
+            termsHowTitle: "📖 How to use:",
+            termsStep1: "Log in with the account on your device.",
+            termsStep2: "Go to Library ← Download the game.",
+            termsStep3: "After download, log out immediately and play from your main account.",
+            termsForbiddenTitle: "🚫 Strictly Prohibited:",
+            termsForbidden1: "Changing password or linking a bank card.",
+            termsForbidden2: "Accessing from multiple devices or sharing the account.",
+            termsWarrantyTitle: "🛡️ Warranty:",
+            termsWarranty: "7-day warranty. Digital products are non-refundable after delivery.",
+            termsResponsibility: "xnesto is not responsible for violating Sony's terms.",
+            termsAgree: "I have read and agree to all terms",
+            acceptBtn: "✅ Accept & Complete Order",
+            cancelBtn: "❌ Cancel"
+        }
+    };
+    
     // ==================== دوال الشروط والطلب ====================
     let pendingOrderProduct = null;
     const WA_NUMBER = "96879977100";
+    
+    function updateUILanguage(lang) {
+        const t = translations[lang];
+        if (!t) return;
+        
+        // تحديث النصوص الثابتة
+        document.getElementById('quote-best-price').innerHTML = `<i class="fas fa-tag"></i> ${t.quoteBestPrice}`;
+        document.getElementById('quote-fast-delivery').innerHTML = `<i class="fas fa-bolt"></i> ${t.quoteFastDelivery}`;
+        document.getElementById('quote-support').innerHTML = `<i class="fas fa-headset"></i> ${t.quoteSupport}`;
+        document.getElementById('quote-secure').innerHTML = `<i class="fas fa-shield-alt"></i> ${t.quoteSecure}`;
+        document.getElementById('stat-products-label').innerText = t.statProducts;
+        document.getElementById('stat-customers-label').innerText = t.statCustomers;
+        document.getElementById('stat-rating-label').innerText = t.statRating;
+        document.getElementById('stat-support-label').innerText = t.statSupport;
+        document.getElementById('bestseller-title').innerHTML = t.bestsellerTitle;
+        document.getElementById('all-products-title').innerHTML = t.allProductsTitle;
+        document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+        document.getElementById('copyright').innerHTML = t.copyright;
+        
+        // تحديث أزرار العرض
+        const mobileBtnText = document.querySelector('.view-text-mobile');
+        const desktopBtnText = document.querySelector('.view-text-desktop');
+        if (mobileBtnText) mobileBtnText.innerText = t.viewMobile;
+        if (desktopBtnText) desktopBtnText.innerText = t.viewDesktop;
+        
+        // تحديث شروط الشراء
+        document.getElementById('terms-title').innerHTML = `<i class="fas fa-file-contract"></i> ${t.termsTitle}`;
+        document.getElementById('terms-note').innerHTML = t.termsNote;
+        document.getElementById('terms-clean').innerHTML = t.termsClean;
+        document.getElementById('terms-how-title').innerHTML = t.termsHowTitle;
+        document.getElementById('terms-step1').innerHTML = t.termsStep1;
+        document.getElementById('terms-step2').innerHTML = t.termsStep2;
+        document.getElementById('terms-step3').innerHTML = t.termsStep3;
+        document.getElementById('terms-forbidden-title').innerHTML = t.termsForbiddenTitle;
+        document.getElementById('terms-forbidden1').innerHTML = t.termsForbidden1;
+        document.getElementById('terms-forbidden2').innerHTML = t.termsForbidden2;
+        document.getElementById('terms-warranty-title').innerHTML = t.termsWarrantyTitle;
+        document.getElementById('terms-warranty').innerHTML = t.termsWarranty;
+        document.getElementById('terms-responsibility').innerHTML = t.termsResponsibility;
+        document.getElementById('terms-agree').innerHTML = t.termsAgree;
+        document.getElementById('acceptTermsBtn').innerHTML = t.acceptBtn;
+        document.getElementById('declineTermsBtn').innerHTML = t.cancelBtn;
+    }
     
     function toggleTermsAccept() {
         const check = document.getElementById('termsCheck');
@@ -542,29 +669,13 @@
     let searchQuery = "";
     const ITEMS_PER_PAGE = 12;
     
-    // العملات المطلوبة: دول الخليج + دولار أمريكي + يورو
     const exchangeRates = { 
-        OMR: 1,        // ريال عماني (الأساس)
-        SAR: 9.75,     // ريال سعودي
-        AED: 9.55,     // درهم إماراتي
-        KWD: 0.79,     // دينار كويتي
-        BHD: 0.98,     // دينار بحريني
-        QAR: 9.46,     // ريال قطري
-        USD: 2.6,      // دولار أمريكي
-        EUR: 2.4       // يورو
+        OMR: 1, SAR: 9.75, AED: 9.55, KWD: 0.79, BHD: 0.98, QAR: 9.46, USD: 2.6, EUR: 2.4
     };
     const currencySymbols = { 
-        OMR: "ر.ع", 
-        SAR: "ر.س", 
-        AED: "د.إ", 
-        KWD: "د.ك", 
-        BHD: "د.ب", 
-        QAR: "ر.ق", 
-        USD: "$", 
-        EUR: "€" 
+        OMR: "ر.ع", SAR: "ر.س", AED: "د.إ", KWD: "د.ك", BHD: "د.ب", QAR: "ر.ق", USD: "$", EUR: "€" 
     };
     
-    // المنتجات الافتراضية مع بيانات عربي وإنجليزي صحيحة
     const allGames = [
         { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, stock: 50, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي | اليابان", detailsEn: "📦 65GB | 🎮 Arabic/English | Japan", sales: 564, category: "games" },
         { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 تصويب | إنجليزي", detailsEn: "📦 120GB | 🎮 Shooter | English", sales: 464, category: "games" },
@@ -596,7 +707,6 @@
     for (let i = 0; i < giftCards.length; i++) giftCards[i].category = "giftcards";
     const allDefaultProducts = [...allGames, ...giftCards];
     
-    // عرض المنتجات فوراً
     function displayProductsImmediately() {
         products = JSON.parse(JSON.stringify(allDefaultProducts));
         categories = ["games", "giftcards"];
@@ -604,10 +714,10 @@
         renderTabs();
         renderProducts();
         loadBestSellers();
+        updateUILanguage(currentLang);
     }
     
-    // محاولة تحميل البيانات من Firebase في الخلفية
-    function loadFirebaseData() {
+    function initFirebase() {
         try {
             firebase.initializeApp(firebaseConfig);
             const database = firebase.database();
@@ -650,7 +760,7 @@
     function renderTabs() {
         const container = document.getElementById('tabsContainer');
         if (!container) return;
-        const allCats = [{ key: "all", name: "🎮 جميع المنتجات" }, ...categories.map(c => ({ key: c, name: categoryNames[c] || c }))];
+        const allCats = [{ key: "all", name: currentLang === 'ar' ? "🎮 جميع المنتجات" : "🎮 All Products" }, ...categories.map(c => ({ key: c, name: categoryNames[c] || c }))];
         container.innerHTML = allCats.map(cat => `<button class="tab-btn ${currentCategory === cat.key ? 'active' : ''}" onclick="setCategory('${cat.key}')">${cat.name}</button>`).join('');
     }
     
@@ -659,6 +769,8 @@
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active')); 
         const activeBtn = document.querySelector(`.lang-btn[data-lang="${lang}"]`);
         if (activeBtn) activeBtn.classList.add('active');
+        updateUILanguage(lang);
+        renderTabs();
         renderProducts(); 
         loadBestSellers(); 
     }
@@ -706,7 +818,6 @@
         const productPrice = button.getAttribute('data-price');
         
         if (!productId || !productName) {
-            console.error('بيانات المنتج غير مكتملة');
             alert('حدث خطأ في بيانات المنتج');
             return;
         }
@@ -728,15 +839,13 @@
             return; 
         }
         
+        const t = translations[currentLang];
+        const orderText = t?.orderNow || "اطلب الآن";
+        const outOfStockText = t?.outOfStock || "نفذت الكمية";
+        
         container.innerHTML = paginated.map(p => {
-            let productPrice = 0;
-            if (typeof p.priceOMR !== 'undefined' && p.priceOMR !== null) productPrice = p.priceOMR;
-            else if (typeof p.price !== 'undefined' && p.price !== null) productPrice = p.price;
-            else if (typeof p.price_omr !== 'undefined' && p.price_omr !== null) productPrice = p.price_omr;
-            
-            let oldPriceValue = null;
-            if (p.oldPrice) oldPriceValue = p.oldPrice;
-            else if (p.old_price) oldPriceValue = p.old_price;
+            let productPrice = p.priceOMR || p.price || p.price_omr || 0;
+            let oldPriceValue = p.oldPrice || p.old_price || null;
             
             let name = '';
             if (currentLang === 'ar') name = p.nameAr || p.name_ar || p.name || 'منتج';
@@ -758,14 +867,14 @@
             const discount = oldPriceValue ? Math.round((1 - productPrice / oldPriceValue) * 100) : 0;
             
             const orderButton = isOutOfStock 
-                ? `<button class="btn-wa disabled" disabled><i class="fas fa-times-circle"></i> نفذت الكمية</button>`
-                : `<button class="btn-wa" data-id="${productId}" data-name="${escapeHtml(name)}" data-price="${productPrice}"><i class="fab fa-whatsapp"></i> اطلب الآن</button>`;
+                ? `<button class="btn-wa disabled" disabled><i class="fas fa-times-circle"></i> ${outOfStockText}</button>`
+                : `<button class="btn-wa" data-id="${productId}" data-name="${escapeHtml(name)}" data-price="${productPrice}"><i class="fab fa-whatsapp"></i> ${orderText}</button>`;
             
             return `
                 <div class="product-card ${isOutOfStock ? 'out-of-stock' : ''}" id="product-${productId}">
                     ${discount > 0 ? `<div class="discount-badge">-${discount}%</div>` : ''}
-                    ${isOutOfStock ? `<div class="out-of-stock-badge">⚠️ نفذت الكمية</div>` : ''}
-                    <div class="product-image" style="background-image: url('${imageUrl}');"></div>
+                    ${isOutOfStock ? `<div class="out-of-stock-badge">⚠️ ${outOfStockText}</div>` : ''}
+                    <div class="product-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center;"></div>
                     <div class="card-info">
                         <div class="product-title">${escapeHtml(name)}</div>
                         <div class="product-details">${escapeHtml(details)}</div>
@@ -780,7 +889,6 @@
         }).join('');
         
         const allButtons = document.querySelectorAll('.btn-wa:not(.disabled)');
-        
         allButtons.forEach(button => {
             button.removeEventListener('click', handleButtonClick);
             button.addEventListener('click', handleButtonClick);
@@ -810,11 +918,11 @@
             grid.innerHTML = sorted.map((p, index) => {
                 const name = currentLang === 'ar' ? (p.nameAr || p.name_ar || p.name) : (p.nameEn || p.name_en || p.name);
                 return `
-                    <div class="best-seller-card" onclick="document.getElementById('product-${p.id || p.product_id}').scrollIntoView({behavior:'smooth'})">
+                    <div class="best-seller-card" onclick="document.getElementById('product-${p.id || p.product_id}')?.scrollIntoView({behavior:'smooth'})">
                         <div class="best-seller-rank">${index + 1}</div>
                         <img src="${p.image || p.img || 'https://via.placeholder.com/70'}" alt="${escapeHtml(name)}">
                         <div class="name">${escapeHtml(name)}</div>
-                        <div class="sales">${p.sales || 0} مبيعات</div>
+                        <div class="sales">${p.sales || 0} ${currentLang === 'ar' ? 'مبيعات' : 'Sales'}</div>
                     </div>
                 `;
             }).join('');
@@ -851,13 +959,8 @@
     
     document.getElementById('searchInput').addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase(); currentPage = 1; renderProducts(); });
     
-    // تشغيل العرض المباشر فوراً
     displayProductsImmediately();
-    
-    // محاولة تحميل البيانات من Firebase في الخلفية
-    setTimeout(() => {
-        loadFirebaseData();
-    }, 100);
+    setTimeout(() => { initFirebase(); }, 100);
     
     window.goToPage = goToPage;
     window.setLang = setLang;

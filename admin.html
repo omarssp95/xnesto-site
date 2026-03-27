@@ -44,16 +44,6 @@
         .stat-value { font-size: 1.3rem; font-weight: bold; color: #ffaa44; }
         .stat-label { font-size: 0.65rem; opacity: 0.7; }
         
-        .visitors-table {
-            background: rgba(255,255,255,0.05);
-            border-radius: 1rem;
-            overflow-x: auto;
-            margin-bottom: 1rem;
-        }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 6px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.7rem; }
-        th { background: rgba(0,55,145,0.3); color: #ffaa44; }
-        
         .control-bar {
             display: flex;
             gap: 0.5rem;
@@ -186,7 +176,7 @@
             margin-top: 0.5rem;
         }
         .checkbox-col { width: 35px; }
-        .order-col { width: 80px; }
+        .order-col { width: 100px; }
         .order-buttons {
             display: flex;
             gap: 5px;
@@ -195,23 +185,35 @@
         .order-btn {
             background: #2d2f6e;
             border: none;
-            padding: 3px 6px;
+            padding: 4px 8px;
             border-radius: 1rem;
             cursor: pointer;
             color: white;
             font-size: 0.7rem;
         }
         .order-btn:hover { background: #ffaa44; color: #0a0a1a; }
-        .stock-input { width: 55px; background: #1e1e3a; border: 1px solid #ffaa44; border-radius: 1rem; padding: 2px 4px; color: white; text-align: center; }
-        .low-stock { color: #ffaa88; }
-        .out-stock { color: #ff4444; }
+        .order-number {
+            background: #ffaa44;
+            color: #0a0a1a;
+            padding: 2px 6px;
+            border-radius: 1rem;
+            font-weight: bold;
+            font-size: 0.7rem;
+            display: inline-block;
+            min-width: 35px;
+            text-align: center;
+        }
+        .stock-input { width: 65px; background: #1e1e3a; border: 1px solid #ffaa44; border-radius: 1rem; padding: 4px 6px; color: white; text-align: center; }
+        .low-stock { color: #ffaa88; font-weight: bold; }
+        .out-stock { color: #ff4444; font-weight: bold; }
+        .in-stock { color: #00cc88; font-weight: bold; }
         .edit-btn, .delete-btn {
-            padding: 3px 8px;
+            padding: 4px 10px;
             margin: 0 2px;
             border: none;
             border-radius: 1rem;
             cursor: pointer;
-            font-size: 0.65rem;
+            font-size: 0.7rem;
         }
         .edit-btn { background: #ffa500; color: #fff; }
         .delete-btn { background: #ff4444; color: #fff; }
@@ -225,29 +227,87 @@
         }
         .product-edit-form {
             background: #1e1e3a;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
+            padding: 1rem;
+            border-radius: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.8rem;
         }
-        .product-edit-form input, .product-edit-form textarea, .product-edit-form select {
+        .edit-field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .edit-field label {
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #ffaa44;
+            text-align: right;
+        }
+        .edit-field input, .edit-field textarea, .edit-field select {
             width: 100%;
-            padding: 0.3rem;
-            margin: 0.2rem 0;
+            padding: 0.5rem;
             border-radius: 1rem;
             background: #0a0c1a;
             border: 1px solid #ffaa44;
             color: white;
+            font-size: 0.75rem;
+        }
+        .edit-field textarea { resize: vertical; min-height: 60px; }
+        .edit-image-upload {
+            background: #0a0c1a;
+            border: 1px dashed #ffaa44;
+            border-radius: 1rem;
+            padding: 0.5rem;
+            text-align: center;
+            cursor: pointer;
             font-size: 0.7rem;
+            color: #ffaa44;
+        }
+        .edit-image-preview {
+            margin-top: 5px;
+            max-width: 100%;
+            max-height: 60px;
+            border-radius: 8px;
+            display: none;
+        }
+        .edit-buttons {
+            grid-column: 1 / -1;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+        .edit-buttons button {
+            padding: 8px 20px;
+            border-radius: 2rem;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
         }
         .footer { text-align: center; margin-top: 1rem; padding: 1rem; color: #888; font-size: 0.7rem; }
         .loading { text-align: center; padding: 2rem; color: #ffaa44; }
         
         @media (max-width: 640px) {
             body { padding: 0.5rem; }
-            th, td { padding: 4px; font-size: 0.6rem; }
-            .stock-input { width: 45px; }
-            .order-col { width: 60px; }
-            .order-btn { padding: 2px 4px; font-size: 0.6rem; }
+            th, td { padding: 6px 4px; font-size: 0.65rem; }
+            .stock-input { width: 55px; }
+            .order-col { width: 80px; }
+            .order-btn { padding: 3px 6px; font-size: 0.6rem; }
+            .product-edit-form { grid-template-columns: 1fr; }
         }
+        
+        /* تنسيق حالة المنتج */
+        .stock-status {
+            font-size: 0.6rem;
+            padding: 2px 6px;
+            border-radius: 1rem;
+            display: inline-block;
+            margin-top: 3px;
+        }
+        .status-instock { background: #00cc88; color: #0a0a1a; }
+        .status-lowstock { background: #ffaa44; color: #0a0a1a; }
+        .status-outstock { background: #ff4444; color: white; }
     </style>
 </head>
 <body>
@@ -264,7 +324,7 @@
         <button id="deleteAllBtn" class="delete-all-btn" style="display:none;"><i class="fas fa-trash-alt"></i> حذف الكل</button>
     </div>
     <div>
-        <input type="text" id="searchInput" class="search-input" placeholder="🔍 بحث">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 بحث بالاسم">
         <select id="filterCategory" class="filter-select">
             <option value="all">الكل</option>
         </select>
@@ -286,19 +346,20 @@
 <div id="adminPanel" class="admin-panel" style="display:none;">
     <h3>➕ إضافة منتج جديد</h3>
     <div class="add-form">
-        <input type="text" id="newNameAr" placeholder="الاسم بالعربية">
-        <input type="text" id="newNameEn" placeholder="Name in English">
+        <input type="text" id="newNameAr" placeholder="الاسم بالعربية *">
+        <input type="text" id="newNameEn" placeholder="Name in English *">
         <select id="newCategorySelect"></select>
-        <input type="number" id="newPrice" step="0.5" placeholder="السعر">
-        <input type="number" id="newOldPrice" step="0.5" placeholder="السعر القديم">
-        <input type="number" id="newStock" step="1" placeholder="الكمية" value="99">
+        <input type="number" id="newPrice" step="0.5" placeholder="السعر (ر.ع) *">
+        <input type="number" id="newOldPrice" step="0.5" placeholder="السعر القديم (اختياري)">
+        <input type="number" id="newStock" step="1" placeholder="الكمية المتوفرة" value="99">
         <div class="image-upload-area" id="newImageUploadArea">
-            <i class="fas fa-cloud-upload-alt"></i> 📸 صورة
+            <i class="fas fa-cloud-upload-alt"></i> 📸 صورة المنتج
             <input type="file" id="newImageFile" accept="image/*">
             <img id="newImagePreview" class="image-preview">
         </div>
-        <textarea id="newDesc" rows="1" placeholder="وصف المنتج"></textarea>
-        <button class="btn-save" onclick="addProduct()">💾 إضافة</button>
+        <textarea id="newDesc" rows="2" placeholder="وصف المنتج بالعربية"></textarea>
+        <textarea id="newDescEn" rows="2" placeholder="Product description in English"></textarea>
+        <button class="btn-save" onclick="addProduct()">💾 إضافة منتج</button>
     </div>
 </div>
 
@@ -323,13 +384,12 @@
     let categoryNames = {};
     let currentImageData = null;
     let isLoggedIn = false;
-    let selectedProducts = new Set();
     let searchQuery = "";
     let filterCategory = "all";
     const ADMIN_PASSWORD = "ssp1995";
     const SESSION_KEY = "xnesto_admin_logged";
     
-    // ==================== 50 لعبة كاملة ====================
+    // ==================== المنتجات الافتراضية ====================
     const defaultGames = [
         { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, stock: 50, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English", order: 1, category: "games" },
         { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English", order: 2, category: "games" },
@@ -359,67 +419,42 @@
     
     const allDefaultProducts = [...defaultGames, ...giftCards];
     
-    // ==================== تحميل المنتجات من Firebase مع عرض فوري ====================
-    let firebaseLoaded = false;
+    // ==================== وظائف الترتيب ====================
+    function moveProductToPosition(productId, newPosition) {
+        const currentIndex = products.findIndex(p => p.id == productId);
+        if (currentIndex === -1) return;
+        
+        let targetIndex = newPosition - 1;
+        if (targetIndex < 0) targetIndex = 0;
+        if (targetIndex >= products.length) targetIndex = products.length - 1;
+        if (currentIndex === targetIndex) return;
+        
+        const product = products[currentIndex];
+        products.splice(currentIndex, 1);
+        products.splice(targetIndex, 0, product);
+        updateOrder();
+    }
     
-    function displayProductsImmediately() {
-        // عرض المنتجات المحلية فوراً
-        products = JSON.parse(JSON.stringify(allDefaultProducts));
+    function moveProductUp(index) {
+        if (index === 0) return;
+        const temp = products[index];
+        products[index] = products[index - 1];
+        products[index - 1] = temp;
+        updateOrder();
+    }
+    
+    function moveProductDown(index) {
+        if (index === products.length - 1) return;
+        const temp = products[index];
+        products[index] = products[index + 1];
+        products[index + 1] = temp;
+        updateOrder();
+    }
+    
+    function updateOrder() {
         products.forEach((p, idx) => { p.order = idx; });
+        saveProducts();
         renderTable();
-        
-        // تحميل التصنيفات
-        categoriesRef.once('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data && data.categories && data.names) {
-                categories = data.categories;
-                categoryNames = data.names;
-            } else {
-                categories = ["games", "giftcards"];
-                categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
-            }
-            updateCategoriesUI();
-            updateCategorySelect();
-            updateFilterSelect();
-            firebaseLoaded = true;
-        }).catch(() => {
-            categories = ["games", "giftcards"];
-            categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
-            updateCategoriesUI();
-            updateCategorySelect();
-            updateFilterSelect();
-        });
-        
-        // تحميل المنتجات من Firebase في الخلفية
-        productsRef.once('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data && Array.isArray(data) && data.length > 0) {
-                products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
-                renderTable();
-            } else {
-                productsRef.set(allDefaultProducts);
-            }
-        }).catch(() => {});
-        
-        // الاستماع للتغييرات في Firebase (تحديث فوري)
-        productsRef.on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data && Array.isArray(data) && data.length > 0 && firebaseLoaded) {
-                products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
-                renderTable();
-            }
-        });
-        
-        categoriesRef.on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data && data.categories && data.names && firebaseLoaded) {
-                categories = data.categories;
-                categoryNames = data.names;
-                updateCategoriesUI();
-                updateCategorySelect();
-                updateFilterSelect();
-            }
-        });
     }
     
     // ==================== وظائف أخرى ====================
@@ -433,38 +468,17 @@
             referrer: document.referrer || "مباشر"
         };
         visitorsRef.push(visitorData);
-        const today = new Date().toDateString();
-        database.ref('daily_visits/' + today.replace(/\s/g, '_')).transaction(c => (c || 0) + 1);
-        database.ref('total_visits').transaction(c => (c || 0) + 1);
     }
     
     function loadVisitorStats() {
         visitorsRef.once('value', (snapshot) => {
             const visitors = snapshot.val();
             const totalCount = visitors ? Object.keys(visitors).length : 0;
-            const today = new Date().toDateString();
-            database.ref('daily_visits/' + today.replace(/\s/g, '_')).once('value', (snap) => {
-                const todayCount = snap.val() || 0;
-                document.getElementById('visitorStats').innerHTML = `
-                    <div class="stat-card"><i class="fas fa-globe"></i><div class="stat-value">${totalCount}</div><div class="stat-label">إجمالي الزوار</div></div>
-                    <div class="stat-card"><i class="fas fa-calendar-day"></i><div class="stat-value">${todayCount}</div><div class="stat-label">زوار اليوم</div></div>
-                    <div class="stat-card"><i class="fas fa-clock"></i><div class="stat-value">${new Date().toLocaleTimeString('ar-SA').substring(0,5)}</div><div class="stat-label">آخر تحديث</div></div>
-                `;
-                document.getElementById('visitorStats').style.display = 'grid';
-            });
-        });
-        visitorsRef.orderByKey().limitToLast(8).once('value', (snapshot) => {
-            const visitors = snapshot.val();
-            if (visitors) {
-                const list = Object.values(visitors).reverse();
-                document.getElementById('visitorsTable').innerHTML = `
-                    <div style="padding:0.5rem; border-bottom:1px solid rgba(255,170,68,0.2);"><i class="fas fa-users"></i> آخر الزوار</div>
-                    <table><thead><tr><th>الوقت</th><th>التاريخ</th><th>المتصفح</th><th>المصدر</th></tr></thead><tbody>
-                        ${list.map(v => `<tr><td>${v.time || '-'}</td><td>${v.date || '-'}</td><td>${(v.userAgent || '').substring(0, 25)}...</td><td>${v.referrer === 'مباشر' ? '🔗 رابط' : '🔍 خارجي'}</td></tr>`).join('')}
-                    </tbody></table>
-                `;
-                document.getElementById('visitorsTable').style.display = 'block';
-            }
+            document.getElementById('visitorStats').innerHTML = `
+                <div class="stat-card"><i class="fas fa-globe"></i><div class="stat-value">${totalCount}</div><div class="stat-label">إجمالي الزوار</div></div>
+                <div class="stat-card"><i class="fas fa-clock"></i><div class="stat-value">${new Date().toLocaleTimeString('ar-SA').substring(0,5)}</div><div class="stat-label">آخر تحديث</div></div>
+            `;
+            document.getElementById('visitorStats').style.display = 'grid';
         });
     }
     
@@ -553,8 +567,9 @@
         document.getElementById('categoriesManager').style.display = 'block';
         document.getElementById('logoutBtn').style.display = 'inline-block';
         document.getElementById('deleteAllBtn').style.display = 'inline-block';
-        displayProductsImmediately();
+        loadProducts();
         loadVisitorStats();
+        loadCategories();
     }
     
     function logout() { localStorage.removeItem(SESSION_KEY); window.location.reload(); }
@@ -584,10 +599,30 @@
         });
     }
     
+    function loadProducts() {
+        productsRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data && Array.isArray(data) && data.length > 0) {
+                products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
+            } else {
+                products = JSON.parse(JSON.stringify(allDefaultProducts));
+                products.forEach((p, idx) => { p.order = idx; });
+                productsRef.set(products);
+            }
+            renderTable();
+        });
+    }
+    
     function saveProducts() { 
         productsRef.set(products)
             .then(() => console.log('✅ تم حفظ المنتجات'))
             .catch(err => console.error('❌ خطأ:', err));
+    }
+    
+    function getStockStatus(stock) {
+        if (stock <= 0) return { text: 'نفذت', class: 'status-outstock' };
+        if (stock < 10) return { text: 'متبقي قليل', class: 'status-lowstock' };
+        return { text: 'متوفر', class: 'status-instock' };
     }
     
     function getFilteredProducts() {
@@ -597,30 +632,8 @@
         return filtered;
     }
     
-    function moveProductUp(index) {
-        if (index === 0) return;
-        const temp = products[index];
-        products[index] = products[index - 1];
-        products[index - 1] = temp;
-        updateOrder();
-    }
-    
-    function moveProductDown(index) {
-        if (index === products.length - 1) return;
-        const temp = products[index];
-        products[index] = products[index + 1];
-        products[index + 1] = temp;
-        updateOrder();
-    }
-    
-    function updateOrder() {
-        products.forEach((p, idx) => { p.order = idx; });
-        saveProducts();
-        renderTable();
-    }
-    
     function updateStock(id, newStock) {
-        const product = products.find(p => p.id === id);
+        const product = products.find(p => p.id == id);
         if (product) { product.stock = parseInt(newStock); saveProducts(); renderTable(); }
     }
     
@@ -637,7 +650,19 @@
             </div>
             <div style="overflow-x:auto;">
                  <table>
-                    <thead> <tr><th class="checkbox-col"></th><th class="order-col">الترتيب</th><th>الصورة</th><th>الاسم</th><th>السعر</th><th>الكمية</th><th>التصنيف</th><th>إجراءات</th></tr> </thead>
+                    <thead>
+                        <tr>
+                            <th class="checkbox-col"></th>
+                            <th class="order-col">الترتيب</th>
+                            <th>الصورة</th>
+                            <th>الاسم</th>
+                            <th>السعر (ر.ع)</th>
+                            <th>الكمية</th>
+                            <th>الحالة</th>
+                            <th>التصنيف</th>
+                            <th>إجراءات</th>
+                        </tr>
+                    </thead>
                     <tbody id="tableBody"></tbody>
                  </table>
             </div>
@@ -646,23 +671,53 @@
         const tbody = document.getElementById('tableBody');
         tbody.innerHTML = filtered.map((p, idx) => {
             const originalIndex = products.findIndex(prod => prod.id === p.id);
+            const currentOrder = originalIndex + 1;
+            const stockStatus = getStockStatus(p.stock || 0);
+            
             return `
                 <tr id="row-${p.id}" data-id="${p.id}">
                     <td><input type="checkbox" class="product-checkbox" value="${p.id}" onchange="updateSelectedCount()"></td>
                     <td class="order-col">
-                        <div class="order-buttons">
-                            <button class="order-btn" onclick="moveProductUp(${originalIndex})" ${originalIndex === 0 ? 'disabled style="opacity:0.5;"' : ''}>⬆️</button>
-                            <button class="order-btn" onclick="moveProductDown(${originalIndex})" ${originalIndex === products.length-1 ? 'disabled style="opacity:0.5;"' : ''}>⬇️</button>
+                        <div style="display:flex; gap:5px; align-items:center; justify-content:center; flex-wrap:wrap;">
+                            <span class="order-number">#${currentOrder}</span>
+                            <div class="order-buttons">
+                                <button class="order-btn" onclick="moveProductUp(${originalIndex})" ${originalIndex === 0 ? 'disabled style="opacity:0.5;"' : ''} title="رفع للأعلى">⬆️</button>
+                                <button class="order-btn" onclick="moveProductDown(${originalIndex})" ${originalIndex === products.length-1 ? 'disabled style="opacity:0.5;"' : ''} title="خفض للأسفل">⬇️</button>
+                            </div>
+                            <input type="number" id="order_input_${p.id}" value="${currentOrder}" min="1" max="${products.length}" step="1" style="width:55px; background:#1e1e3a; border:1px solid #ffaa44; border-radius:1rem; padding:3px; text-align:center; color:white;" onchange="moveProductToPosition(${p.id}, this.value)">
                         </div>
                     </td>
-                    <td><img src="${p.image || ''}" width="35" height="35" style="border-radius:6px;" onerror="this.src='https://via.placeholder.com/35'"></td>
-                    <td>${escapeHtml(p.nameAr)}<br><small>${escapeHtml(p.nameEn)}</small></td>
-                    <td>${p.priceOMR} ر.ع${p.oldPrice ? `<br><span style="text-decoration:line-through;">${p.oldPrice}</span>` : ''}</td>
-                    <td><input type="number" class="stock-input" id="stock_${p.id}" value="${p.stock || 0}" min="0" step="1" onchange="updateStock(${p.id}, this.value)" style="${(p.stock || 0) === 0 ? 'border-color:#ff4444;' : ''}"><span class="${(p.stock || 0) === 0 ? 'out-stock' : (p.stock || 0) < 10 ? 'low-stock' : ''}" style="display:block;font-size:0.6rem;">${(p.stock || 0) === 0 ? 'نفذت' : (p.stock || 0) < 10 ? 'متبقي' : ''}</span></td>
+                    <td><img src="${p.image || ''}" width="40" height="40" style="border-radius:8px; object-fit:cover;" onerror="this.src='https://via.placeholder.com/40'"></td>
+                    <td><strong>${escapeHtml(p.nameAr)}</strong><br><small style="opacity:0.7;">${escapeHtml(p.nameEn)}</small></td>
+                    <td>${p.priceOMR} ر.ع${p.oldPrice ? `<br><span style="text-decoration:line-through; font-size:0.6rem;">${p.oldPrice}</span>` : ''}</td>
+                    <td><input type="number" class="stock-input" id="stock_${p.id}" value="${p.stock || 0}" min="0" step="1" onchange="updateStock(${p.id}, this.value)" style="${(p.stock || 0) === 0 ? 'border-color:#ff4444;' : ''}"></td>
+                    <td><span class="stock-status ${stockStatus.class}">${stockStatus.text}</span></td>
                     <td>${categoryNames[p.category] || p.category}</td>
-                    <td><button class="edit-btn" onclick="openEditForm(${p.id})">✏️</button><button class="delete-btn" onclick="deleteProduct(${p.id})">🗑️</button></td>
+                    <td><button class="edit-btn" onclick="openEditForm(${p.id})">✏️ تعديل</button><button class="delete-btn" onclick="deleteProduct(${p.id})">🗑️ حذف</button></td>
                 </tr>
-                <tr id="edit-form-${p.id}" style="display:none;"><td colspan="8"><div class="product-edit-form"><input type="text" id="editNameAr_${p.id}" value="${escapeHtml(p.nameAr)}"><input type="text" id="editNameEn_${p.id}" value="${escapeHtml(p.nameEn)}"><input type="number" id="editPrice_${p.id}" value="${p.priceOMR}" step="0.5"><input type="number" id="editOldPrice_${p.id}" value="${p.oldPrice || ''}" step="0.5"><input type="number" id="editStock_${p.id}" value="${p.stock || 0}" step="1"><div class="edit-image-upload" onclick="document.getElementById('editImageFile_${p.id}').click()"><i class="fas fa-cloud-upload-alt"></i> صورة<input type="file" id="editImageFile_${p.id}" accept="image/*" style="display:none;"></div><img id="editImagePreview_${p.id}" class="edit-image-preview"><input type="text" id="editImageUrl_${p.id}" value="${escapeHtml(p.image || '')}" placeholder="رابط الصورة"><textarea id="editDescAr_${p.id}" rows="1">${escapeHtml(p.detailsAr || '')}</textarea><textarea id="editDescEn_${p.id}" rows="1">${escapeHtml(p.detailsEn || '')}</textarea><select id="editCategory_${p.id}">${categories.map(cat => `<option value="${cat}" ${p.category === cat ? 'selected' : ''}>${categoryNames[cat]}</option>`).join('')}</select><button onclick="saveEdit(${p.id})" style="background:#00cc88;">💾 حفظ</button><button onclick="closeEditForm(${p.id})" style="background:#ff4444;">إلغاء</button></div></td></tr>
+                <tr id="edit-form-${p.id}" style="display:none;">
+                    <td colspan="9">
+                        <div class="product-edit-form">
+                            <div class="edit-field"><label>📝 الاسم بالعربية *</label><input type="text" id="editNameAr_${p.id}" value="${escapeHtml(p.nameAr)}"></div>
+                            <div class="edit-field"><label>🌐 الاسم بالإنجليزية *</label><input type="text" id="editNameEn_${p.id}" value="${escapeHtml(p.nameEn)}"></div>
+                            <div class="edit-field"><label>💰 السعر (ر.ع) *</label><input type="number" id="editPrice_${p.id}" value="${p.priceOMR}" step="0.5"></div>
+                            <div class="edit-field"><label>🏷️ السعر القديم (اختياري)</label><input type="number" id="editOldPrice_${p.id}" value="${p.oldPrice || ''}" step="0.5"></div>
+                            <div class="edit-field"><label>📦 الكمية المتوفرة</label><input type="number" id="editStock_${p.id}" value="${p.stock || 0}" step="1"></div>
+                            <div class="edit-field"><label>🖼️ صورة المنتج</label>
+                                <div class="edit-image-upload" onclick="document.getElementById('editImageFile_${p.id}').click()">
+                                    <i class="fas fa-cloud-upload-alt"></i> اختر صورة من جهازك
+                                    <input type="file" id="editImageFile_${p.id}" accept="image/*" style="display:none;">
+                                </div>
+                                <input type="text" id="editImageUrl_${p.id}" value="${escapeHtml(p.image || '')}" placeholder="أو أدخل رابط الصورة">
+                                <img id="editImagePreview_${p.id}" class="edit-image-preview" src="${p.image || ''}" onerror="this.style.display='none'" style="${p.image ? 'display:block' : 'display:none'}">
+                            </div>
+                            <div class="edit-field"><label>📝 الوصف بالعربية</label><textarea id="editDescAr_${p.id}" rows="2">${escapeHtml(p.detailsAr || '')}</textarea></div>
+                            <div class="edit-field"><label>📝 الوصف بالإنجليزية</label><textarea id="editDescEn_${p.id}" rows="2">${escapeHtml(p.detailsEn || '')}</textarea></div>
+                            <div class="edit-field"><label>📂 التصنيف</label><select id="editCategory_${p.id}">${categories.map(cat => `<option value="${cat}" ${p.category === cat ? 'selected' : ''}>${categoryNames[cat]}</option>`).join('')}</select></div>
+                            <div class="edit-buttons"><button onclick="saveEdit(${p.id})" style="background:#00cc88;">💾 حفظ التغييرات</button><button onclick="closeEditForm(${p.id})" style="background:#ff4444;">❌ إلغاء</button></div>
+                        </div>
+                    </td>
+                </tr>
             `;
         }).join('');
         
@@ -718,7 +773,7 @@
     function closeEditForm(id) { document.getElementById(`edit-form-${id}`).style.display = 'none'; }
     
     async function saveEdit(id) {
-        const product = products.find(p => p.id === id);
+        const product = products.find(p => p.id == id);
         if (!product) return;
         product.nameAr = document.getElementById(`editNameAr_${id}`).value;
         product.nameEn = document.getElementById(`editNameEn_${id}`).value;
@@ -753,14 +808,57 @@
         const oldPrice = parseFloat(document.getElementById('newOldPrice').value) || null;
         const stock = parseInt(document.getElementById('newStock').value) || 0;
         const image = currentImageData || "";
-        const desc = document.getElementById('newDesc').value.trim();
-        if (!nameAr || !nameEn || isNaN(price)) { alert('يرجى ملء الاسم والسعر'); return; }
-        const newProduct = { id: Date.now(), nameAr, nameEn, category, priceOMR: price, oldPrice: (oldPrice && oldPrice > price) ? oldPrice : null, stock, image, detailsAr: desc, detailsEn: desc, order: products.length };
+        const descAr = document.getElementById('newDesc').value.trim();
+        const descEn = document.getElementById('newDescEn').value.trim();
+        
+        if (!nameAr || !nameEn || isNaN(price)) { alert('⚠️ يرجى ملء الاسم والسعر'); return; }
+        
+        const newProduct = { 
+            id: Date.now(), 
+            nameAr, 
+            nameEn, 
+            category, 
+            priceOMR: price, 
+            oldPrice: (oldPrice && oldPrice > price) ? oldPrice : null, 
+            stock, 
+            image, 
+            detailsAr: descAr, 
+            detailsEn: descEn || descAr, 
+            order: products.length 
+        };
+        
         products.push(newProduct);
         saveProducts();
-        document.getElementById('newNameAr').value = ''; document.getElementById('newNameEn').value = ''; document.getElementById('newPrice').value = ''; document.getElementById('newOldPrice').value = ''; document.getElementById('newStock').value = '99'; document.getElementById('newDesc').value = ''; currentImageData = null; document.getElementById('newImagePreview').style.display = 'none';
-        alert('✅ تم الإضافة');
+        
+        document.getElementById('newNameAr').value = ''; 
+        document.getElementById('newNameEn').value = ''; 
+        document.getElementById('newPrice').value = ''; 
+        document.getElementById('newOldPrice').value = ''; 
+        document.getElementById('newStock').value = '99'; 
+        document.getElementById('newDesc').value = ''; 
+        document.getElementById('newDescEn').value = ''; 
+        currentImageData = null; 
+        document.getElementById('newImagePreview').style.display = 'none';
+        
+        alert('✅ تم إضافة المنتج');
         renderTable();
+    }
+    
+    function loadCategories() {
+        categoriesRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data && data.categories && data.names) {
+                categories = data.categories;
+                categoryNames = data.names;
+            } else {
+                categories = ["games", "giftcards"];
+                categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
+                saveCategories();
+            }
+            updateCategoriesUI();
+            updateCategorySelect();
+            updateFilterSelect();
+        });
     }
     
     trackVisitor();
@@ -780,6 +878,7 @@
     window.addNewCategory = addNewCategory;
     window.moveProductUp = moveProductUp;
     window.moveProductDown = moveProductDown;
+    window.moveProductToPosition = moveProductToPosition;
 </script>
 </body>
 </html>

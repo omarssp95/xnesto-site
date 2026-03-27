@@ -265,7 +265,6 @@
         .footer { text-align: center; margin-top: 1.2rem; padding: 0.8rem; color: #888; font-size: 0.65rem; border-top: 1px solid rgba(255,170,68,0.1); }
         .loading { text-align: center; padding: 1.5rem; color: #ffaa44; font-size: 0.8rem; }
         
-        /* وضع نهاري */
         body.light-mode {
             background: #f0f4ff !important;
             color: #1a1a2e !important;
@@ -291,10 +290,6 @@
             color: #1a1a2e !important;
             border-color: #ffaa44 !important;
         }
-        body.light-mode input::placeholder, 
-        body.light-mode textarea::placeholder {
-            color: #888 !important;
-        }
         body.light-mode .data-table {
             background: rgba(0,0,0,0.05) !important;
         }
@@ -305,46 +300,12 @@
             background: #ffffff !important;
             border-color: #ffaa44 !important;
         }
-        body.light-mode .category-badge {
-            background: #e8e8e8 !important;
-            color: #1a1a2e !important;
-        }
-        body.light-mode .btn-sm {
-            background: #2d2f6e !important;
-            color: white !important;
-        }
-        body.light-mode .bestseller-item {
-            border-color: rgba(0,0,0,0.1) !important;
-        }
-        body.light-mode .stock-input,
-        body.light-mode .sales-input,
-        body.light-mode .order-input {
-            background: #f5f5f5 !important;
-            color: #1a1a2e !important;
-        }
-        body.light-mode .product-edit-form {
-            background: #f5f5f5 !important;
-        }
-        body.light-mode .product-edit-form input,
-        body.light-mode .product-edit-form textarea,
-        body.light-mode .product-edit-form select {
-            background: #ffffff !important;
-            color: #1a1a2e !important;
-        }
         @media (max-width: 640px) {
             body { padding: 0.5rem; }
             th, td { padding: 4px 3px; font-size: 0.6rem; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .admin-tab { padding: 0.3rem 0.8rem; font-size: 0.65rem; }
             .product-edit-form { grid-template-columns: 1fr; }
-        }
-        
-        /* تحسين عرض الصور في الجوال */
-        @media (max-width: 640px) {
-            .product-image-preview {
-                max-width: 40px;
-                max-height: 40px;
-            }
         }
     </style>
 </head>
@@ -436,7 +397,7 @@
 </div>
 
 <script>
-    // ==================== المنتجات الحقيقية (30 لعبة) ====================
+    // ==================== المنتجات الافتراضية (30 لعبة) ====================
     const realGames = [
         { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 22, oldPrice: 28, stock: 50, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي | اليابان", detailsEn: "📦 65GB | 🎮 Arabic/English | Japan", sales: 564, category: "games" },
         { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 27, oldPrice: 32, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 تصويب | إنجليزي", detailsEn: "📦 120GB | 🎮 Shooter | English", sales: 464, category: "games" },
@@ -479,15 +440,7 @@
     
     const allDefaultProducts = [...realGames, ...giftCards];
     
-    // ==================== Firebase والإعدادات ====================
-    const firebaseConfig = { databaseURL: "https://xnesto-645bf-default-rtdb.asia-southeast1.firebasedatabase.app/" };
-    
-    let firebaseInitialized = false;
-    let database = null;
-    let productsRef = null;
-    let categoriesRef = null;
-    let ordersRef = null;
-    
+    // ==================== المتغيرات العامة ====================
     let products = [];
     let categories = ["games", "giftcards"];
     let categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
@@ -500,38 +453,34 @@
     const ADMIN_PASSWORD = "ssp1995";
     const SESSION_KEY = "xnesto_admin_logged";
     
-    // عرض المنتجات فوراً
-    function displayProductsImmediately() {
-        products = JSON.parse(JSON.stringify(allDefaultProducts));
-        products.forEach((p, idx) => { p.order = idx; });
-        renderProductsTable();
-        updateProductsStats();
-        renderBestsellersList();
-        updateBestsellerSelect();
-    }
+    // Firebase references
+    let database = null;
+    let productsRef = null;
+    let categoriesRef = null;
+    let ordersRef = null;
+    let firebaseInitialized = false;
     
-    // محاولة تهيئة Firebase في الخلفية
+    // ==================== دوال Firebase ====================
     function initFirebase() {
         try {
-            firebase.initializeApp(firebaseConfig);
+            const firebaseConfig = { databaseURL: "https://xnesto-645bf-default-rtdb.asia-southeast1.firebasedatabase.app/" };
+            
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            
             database = firebase.database();
             productsRef = database.ref('products');
             categoriesRef = database.ref('categories');
             ordersRef = database.ref('orders');
             
-            const timeoutId = setTimeout(() => {
-                if (!firebaseInitialized) {
-                    console.log("Firebase timeout - using local data");
-                    firebaseInitialized = true;
-                }
-            }, 3000);
-            
+            // تحميل المنتجات من Firebase
             productsRef.on('value', (snapshot) => {
-                clearTimeout(timeoutId);
                 const data = snapshot.val();
                 if (data && Array.isArray(data) && data.length > 0) {
                     products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
                     firebaseInitialized = true;
+                    console.log('✅ تم تحميل المنتجات من Firebase');
                     renderProductsTable();
                     updateProductsStats();
                     renderBestsellersList();
@@ -544,32 +493,20 @@
                     renderBestsellersList();
                     updateBestsellerSelect();
                 }
-            }, (error) => {
-                clearTimeout(timeoutId);
-                console.log("Firebase error:", error);
-                if (!firebaseInitialized) {
-                    products = JSON.parse(JSON.stringify(allDefaultProducts));
-                    products.forEach((p, idx) => { p.order = idx; });
-                    renderProductsTable();
-                    updateProductsStats();
-                    renderBestsellersList();
-                    updateBestsellerSelect();
-                }
             });
             
+            // تحميل التصنيفات
             categoriesRef.on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data && data.categories && data.names) {
                     categories = data.categories;
                     categoryNames = data.names;
-                } else {
-                    categories = ["games", "giftcards"];
-                    categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
                 }
                 updateCategorySelect();
                 renderCategoriesList();
             });
             
+            // تحميل الطلبات
             ordersRef.on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data) orders = Object.values(data).sort((a,b) => b.id - a.id);
@@ -580,14 +517,6 @@
             
         } catch (error) {
             console.log("Firebase initialization failed:", error);
-            products = JSON.parse(JSON.stringify(allDefaultProducts));
-            products.forEach((p, idx) => { p.order = idx; });
-            renderProductsTable();
-            updateProductsStats();
-            renderBestsellersList();
-            updateBestsellerSelect();
-            updateCategorySelect();
-            renderCategoriesList();
         }
     }
     
@@ -595,17 +524,34 @@
         if (productsRef) {
             return productsRef.set(products)
                 .then(() => {
-                    console.log('✅ تم حفظ المنتجات');
+                    console.log('✅ تم حفظ المنتجات في Firebase');
                     return true;
                 })
                 .catch(error => {
-                    console.error('❌ خطأ:', error);
+                    console.error('❌ خطأ في Firebase:', error);
+                    alert('خطأ في حفظ البيانات: ' + error.message);
                     return false;
                 });
         } else {
-            console.log('محلياً - تم حفظ المنتجات');
+            console.log('⚠️ Firebase غير جاهزة، حفظ محلي فقط');
             return Promise.resolve(true);
         }
+    }
+    
+    // ==================== دوال العرض ====================
+    function displayProductsImmediately() {
+        // عرض المنتجات المحلية فوراً
+        products = JSON.parse(JSON.stringify(allDefaultProducts));
+        products.forEach((p, idx) => { p.order = idx; });
+        renderProductsTable();
+        updateProductsStats();
+        renderBestsellersList();
+        updateBestsellerSelect();
+        
+        // تهيئة Firebase في الخلفية
+        setTimeout(() => {
+            initFirebase();
+        }, 100);
     }
     
     function checkSession() {
@@ -633,7 +579,6 @@
         document.getElementById('adminPanel').style.display = 'block';
         document.getElementById('logoutBtn').style.display = 'inline-block';
         displayProductsImmediately();
-        initFirebase();
         switchTab('products');
     }
     
@@ -824,55 +769,19 @@
                 <tr id="edit-form-${p.id}" style="display:none;">
                     <td colspan="8">
                         <div class="product-edit-form">
-                            <div class="edit-field">
-                                <label>📝 الاسم بالعربية</label>
-                                <input type="text" id="editNameAr_${p.id}" value="${escapeHtml(p.nameAr)}">
-                            </div>
-                            <div class="edit-field">
-                                <label>🌐 الاسم بالإنجليزية</label>
-                                <input type="text" id="editNameEn_${p.id}" value="${escapeHtml(p.nameEn)}">
-                            </div>
-                            <div class="edit-field">
-                                <label>💰 السعر (ر.ع)</label>
-                                <input type="number" id="editPrice_${p.id}" value="${p.priceOMR}" step="0.5">
-                            </div>
-                            <div class="edit-field">
-                                <label>🏷️ السعر القديم</label>
-                                <input type="number" id="editOldPrice_${p.id}" value="${p.oldPrice || ''}" step="0.5">
-                            </div>
-                            <div class="edit-field">
-                                <label>📦 الكمية</label>
-                                <input type="number" id="editStock_${p.id}" value="${p.stock || 0}" step="1">
-                            </div>
-                            <div class="edit-field">
-                                <label>📈 المبيعات</label>
-                                <input type="number" id="editSales_${p.id}" value="${p.sales || 0}" step="1">
-                            </div>
-                            <div class="edit-field">
-                                <label>🖼️ الصورة (رابط)</label>
-                                <input type="text" id="editImageUrl_${p.id}" value="${escapeHtml(p.image || '')}" placeholder="رابط الصورة">
-                                <div class="edit-image-upload" onclick="document.getElementById('editImageFile_${p.id}').click()">
-                                    <i class="fas fa-cloud-upload-alt"></i> اختر صورة من جهازك
-                                    <input type="file" id="editImageFile_${p.id}" accept="image/*" style="display:none;">
-                                </div>
-                                <img id="editImagePreview_${p.id}" class="edit-image-preview" src="${p.image || ''}" onerror="this.style.display='none'" style="${p.image ? 'display:block' : 'display:none'}">
-                            </div>
-                            <div class="edit-field">
-                                <label>📝 الوصف بالعربية</label>
-                                <textarea id="editDescAr_${p.id}" rows="2">${escapeHtml(p.detailsAr || '')}</textarea>
-                            </div>
-                            <div class="edit-field">
-                                <label>📝 الوصف بالإنجليزية</label>
-                                <textarea id="editDescEn_${p.id}" rows="2">${escapeHtml(p.detailsEn || '')}</textarea>
-                            </div>
-                            <div class="edit-field">
-                                <label>📂 التصنيف</label>
-                                <select id="editCategory_${p.id}">${categories.map(cat => `<option value="${cat}" ${p.category === cat ? 'selected' : ''}>${categoryNames[cat]}</option>`).join('')}</select>
-                            </div>
-                            <div class="edit-buttons">
-                                <button onclick="saveEdit(${p.id})" style="background:#00cc88;">💾 حفظ</button>
-                                <button onclick="closeEditForm(${p.id})" style="background:#ff4444;">إلغاء</button>
-                            </div>
+                            <div class="edit-field"><label>📝 الاسم بالعربية</label><input type="text" id="editNameAr_${p.id}" value="${escapeHtml(p.nameAr)}"></div>
+                            <div class="edit-field"><label>🌐 الاسم بالإنجليزية</label><input type="text" id="editNameEn_${p.id}" value="${escapeHtml(p.nameEn)}"></div>
+                            <div class="edit-field"><label>💰 السعر (ر.ع)</label><input type="number" id="editPrice_${p.id}" value="${p.priceOMR}" step="0.5"></div>
+                            <div class="edit-field"><label>🏷️ السعر القديم</label><input type="number" id="editOldPrice_${p.id}" value="${p.oldPrice || ''}" step="0.5"></div>
+                            <div class="edit-field"><label>📦 الكمية</label><input type="number" id="editStock_${p.id}" value="${p.stock || 0}" step="1"></div>
+                            <div class="edit-field"><label>📈 المبيعات</label><input type="number" id="editSales_${p.id}" value="${p.sales || 0}" step="1"></div>
+                            <div class="edit-field"><label>🖼️ الصورة (رابط)</label><input type="text" id="editImageUrl_${p.id}" value="${escapeHtml(p.image || '')}" placeholder="رابط الصورة">
+                            <div class="edit-image-upload" onclick="document.getElementById('editImageFile_${p.id}').click()"><i class="fas fa-cloud-upload-alt"></i> اختر صورة من جهازك<input type="file" id="editImageFile_${p.id}" accept="image/*" style="display:none;"></div>
+                            <img id="editImagePreview_${p.id}" class="edit-image-preview" src="${p.image || ''}" onerror="this.style.display='none'" style="${p.image ? 'display:block' : 'display:none'}"></div>
+                            <div class="edit-field"><label>📝 الوصف بالعربية</label><textarea id="editDescAr_${p.id}" rows="2">${escapeHtml(p.detailsAr || '')}</textarea></div>
+                            <div class="edit-field"><label>📝 الوصف بالإنجليزية</label><textarea id="editDescEn_${p.id}" rows="2">${escapeHtml(p.detailsEn || '')}</textarea></div>
+                            <div class="edit-field"><label>📂 التصنيف</label><select id="editCategory_${p.id}">${categories.map(cat => `<option value="${cat}" ${p.category === cat ? 'selected' : ''}>${categoryNames[cat]}</option>`).join('')}</select></div>
+                            <div class="edit-buttons"><button onclick="saveEdit(${p.id})" style="background:#00cc88;">💾 حفظ</button><button onclick="closeEditForm(${p.id})" style="background:#ff4444;">إلغاء</button></div>
                         </div>
                     </td>
                 </tr>

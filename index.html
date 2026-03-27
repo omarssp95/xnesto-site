@@ -271,7 +271,8 @@
             z-index: 999;
         }
         
-        .terms-modal {
+        /* نافذة الشروط الجديدة */
+        .modal {
             display: none;
             position: fixed;
             top: 0;
@@ -282,81 +283,69 @@
             backdrop-filter: blur(12px);
             align-items: center;
             justify-content: center;
-            z-index: 4000;
+            z-index: 5000;
             padding: 1rem;
         }
-        .terms-box {
+        .modal-content {
             background: #11152b;
             border-radius: 1.5rem;
             padding: 1.5rem;
             border: 2px solid #ffaa44;
             width: 100%;
-            max-width: 500px;
-            max-height: 85vh;
+            max-width: 550px;
+            max-height: 90vh;
             overflow-y: auto;
         }
-        .terms-box h3 { color: #ffaa44; margin-bottom: 1rem; text-align: center; }
-        .terms-item-row {
-            display: flex;
-            gap: 8px;
-            align-items: flex-start;
+        .modal-content h3 {
+            color: #ffaa44;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+        .modal-content p {
+            color: #ffdd99;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .modal-content ol {
+            margin: 1rem 0;
+            padding-right: 1.5rem;
+        }
+        .modal-content li {
+            color: #b9c5f0;
             margin-bottom: 8px;
-            background: rgba(255,170,68,0.05);
-            border-radius: 8px;
-            padding: 8px 10px;
-            border-right: 3px solid rgba(255,170,68,0.3);
+            line-height: 1.5;
+            font-size: 0.85rem;
         }
-        .terms-item-row .t-num {
-            background: #ffaa44;
-            color: #0a0a1a;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            min-width: 20px;
+        .modal-content li strong {
+            color: #ffaa44;
+        }
+        .terms-actions {
             display: flex;
-            align-items: center;
+            gap: 12px;
             justify-content: center;
-            font-size: 0.65rem;
-            font-weight: 900;
+            margin-top: 1.5rem;
         }
-        .terms-item-row p { font-size: 0.78rem; color: #b9c5f0; line-height: 1.5; text-align: right; flex: 1; }
-        .terms-checkbox-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0,204,136,0.08);
-            border: 1px solid rgba(0,204,136,0.3);
-            border-radius: 8px;
-            padding: 10px;
-            margin: 12px 0 8px;
-            cursor: pointer;
-        }
-        .terms-checkbox-row input { accent-color: #00cc88; width: 18px; height: 18px; cursor: pointer; }
-        .terms-checkbox-row label { font-size: 0.8rem; color: #00cc88; font-weight: 700; cursor: pointer; }
-        .terms-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 8px;
-        }
-        .terms-buttons button {
+        .btn-cancel {
+            background: #444;
+            color: white;
+            border: none;
             padding: 10px 20px;
             border-radius: 40px;
             cursor: pointer;
             font-weight: bold;
-            border: none;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
-        .accept-btn {
+        .btn-accept {
             background: #ffaa44;
             color: #0a0a1a;
-            flex: 1;
-            opacity: 0.5;
-            pointer-events: none;
-            transition: 0.2s;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
         }
-        .accept-btn.enabled { opacity: 1; pointer-events: all; }
-        .decline-btn { background: #444; color: white; }
         
         .device-bar {
             background: #07071a;
@@ -405,6 +394,8 @@
         body.light-mode .product-title { color: #1a1a2e !important; }
         body.light-mode .footer { background: #1a3a7a !important; }
         body.light-mode .device-bar { background: #1a3a7a !important; }
+        body.light-mode .modal-content { background: #ffffff !important; }
+        body.light-mode .modal-content li { color: #333; }
     </style>
 </head>
 <body>
@@ -465,18 +456,28 @@
     <i class="fab fa-whatsapp"></i>
 </a>
 
-<div id="termsModal" class="terms-modal">
-    <div class="terms-box">
-        <h3><i class="fas fa-file-contract"></i> شروط وأحكام الشراء</h3>
-        <div class="terms-item-row"><div class="t-num">1</div><p>جميع المنتجات رقمية (ألعاب - بطاقات شحن) يتم تسليمها فور إتمام الدفع عبر واتساب.</p></div>
-        <div class="terms-item-row"><div class="t-num">2</div><p>المنتجات الرقمية غير قابلة للاسترجاع أو الاستبدال بعد التسليم.</p></div>
-        <div class="terms-item-row"><div class="t-num">3</div><p>يرجى التأكد من صحة حساب PlayStation الخاص بك قبل الطلب.</p></div>
-        <div class="terms-item-row"><div class="t-num">4</div><p>الأسعار المعلنة شاملة جميع الرسوم ولا تضاف أي رسوم إضافية.</p></div>
-        <div class="terms-item-row"><div class="t-num">5</div><p>في حال وجود أي مشكلة تقنية، يرجى التواصل معنا خلال 24 ساعة من الاستلام.</p></div>
-        <div class="terms-item-row"><div class="t-num">6</div><p>xnesto غير مسؤول عن أي حظر أو تعليق لحساب PlayStation بسبب مخالفة شروط سوني.</p></div>
-        <div class="terms-item-row"><div class="t-num">7</div><p>وقت التسليم من 5 دقائق إلى 24 ساعة حسب التوفر والوقت.</p></div>
-        <div class="terms-checkbox-row" onclick="toggleTermsAccept()"><input type="checkbox" id="termsCheck"><label for="termsCheck">أقر بأنني قرأت وأوافق على جميع الشروط والأحكام أعلاه</label></div>
-        <div class="terms-buttons"><button id="acceptTermsBtn" class="accept-btn" onclick="acceptTerms()">✅ أوافق وأكمل الطلب</button><button id="declineTermsBtn" class="decline-btn" onclick="closeTermsModal()">❌ إلغاء</button></div>
+<!-- نافذة الشروط الجديدة -->
+<div id="termsModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h3>📋 شروط الشراء والاستخدام</h3>
+        <p>يرجى قراءة الشروط بعناية قبل إتمام الطلب:</p>
+        
+        <ol>
+            <li>الحساب نظيف 100% ويحتوي على اللعبة المطلوبة فقط.</li>
+            <li>بعد تسجيل الدخول، اذهب إلى Library ونزّل اللعبة.</li>
+            <li><strong>بعد انتهاء التنزيل كاملاً، يجب تسجيل الخروج فوراً</strong> من الحساب.</li>
+            <li>ممنوع تغيير كلمة السر أو ربط بطاقة بنكية أو شراء أي شيء داخل الحساب.</li>
+            <li>ممنوع مشاركة الحساب مع أي شخص آخر.</li>
+            <li>الحساب مضمون لمدة <strong>7 أيام</strong> من تاريخ التسليم.</li>
+            <li>في حال وجود أي مشكلة تقنية، سنقدم حساب بديل خلال 24 ساعة.</li>
+            <li>المنتجات الرقمية غير قابلة للاسترجاع أو الاسترداد بعد تسليم الحساب.</li>
+            <li>xnesto غير مسؤول عن أي حظر أو تعليق لحساب PlayStation بسبب مخالفة شروط سوني.</li>
+        </ol>
+
+        <div class="terms-actions">
+            <button onclick="rejectTerms()" class="btn-cancel">لا أوافق</button>
+            <button onclick="acceptTerms()" class="btn-accept">أوافق على الشروط وأستمر</button>
+        </div>
     </div>
 </div>
 
@@ -500,7 +501,7 @@
     const WA_NUMBER = "96879977100";
     const INSTA_USERNAME = "xnesto_store";
     
-    // العملات المطلوبة: دول الخليج + دولار + يورو
+    // العملات
     const exchangeRates = { OMR: 1, SAR: 9.75, AED: 9.55, KWD: 0.79, BHD: 0.98, QAR: 9.46, USD: 2.6, EUR: 2.4 };
     const currencySymbols = { OMR: "ر.ع", SAR: "ر.س", AED: "د.إ", KWD: "د.ك", BHD: "د.ب", QAR: "ر.ق", USD: "$", EUR: "€" };
     
@@ -534,17 +535,15 @@
     
     const allDefaultProducts = [...allGames, ...giftCards];
     
-    // ==================== تحميل المنتجات من Firebase مع عرض فوري ====================
+    // ==================== تحميل المنتجات ====================
     let firebaseLoaded = false;
     
     function displayProductsImmediately() {
-        // عرض رسالة تحميل مؤقتة
         const container = document.getElementById('productsContainer');
         if (container) {
             container.innerHTML = '<div style="text-align:center; padding:2rem;"><i class="fas fa-spinner fa-spin"></i> جاري تحميل المنتجات...</div>';
         }
         
-        // محاولة تحميل المنتجات من Firebase
         productsRef.once('value', (snapshot) => {
             const data = snapshot.val();
             if (data && Array.isArray(data) && data.length > 0) {
@@ -560,7 +559,6 @@
             renderProducts();
         });
         
-        // تحميل التصنيفات
         categoriesRef.once('value', (snapshot) => {
             const data = snapshot.val();
             if (data && data.categories && data.names) {
@@ -578,7 +576,6 @@
         });
     }
     
-    // الاستماع للتغييرات في Firebase (تحديث فوري)
     productsRef.on('value', (snapshot) => {
         const data = snapshot.val();
         if (data && Array.isArray(data) && data.length > 0 && firebaseLoaded) {
@@ -599,12 +596,10 @@
     function renderTabs() {
         const container = document.getElementById('tabsContainer');
         if (!container) return;
-        
         const allCats = [
             { key: "all", name: currentLang === 'ar' ? "🎮 جميع المنتجات" : "🎮 All Products" },
             ...categories.map(c => ({ key: c, name: categoryNames[c] || c }))
         ];
-        
         container.innerHTML = allCats.map(cat => `
             <button class="tab-btn ${currentCategory === cat.key ? 'active' : ''}" onclick="setCategory('${cat.key}')">
                 ${cat.name}
@@ -652,8 +647,24 @@
                 `<div class="product-image" style="background-image: url('${p.image}'); background-size: cover; background-position: center;"><div class="product-badge">${categoryName}</div></div>` : 
                 `<div class="product-image" style="background: linear-gradient(135deg, #1e3a5f, #0f2a4a); display: flex; align-items: center; justify-content: center;"><div style="font-size: 2.5rem;">${p.category === 'games' ? '🎮' : '💳'}</div><div class="product-badge">${categoryName}</div></div>`;
             
-            return `<div class="product-card">${hasDiscount ? `<div class="discount-badge">🔥 -${discountPercent}%</div>` : ''}${imageHtml}<div class="card-info"><div class="product-title">${escapeHtml(name)}</div><div class="product-details">${escapeHtml(desc || '')}</div><div class="price-container">${hasDiscount ? `<span class="old-price">${oldPrice}</span>` : ''}<span class="price">${price}</span></div>${!isOutOfStock ? `<button class="btn-wa" onclick="requestPurchase(${p.id}, '${escapeHtml(name)}', ${p.priceOMR})"><i class="fab fa-whatsapp"></i> ${currentLang === 'ar' ? 'اطلب الآن' : 'Order Now'}</button>` : `<button class="btn-wa disabled" disabled><i class="fas fa-times-circle"></i> ${currentLang === 'ar' ? 'نفذت الكمية' : 'Out of Stock'}</button>`}</div></div>`;
+            return `<div class="product-card">${hasDiscount ? `<div class="discount-badge">🔥 -${discountPercent}%</div>` : ''}${imageHtml}<div class="card-info"><div class="product-title">${escapeHtml(name)}</div><div class="product-details">${escapeHtml(desc || '')}</div><div class="price-container">${hasDiscount ? `<span class="old-price">${oldPrice}</span>` : ''}<span class="price">${price}</span></div>${!isOutOfStock ? `<button class="btn-wa" data-id="${p.id}" data-name="${escapeHtml(name)}" data-price="${p.priceOMR}"><i class="fab fa-whatsapp"></i> ${currentLang === 'ar' ? 'اطلب الآن' : 'Order Now'}</button>` : `<button class="btn-wa disabled" disabled><i class="fas fa-times-circle"></i> ${currentLang === 'ar' ? 'نفذت الكمية' : 'Out of Stock'}</button>`}</div></div>`;
         }).join('');
+        
+        // إضافة حدث النقر للأزرار (معالجة موحدة)
+        document.querySelectorAll('.btn-wa:not(.disabled)').forEach(btn => {
+            btn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const id = btn.getAttribute('data-id');
+                const name = btn.getAttribute('data-name');
+                const price = parseFloat(btn.getAttribute('data-price'));
+                if (id && name && !isNaN(price)) {
+                    requestPurchase(id, name, price);
+                } else {
+                    alert('حدث خطأ في بيانات المنتج');
+                }
+            };
+        });
         
         const pagContainer = document.getElementById('pagination');
         if (totalPages > 1) {
@@ -668,39 +679,26 @@
     function goToPage(page) { currentPage = page; renderProducts(); window.scrollTo({ top: 400, behavior: 'smooth' }); }
     function setCategory(cat) { currentCategory = cat; currentPage = 1; renderTabs(); renderProducts(); }
     
-    // ==================== طلب المنتج مع الشروط فقط ====================
+    // ==================== دوال الشروط والطلب ====================
     function requestPurchase(id, name, priceOMR) {
         pendingProductData = { id, name, priceOMR };
-        document.getElementById('termsCheck').checked = false;
-        document.getElementById('acceptTermsBtn').classList.remove('enabled');
         document.getElementById('termsModal').style.display = 'flex';
     }
     
-    function toggleTermsAccept() { 
-        const cb = document.getElementById('termsCheck'); 
-        cb.checked = !cb.checked; 
-        const btn = document.getElementById('acceptTermsBtn'); 
-        if (cb.checked) btn.classList.add('enabled'); 
-        else btn.classList.remove('enabled'); 
-    }
-    
-    function closeTermsModal() { 
-        document.getElementById('termsModal').style.display = 'none'; 
-        pendingProductData = null; 
+    function rejectTerms() {
+        document.getElementById('termsModal').style.display = 'none';
+        pendingProductData = null;
     }
     
     function acceptTerms() {
-        if (!document.getElementById('termsCheck').checked) { 
-            alert('يرجى الموافقة على الشروط والأحكام'); 
-            return; 
-        }
         if (!pendingProductData) return;
         const { name, priceOMR } = pendingProductData;
         const sym = currencySymbols[currentCurrency];
         const convertedPrice = (priceOMR * exchangeRates[currentCurrency]).toFixed(2);
         const message = `🛒 طلب شراء من xnesto\n━━━━━━━━━━━━━━━━━━━━\n🎮 المنتج: ${name}\n💰 السعر: ${sym} ${convertedPrice}\n━━━━━━━━━━━━━━━━━━━━\n📞 يرجى تأكيد الطلب وإرسال طريقة الدفع.\n\n✅ أوافق على شروط وأحكام المتجر.`;
         window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
-        closeTermsModal();
+        document.getElementById('termsModal').style.display = 'none';
+        pendingProductData = null;
     }
     
     function setLang(lang) { 
@@ -748,16 +746,14 @@
     
     displayProductsImmediately();
     
-    window.toggleTermsAccept = toggleTermsAccept; 
-    window.closeTermsModal = closeTermsModal; 
-    window.acceptTerms = acceptTerms; 
-    window.requestPurchase = requestPurchase;
+    window.toggleMode = toggleMode;
+    window.setView = setView;
     window.setLang = setLang;
     window.setCurrency = setCurrency;
     window.setCategory = setCategory;
-    window.setView = setView;
-    window.toggleMode = toggleMode;
     window.goToPage = goToPage;
+    window.rejectTerms = rejectTerms;
+    window.acceptTerms = acceptTerms;
 </script>
 </body>
 </html>

@@ -16,6 +16,24 @@
             padding: 1.5rem;
             min-height: 100vh;
         }
+        
+        /* عرض المنتجات حسب الجهاز */
+        @media (max-width: 640px) {
+            body { padding: 0.5rem; }
+            .products-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 0.8rem; }
+            .product-image { height: 130px; background-size: contain !important; background-repeat: no-repeat !important; background-position: center !important; }
+            .product-title { font-size: 0.85rem; }
+            .price { font-size: 1rem; }
+        }
+        
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .products-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 1rem; }
+        }
+        
+        @media (min-width: 1025px) {
+            .products-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 1.5rem; }
+        }
+        
         .header {
             text-align: center;
             background: linear-gradient(135deg, #0f0f2a, #0a0a1f);
@@ -163,6 +181,7 @@
             font-weight: bold;
             transition: 0.2s;
             font-size: 0.9rem;
+            color: #f0f0ff;
         }
         .tab-btn.active { background: #ffaa44; color: #0a0a1a; border-color: #ffaa44; }
         
@@ -170,8 +189,7 @@
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
+            gap: 1rem;
         }
         .product-card {
             background: #11152b;
@@ -191,6 +209,7 @@
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 0.7rem;
+            z-index: 10;
         }
         .product-image {
             width: 100%;
@@ -458,16 +477,6 @@
         body.light-mode .product-title { color: #1a1a2e !important; }
         body.light-mode .footer { background: #1a3a7a !important; }
         body.light-mode .device-bar { background: #1a3a7a !important; }
-        body.view-mobile .products-grid { grid-template-columns: repeat(2, 1fr) !important; }
-        body.view-desktop .products-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
-        
-        @media (max-width: 640px) {
-            body { padding: 0.5rem; }
-            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
-            .product-image { height: 130px; }
-            .product-title { font-size: 0.85rem; }
-            .price { font-size: 1rem; }
-        }
     </style>
 </head>
 <body>
@@ -491,10 +500,14 @@
     <div class="currency-selector">
         <label><i class="fas fa-coins"></i> <span id="currencyLabel">العملة:</span></label>
         <select id="currencySelect" onchange="setCurrency(this.value)">
-            <option value="OMR">ريال عماني (OMR)</option>
-            <option value="USD">دولار أمريكي (USD)</option>
-            <option value="SAR">ريال سعودي (SAR)</option>
-            <option value="AED">درهم إماراتي (AED)</option>
+            <option value="OMR">🇴🇲 ريال عماني</option>
+            <option value="SAR">🇸🇦 ريال سعودي</option>
+            <option value="AED">🇦🇪 درهم إماراتي</option>
+            <option value="KWD">🇰🇼 دينار كويتي</option>
+            <option value="BHD">🇧🇭 دينار بحريني</option>
+            <option value="QAR">🇶🇦 ريال قطري</option>
+            <option value="USD">🇺🇸 دولار أمريكي</option>
+            <option value="EUR">🇪🇺 يورو</option>
         </select>
     </div>
     <div class="auth-buttons" id="authButtons">
@@ -510,9 +523,7 @@
     </div>
 </div>
 
-<div id="tabsContainer" class="tabs-container">
-    <!-- سيتم تعبئة التصنيفات من Firebase -->
-</div>
+<div id="tabsContainer" class="tabs-container"></div>
 
 <div id="productsContainer" class="products-grid"></div>
 <div id="pagination" class="pagination"></div>
@@ -529,7 +540,6 @@
     <i class="fab fa-whatsapp"></i>
 </a>
 
-<!-- مودال تسجيل الدخول -->
 <div id="loginModal" class="login-modal">
     <div class="login-box">
         <h2><i class="fas fa-user-plus"></i> تسجيل دخول العميل</h2>
@@ -541,7 +551,6 @@
     </div>
 </div>
 
-<!-- مودال الشروط -->
 <div id="termsModal" class="terms-modal">
     <div class="terms-box">
         <h3><i class="fas fa-file-contract"></i> شروط وأحكام الشراء</h3>
@@ -579,46 +588,68 @@
     const WA_NUMBER = "96879977100";
     const INSTA_USERNAME = "xnesto_store";
     
-    const exchangeRates = { OMR: 1, USD: 2.6, SAR: 9.75, AED: 9.55 };
-    const currencySymbols = { OMR: "ر.ع", USD: "$", SAR: "ر.س", AED: "د.إ" };
+    // العملات المطلوبة: دول الخليج + دولار + يورو
+    const exchangeRates = { OMR: 1, SAR: 9.75, AED: 9.55, KWD: 0.79, BHD: 0.98, QAR: 9.46, USD: 2.6, EUR: 2.4 };
+    const currencySymbols = { OMR: "ر.ع", SAR: "ر.س", AED: "د.إ", KWD: "د.ك", BHD: "د.ب", QAR: "ر.ق", USD: "$", EUR: "€" };
     
-    // ==================== 50 لعبة كاملة ====================
+    // ==================== 50 لعبة كاملة (محفوظة للاستخدام الافتراضي) ====================
     const allGames = [
-        { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English" },
-        { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English" },
-        { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", priceOMR: 6, oldPrice: 10, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", detailsAr: "🏷️ 150GB | 🌍 عالم مفتوح", detailsEn: "📦 150GB | 🌍 Open World" },
-        { id: 4, nameAr: "God of War Ragnarök", nameEn: "God of War Ragnarök", priceOMR: 10, oldPrice: 15, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg", detailsAr: "🏷️ 85GB | 🪓 ملحمة إسكندنافية", detailsEn: "📦 85GB | 🪓 Norse Saga" },
-        { id: 5, nameAr: "Spider-Man 2", nameEn: "Spider-Man 2", priceOMR: 16, oldPrice: 22, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", detailsAr: "🏷️ 98GB | 🕷️ بيتر + مايلز", detailsEn: "📦 98GB | 🕷️ Peter + Miles" }
+        { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, stock: 50, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English", category: "games" },
+        { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English", category: "games" },
+        { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", priceOMR: 6, oldPrice: 10, stock: 100, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", detailsAr: "🏷️ 150GB | 🌍 عالم مفتوح", detailsEn: "📦 150GB | 🌍 Open World", category: "games" },
+        { id: 4, nameAr: "God of War Ragnarök", nameEn: "God of War Ragnarök", priceOMR: 10, oldPrice: 15, stock: 60, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg", detailsAr: "🏷️ 85GB | 🪓 ملحمة إسكندنافية", detailsEn: "📦 85GB | 🪓 Norse Saga", category: "games" },
+        { id: 5, nameAr: "Spider-Man 2", nameEn: "Spider-Man 2", priceOMR: 16, oldPrice: 22, stock: 40, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", detailsAr: "🏷️ 98GB | 🕷️ بيتر + مايلز", detailsEn: "📦 98GB | 🕷️ Peter + Miles", category: "games" }
     ];
     for (let i = 6; i <= 50; i++) {
         allGames.push({
             id: i, nameAr: `لعبة PS5 مميزة ${i}`, nameEn: `Premium PS5 Game ${i}`,
             priceOMR: 9 + Math.floor(Math.random() * 10), oldPrice: 12 + Math.floor(Math.random() * 10),
+            stock: 20 + Math.floor(Math.random() * 80),
             image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2358720/header.jpg",
-            detailsAr: `🏷️ لعبة رقم ${i}`, detailsEn: `Game ${i}`
+            detailsAr: `🏷️ لعبة رقم ${i}`, detailsEn: `Game ${i}`, category: "games"
         });
     }
     
     const giftCards = [
-        { id: 101, nameAr: "🇺🇸 بطاقة أمريكي", nameEn: "🇺🇸 US Card", category: "giftcards", priceOMR: 5, oldPrice: 6, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/30px-Flag_of_the_United_States.svg.png", detailsAr: "10$ | 25$ | 50$ | 100$", detailsEn: "10$ | 25$ | 50$ | 100$" },
-        { id: 102, nameAr: "🇸🇦 بطاقة سعودي", nameEn: "🇸🇦 Saudi Card", category: "giftcards", priceOMR: 4.5, oldPrice: 5.5, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/30px-Flag_of_Saudi_Arabia.svg.png", detailsAr: "50ر.س | 100ر.س | 200ر.س", detailsEn: "50 SAR | 100 SAR | 200 SAR" },
-        { id: 103, nameAr: "🇦🇪 بطاقة إماراتي", nameEn: "🇦🇪 UAE Card", category: "giftcards", priceOMR: 5, oldPrice: 6, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_United_Arab_Emirates.svg/30px-Flag_of_the_United_Arab_Emirates.svg.png", detailsAr: "50د.إ | 100د.إ | 200د.إ", detailsEn: "50 AED | 100 AED | 200 AED" },
-        { id: 104, nameAr: "🇶🇦 بطاقة قطري", nameEn: "🇶🇦 Qatar Card", category: "giftcards", priceOMR: 4.5, oldPrice: 5.5, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Qatar.svg/30px-Flag_of_Qatar.svg.png", detailsAr: "50ر.ق | 100ر.ق | 200ر.ق", detailsEn: "50 QAR | 100 QAR | 200 QAR" },
-        { id: 105, nameAr: "🇰🇼 بطاقة كويتي", nameEn: "🇰🇼 Kuwait Card", category: "giftcards", priceOMR: 6, oldPrice: 7, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Kuwait.svg/30px-Flag_of_Kuwait.svg.png", detailsAr: "5د.ك | 10د.ك | 20د.ك", detailsEn: "5 KWD | 10 KWD | 20 KWD" },
-        { id: 106, nameAr: "🇧🇭 بطاقة بحريني", nameEn: "🇧🇭 Bahrain Card", category: "giftcards", priceOMR: 5.5, oldPrice: 6.5, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Bahrain.svg/30px-Flag_of_Bahrain.svg.png", detailsAr: "5د.ب | 10د.ب | 20د.ب", detailsEn: "5 BHD | 10 BHD | 20 BHD" },
-        { id: 107, nameAr: "🇴🇲 بطاقة عماني", nameEn: "🇴🇲 Oman Card", category: "giftcards", priceOMR: 5, oldPrice: 6, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Oman.svg/30px-Flag_of_Oman.svg.png", detailsAr: "5ر.ع | 10ر.ع | 20ر.ع", detailsEn: "5 OMR | 10 OMR | 20 OMR" },
-        { id: 108, nameAr: "🇮🇳 بطاقة هندي", nameEn: "🇮🇳 India Card", category: "giftcards", priceOMR: 3.5, oldPrice: 4.5, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_India.svg/30px-Flag_of_India.svg.png", detailsAr: "500₹ | 1000₹ | 2000₹", detailsEn: "500₹ | 1000₹ | 2000₹" },
-        { id: 109, nameAr: "🇹🇷 بطاقة تركي", nameEn: "🇹🇷 Turkey Card", category: "giftcards", priceOMR: 4, oldPrice: 5, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Turkey.svg/30px-Flag_of_Turkey.svg.png", detailsAr: "100₺ | 250₺ | 500₺", detailsEn: "100₺ | 250₺ | 500₺" },
-        { id: 110, nameAr: "🇮🇩 بطاقة إندونيسي", nameEn: "🇮🇩 Indonesia Card", category: "giftcards", priceOMR: 4, oldPrice: 5, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/30px-Flag_of_Indonesia.svg.png", detailsAr: "50k | 100k | 200k", detailsEn: "50k | 100k | 200k" }
+        { id: 101, nameAr: "🇺🇸 بطاقة أمريكي", nameEn: "🇺🇸 US Card", category: "giftcards", priceOMR: 5, oldPrice: 6, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/30px-Flag_of_the_United_States.svg.png", detailsAr: "10$ | 25$ | 50$ | 100$", detailsEn: "10$ | 25$ | 50$ | 100$" },
+        { id: 102, nameAr: "🇸🇦 بطاقة سعودي", nameEn: "🇸🇦 Saudi Card", category: "giftcards", priceOMR: 4.5, oldPrice: 5.5, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/30px-Flag_of_Saudi_Arabia.svg.png", detailsAr: "50ر.س | 100ر.س | 200ر.س", detailsEn: "50 SAR | 100 SAR | 200 SAR" },
+        { id: 103, nameAr: "🇦🇪 بطاقة إماراتي", nameEn: "🇦🇪 UAE Card", category: "giftcards", priceOMR: 5, oldPrice: 6, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_United_Arab_Emirates.svg/30px-Flag_of_the_United_Arab_Emirates.svg.png", detailsAr: "50د.إ | 100د.إ | 200د.إ", detailsEn: "50 AED | 100 AED | 200 AED" },
+        { id: 104, nameAr: "🇶🇦 بطاقة قطري", nameEn: "🇶🇦 Qatar Card", category: "giftcards", priceOMR: 4.5, oldPrice: 5.5, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Qatar.svg/30px-Flag_of_Qatar.svg.png", detailsAr: "50ر.ق | 100ر.ق | 200ر.ق", detailsEn: "50 QAR | 100 QAR | 200 QAR" },
+        { id: 105, nameAr: "🇰🇼 بطاقة كويتي", nameEn: "🇰🇼 Kuwait Card", category: "giftcards", priceOMR: 6, oldPrice: 7, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Kuwait.svg/30px-Flag_of_Kuwait.svg.png", detailsAr: "5د.ك | 10د.ك | 20د.ك", detailsEn: "5 KWD | 10 KWD | 20 KWD" },
+        { id: 106, nameAr: "🇧🇭 بطاقة بحريني", nameEn: "🇧🇭 Bahrain Card", category: "giftcards", priceOMR: 5.5, oldPrice: 6.5, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Bahrain.svg/30px-Flag_of_Bahrain.svg.png", detailsAr: "5د.ب | 10د.ب | 20د.ب", detailsEn: "5 BHD | 10 BHD | 20 BHD" },
+        { id: 107, nameAr: "🇴🇲 بطاقة عماني", nameEn: "🇴🇲 Oman Card", category: "giftcards", priceOMR: 5, oldPrice: 6, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Oman.svg/30px-Flag_of_Oman.svg.png", detailsAr: "5ر.ع | 10ر.ع | 20ر.ع", detailsEn: "5 OMR | 10 OMR | 20 OMR" }
     ];
     
-    for (let i = 0; i < allGames.length; i++) allGames[i].category = "games";
-    for (let i = 0; i < giftCards.length; i++) giftCards[i].category = "giftcards";
     const allDefaultProducts = [...allGames, ...giftCards];
     
-    // ==================== تحميل التصنيفات ====================
-    function loadCategories() {
-        categoriesRef.on('value', (snapshot) => {
+    // ==================== تحميل المنتجات من Firebase مع عرض فوري ====================
+    let firebaseLoaded = false;
+    
+    function displayProductsImmediately() {
+        // عرض رسالة تحميل مؤقتة
+        const container = document.getElementById('productsContainer');
+        if (container) {
+            container.innerHTML = '<div style="text-align:center; padding:2rem;"><i class="fas fa-spinner fa-spin"></i> جاري تحميل المنتجات...</div>';
+        }
+        
+        // محاولة تحميل المنتجات من Firebase
+        productsRef.once('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data && Array.isArray(data) && data.length > 0) {
+                products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
+            } else {
+                products = JSON.parse(JSON.stringify(allDefaultProducts));
+                products.forEach((p, idx) => { p.order = idx; });
+            }
+            renderProducts();
+            firebaseLoaded = true;
+        }).catch(() => {
+            products = JSON.parse(JSON.stringify(allDefaultProducts));
+            renderProducts();
+        });
+        
+        // تحميل التصنيفات
+        categoriesRef.once('value', (snapshot) => {
             const data = snapshot.val();
             if (data && data.categories && data.names) {
                 categories = data.categories;
@@ -628,31 +659,103 @@
                 categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
             }
             renderTabs();
+        }).catch(() => {
+            categories = ["games", "giftcards"];
+            categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
+            renderTabs();
         });
     }
+    
+    // الاستماع للتغييرات في Firebase (تحديث فوري)
+    productsRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data && Array.isArray(data) && data.length > 0 && firebaseLoaded) {
+            products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
+            renderProducts();
+        }
+    });
+    
+    categoriesRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data && data.categories && data.names) {
+            categories = data.categories;
+            categoryNames = data.names;
+            if (firebaseLoaded) renderTabs();
+        }
+    });
     
     function renderTabs() {
         const container = document.getElementById('tabsContainer');
         if (!container) return;
         
         const allCats = [
-            { key: "all", name: "🎮 جميع المنتجات", sub: "كل المنتجات" },
-            ...categories.map(c => ({ key: c, name: categoryNames[c] || c, sub: categoryNames[c] || c }))
+            { key: "all", name: currentLang === 'ar' ? "🎮 جميع المنتجات" : "🎮 All Products" },
+            ...categories.map(c => ({ key: c, name: categoryNames[c] || c }))
         ];
         
         container.innerHTML = allCats.map(cat => `
             <button class="tab-btn ${currentCategory === cat.key ? 'active' : ''}" onclick="setCategory('${cat.key}')">
-                <div class="tab-btn-bg" style="background:linear-gradient(135deg, #1a0a4e, #2d1a6e);display:flex;align-items:center;justify-content:center;font-size:2rem;">${cat.name.charAt(0)}</div>
-                <div class="tab-btn-overlay"></div>
-                <div class="tab-btn-text">
-                    <span class="tab-btn-title">${cat.name}</span>
-                    <span class="tab-btn-sub">${cat.sub}</span>
-                </div>
+                ${cat.name}
             </button>
         `).join('');
     }
     
-    // ==================== وظائف تسجيل الدخول ====================
+    function formatPrice(price) { 
+        const converted = (price * exchangeRates[currentCurrency]).toFixed(2);
+        return `${currencySymbols[currentCurrency]} ${converted}`; 
+    }
+    
+    function getFilteredProducts() {
+        let filtered = [...products];
+        if (searchQuery.trim()) {
+            const query = searchQuery.toLowerCase();
+            filtered = filtered.filter(p => (p.nameAr || '').toLowerCase().includes(query) || (p.nameEn || '').toLowerCase().includes(query));
+        }
+        if (currentCategory !== 'all') {
+            filtered = filtered.filter(p => p.category === currentCategory);
+        }
+        return filtered;
+    }
+    
+    function renderProducts() {
+        const filtered = getFilteredProducts();
+        const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+        if (currentPage > totalPages) currentPage = 1;
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const pageProducts = filtered.slice(start, start + ITEMS_PER_PAGE);
+        const container = document.getElementById('productsContainer');
+        if (pageProducts.length === 0) { container.innerHTML = '<div style="text-align:center; padding:2rem;">لا توجد منتجات حالياً</div>'; return; }
+        
+        container.innerHTML = pageProducts.map(p => {
+            const name = currentLang === 'ar' ? (p.nameAr || 'منتج') : (p.nameEn || 'Product');
+            const desc = currentLang === 'ar' ? (p.detailsAr || '') : (p.detailsEn || '');
+            const price = formatPrice(p.priceOMR);
+            const hasDiscount = p.oldPrice && p.oldPrice > p.priceOMR;
+            const oldPrice = hasDiscount ? formatPrice(p.oldPrice) : null;
+            const discountPercent = hasDiscount ? Math.round((1 - p.priceOMR / p.oldPrice) * 100) : 0;
+            const categoryName = categoryNames[p.category] || p.category;
+            const isOutOfStock = (p.stock || 999) <= 0;
+            
+            let imageHtml = p.image && p.image.trim() ? 
+                `<div class="product-image" style="background-image: url('${p.image}'); background-size: cover; background-position: center;"><div class="product-badge">${categoryName}</div></div>` : 
+                `<div class="product-image" style="background: linear-gradient(135deg, #1e3a5f, #0f2a4a); display: flex; align-items: center; justify-content: center;"><div style="font-size: 2.5rem;">${p.category === 'games' ? '🎮' : '💳'}</div><div class="product-badge">${categoryName}</div></div>`;
+            
+            return `<div class="product-card">${hasDiscount ? `<div class="discount-badge">🔥 -${discountPercent}%</div>` : ''}${imageHtml}<div class="card-info"><div class="product-title">${escapeHtml(name)}</div><div class="product-details">${escapeHtml(desc || '')}</div><div class="price-container">${hasDiscount ? `<span class="old-price">${oldPrice}</span>` : ''}<span class="price">${price}</span></div>${!isOutOfStock ? `<button class="btn-wa" onclick="requestPurchase(${p.id}, '${escapeHtml(name)}', ${p.priceOMR})"><i class="fab fa-whatsapp"></i> ${currentLang === 'ar' ? 'اطلب الآن' : 'Order Now'}</button>` : `<button class="btn-wa" disabled style="background:#888;"><i class="fas fa-times-circle"></i> ${currentLang === 'ar' ? 'نفذت الكمية' : 'Out of Stock'}</button>`}</div></div>`;
+        }).join('');
+        
+        const pagContainer = document.getElementById('pagination');
+        if (totalPages > 1) {
+            let pagesHtml = '';
+            for (let i = 1; i <= totalPages; i++) pagesHtml += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+            pagContainer.innerHTML = pagesHtml;
+        } else pagContainer.innerHTML = '';
+        document.getElementById('searchCount').innerHTML = filtered.length;
+    }
+    
+    function escapeHtml(text) { if (!text) return ''; return text.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m)); }
+    function goToPage(page) { currentPage = page; renderProducts(); window.scrollTo({ top: 400, behavior: 'smooth' }); }
+    function setCategory(cat) { currentCategory = cat; currentPage = 1; renderTabs(); renderProducts(); }
+    
     function validateEmail(email) {
         const re = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
         return re.test(email);
@@ -722,64 +825,6 @@
         }
     }
     
-    // ==================== وظائف المنتجات ====================
-    function loadProducts() {
-        productsRef.on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data && Array.isArray(data) && data.length > 0) products = data;
-            else { products = JSON.parse(JSON.stringify(allDefaultProducts)); productsRef.set(products); }
-            renderProducts();
-        });
-    }
-    
-    function formatPrice(price) { return `${currencySymbols[currentCurrency]} ${(price * exchangeRates[currentCurrency]).toFixed(2)}`; }
-    
-    function getFilteredProducts() {
-        let filtered = [...products];
-        if (searchQuery.trim()) {
-            const query = searchQuery.toLowerCase();
-            filtered = filtered.filter(p => p.nameAr.toLowerCase().includes(query) || p.nameEn.toLowerCase().includes(query));
-        }
-        if (currentCategory !== 'all') {
-            filtered = filtered.filter(p => p.category === currentCategory);
-        }
-        return filtered;
-    }
-    
-    function renderProducts() {
-        const filtered = getFilteredProducts();
-        const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
-        if (currentPage > totalPages) currentPage = 1;
-        const start = (currentPage - 1) * ITEMS_PER_PAGE;
-        const pageProducts = filtered.slice(start, start + ITEMS_PER_PAGE);
-        const container = document.getElementById('productsContainer');
-        if (pageProducts.length === 0) { container.innerHTML = '<div style="text-align:center; padding:2rem;">لا توجد منتجات حالياً</div>'; return; }
-        
-        container.innerHTML = pageProducts.map(p => {
-            const name = currentLang === 'ar' ? p.nameAr : p.nameEn;
-            const desc = currentLang === 'ar' ? p.detailsAr : p.detailsEn;
-            const price = formatPrice(p.priceOMR);
-            const hasDiscount = p.oldPrice && p.oldPrice > p.priceOMR;
-            const oldPrice = hasDiscount ? formatPrice(p.oldPrice) : null;
-            const discountPercent = hasDiscount ? Math.round((1 - p.priceOMR / p.oldPrice) * 100) : 0;
-            const categoryName = categoryNames[p.category] || p.category;
-            let imageHtml = p.image && p.image.trim() ? `<div class="product-image" style="background-image: url('${p.image}');"><div class="product-badge">${categoryName}</div></div>` : `<div class="product-image" style="background: linear-gradient(135deg, #1e3a5f, #0f2a4a); display: flex; align-items: center; justify-content: center;"><div style="font-size: 2.5rem;">${p.category === 'games' ? '🎮' : '💳'}</div><div class="product-badge">${categoryName}</div></div>`;
-            return `<div class="product-card">${hasDiscount ? `<div class="discount-badge">🔥 -${discountPercent}%</div>` : ''}${imageHtml}<div class="card-info"><div class="product-title">${escapeHtml(name)}</div><div class="product-details">${escapeHtml(desc || '')}</div><div class="price-container">${hasDiscount ? `<span class="old-price">${oldPrice}</span>` : ''}<span class="price">${price}</span></div><button class="btn-wa" onclick="requestPurchase(${p.id}, '${escapeHtml(name)}', ${p.priceOMR})"><i class="fab fa-whatsapp"></i> ${currentLang === 'ar' ? 'اطلب الآن' : 'Order Now'}</button></div></div>`;
-        }).join('');
-        
-        const pagContainer = document.getElementById('pagination');
-        if (totalPages > 1) {
-            let pagesHtml = '';
-            for (let i = 1; i <= totalPages; i++) pagesHtml += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
-            pagContainer.innerHTML = pagesHtml;
-        } else pagContainer.innerHTML = '';
-        document.getElementById('searchCount').innerHTML = filtered.length;
-    }
-    
-    function escapeHtml(text) { if (!text) return ''; return text.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m)); }
-    function goToPage(page) { currentPage = page; renderProducts(); }
-    function setCategory(cat) { currentCategory = cat; currentPage = 1; renderTabs(); renderProducts(); }
-    
     function requestPurchase(id, name, priceOMR) {
         if (!currentUser) {
             alert('الرجاء تسجيل الدخول أولاً');
@@ -792,10 +837,24 @@
         document.getElementById('termsModal').style.display = 'flex';
     }
     
-    function toggleTermsAccept() { const cb = document.getElementById('termsCheck'); cb.checked = !cb.checked; const btn = document.getElementById('acceptTermsBtn'); if (cb.checked) btn.classList.add('enabled'); else btn.classList.remove('enabled'); }
-    function closeTermsModal() { document.getElementById('termsModal').style.display = 'none'; pendingProductData = null; }
+    function toggleTermsAccept() { 
+        const cb = document.getElementById('termsCheck'); 
+        cb.checked = !cb.checked; 
+        const btn = document.getElementById('acceptTermsBtn'); 
+        if (cb.checked) btn.classList.add('enabled'); 
+        else btn.classList.remove('enabled'); 
+    }
+    
+    function closeTermsModal() { 
+        document.getElementById('termsModal').style.display = 'none'; 
+        pendingProductData = null; 
+    }
+    
     function acceptTerms() {
-        if (!document.getElementById('termsCheck').checked) { alert('يرجى الموافقة على الشروط والأحكام'); return; }
+        if (!document.getElementById('termsCheck').checked) { 
+            alert('يرجى الموافقة على الشروط والأحكام'); 
+            return; 
+        }
         if (!pendingProductData) return;
         const { name, priceOMR } = pendingProductData;
         const sym = currencySymbols[currentCurrency];
@@ -805,23 +864,68 @@
         closeTermsModal();
     }
     
-    function setLang(lang) { currentLang = lang; document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active')); event.target.classList.add('active'); renderProducts(); }
-    function setCurrency(currency) { currentCurrency = currency; renderProducts(); }
-    function toggleMode() { const isLight = document.body.classList.toggle('light-mode'); const btn = document.querySelector('.mode-toggle-btn'); btn.innerHTML = isLight ? '☀️ نهاري' : '🌙 ليلي'; localStorage.setItem('xnesto_mode', isLight ? 'light' : 'dark'); }
-    function setView(view) { document.body.classList.remove('view-mobile', 'view-desktop'); document.body.classList.add('view-' + view); localStorage.setItem('xnesto_view', view); }
+    function setLang(lang) { 
+        currentLang = lang; 
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active')); 
+        if (event && event.target) event.target.classList.add('active');
+        renderTabs();
+        renderProducts(); 
+    }
+    
+    function setCurrency(currency) { 
+        currentCurrency = currency; 
+        renderProducts(); 
+    }
+    
+    function toggleMode() { 
+        const isLight = document.body.classList.toggle('light-mode'); 
+        const btn = document.querySelector('.mode-toggle-btn'); 
+        btn.innerHTML = isLight ? '☀️ نهاري' : '🌙 ليلي'; 
+        localStorage.setItem('xnesto_mode', isLight ? 'light' : 'dark'); 
+    }
+    
+    function setView(view) { 
+        document.body.classList.remove('view-mobile', 'view-desktop'); 
+        document.body.classList.add('view-' + view); 
+        localStorage.setItem('xnesto_view', view); 
+        const btns = document.querySelectorAll('.device-btn');
+        btns.forEach(btn => btn.classList.remove('active'));
+        if (event && event.currentTarget) event.currentTarget.classList.add('active');
+    }
     
     document.getElementById('searchInput').addEventListener('input', (e) => { searchQuery = e.target.value; currentPage = 1; renderProducts(); });
-    const savedMode = localStorage.getItem('xnesto_mode'); if (savedMode === 'light') { document.body.classList.add('light-mode'); document.querySelector('.mode-toggle-btn').innerHTML = '☀️ نهاري'; }
-    const savedView = localStorage.getItem('xnesto_view') || 'mobile'; setView(savedView);
-    const savedCustomer = localStorage.getItem('xnesto_customer'); if (savedCustomer) { currentUser = JSON.parse(savedCustomer); updateUserUI(); }
+    
+    const savedMode = localStorage.getItem('xnesto_mode'); 
+    if (savedMode === 'light') { 
+        document.body.classList.add('light-mode'); 
+        const btn = document.querySelector('.mode-toggle-btn'); 
+        if (btn) btn.innerHTML = '☀️ نهاري'; 
+    }
+    const savedView = localStorage.getItem('xnesto_view') || 'mobile'; 
+    setView(savedView);
+    const savedCustomer = localStorage.getItem('xnesto_customer'); 
+    if (savedCustomer) { 
+        currentUser = JSON.parse(savedCustomer); 
+        updateUserUI(); 
+    }
     document.getElementById('instagramText').innerHTML = `<a href="https://instagram.com/${INSTA_USERNAME}" target="_blank" style="color:#ffaa66;text-decoration:none;">${INSTA_USERNAME}</a>`;
     document.getElementById('whatsappText').innerHTML = `<a href="https://wa.me/${WA_NUMBER}" target="_blank" style="color:#ffaa66;text-decoration:none;">+${WA_NUMBER}</a>`;
     
-    loadCategories();
-    loadProducts();
+    displayProductsImmediately();
     
-    window.toggleTermsAccept = toggleTermsAccept; window.closeTermsModal = closeTermsModal; window.acceptTerms = acceptTerms; window.requestPurchase = requestPurchase;
-    window.showLoginModal = showLoginModal; window.closeLoginModal = closeLoginModal; window.loginCustomer = loginCustomer;
+    window.toggleTermsAccept = toggleTermsAccept; 
+    window.closeTermsModal = closeTermsModal; 
+    window.acceptTerms = acceptTerms; 
+    window.requestPurchase = requestPurchase;
+    window.showLoginModal = showLoginModal; 
+    window.closeLoginModal = closeLoginModal; 
+    window.loginCustomer = loginCustomer;
+    window.setLang = setLang;
+    window.setCurrency = setCurrency;
+    window.setCategory = setCategory;
+    window.setView = setView;
+    window.toggleMode = toggleMode;
+    window.goToPage = goToPage;
 </script>
 </body>
 </html>

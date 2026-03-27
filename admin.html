@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -333,11 +331,11 @@
     
     // ==================== 50 لعبة كاملة ====================
     const defaultGames = [
-        { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, stock: 50, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English", order: 1 },
-        { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English", order: 2 },
-        { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", priceOMR: 6, oldPrice: 10, stock: 100, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", detailsAr: "🏷️ 150GB | 🌍 عالم مفتوح", detailsEn: "📦 150GB | 🌍 Open World", order: 3 },
-        { id: 4, nameAr: "God of War Ragnarök", nameEn: "God of War Ragnarök", priceOMR: 10, oldPrice: 15, stock: 60, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg", detailsAr: "🏷️ 85GB | 🪓 ملحمة إسكندنافية", detailsEn: "📦 85GB | 🪓 Norse Saga", order: 4 },
-        { id: 5, nameAr: "Spider-Man 2", nameEn: "Spider-Man 2", priceOMR: 16, oldPrice: 22, stock: 40, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", detailsAr: "🏷️ 98GB | 🕷️ بيتر + مايلز", detailsEn: "📦 98GB | 🕷️ Peter + Miles", order: 5 }
+        { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, stock: 50, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English", order: 1, category: "games" },
+        { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English", order: 2, category: "games" },
+        { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", priceOMR: 6, oldPrice: 10, stock: 100, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", detailsAr: "🏷️ 150GB | 🌍 عالم مفتوح", detailsEn: "📦 150GB | 🌍 Open World", order: 3, category: "games" },
+        { id: 4, nameAr: "God of War Ragnarök", nameEn: "God of War Ragnarök", priceOMR: 10, oldPrice: 15, stock: 60, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg", detailsAr: "🏷️ 85GB | 🪓 ملحمة إسكندنافية", detailsEn: "📦 85GB | 🪓 Norse Saga", order: 4, category: "games" },
+        { id: 5, nameAr: "Spider-Man 2", nameEn: "Spider-Man 2", priceOMR: 16, oldPrice: 22, stock: 40, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", detailsAr: "🏷️ 98GB | 🕷️ بيتر + مايلز", detailsEn: "📦 98GB | 🕷️ Peter + Miles", order: 5, category: "games" }
     ];
     for (let i = 6; i <= 50; i++) {
         defaultGames.push({
@@ -345,7 +343,7 @@
             priceOMR: 9 + Math.floor(Math.random() * 10), oldPrice: 12 + Math.floor(Math.random() * 10),
             stock: 20 + Math.floor(Math.random() * 80),
             image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2358720/header.jpg",
-            detailsAr: `🏷️ لعبة رقم ${i}`, detailsEn: `Game ${i}`, order: i
+            detailsAr: `🏷️ لعبة رقم ${i}`, detailsEn: `Game ${i}`, order: i, category: "games"
         });
     }
     
@@ -356,37 +354,72 @@
         { id: 104, nameAr: "🇶🇦 بطاقة قطري", nameEn: "🇶🇦 Qatar Card", category: "giftcards", priceOMR: 4.5, oldPrice: 5.5, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Qatar.svg/30px-Flag_of_Qatar.svg.png", detailsAr: "50ر.ق | 100ر.ق | 200ر.ق", detailsEn: "50 QAR | 100 QAR | 200 QAR", order: 104 },
         { id: 105, nameAr: "🇰🇼 بطاقة كويتي", nameEn: "🇰🇼 Kuwait Card", category: "giftcards", priceOMR: 6, oldPrice: 7, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Kuwait.svg/30px-Flag_of_Kuwait.svg.png", detailsAr: "5د.ك | 10د.ك | 20د.ك", detailsEn: "5 KWD | 10 KWD | 20 KWD", order: 105 },
         { id: 106, nameAr: "🇧🇭 بطاقة بحريني", nameEn: "🇧🇭 Bahrain Card", category: "giftcards", priceOMR: 5.5, oldPrice: 6.5, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Bahrain.svg/30px-Flag_of_Bahrain.svg.png", detailsAr: "5د.ب | 10د.ب | 20د.ب", detailsEn: "5 BHD | 10 BHD | 20 BHD", order: 106 },
-        { id: 107, nameAr: "🇴🇲 بطاقة عماني", nameEn: "🇴🇲 Oman Card", category: "giftcards", priceOMR: 5, oldPrice: 6, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Oman.svg/30px-Flag_of_Oman.svg.png", detailsAr: "5ر.ع | 10ر.ع | 20ر.ع", detailsEn: "5 OMR | 10 OMR | 20 OMR", order: 107 },
-        { id: 108, nameAr: "🇮🇳 بطاقة هندي", nameEn: "🇮🇳 India Card", category: "giftcards", priceOMR: 3.5, oldPrice: 4.5, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_India.svg/30px-Flag_of_India.svg.png", detailsAr: "500₹ | 1000₹ | 2000₹", detailsEn: "500₹ | 1000₹ | 2000₹", order: 108 },
-        { id: 109, nameAr: "🇹🇷 بطاقة تركي", nameEn: "🇹🇷 Turkey Card", category: "giftcards", priceOMR: 4, oldPrice: 5, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Turkey.svg/30px-Flag_of_Turkey.svg.png", detailsAr: "100₺ | 250₺ | 500₺", detailsEn: "100₺ | 250₺ | 500₺", order: 109 },
-        { id: 110, nameAr: "🇮🇩 بطاقة إندونيسي", nameEn: "🇮🇩 Indonesia Card", category: "giftcards", priceOMR: 4, oldPrice: 5, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/30px-Flag_of_Indonesia.svg.png", detailsAr: "50k | 100k | 200k", detailsEn: "50k | 100k | 200k", order: 110 }
+        { id: 107, nameAr: "🇴🇲 بطاقة عماني", nameEn: "🇴🇲 Oman Card", category: "giftcards", priceOMR: 5, oldPrice: 6, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Oman.svg/30px-Flag_of_Oman.svg.png", detailsAr: "5ر.ع | 10ر.ع | 20ر.ع", detailsEn: "5 OMR | 10 OMR | 20 OMR", order: 107 }
     ];
     
-    for (let i = 0; i < defaultGames.length; i++) defaultGames[i].category = "games";
-    for (let i = 0; i < giftCards.length; i++) giftCards[i].category = "giftcards";
     const allDefaultProducts = [...defaultGames, ...giftCards];
     
-    // ==================== ترتيب المنتجات ====================
-    function moveProductUp(index) {
-        if (index === 0) return;
-        const temp = products[index];
-        products[index] = products[index - 1];
-        products[index - 1] = temp;
-        updateOrder();
-    }
+    // ==================== تحميل المنتجات من Firebase مع عرض فوري ====================
+    let firebaseLoaded = false;
     
-    function moveProductDown(index) {
-        if (index === products.length - 1) return;
-        const temp = products[index];
-        products[index] = products[index + 1];
-        products[index + 1] = temp;
-        updateOrder();
-    }
-    
-    function updateOrder() {
+    function displayProductsImmediately() {
+        // عرض المنتجات المحلية فوراً
+        products = JSON.parse(JSON.stringify(allDefaultProducts));
         products.forEach((p, idx) => { p.order = idx; });
-        saveProducts();
         renderTable();
+        
+        // تحميل التصنيفات
+        categoriesRef.once('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data && data.categories && data.names) {
+                categories = data.categories;
+                categoryNames = data.names;
+            } else {
+                categories = ["games", "giftcards"];
+                categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
+            }
+            updateCategoriesUI();
+            updateCategorySelect();
+            updateFilterSelect();
+            firebaseLoaded = true;
+        }).catch(() => {
+            categories = ["games", "giftcards"];
+            categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
+            updateCategoriesUI();
+            updateCategorySelect();
+            updateFilterSelect();
+        });
+        
+        // تحميل المنتجات من Firebase في الخلفية
+        productsRef.once('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data && Array.isArray(data) && data.length > 0) {
+                products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
+                renderTable();
+            } else {
+                productsRef.set(allDefaultProducts);
+            }
+        }).catch(() => {});
+        
+        // الاستماع للتغييرات في Firebase (تحديث فوري)
+        productsRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data && Array.isArray(data) && data.length > 0 && firebaseLoaded) {
+                products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
+                renderTable();
+            }
+        });
+        
+        categoriesRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data && data.categories && data.names && firebaseLoaded) {
+                categories = data.categories;
+                categoryNames = data.names;
+                updateCategoriesUI();
+                updateCategorySelect();
+                updateFilterSelect();
+            }
+        });
     }
     
     // ==================== وظائف أخرى ====================
@@ -426,29 +459,12 @@
                 const list = Object.values(visitors).reverse();
                 document.getElementById('visitorsTable').innerHTML = `
                     <div style="padding:0.5rem; border-bottom:1px solid rgba(255,170,68,0.2);"><i class="fas fa-users"></i> آخر الزوار</div>
-                     <table><thead><tr><th>الوقت</th><th>التاريخ</th><th>المتصفح</th><th>المصدر</th></tr></thead><tbody>
+                    <table><thead><tr><th>الوقت</th><th>التاريخ</th><th>المتصفح</th><th>المصدر</th></tr></thead><tbody>
                         ${list.map(v => `<tr><td>${v.time || '-'}</td><td>${v.date || '-'}</td><td>${(v.userAgent || '').substring(0, 25)}...</td><td>${v.referrer === 'مباشر' ? '🔗 رابط' : '🔍 خارجي'}</td></tr>`).join('')}
                     </tbody></table>
                 `;
                 document.getElementById('visitorsTable').style.display = 'block';
             }
-        });
-    }
-    
-    function loadCategories() {
-        categoriesRef.on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data && data.categories && data.names) {
-                categories = data.categories;
-                categoryNames = data.names;
-            } else {
-                categories = ["games", "giftcards"];
-                categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
-                saveCategories();
-            }
-            updateCategoriesUI();
-            updateCategorySelect();
-            updateFilterSelect();
         });
     }
     
@@ -537,13 +553,12 @@
         document.getElementById('categoriesManager').style.display = 'block';
         document.getElementById('logoutBtn').style.display = 'inline-block';
         document.getElementById('deleteAllBtn').style.display = 'inline-block';
-        loadProducts();
+        displayProductsImmediately();
         loadVisitorStats();
-        loadCategories();
     }
     
     function logout() { localStorage.removeItem(SESSION_KEY); window.location.reload(); }
-    function deleteAllProducts() { if (confirm('⚠️ حذف جميع المنتجات؟')) { productsRef.set([]); alert('تم الحذف'); loadProducts(); } }
+    function deleteAllProducts() { if (confirm('⚠️ حذف جميع المنتجات؟')) { productsRef.set([]); alert('تم الحذف'); renderTable(); } }
     
     document.getElementById('logoutBtn').onclick = logout;
     document.getElementById('deleteAllBtn').onclick = deleteAllProducts;
@@ -569,27 +584,44 @@
         });
     }
     
-    function loadProducts() {
-        productsRef.on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data && Array.isArray(data) && data.length > 0) {
-                products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
-            } else {
-                products = JSON.parse(JSON.stringify(allDefaultProducts));
-                products.forEach((p, idx) => { p.order = idx; });
-                productsRef.set(products);
-            }
-            renderTable();
-        });
+    function saveProducts() { 
+        productsRef.set(products)
+            .then(() => console.log('✅ تم حفظ المنتجات'))
+            .catch(err => console.error('❌ خطأ:', err));
     }
-    
-    function saveProducts() { productsRef.set(products); }
     
     function getFilteredProducts() {
         let filtered = [...products];
-        if (searchQuery) filtered = filtered.filter(p => p.nameAr.toLowerCase().includes(searchQuery) || p.nameEn.toLowerCase().includes(searchQuery));
+        if (searchQuery) filtered = filtered.filter(p => (p.nameAr || '').toLowerCase().includes(searchQuery) || (p.nameEn || '').toLowerCase().includes(searchQuery));
         if (filterCategory !== 'all') filtered = filtered.filter(p => p.category === filterCategory);
         return filtered;
+    }
+    
+    function moveProductUp(index) {
+        if (index === 0) return;
+        const temp = products[index];
+        products[index] = products[index - 1];
+        products[index - 1] = temp;
+        updateOrder();
+    }
+    
+    function moveProductDown(index) {
+        if (index === products.length - 1) return;
+        const temp = products[index];
+        products[index] = products[index + 1];
+        products[index + 1] = temp;
+        updateOrder();
+    }
+    
+    function updateOrder() {
+        products.forEach((p, idx) => { p.order = idx; });
+        saveProducts();
+        renderTable();
+    }
+    
+    function updateStock(id, newStock) {
+        const product = products.find(p => p.id === id);
+        if (product) { product.stock = parseInt(newStock); saveProducts(); renderTable(); }
     }
     
     function renderTable() {
@@ -612,24 +644,27 @@
         `;
         
         const tbody = document.getElementById('tableBody');
-        tbody.innerHTML = filtered.map((p, idx) => `
-            <tr id="row-${p.id}" data-id="${p.id}">
-                <td><input type="checkbox" class="product-checkbox" value="${p.id}" onchange="updateSelectedCount()"></td>
-                 <td class="order-col">
-                    <div class="order-buttons">
-                        <button class="order-btn" onclick="moveProductUp(${products.indexOf(p)})" ${idx === 0 ? 'disabled style="opacity:0.5;"' : ''}>⬆️</button>
-                        <button class="order-btn" onclick="moveProductDown(${products.indexOf(p)})" ${idx === products.length-1 ? 'disabled style="opacity:0.5;"' : ''}>⬇️</button>
-                    </div>
-                 </td>
-                 <td><img src="${p.image || ''}" width="35" height="35" style="border-radius:6px;" onerror="this.src='https://via.placeholder.com/35'"></td>
-                 <td>${escapeHtml(p.nameAr)}<br><small>${escapeHtml(p.nameEn)}</small></td>
-                 <td>${p.priceOMR} ر.ع${p.oldPrice ? `<br><span style="text-decoration:line-through;">${p.oldPrice}</span>` : ''}</td>
-                 <td><input type="number" class="stock-input" id="stock_${p.id}" value="${p.stock || 0}" min="0" step="1" onchange="updateStock(${p.id}, this.value)" style="${(p.stock || 0) === 0 ? 'border-color:#ff4444;' : ''}"><span class="${(p.stock || 0) === 0 ? 'out-stock' : (p.stock || 0) < 10 ? 'low-stock' : ''}" style="display:block;font-size:0.6rem;">${(p.stock || 0) === 0 ? 'نفذت' : (p.stock || 0) < 10 ? 'متبقي' : ''}</span></td>
-                 <td>${categoryNames[p.category] || p.category}</td>
-                 <td><button class="edit-btn" onclick="openEditForm(${p.id})">✏️</button><button class="delete-btn" onclick="deleteProduct(${p.id})">🗑️</button></td>
-             </tr>
-            <tr id="edit-form-${p.id}" style="display:none;"><td colspan="8"><div class="product-edit-form"><input type="text" id="editNameAr_${p.id}" value="${escapeHtml(p.nameAr)}"><input type="text" id="editNameEn_${p.id}" value="${escapeHtml(p.nameEn)}"><input type="number" id="editPrice_${p.id}" value="${p.priceOMR}" step="0.5"><input type="number" id="editOldPrice_${p.id}" value="${p.oldPrice || ''}" step="0.5"><input type="number" id="editStock_${p.id}" value="${p.stock || 0}" step="1"><div class="edit-image-upload" onclick="document.getElementById('editImageFile_${p.id}').click()"><i class="fas fa-cloud-upload-alt"></i> صورة<input type="file" id="editImageFile_${p.id}" accept="image/*" style="display:none;"></div><img id="editImagePreview_${p.id}" class="edit-image-preview"><input type="text" id="editImageUrl_${p.id}" value="${escapeHtml(p.image || '')}" placeholder="رابط الصورة"><textarea id="editDescAr_${p.id}" rows="1">${escapeHtml(p.detailsAr || '')}</textarea><textarea id="editDescEn_${p.id}" rows="1">${escapeHtml(p.detailsEn || '')}</textarea><select id="editCategory_${p.id}">${categories.map(cat => `<option value="${cat}" ${p.category === cat ? 'selected' : ''}>${categoryNames[cat]}</option>`).join('')}</select><button onclick="saveEdit(${p.id})" style="background:#00cc88;">💾 حفظ</button><button onclick="closeEditForm(${p.id})" style="background:#ff4444;">إلغاء</button></div></td></tr>
-        `).join('');
+        tbody.innerHTML = filtered.map((p, idx) => {
+            const originalIndex = products.findIndex(prod => prod.id === p.id);
+            return `
+                <tr id="row-${p.id}" data-id="${p.id}">
+                    <td><input type="checkbox" class="product-checkbox" value="${p.id}" onchange="updateSelectedCount()"></td>
+                    <td class="order-col">
+                        <div class="order-buttons">
+                            <button class="order-btn" onclick="moveProductUp(${originalIndex})" ${originalIndex === 0 ? 'disabled style="opacity:0.5;"' : ''}>⬆️</button>
+                            <button class="order-btn" onclick="moveProductDown(${originalIndex})" ${originalIndex === products.length-1 ? 'disabled style="opacity:0.5;"' : ''}>⬇️</button>
+                        </div>
+                    </td>
+                    <td><img src="${p.image || ''}" width="35" height="35" style="border-radius:6px;" onerror="this.src='https://via.placeholder.com/35'"></td>
+                    <td>${escapeHtml(p.nameAr)}<br><small>${escapeHtml(p.nameEn)}</small></td>
+                    <td>${p.priceOMR} ر.ع${p.oldPrice ? `<br><span style="text-decoration:line-through;">${p.oldPrice}</span>` : ''}</td>
+                    <td><input type="number" class="stock-input" id="stock_${p.id}" value="${p.stock || 0}" min="0" step="1" onchange="updateStock(${p.id}, this.value)" style="${(p.stock || 0) === 0 ? 'border-color:#ff4444;' : ''}"><span class="${(p.stock || 0) === 0 ? 'out-stock' : (p.stock || 0) < 10 ? 'low-stock' : ''}" style="display:block;font-size:0.6rem;">${(p.stock || 0) === 0 ? 'نفذت' : (p.stock || 0) < 10 ? 'متبقي' : ''}</span></td>
+                    <td>${categoryNames[p.category] || p.category}</td>
+                    <td><button class="edit-btn" onclick="openEditForm(${p.id})">✏️</button><button class="delete-btn" onclick="deleteProduct(${p.id})">🗑️</button></td>
+                </tr>
+                <tr id="edit-form-${p.id}" style="display:none;"><td colspan="8"><div class="product-edit-form"><input type="text" id="editNameAr_${p.id}" value="${escapeHtml(p.nameAr)}"><input type="text" id="editNameEn_${p.id}" value="${escapeHtml(p.nameEn)}"><input type="number" id="editPrice_${p.id}" value="${p.priceOMR}" step="0.5"><input type="number" id="editOldPrice_${p.id}" value="${p.oldPrice || ''}" step="0.5"><input type="number" id="editStock_${p.id}" value="${p.stock || 0}" step="1"><div class="edit-image-upload" onclick="document.getElementById('editImageFile_${p.id}').click()"><i class="fas fa-cloud-upload-alt"></i> صورة<input type="file" id="editImageFile_${p.id}" accept="image/*" style="display:none;"></div><img id="editImagePreview_${p.id}" class="edit-image-preview"><input type="text" id="editImageUrl_${p.id}" value="${escapeHtml(p.image || '')}" placeholder="رابط الصورة"><textarea id="editDescAr_${p.id}" rows="1">${escapeHtml(p.detailsAr || '')}</textarea><textarea id="editDescEn_${p.id}" rows="1">${escapeHtml(p.detailsEn || '')}</textarea><select id="editCategory_${p.id}">${categories.map(cat => `<option value="${cat}" ${p.category === cat ? 'selected' : ''}>${categoryNames[cat]}</option>`).join('')}</select><button onclick="saveEdit(${p.id})" style="background:#00cc88;">💾 حفظ</button><button onclick="closeEditForm(${p.id})" style="background:#ff4444;">إلغاء</button></div></td></tr>
+            `;
+        }).join('');
         
         products.forEach(p => {
             const editFileInput = document.getElementById(`editImageFile_${p.id}`);
@@ -646,23 +681,26 @@
     
     function updateSelectedCount() {
         const checkboxes = document.querySelectorAll('.product-checkbox:checked');
-        document.getElementById('selectedCount').innerText = checkboxes.length;
+        const selectedCount = document.getElementById('selectedCount');
+        if (selectedCount) selectedCount.innerText = checkboxes.length;
     }
+    
     function toggleSelectAll() {
         const isChecked = document.getElementById('selectAllCheckbox').checked;
         document.querySelectorAll('.product-checkbox').forEach(cb => cb.checked = isChecked);
         updateSelectedCount();
     }
+    
     function batchDelete() {
         const selected = Array.from(document.querySelectorAll('.product-checkbox:checked')).map(cb => parseInt(cb.value));
         if (selected.length === 0) { alert('لم تختار أي منتج'); return; }
         if (confirm(`⚠️ حذف ${selected.length} منتج؟`)) {
             products = products.filter(p => !selected.includes(p.id));
-            saveProducts();
-            renderTable();
+            updateOrder();
             alert('✅ تم الحذف');
         }
     }
+    
     function batchUpdateStock() {
         const selected = Array.from(document.querySelectorAll('.product-checkbox:checked')).map(cb => parseInt(cb.value));
         if (selected.length === 0) { alert('لم تختار أي منتج'); return; }
@@ -674,10 +712,7 @@
             alert('✅ تم التحديث');
         }
     }
-    function updateStock(id, newStock) {
-        const product = products.find(p => p.id === id);
-        if (product) { product.stock = parseInt(newStock); saveProducts(); renderTable(); }
-    }
+    
     function escapeHtml(text) { if (!text) return ''; return text.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m] || m)); }
     function openEditForm(id) { document.getElementById(`edit-form-${id}`).style.display = 'table-row'; }
     function closeEditForm(id) { document.getElementById(`edit-form-${id}`).style.display = 'none'; }
@@ -696,7 +731,7 @@
         product.detailsAr = document.getElementById(`editDescAr_${id}`).value;
         product.detailsEn = document.getElementById(`editDescEn_${id}`).value;
         product.category = document.getElementById(`editCategory_${id}`).value;
-        await saveProducts();
+        saveProducts();
         closeEditForm(id);
         alert('✅ تم التحديث');
         renderTable();
@@ -722,7 +757,7 @@
         if (!nameAr || !nameEn || isNaN(price)) { alert('يرجى ملء الاسم والسعر'); return; }
         const newProduct = { id: Date.now(), nameAr, nameEn, category, priceOMR: price, oldPrice: (oldPrice && oldPrice > price) ? oldPrice : null, stock, image, detailsAr: desc, detailsEn: desc, order: products.length };
         products.push(newProduct);
-        await saveProducts();
+        saveProducts();
         document.getElementById('newNameAr').value = ''; document.getElementById('newNameEn').value = ''; document.getElementById('newPrice').value = ''; document.getElementById('newOldPrice').value = ''; document.getElementById('newStock').value = '99'; document.getElementById('newDesc').value = ''; currentImageData = null; document.getElementById('newImagePreview').style.display = 'none';
         alert('✅ تم الإضافة');
         renderTable();

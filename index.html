@@ -621,21 +621,122 @@
             background: rgba(255,170,68,0.2);
             border-color: #ffaa44;
         }
+        
+        /* ========== الوضع النهاري (Light Mode) مع ألوان واضحة ========== */
         body.light-mode {
             background: #f0f4ff !important;
             color: #1a1a2e !important;
         }
         body.light-mode .hero-header { background: linear-gradient(135deg, #1a3a7a, #0d2a6e) !important; }
         body.light-mode .control-bar { background: rgba(255,255,255,0.95) !important; }
-        body.light-mode .product-card { background: #ffffff !important; }
-        body.light-mode .product-title { color: #1a1a2e !important; }
+        body.light-mode .product-card { background: #ffffff !important; border: 1px solid #e0e0e0 !important; }
         body.light-mode .footer { background: #1a3a7a !important; }
         body.light-mode .device-bar { background: #1a3a7a !important; }
-        body.light-mode .modal-content { background: #ffffff !important; }
-        body.light-mode .modal-content li { color: #333; }
-        body.light-mode .stat-item { background: rgba(0,0,0,0.05); }
-        body.light-mode .hero-badge { background: rgba(0,0,0,0.05); }
-        body.light-mode .slider-text { background: rgba(0,0,0,0.05); }
+        body.light-mode .modal-content { background: #ffffff !important; border: 2px solid #ffaa44 !important; }
+        body.light-mode .modal-content li { color: #333 !important; }
+        body.light-mode .stat-item { background: rgba(0,0,0,0.05) !important; color: #1a1a2e !important; }
+        body.light-mode .hero-badge { background: rgba(255,255,255,0.9) !important; color: #1a1a2e !important; border-color: #ffaa44 !important; }
+        body.light-mode .hero-badge i { color: #ffaa44 !important; }
+        body.light-mode .slider-text { background: rgba(255,255,255,0.9) !important; color: #1a1a2e !important; border-color: #ffaa44 !important; }
+        body.light-mode .slider-text i { color: #ffaa44 !important; }
+        
+        /* إصلاح ألوان النصوص في الوضع النهاري */
+        body.light-mode .product-title {
+            color: #1a1a2e !important;
+        }
+        body.light-mode .product-details {
+            color: #4a4a6a !important;
+        }
+        body.light-mode .price {
+            color: #ff8844 !important;
+        }
+        body.light-mode .old-price {
+            color: #888 !important;
+        }
+        body.light-mode .tab-btn {
+            background: #e8e8e8 !important;
+            color: #1a1a2e !important;
+            border-color: #ffaa44 !important;
+        }
+        body.light-mode .tab-btn.active {
+            background: #ffaa44 !important;
+            color: #0a0a1a !important;
+        }
+        body.light-mode .page-btn {
+            background: #e8e8e8 !important;
+            color: #1a1a2e !important;
+            border-color: #ffaa44 !important;
+        }
+        body.light-mode .page-btn.active {
+            background: #ffaa44 !important;
+            color: #0a0a1a !important;
+        }
+        body.light-mode .control-bar label {
+            color: #1a1a2e !important;
+        }
+        body.light-mode #searchInput {
+            color: #1a1a2e !important;
+            background: #f5f5f5 !important;
+        }
+        body.light-mode .search-results-count {
+            color: #1a1a2e !important;
+            background: #ddd !important;
+        }
+        body.light-mode .footer {
+            color: #ccc !important;
+        }
+        body.light-mode .footer a {
+            color: #ffaa66 !important;
+        }
+        body.light-mode .device-btn {
+            background: #e8e8e8 !important;
+            color: #1a1a2e !important;
+            border-color: #ffaa44 !important;
+        }
+        body.light-mode .device-btn.active {
+            background: #ffaa44 !important;
+            color: #0a0a1a !important;
+        }
+        body.light-mode .mode-toggle-btn {
+            background: rgba(0,0,0,0.1) !important;
+            color: #ffaa44 !important;
+            border-color: #ffaa44 !important;
+        }
+        body.light-mode #currencySelect {
+            color: #1a1a2e !important;
+            background: #f5f5f5 !important;
+            border-color: #ffaa44 !important;
+        }
+        body.light-mode .lang-btn {
+            color: #1a1a2e !important;
+        }
+        body.light-mode .lang-btn.active {
+            background: #ffaa44 !important;
+            color: #0a0a1a !important;
+        }
+        body.light-mode .search-box {
+            background: #f5f5f5 !important;
+        }
+        body.light-mode .btn-wa {
+            background: #25D366 !important;
+            color: #000 !important;
+        }
+        body.light-mode .btn-wa.disabled {
+            background: #ccc !important;
+            color: #666 !important;
+        }
+        body.light-mode .discount-badge {
+            background: #ff4444 !important;
+            color: white !important;
+        }
+        body.light-mode .out-of-stock-badge {
+            background: #ff4444 !important;
+            color: white !important;
+        }
+        body.light-mode .product-badge {
+            background: rgba(0,0,0,0.7) !important;
+            color: white !important;
+        }
     </style>
 </head>
 <body>
@@ -896,7 +997,7 @@
         document.getElementById('termsNote').innerHTML = t.terms.note;
         document.getElementById('term1').innerHTML = t.terms.term1;
         document.getElementById('term2').innerHTML = t.terms.term2;
-        document.getElementById('term3').innerHTML = `<strong>${t.terms.term3.split('بعد انتهاء')[0]}</strong>${t.terms.term3.split('بعد انتهاء')[1] || ''}`;
+        document.getElementById('term3').innerHTML = `<strong>${t.terms.term3.split('بعد انتهاء')[0] || t.terms.term3.split('after')[0]}</strong>${t.terms.term3.split('بعد انتهاء')[1] || t.terms.term3.split('after')[1] || ''}`;
         document.getElementById('term4').innerHTML = t.terms.term4;
         document.getElementById('term5').innerHTML = t.terms.term5;
         document.getElementById('term6').innerHTML = t.terms.term6;
@@ -933,9 +1034,12 @@
         { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English", category: "games" },
         { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", priceOMR: 6, oldPrice: 10, stock: 100, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", detailsAr: "🏷️ 150GB | 🌍 عالم مفتوح", detailsEn: "📦 150GB | 🌍 Open World", category: "games" },
         { id: 4, nameAr: "God of War Ragnarök", nameEn: "God of War Ragnarök", priceOMR: 10, oldPrice: 15, stock: 60, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg", detailsAr: "🏷️ 85GB | 🪓 ملحمة إسكندنافية", detailsEn: "📦 85GB | 🪓 Norse Saga", category: "games" },
-        { id: 5, nameAr: "Spider-Man 2", nameEn: "Spider-Man 2", priceOMR: 16, oldPrice: 22, stock: 40, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", detailsAr: "🏷️ 98GB | 🕷️ بيتر + مايلز", detailsEn: "📦 98GB | 🕷️ Peter + Miles", category: "games" }
+        { id: 5, nameAr: "Spider-Man 2", nameEn: "Spider-Man 2", priceOMR: 16, oldPrice: 22, stock: 40, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", detailsAr: "🏷️ 98GB | 🕷️ بيتر + مايلز", detailsEn: "📦 98GB | 🕷️ Peter + Miles", category: "games" },
+        // Mafia: The Old Country
+        { id: 108, nameAr: "Mafia: The Old Country", nameEn: "Mafia: The Old Country", priceOMR: 12, oldPrice: 18, stock: 25, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🇮🇹 55GB | 🔫 أكشن - مغامرة | 🗡️ قتال بالسكاكين", detailsEn: "🇮🇹 55GB | 🔫 Action-Adventure | 🗡️ Knife Combat", category: "games" }
     ];
     for (let i = 6; i <= 50; i++) {
+        if (i === 108) continue;
         allGames.push({
             id: i, nameAr: `لعبة PS5 مميزة ${i}`, nameEn: `Premium PS5 Game ${i}`,
             priceOMR: 9 + Math.floor(Math.random() * 10), oldPrice: 12 + Math.floor(Math.random() * 10),

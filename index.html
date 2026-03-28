@@ -18,6 +18,50 @@
             min-height: 100vh;
         }
         
+        /* ========== عرض المنتجات حسب الجهاز ========== */
+        @media (max-width: 640px) {
+            body { padding: 0.5rem; }
+            .products-grid { 
+                display: grid;
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 0.8rem;
+            }
+            .product-image { 
+                height: 130px;
+                background-size: contain !important;
+                background-repeat: no-repeat !important;
+                background-position: center !important;
+            }
+            .product-title { font-size: 0.7rem; }
+            .product-details { font-size: 0.55rem; }
+            .price { font-size: 0.8rem; }
+            .btn-wa { font-size: 0.6rem; padding: 5px; }
+            .hero-content { padding: 1.2rem 1rem; }
+            .main-logo { font-size: 1.6rem; gap: 5px; }
+            .controller-icon { font-size: 1.6rem; }
+            .slider-text { font-size: 0.75rem; padding: 5px 10px; }
+            .hero-badge { padding: 4px 10px; font-size: 0.65rem; }
+            .stat-item { padding: 4px 10px; font-size: 0.65rem; gap: 4px; }
+            .stat-number { font-size: 0.8rem; }
+            .tab-btn { padding: 6px 12px; font-size: 0.7rem; }
+        }
+        
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .products-grid { 
+                display: grid;
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 1rem;
+            }
+        }
+        
+        @media (min-width: 1025px) {
+            .products-grid { 
+                display: grid;
+                grid-template-columns: repeat(4, 1fr) !important;
+                gap: 1.5rem;
+            }
+        }
+        
         /* ========== HERO HEADER DESIGN ========== */
         .hero-header {
             position: relative;
@@ -30,7 +74,6 @@
             animation: fadeInUp 0.8s ease-out;
         }
         
-        /* خلفية متحركة بتوهج */
         .hero-header::before {
             content: '';
             position: absolute;
@@ -50,14 +93,8 @@
         }
         
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .hero-content {
@@ -67,7 +104,6 @@
             padding: 2rem 1.5rem;
         }
         
-        /* الشعار مع تأثير النبض */
         .logo-section {
             margin-bottom: 1rem;
         }
@@ -87,17 +123,10 @@
         }
         
         @keyframes pulseGlow {
-            0%, 100% {
-                text-shadow: 0 0 5px rgba(255, 170, 68, 0.3);
-                transform: scale(1);
-            }
-            50% {
-                text-shadow: 0 0 20px rgba(255, 170, 68, 0.6);
-                transform: scale(1.02);
-            }
+            0%, 100% { text-shadow: 0 0 5px rgba(255, 170, 68, 0.3); transform: scale(1); }
+            50% { text-shadow: 0 0 20px rgba(255, 170, 68, 0.6); transform: scale(1.02); }
         }
         
-        /* أيقونة التحكم المتحركة */
         .controller-icon {
             display: inline-block;
             font-size: 2.8rem;
@@ -107,41 +136,57 @@
         }
         
         @keyframes floatController {
-            0%, 100% {
-                transform: translateY(0) rotate(-3deg);
-            }
-            50% {
-                transform: translateY(-8px) rotate(3deg);
-            }
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-8px) rotate(3deg); }
         }
         
-        /* النص التعريفي مع تأثير الكتابة */
-        .tagline {
+        .animated-text-section {
+            margin: 1rem 0;
+            min-height: 70px;
+        }
+        
+        .slider-text {
             font-size: 1.1rem;
+            font-weight: 600;
             color: #ffdd99;
-            margin: 0.5rem 0 1rem;
-            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            padding: 10px 20px;
+            border-radius: 50px;
             display: inline-block;
+            border: 1px solid rgba(255, 170, 68, 0.3);
+            animation: fadeInOut 0.5s ease;
         }
         
-        .tagline-text {
-            border-right: 2px solid #ffaa44;
-            padding-right: 10px;
-            animation: blinkCursor 0.8s step-end infinite;
+        .slider-text i {
+            margin-left: 8px;
+            animation: iconShake 0.5s ease;
         }
         
-        @keyframes blinkCursor {
-            0%, 100% { border-right-color: #ffaa44; }
-            50% { border-right-color: transparent; }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
         
-        /* الأزرار (الوسوم) */
+        @keyframes iconShake {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .divider-line {
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffaa44, #ffaa44, transparent);
+            margin: 1rem auto;
+        }
+        
         .quotes-container {
             display: flex;
             justify-content: center;
             gap: 12px;
             flex-wrap: wrap;
-            margin: 1.5rem 0;
+            margin: 1rem 0;
         }
         
         .hero-badge {
@@ -168,7 +213,6 @@
             box-shadow: 0 5px 15px rgba(255, 170, 68, 0.2);
         }
         
-        /* الإحصائيات */
         .stats-container {
             display: flex;
             justify-content: center;
@@ -209,29 +253,6 @@
         }
         
         /* ========== باقي التصميم ========== */
-        @media (max-width: 640px) {
-            body { padding: 0.5rem; }
-            .hero-content { padding: 1.5rem 1rem; }
-            .main-logo { font-size: 1.8rem; gap: 8px; }
-            .controller-icon { font-size: 1.8rem; }
-            .tagline { font-size: 0.85rem; }
-            .hero-badge { padding: 5px 12px; font-size: 0.7rem; }
-            .stat-item { padding: 5px 12px; font-size: 0.7rem; }
-            .stat-number { font-size: 0.9rem; }
-            .products-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 0.8rem; }
-            .product-image { height: 130px; background-size: contain !important; background-repeat: no-repeat !important; background-position: center !important; }
-            .product-title { font-size: 0.85rem; }
-            .price { font-size: 1rem; }
-        }
-        
-        @media (min-width: 641px) and (max-width: 1024px) {
-            .products-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 1rem; }
-        }
-        
-        @media (min-width: 1025px) {
-            .products-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 1.5rem; }
-        }
-        
         .control-bar {
             max-width: 1400px;
             margin: 0 auto 1rem auto;
@@ -339,7 +360,6 @@
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            gap: 1rem;
         }
         .product-card {
             background: #11152b;
@@ -500,14 +520,8 @@
             animation: fadeInScale 0.3s ease;
         }
         @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
         .modal-content h3 {
             color: #ffaa44;
@@ -621,6 +635,7 @@
         body.light-mode .modal-content li { color: #333; }
         body.light-mode .stat-item { background: rgba(0,0,0,0.05); }
         body.light-mode .hero-badge { background: rgba(0,0,0,0.05); }
+        body.light-mode .slider-text { background: rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
@@ -631,7 +646,7 @@
     <button class="mode-toggle-btn" onclick="toggleMode()">🌙 ليلي</button>
 </div>
 
-<!-- ========== HERO HEADER الجديد ========== -->
+<!-- ========== HERO HEADER ========== -->
 <div class="hero-header">
     <div class="hero-content">
         <div class="logo-section">
@@ -639,20 +654,27 @@
             <span class="main-logo">XNESTO STORE</span>
             <span class="controller-icon"><i class="fas fa-store"></i></span>
         </div>
-        <div class="tagline">
-            <span class="tagline-text" id="typingText">أكبر متجر لألعاب PlayStation وبطاقات الشحن - توصيل فوري</span>
+        
+        <!-- النص المتحرك -->
+        <div class="animated-text-section">
+            <div id="sliderText" class="slider-text">
+                <i class="fas fa-fire"></i> <span id="sliderTextContent">تسجيل حساب فوري - استلم خلال دقائق</span>
+            </div>
         </div>
+        
+        <div class="divider-line"></div>
+        
         <div class="quotes-container">
-            <div class="hero-badge"><i class="fas fa-tag"></i> أفضل الأسعار</div>
-            <div class="hero-badge"><i class="fas fa-bolt"></i> توصيل فوري</div>
-            <div class="hero-badge"><i class="fas fa-headset"></i> دعم 24/7</div>
-            <div class="hero-badge"><i class="fas fa-shield-alt"></i> دفع آمن</div>
+            <div class="hero-badge" id="badgeBestPrice"><i class="fas fa-tag"></i> أفضل الأسعار</div>
+            <div class="hero-badge" id="badgeFastDelivery"><i class="fas fa-bolt"></i> توصيل فوري</div>
+            <div class="hero-badge" id="badgeSupport"><i class="fas fa-headset"></i> دعم 24/7</div>
+            <div class="hero-badge" id="badgeSecure"><i class="fas fa-shield-alt"></i> دفع آمن</div>
         </div>
         <div class="stats-container">
-            <div class="stat-item"><i class="fas fa-gamepad"></i> <span class="stat-number">50+</span> <span>لعبة</span></div>
-            <div class="stat-item"><i class="fas fa-users"></i> <span class="stat-number">10K+</span> <span>عميل</span></div>
-            <div class="stat-item"><i class="fas fa-star"></i> <span class="stat-number">4.9</span> <span>تقييم</span></div>
-            <div class="stat-item"><i class="fas fa-clock"></i> <span class="stat-number">24/7</span> <span>دعم</span></div>
+            <div class="stat-item"><i class="fas fa-gamepad"></i> <span class="stat-number">50+</span> <span id="statGames">لعبة</span></div>
+            <div class="stat-item"><i class="fas fa-users"></i> <span class="stat-number">10K+</span> <span id="statCustomers">عميل</span></div>
+            <div class="stat-item"><i class="fas fa-star"></i> <span class="stat-number">4.9</span> <span id="statRating">تقييم</span></div>
+            <div class="stat-item"><i class="fas fa-clock"></i> <span class="stat-number">24/7</span> <span id="statSupport">دعم</span></div>
         </div>
     </div>
 </div>
@@ -695,7 +717,7 @@
         <i class="fab fa-instagram"></i> <span id="instagramText">xnesto_store</span>
         <i class="fab fa-whatsapp"></i> <span id="whatsappText">+96879977100</span>
     </div>
-    <p>© 2025 xnesto - جميع الحقوق محفوظة</p>
+    <p id="copyright">© 2025 xnesto - جميع الحقوق محفوظة</p>
 </div>
 
 <a href="https://wa.me/96879977100" class="whatsapp-float" target="_blank">
@@ -705,24 +727,24 @@
 <!-- نافذة الشروط -->
 <div id="termsModal" class="modal" style="display:none;">
     <div class="modal-content">
-        <h3>📋 شروط الشراء والاستخدام</h3>
-        <p>يرجى قراءة الشروط بعناية قبل إتمام الطلب:</p>
+        <h3 id="termsTitle">📋 شروط الشراء والاستخدام</h3>
+        <p id="termsNote">يرجى قراءة الشروط بعناية قبل إتمام الطلب:</p>
         
         <ol>
-            <li>الحساب نظيف 100% ويحتوي على اللعبة المطلوبة فقط.</li>
-            <li>بعد تسجيل الدخول، اذهب إلى Library ونزّل اللعبة.</li>
-            <li><strong>بعد انتهاء التنزيل كاملاً، يجب تسجيل الخروج فوراً</strong> من الحساب.</li>
-            <li>ممنوع تغيير كلمة السر أو ربط بطاقة بنكية أو شراء أي شيء داخل الحساب.</li>
-            <li>ممنوع مشاركة الحساب مع أي شخص آخر.</li>
-            <li>الحساب مضمون لمدة <strong>7 أيام</strong> من تاريخ التسليم.</li>
-            <li>في حال وجود أي مشكلة تقنية، سنقدم حساب بديل خلال 24 ساعة.</li>
-            <li>المنتجات الرقمية غير قابلة للاسترجاع أو الاسترداد بعد تسليم الحساب.</li>
-            <li>xnesto غير مسؤول عن أي حظر أو تعليق لحساب PlayStation بسبب مخالفة شروط سوني.</li>
+            <li id="term1">الحساب نظيف 100% ويحتوي على اللعبة المطلوبة فقط.</li>
+            <li id="term2">بعد تسجيل الدخول، اذهب إلى Library ونزّل اللعبة.</li>
+            <li id="term3"><strong>بعد انتهاء التنزيل كاملاً، يجب تسجيل الخروج فوراً</strong> من الحساب.</li>
+            <li id="term4">ممنوع تغيير كلمة السر أو ربط بطاقة بنكية أو شراء أي شيء داخل الحساب.</li>
+            <li id="term5">ممنوع مشاركة الحساب مع أي شخص آخر.</li>
+            <li id="term6">الحساب مضمون لمدة <strong>7 أيام</strong> من تاريخ التسليم.</li>
+            <li id="term7">في حال وجود أي مشكلة تقنية، سنقدم حساب بديل خلال 24 ساعة.</li>
+            <li id="term8">المنتجات الرقمية غير قابلة للاسترجاع أو الاسترداد بعد تسليم الحساب.</li>
+            <li id="term9">xnesto غير مسؤول عن أي حظر أو تعليق لحساب PlayStation بسبب مخالفة شروط سوني.</li>
         </ol>
 
         <div class="terms-actions">
-            <button onclick="rejectTerms()" class="btn-cancel">لا أوافق</button>
-            <button onclick="acceptTerms()" class="btn-accept">أوافق على الشروط وأستمر</button>
+            <button onclick="rejectTerms()" class="btn-cancel" id="cancelBtn">لا أوافق</button>
+            <button onclick="acceptTerms()" class="btn-accept" id="acceptBtn">أوافق على الشروط وأستمر</button>
         </div>
     </div>
 </div>
@@ -739,6 +761,7 @@
     let currentCategory = "all";
     let searchQuery = "";
     let pendingProductData = null;
+    let sliderInterval = null;
     const ITEMS_PER_PAGE = 12;
     const WA_NUMBER = "96879977100";
     const INSTA_USERNAME = "xnesto_store";
@@ -746,18 +769,163 @@
     const exchangeRates = { OMR: 1, SAR: 9.75, AED: 9.55, KWD: 0.79, BHD: 0.98, QAR: 9.46, USD: 2.6, EUR: 2.4 };
     const currencySymbols = { OMR: "ر.ع", SAR: "ر.س", AED: "د.إ", KWD: "د.ك", BHD: "د.ب", QAR: "ر.ق", USD: "$", EUR: "€" };
     
-    // تأثير الكتابة (Typing Effect)
-    const typingText = document.getElementById('typingText');
-    const fullText = "أكبر متجر لألعاب PlayStation وبطاقات الشحن - توصيل فوري";
-    let i = 0;
-    function typeWriter() {
-        if (i < fullText.length) {
-            typingText.innerHTML += fullText.charAt(i);
-            i++;
-            setTimeout(typeWriter, 50);
+    // ========== بيانات الترجمة ==========
+    const translations = {
+        ar: {
+            sliderMessages: [
+                { icon: "fas fa-fire", text: "تسجيل حساب فوري - استلم خلال دقائق" },
+                { icon: "fas fa-bolt", text: "أرخص الأسعار في العالم" },
+                { icon: "fas fa-users", text: "أكثر من 1000 عميل وثقوا بنا" }
+            ],
+            badges: {
+                bestPrice: "أفضل الأسعار",
+                fastDelivery: "توصيل فوري",
+                support: "دعم 24/7",
+                secure: "دفع آمن"
+            },
+            stats: {
+                games: "لعبة",
+                customers: "عميل",
+                rating: "تقييم",
+                support: "دعم"
+            },
+            searchPlaceholder: "🔍 ابحث عن منتج...",
+            copyright: "© 2025 xnesto - جميع الحقوق محفوظة",
+            orderNow: "اطلب الآن",
+            outOfStock: "نفذت الكمية",
+            currencyLabel: "العملة:",
+            terms: {
+                title: "📋 شروط الشراء والاستخدام",
+                note: "يرجى قراءة الشروط بعناية قبل إتمام الطلب:",
+                term1: "الحساب نظيف 100% ويحتوي على اللعبة المطلوبة فقط.",
+                term2: "بعد تسجيل الدخول، اذهب إلى Library ونزّل اللعبة.",
+                term3: "بعد انتهاء التنزيل كاملاً، يجب تسجيل الخروج فوراً من الحساب.",
+                term4: "ممنوع تغيير كلمة السر أو ربط بطاقة بنكية أو شراء أي شيء داخل الحساب.",
+                term5: "ممنوع مشاركة الحساب مع أي شخص آخر.",
+                term6: "الحساب مضمون لمدة 7 أيام من تاريخ التسليم.",
+                term7: "في حال وجود أي مشكلة تقنية، سنقدم حساب بديل خلال 24 ساعة.",
+                term8: "المنتجات الرقمية غير قابلة للاسترجاع أو الاسترداد بعد تسليم الحساب.",
+                term9: "xnesto غير مسؤول عن أي حظر أو تعليق لحساب PlayStation بسبب مخالفة شروط سوني.",
+                cancelBtn: "لا أوافق",
+                acceptBtn: "أوافق على الشروط وأستمر"
+            },
+            deviceView: { mobile: "جوال", desktop: "كمبيوتر" }
+        },
+        en: {
+            sliderMessages: [
+                { icon: "fas fa-fire", text: "Instant Account - Receive within minutes" },
+                { icon: "fas fa-bolt", text: "Lowest Prices Worldwide" },
+                { icon: "fas fa-users", text: "Over 1000 Satisfied Customers" }
+            ],
+            badges: {
+                bestPrice: "Best Prices",
+                fastDelivery: "Fast Delivery",
+                support: "24/7 Support",
+                secure: "Secure Payment"
+            },
+            stats: {
+                games: "Games",
+                customers: "Customers",
+                rating: "Rating",
+                support: "Support"
+            },
+            searchPlaceholder: "🔍 Search products...",
+            copyright: "© 2025 xnesto - All Rights Reserved",
+            orderNow: "Order Now",
+            outOfStock: "Out of Stock",
+            currencyLabel: "Currency:",
+            terms: {
+                title: "📋 Terms & Conditions",
+                note: "Please read carefully before purchasing:",
+                term1: "100% clean account - contains only the requested game.",
+                term2: "After login, go to Library and download the game.",
+                term3: "After download is complete, log out immediately from the account.",
+                term4: "Do not change password, link bank card, or purchase anything inside the account.",
+                term5: "Do not share the account with anyone else.",
+                term6: "Account is guaranteed for 7 days from delivery date.",
+                term7: "If any technical issue, we will provide a replacement account within 24 hours.",
+                term8: "Digital products are non-refundable after account delivery.",
+                term9: "xnesto is not responsible for any PlayStation account ban due to violation of Sony's terms.",
+                cancelBtn: "I Disagree",
+                acceptBtn: "I Agree & Continue"
+            },
+            deviceView: { mobile: "Mobile", desktop: "Desktop" }
+        }
+    };
+    
+    let currentSlideIndex = 0;
+    
+    function updateUILanguage(lang) {
+        const t = translations[lang];
+        if (!t) return;
+        
+        // تحديث النص المتحرك
+        currentSlideIndex = 0;
+        updateSliderTextByLang(lang);
+        
+        // إعادة تعيين المؤقت
+        if (sliderInterval) clearInterval(sliderInterval);
+        sliderInterval = setInterval(() => {
+            currentSlideIndex = (currentSlideIndex + 1) % t.sliderMessages.length;
+            updateSliderTextByLang(lang);
+        }, 3000);
+        
+        // تحديث الأزرار
+        document.getElementById('badgeBestPrice').innerHTML = `<i class="fas fa-tag"></i> ${t.badges.bestPrice}`;
+        document.getElementById('badgeFastDelivery').innerHTML = `<i class="fas fa-bolt"></i> ${t.badges.fastDelivery}`;
+        document.getElementById('badgeSupport').innerHTML = `<i class="fas fa-headset"></i> ${t.badges.support}`;
+        document.getElementById('badgeSecure').innerHTML = `<i class="fas fa-shield-alt"></i> ${t.badges.secure}`;
+        
+        // تحديث الإحصائيات
+        document.getElementById('statGames').innerText = t.stats.games;
+        document.getElementById('statCustomers').innerText = t.stats.customers;
+        document.getElementById('statRating').innerText = t.stats.rating;
+        document.getElementById('statSupport').innerText = t.stats.support;
+        
+        // تحديث البحث
+        document.getElementById('searchInput').placeholder = t.searchPlaceholder;
+        
+        // تحديث حقوق النشر
+        document.getElementById('copyright').innerHTML = t.copyright;
+        
+        // تحديث العملة
+        document.getElementById('currencyLabel').innerHTML = t.currencyLabel;
+        
+        // تحديث شروط الشراء
+        document.getElementById('termsTitle').innerHTML = t.terms.title;
+        document.getElementById('termsNote').innerHTML = t.terms.note;
+        document.getElementById('term1').innerHTML = t.terms.term1;
+        document.getElementById('term2').innerHTML = t.terms.term2;
+        document.getElementById('term3').innerHTML = `<strong>${t.terms.term3.split('بعد انتهاء')[0]}</strong>${t.terms.term3.split('بعد انتهاء')[1] || ''}`;
+        document.getElementById('term4').innerHTML = t.terms.term4;
+        document.getElementById('term5').innerHTML = t.terms.term5;
+        document.getElementById('term6').innerHTML = t.terms.term6;
+        document.getElementById('term7').innerHTML = t.terms.term7;
+        document.getElementById('term8').innerHTML = t.terms.term8;
+        document.getElementById('term9').innerHTML = t.terms.term9;
+        document.getElementById('cancelBtn').innerHTML = t.terms.cancelBtn;
+        document.getElementById('acceptBtn').innerHTML = t.terms.acceptBtn;
+        
+        // تحديث نصوص أزرار العرض
+        const mobileBtn = document.querySelector('.device-btn:first-child');
+        const desktopBtn = document.querySelector('.device-btn:nth-child(2)');
+        if (mobileBtn) mobileBtn.innerHTML = `<i class="fas fa-mobile-alt"></i> ${t.deviceView.mobile}`;
+        if (desktopBtn) desktopBtn.innerHTML = `<i class="fas fa-desktop"></i> ${t.deviceView.desktop}`;
+    }
+    
+    function updateSliderTextByLang(lang) {
+        const t = translations[lang];
+        const msg = t.sliderMessages[currentSlideIndex];
+        const sliderDiv = document.getElementById('sliderText');
+        if (sliderDiv) {
+            sliderDiv.innerHTML = `<i class="${msg.icon}"></i> ${msg.text}`;
+            const icon = sliderDiv.querySelector('i');
+            if (icon) {
+                icon.style.animation = 'none';
+                setTimeout(() => { icon.style.animation = 'iconShake 0.5s ease'; }, 10);
+            }
         }
     }
-    setTimeout(typeWriter, 500);
     
     // ==================== المنتجات الافتراضية ====================
     const allGames = [
@@ -886,6 +1054,10 @@
         const container = document.getElementById('productsContainer');
         if (pageProducts.length === 0) { container.innerHTML = '<div style="text-align:center; padding:2rem;">لا توجد منتجات حالياً</div>'; return; }
         
+        const t = translations[currentLang];
+        const orderText = t?.orderNow || "اطلب الآن";
+        const outOfStockText = t?.outOfStock || "نفذت الكمية";
+        
         container.innerHTML = pageProducts.map(p => {
             const name = currentLang === 'ar' ? (p.nameAr || 'منتج') : (p.nameEn || 'Product');
             const desc = currentLang === 'ar' ? (p.detailsAr || '') : (p.detailsEn || '');
@@ -903,7 +1075,7 @@
             
             return `<div class="product-card ${isOutOfStock ? 'out-of-stock' : ''}">
                         ${hasDiscount ? `<div class="discount-badge">🔥 -${discountPercent}%</div>` : ''}
-                        ${isOutOfStock ? `<div class="out-of-stock-badge">⚠️ نفذت الكمية</div>` : ''}
+                        ${isOutOfStock ? `<div class="out-of-stock-badge">⚠️ ${outOfStockText}</div>` : ''}
                         ${imageHtml}
                         <div class="card-info">
                             <div class="product-title">${escapeHtml(name)}</div>
@@ -913,8 +1085,8 @@
                                 <span class="price">${price}</span>
                             </div>
                             ${!isOutOfStock ? 
-                                `<button class="btn-wa" data-id="${p.id}" data-name="${escapeHtml(name)}" data-price="${p.priceOMR}"><i class="fab fa-whatsapp"></i> ${currentLang === 'ar' ? 'اطلب الآن' : 'Order Now'}</button>` : 
-                                `<button class="btn-wa disabled" disabled><i class="fas fa-times-circle"></i> ${currentLang === 'ar' ? 'نفذت الكمية' : 'Out of Stock'}</button>`
+                                `<button class="btn-wa" data-id="${p.id}" data-name="${escapeHtml(name)}" data-price="${p.priceOMR}"><i class="fab fa-whatsapp"></i> ${orderText}</button>` : 
+                                `<button class="btn-wa disabled" disabled><i class="fas fa-times-circle"></i> ${outOfStockText}</button>`
                             }
                         </div>
                     </div>`;
@@ -973,6 +1145,7 @@
         currentLang = lang; 
         document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active')); 
         if (event && event.target) event.target.classList.add('active');
+        updateUILanguage(lang);
         renderTabs();
         renderProducts(); 
     }
@@ -996,6 +1169,13 @@
         const btns = document.querySelectorAll('.device-btn');
         btns.forEach(btn => btn.classList.remove('active'));
         if (event && event.currentTarget) event.currentTarget.classList.add('active');
+        
+        // تحديث عرض المنتجات بناءً على الجهاز
+        if (view === 'mobile') {
+            document.querySelector('.products-grid').style.gridTemplateColumns = 'repeat(3, 1fr)';
+        } else {
+            document.querySelector('.products-grid').style.gridTemplateColumns = 'repeat(4, 1fr)';
+        }
     }
     
     document.getElementById('searchInput').addEventListener('input', (e) => { searchQuery = e.target.value; currentPage = 1; renderProducts(); });
@@ -1011,6 +1191,9 @@
     
     document.getElementById('instagramText').innerHTML = `<a href="https://instagram.com/${INSTA_USERNAME}" target="_blank" style="color:#ffaa66;text-decoration:none;">${INSTA_USERNAME}</a>`;
     document.getElementById('whatsappText').innerHTML = `<a href="https://wa.me/${WA_NUMBER}" target="_blank" style="color:#ffaa66;text-decoration:none;">+${WA_NUMBER}</a>`;
+    
+    // تهيئة اللغة العربية أولاً
+    updateUILanguage('ar');
     
     displayProductsImmediately();
     

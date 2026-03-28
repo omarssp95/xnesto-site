@@ -168,6 +168,10 @@
             position: relative;
         }
         .product-card:hover { transform: translateY(-4px); border-color: #ffaa44; }
+        .product-card.out-of-stock {
+            opacity: 0.7;
+            filter: grayscale(0.2);
+        }
         .discount-badge {
             position: absolute;
             top: 8px;
@@ -178,6 +182,18 @@
             border-radius: 20px;
             font-size: 0.7rem;
             z-index: 10;
+        }
+        .out-of-stock-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #ff4444;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            z-index: 10;
+            font-weight: bold;
         }
         .product-image {
             width: 100%;
@@ -495,11 +511,10 @@
     const WA_NUMBER = "96879977100";
     const INSTA_USERNAME = "xnesto_store";
     
-    // العملات
     const exchangeRates = { OMR: 1, SAR: 9.75, AED: 9.55, KWD: 0.79, BHD: 0.98, QAR: 9.46, USD: 2.6, EUR: 2.4 };
     const currencySymbols = { OMR: "ر.ع", SAR: "ر.س", AED: "د.إ", KWD: "د.ك", BHD: "د.ب", QAR: "ر.ق", USD: "$", EUR: "€" };
     
-    // ==================== المنتجات الافتراضية (تظهر فوراً) ====================
+    // ==================== المنتجات الافتراضية ====================
     const allGames = [
         { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 14, oldPrice: 20, stock: 50, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English", category: "games" },
         { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 30, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English", category: "games" },
@@ -531,13 +546,11 @@
     
     // ==================== عرض المنتجات فوراً ====================
     function displayProductsImmediately() {
-        // عرض المنتجات المحلية فوراً (بدون انتظار Firebase)
         products = JSON.parse(JSON.stringify(allDefaultProducts));
         products.forEach((p, idx) => { p.order = idx; });
         renderTabs();
         renderProducts();
         
-        // ثم محاولة تحميل البيانات من Firebase في الخلفية
         setTimeout(() => {
             try {
                 if (!firebase.apps.length) {
@@ -547,7 +560,6 @@
                 const productsRef = database.ref('products');
                 const categoriesRef = database.ref('categories');
                 
-                // تحميل التصنيفات
                 categoriesRef.once('value', (snapshot) => {
                     const data = snapshot.val();
                     if (data && data.categories && data.names) {
@@ -557,18 +569,15 @@
                     }
                 });
                 
-                // تحميل المنتجات وتحديثها إذا وجدت
                 productsRef.once('value', (snapshot) => {
                     const data = snapshot.val();
                     if (data && Array.isArray(data) && data.length > 0) {
                         products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
                         renderProducts();
                         renderTabs();
-                        console.log('✅ تم تحديث المنتجات من Firebase');
                     }
                 });
                 
-                // الاستماع للتغييرات المستقبلية
                 productsRef.on('value', (snapshot) => {
                     const data = snapshot.val();
                     if (data && Array.isArray(data) && data.length > 0) {
@@ -640,16 +649,32 @@
             const oldPrice = hasDiscount ? formatPrice(p.oldPrice) : null;
             const discountPercent = hasDiscount ? Math.round((1 - p.priceOMR / p.oldPrice) * 100) : 0;
             const categoryName = categoryNames[p.category] || p.category;
-            const isOutOfStock = (p.stock || 999) <= 0;
+            const stock = p.stock || 0;
+            const isOutOfStock = stock <= 0;
             
             let imageHtml = p.image && p.image.trim() ? 
                 `<div class="product-image" style="background-image: url('${p.image}'); background-size: cover; background-position: center;"><div class="product-badge">${categoryName}</div></div>` : 
                 `<div class="product-image" style="background: linear-gradient(135deg, #1e3a5f, #0f2a4a); display: flex; align-items: center; justify-content: center;"><div style="font-size: 2.5rem;">${p.category === 'games' ? '🎮' : '💳'}</div><div class="product-badge">${categoryName}</div></div>`;
             
-            return `<div class="product-card">${hasDiscount ? `<div class="discount-badge">🔥 -${discountPercent}%</div>` : ''}${imageHtml}<div class="card-info"><div class="product-title">${escapeHtml(name)}</div><div class="product-details">${escapeHtml(desc || '')}</div><div class="price-container">${hasDiscount ? `<span class="old-price">${oldPrice}</span>` : ''}<span class="price">${price}</span></div>${!isOutOfStock ? `<button class="btn-wa" data-id="${p.id}" data-name="${escapeHtml(name)}" data-price="${p.priceOMR}"><i class="fab fa-whatsapp"></i> ${currentLang === 'ar' ? 'اطلب الآن' : 'Order Now'}</button>` : `<button class="btn-wa disabled" disabled><i class="fas fa-times-circle"></i> ${currentLang === 'ar' ? 'نفذت الكمية' : 'Out of Stock'}</button>`}</div></div>`;
+            return `<div class="product-card ${isOutOfStock ? 'out-of-stock' : ''}">
+                        ${hasDiscount ? `<div class="discount-badge">🔥 -${discountPercent}%</div>` : ''}
+                        ${isOutOfStock ? `<div class="out-of-stock-badge">⚠️ نفذت الكمية</div>` : ''}
+                        ${imageHtml}
+                        <div class="card-info">
+                            <div class="product-title">${escapeHtml(name)}</div>
+                            <div class="product-details">${escapeHtml(desc || '')}</div>
+                            <div class="price-container">
+                                ${hasDiscount ? `<span class="old-price">${oldPrice}</span>` : ''}
+                                <span class="price">${price}</span>
+                            </div>
+                            ${!isOutOfStock ? 
+                                `<button class="btn-wa" data-id="${p.id}" data-name="${escapeHtml(name)}" data-price="${p.priceOMR}"><i class="fab fa-whatsapp"></i> ${currentLang === 'ar' ? 'اطلب الآن' : 'Order Now'}</button>` : 
+                                `<button class="btn-wa disabled" disabled><i class="fas fa-times-circle"></i> ${currentLang === 'ar' ? 'نفذت الكمية' : 'Out of Stock'}</button>`
+                            }
+                        </div>
+                    </div>`;
         }).join('');
         
-        // إضافة حدث النقر للأزرار
         document.querySelectorAll('.btn-wa:not(.disabled)').forEach(btn => {
             btn.onclick = (e) => {
                 e.preventDefault();
@@ -678,7 +703,6 @@
     function goToPage(page) { currentPage = page; renderProducts(); window.scrollTo({ top: 400, behavior: 'smooth' }); }
     function setCategory(cat) { currentCategory = cat; currentPage = 1; renderTabs(); renderProducts(); }
     
-    // ==================== دوال الشروط والطلب ====================
     function requestPurchase(id, name, priceOMR) {
         pendingProductData = { id, name, priceOMR };
         document.getElementById('termsModal').style.display = 'flex';
@@ -743,7 +767,6 @@
     document.getElementById('instagramText').innerHTML = `<a href="https://instagram.com/${INSTA_USERNAME}" target="_blank" style="color:#ffaa66;text-decoration:none;">${INSTA_USERNAME}</a>`;
     document.getElementById('whatsappText').innerHTML = `<a href="https://wa.me/${WA_NUMBER}" target="_blank" style="color:#ffaa66;text-decoration:none;">+${WA_NUMBER}</a>`;
     
-    // عرض المنتجات فوراً
     displayProductsImmediately();
     
     window.toggleMode = toggleMode;

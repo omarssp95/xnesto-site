@@ -183,7 +183,6 @@
         .stat-number { color: #ffaa44; font-weight: 800; font-size: 1.1rem; }
         .stat-item:hover { transform: translateY(-3px); background: rgba(255,170,68,0.15); border-color: #ffaa44; }
         
-        /* العروض الأسبوعية */
         .weekly-offers {
             background: linear-gradient(135deg, rgba(255, 170, 68, 0.15), rgba(255, 100, 0, 0.05));
             border-radius: 1.5rem;
@@ -241,27 +240,6 @@
             color: #ffdd99;
         }
         .trust-badge i { font-size: 1rem; color: #ffaa44; }
-        
-        .coupon-banner {
-            background: linear-gradient(135deg, #2d2f6e, #1e1e3a);
-            border-radius: 1rem;
-            padding: 0.5rem 1rem;
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .coupon-code {
-            background: #ffaa44;
-            color: #0a0a1a;
-            padding: 5px 12px;
-            border-radius: 2rem;
-            font-weight: bold;
-            font-size: 0.8rem;
-            cursor: pointer;
-        }
         
         .control-bar {
             max-width: 1400px;
@@ -638,12 +616,8 @@
     <div class="trust-badge"><i class="fas fa-shield-alt"></i> حماية المشتري</div>
 </div>
 
-<div class="coupon-banner">
-    <span class="coupon-text"><i class="fas fa-gift"></i> خصم 10% على أول طلب!</span>
-    <span class="coupon-code" onclick="copyCoupon('WELCOME10')">📋 WELCOME10 - انسخ الكود</span>
-</div>
+<!-- تم إخفاء كود الخصم حسب طلب العميل -->
 
-<!-- العروض الأسبوعية - سيتم تحميلها من Firebase -->
 <div class="weekly-offers" id="weeklyOffersSection">
     <h3><i class="fas fa-calendar-alt"></i> العروض الأسبوعية 🔥</h3>
     <p>خصومات تصل إلى 40% لفترة محدودة</p>
@@ -739,7 +713,6 @@
     const exchangeRates = { OMR: 1, SAR: 9.75, AED: 9.55, KWD: 0.79, BHD: 0.98, QAR: 9.46, USD: 2.6, EUR: 2.4 };
     const currencySymbols = { OMR: "ر.ع", SAR: "ر.س", AED: "د.إ", KWD: "د.ك", BHD: "د.ب", QAR: "ر.ق", USD: "$", EUR: "€" };
     
-    // ========== بيانات الترجمة ==========
     const translations = {
         ar: {
             sliderMessages: [
@@ -856,7 +829,6 @@
         }
     }
     
-    // ========== تحميل العروض من Firebase ==========
     function loadWeeklyOffers() {
         const db = firebase.database();
         const offersRef = db.ref('weekly_offers');
@@ -892,7 +864,6 @@
         }).join('');
     }
     
-    // ========== المنتجات الافتراضية ==========
     const allGames = [
         { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 13, oldPrice: 22, stock: 50, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English", category: "games", rating: 4.8, reviews: 124 },
         { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 26, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English", category: "games", rating: 4.7, reviews: 89 },
@@ -930,7 +901,6 @@
     
     const allDefaultProducts = [...allGames, ...giftCards];
     
-    // ==================== تحميل المنتجات ====================
     function displayProductsImmediately() {
         products = JSON.parse(JSON.stringify(allDefaultProducts));
         products.forEach((p, idx) => { p.order = idx; });
@@ -986,41 +956,6 @@
                 
             } catch(e) { console.log("Firebase error:", e); }
         }, 100);
-    }
-    
-    function loadWeeklyOffers() {
-        const db = firebase.database();
-        const offersRef = db.ref('weekly_offers');
-        offersRef.on('value', (snapshot) => {
-            const data = snapshot.val();
-            weeklyOffers = data ? Object.values(data) : [];
-            renderWeeklyOffers();
-        });
-    }
-    
-    function renderWeeklyOffers() {
-        const container = document.getElementById('weeklyGrid');
-        if (!container) return;
-        if (weeklyOffers.length === 0) {
-            container.innerHTML = '<div style="text-align:center; padding:0.5rem;">لا توجد عروض حالياً</div>';
-            return;
-        }
-        container.innerHTML = weeklyOffers.map(offer => {
-            const product = products.find(p => p.id == offer.productId);
-            if (!product) return '';
-            const discountPercent = offer.discount;
-            const newPrice = product.priceOMR * (1 - discountPercent / 100);
-            return `
-                <div class="weekly-item">
-                    <img src="${product.image || ''}" onerror="this.src='https://via.placeholder.com/40'">
-                    <div class="info">
-                        <div class="name">${currentLang === 'ar' ? product.nameAr : product.nameEn}</div>
-                        <div class="offer-price">${newPrice.toFixed(2)} ر.ع <span class="old-price">${product.priceOMR} ر.ع</span></div>
-                    </div>
-                    <div class="offer-badge">-${discountPercent}%</div>
-                </div>
-            `;
-        }).join('');
     }
     
     function renderTabs() {
@@ -1149,11 +1084,6 @@
     function goToPage(page) { currentPage = page; renderProducts(); window.scrollTo({ top: 400, behavior: 'smooth' }); }
     function setCategory(cat) { currentCategory = cat; currentPage = 1; renderTabs(); renderProducts(); }
     
-    function copyCoupon(code) {
-        navigator.clipboard.writeText(code);
-        alert(`✅ تم نسخ الكود: ${code}\nاستخدمه عند الدفع للحصول على خصم 10%!`);
-    }
-    
     function shareProduct(name, price) {
         const message = `🎮 ${name}\n💰 السعر: ${price}\n🛒 اطلب الآن من xnesto: ${window.location.href}`;
         window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
@@ -1174,10 +1104,7 @@
         const { name, priceOMR } = pendingProductData;
         const sym = currencySymbols[currentCurrency];
         const convertedPrice = (priceOMR * exchangeRates[currentCurrency]).toFixed(2);
-        const coupon = localStorage.getItem('xnesto_coupon');
-        let finalPrice = convertedPrice;
-        if (coupon === 'WELCOME10') finalPrice = (convertedPrice * 0.9).toFixed(2);
-        const message = `🛒 طلب شراء من xnesto\n━━━━━━━━━━━━━━━━━━━━\n🎮 المنتج: ${name}\n💰 السعر: ${sym} ${finalPrice}\n━━━━━━━━━━━━━━━━━━━━\n📞 يرجى تأكيد الطلب وإرسال طريقة الدفع.\n\n✅ أوافق على شروط وأحكام المتجر.`;
+        const message = `🛒 طلب شراء من xnesto\n━━━━━━━━━━━━━━━━━━━━\n🎮 المنتج: ${name}\n💰 السعر: ${sym} ${convertedPrice}\n━━━━━━━━━━━━━━━━━━━━\n📞 يرجى تأكيد الطلب وإرسال طريقة الدفع.\n\n✅ أوافق على شروط وأحكام المتجر.`;
         window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
         document.getElementById('termsModal').style.display = 'none';
         pendingProductData = null;
@@ -1227,7 +1154,6 @@
     window.rejectTerms = rejectTerms;
     window.acceptTerms = acceptTerms;
     window.shareProduct = shareProduct;
-    window.copyCoupon = copyCoupon;
 </script>
 </body>
 </html>

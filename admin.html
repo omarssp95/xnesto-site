@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>xnesto - لوحة الإدارة المتطورة</title>
+    <title>xnesto - لوحة الإدارة المتكاملة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
@@ -20,18 +20,73 @@
         .header {
             text-align: center;
             background: linear-gradient(135deg, #0f0f2a, #0a0a1f);
-            padding: 0.5rem 1rem 1rem;
+            padding: 1rem;
             border-radius: 1.5rem;
             margin-bottom: 1rem;
             border: 1px solid rgba(255, 170, 68, 0.3);
         }
-        .header h1 { color: #ffaa44; font-size: 1.6rem; }
+        .header h1 { color: #ffaa44; font-size: 1.5rem; }
         .header p { color: #ffdd99; font-size: 0.8rem; }
         
-        /* ========== داشبورد الإحصائيات ========== */
+        /* ========== شاشة تسجيل الدخول ========== */
+        .login-box {
+            max-width: 400px;
+            margin: 2rem auto;
+            background: #11152b;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            text-align: center;
+            border: 2px solid #ffaa44;
+        }
+        .login-box h2 { color: #ffaa44; margin-bottom: 1rem; }
+        .login-box input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-radius: 2rem;
+            background: #1e1e3a;
+            border: 1px solid #ffaa44;
+            color: white;
+            font-size: 1rem;
+        }
+        .login-box button {
+            width: 100%;
+            padding: 0.8rem;
+            margin-top: 0.5rem;
+            border-radius: 2rem;
+            background: #ffaa44;
+            color: #0a0a1a;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+        .login-error { color: #ff6666; font-size: 0.8rem; margin-top: 0.5rem; }
+        
+        /* ========== تبويبات ========== */
+        .admin-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,170,68,0.2);
+            padding-bottom: 0.5rem;
+        }
+        .admin-tab {
+            background: #1e1e3a;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            color: #ccc;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .admin-tab.active { background: #ffaa44; color: #0a0a1a; }
+        
+        /* ========== داشبورد ========== */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
@@ -41,24 +96,41 @@
             padding: 1rem;
             text-align: center;
             border: 1px solid rgba(255,170,68,0.3);
-            transition: all 0.3s;
         }
-        .dashboard-card:hover { transform: translateY(-3px); border-color: #ffaa44; }
         .dashboard-card i { font-size: 1.8rem; color: #ffaa44; margin-bottom: 0.5rem; display: block; }
         .dashboard-card .value { font-size: 1.6rem; font-weight: bold; color: #ffaa44; }
-        .dashboard-card .label { font-size: 0.7rem; opacity: 0.8; margin-top: 0.3rem; }
+        .dashboard-card .label { font-size: 0.7rem; opacity: 0.8; }
         
         /* ========== إدارة العروض ========== */
-        .offers-manager {
+        .section-card {
             background: #11152b;
             border-radius: 1rem;
             padding: 1rem;
             margin-bottom: 1rem;
             border: 1px solid rgba(255,170,68,0.3);
         }
-        .offers-manager h3 { color: #ffaa44; margin-bottom: 0.5rem; font-size: 1rem; }
-        .offers-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
-        .offer-item {
+        .section-card h3 { color: #ffaa44; margin-bottom: 0.5rem; font-size: 1rem; }
+        .flex-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .flex-form input, .flex-form select, .flex-form textarea {
+            background: #1e1e3a;
+            border: 1px solid #ffaa44;
+            border-radius: 2rem;
+            padding: 0.5rem;
+            color: white;
+            flex: 1;
+            min-width: 120px;
+        }
+        .btn-save { background: #00cc88; border: none; padding: 0.5rem 1rem; border-radius: 2rem; cursor: pointer; font-weight: bold; }
+        .btn-sm { background: #2d2f6e; border: none; padding: 0.3rem 0.8rem; border-radius: 2rem; cursor: pointer; color: white; }
+        .btn-danger { background: #ff4444; }
+        
+        .items-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+        .item-badge {
             background: #1e1e3a;
             border-radius: 2rem;
             padding: 0.3rem 0.8rem;
@@ -67,41 +139,17 @@
             gap: 8px;
             font-size: 0.7rem;
         }
-        .offer-item i { cursor: pointer; color: #ff6666; }
+        .item-badge i { cursor: pointer; color: #ff6666; }
         
-        /* ========== إدارة أكواد الخصم ========== */
-        .coupons-manager {
-            background: #11152b;
-            border-radius: 1rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border: 1px solid rgba(255,170,68,0.3);
-        }
-        .coupons-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
-        .coupon-item {
-            background: #2d2f6e;
-            border-radius: 2rem;
-            padding: 0.3rem 0.8rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.7rem;
-        }
-        .coupon-item i { cursor: pointer; color: #ff6666; }
-        
-        /* ========== إدارة الطلبات ========== */
+        /* ========== جدول الطلبات ========== */
         .orders-table {
             background: rgba(255,255,255,0.05);
             border-radius: 1rem;
             overflow-x: auto;
-            margin-bottom: 1rem;
         }
-        .status-badge {
-            padding: 3px 10px;
-            border-radius: 2rem;
-            font-size: 0.6rem;
-            font-weight: bold;
-        }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem; }
+        th { background: rgba(0,55,145,0.4); color: #ffaa44; }
         .status-select {
             background: #1e1e3a;
             border: 1px solid #ffaa44;
@@ -110,24 +158,42 @@
             color: white;
         }
         
-        /* ========== إدارة الأخبار ========== */
-        .news-manager {
-            background: #11152b;
+        /* ========== جدول المنتجات ========== */
+        .products-table {
+            background: rgba(255,255,255,0.05);
             border-radius: 1rem;
+            overflow-x: auto;
+            margin-top: 0.5rem;
+        }
+        .stock-input { width: 60px; background: #1e1e3a; border: 1px solid #ffaa44; border-radius: 1rem; padding: 3px; text-align: center; color: white; }
+        .edit-btn, .delete-btn {
+            padding: 3px 8px;
+            margin: 0 2px;
+            border: none;
+            border-radius: 1rem;
+            cursor: pointer;
+        }
+        .edit-btn { background: #ffa500; color: #fff; }
+        .delete-btn { background: #ff4444; color: #fff; }
+        .product-edit-form {
+            background: #1e1e3a;
             padding: 1rem;
-            margin-bottom: 1rem;
-            border: 1px solid rgba(255,170,68,0.3);
+            border-radius: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 0.5rem;
         }
-        .news-list { max-height: 200px; overflow-y: auto; }
-        .news-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem;
-            border-bottom: 1px solid rgba(255,170,68,0.1);
+        .edit-field { display: flex; flex-direction: column; gap: 5px; }
+        .edit-field label { font-size: 0.7rem; font-weight: bold; color: #ffaa44; }
+        .edit-field input, .edit-field textarea, .edit-field select {
+            padding: 0.4rem;
+            border-radius: 1rem;
+            background: #0a0c1a;
+            border: 1px solid #ffaa44;
+            color: white;
         }
+        .edit-buttons { grid-column: 1/-1; display: flex; gap: 10px; justify-content: center; margin-top: 0.5rem; }
         
-        /* ========== باقي التصميم ========== */
         .control-bar {
             display: flex;
             gap: 0.5rem;
@@ -141,219 +207,34 @@
             border-radius: 2rem;
             padding: 0.4rem 0.8rem;
             color: white;
-            font-size: 0.8rem;
         }
-        .btn-sm, .btn-danger-sm {
-            background: #2d2f6e;
-            border: none;
-            padding: 0.4rem 0.8rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            color: white;
-            font-size: 0.75rem;
-        }
-        .btn-danger-sm { background: #ff4444; }
-        .back-link, .logout-btn, .delete-all-btn {
+        .back-link, .logout-btn {
             padding: 0.4rem 1rem;
             border-radius: 2rem;
             text-decoration: none;
             font-weight: bold;
-            font-size: 0.8rem;
             cursor: pointer;
-            border: none;
+            display: inline-block;
         }
         .back-link { background: #ffaa44; color: #0a0a1a; }
-        .logout-btn { background: #ff4444; color: white; }
-        .delete-all-btn { background: #aa0000; color: white; }
-        
-        .categories-manager {
-            background: #11152b;
-            border: 1px solid rgba(255,170,68,0.3);
-            border-radius: 1rem;
-            padding: 0.8rem;
-            margin-bottom: 1rem;
-        }
-        .categories-manager h3 { color: #ffaa44; margin-bottom: 0.5rem; font-size: 1rem; }
-        .categories-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        .category-badge {
-            background: #2d2f6e;
-            padding: 4px 12px;
-            border-radius: 2rem;
-            font-size: 0.7rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .category-badge i { cursor: pointer; color: #ff6666; font-size: 0.7rem; }
-        .add-category-input {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .add-category-input input {
-            background: #1e1e3a;
-            border: 1px solid #ffaa44;
-            border-radius: 2rem;
-            padding: 0.4rem 0.8rem;
-            color: white;
-            flex: 1;
-            min-width: 120px;
-        }
-        .add-category-input button {
-            background: #ffaa44;
-            border: none;
-            padding: 0.4rem 1rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            font-weight: bold;
-            color: #0a0a1a;
-        }
-        
-        .admin-panel {
-            background: #11152b;
-            border: 2px solid #ffaa44;
-            border-radius: 1rem;
-            padding: 0.8rem;
-            margin-bottom: 1rem;
-        }
-        .admin-panel h3 { color: #ffaa44; margin-bottom: 0.5rem; font-size: 1rem; }
-        .add-form {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-        .add-form input, .add-form textarea, .add-form select {
-            background: #1e1e3a;
-            border: 1px solid #ffaa44;
-            border-radius: 2rem;
-            padding: 0.4rem 0.8rem;
-            color: white;
-            flex: 1;
-            min-width: 100px;
-            font-size: 0.8rem;
-        }
-        .add-form textarea { border-radius: 1rem; }
-        .btn-save { background: #00cc88; border: none; padding: 0.4rem 1rem; border-radius: 2rem; cursor: pointer; font-weight: bold; }
+        .logout-btn { background: #ff4444; color: white; border: none; }
         .image-upload-area {
             background: #1e1e3a;
             border: 2px dashed #ffaa44;
             border-radius: 1rem;
-            padding: 0.4rem;
+            padding: 0.5rem;
             text-align: center;
             cursor: pointer;
             flex: 1;
-            min-width: 100px;
         }
         .image-upload-area input { display: none; }
         .image-preview { margin-top: 5px; max-width: 100%; max-height: 50px; border-radius: 8px; display: none; }
-        
-        .products-table {
-            background: rgba(255,255,255,0.05);
-            border-radius: 1rem;
-            overflow-x: auto;
-            margin-top: 0.5rem;
-        }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 8px 6px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 0.7rem; }
-        th { background: rgba(0,55,145,0.4); color: #ffaa44; font-weight: bold; }
-        td { color: #eef; }
-        .stock-input { width: 65px; background: #1e1e3a; border: 1px solid #ffaa44; border-radius: 1rem; padding: 4px 6px; color: white; text-align: center; }
-        .edit-btn, .delete-btn {
-            padding: 4px 10px;
-            margin: 0 2px;
-            border: none;
-            border-radius: 1rem;
-            cursor: pointer;
-            font-size: 0.7rem;
-        }
-        .edit-btn { background: #ffa500; color: #fff; }
-        .delete-btn { background: #ff4444; color: #fff; }
-        
-        .product-edit-form {
-            background: #1e1e3a;
-            padding: 1rem;
-            border-radius: 1rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 0.8rem;
-        }
-        .edit-field {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        .edit-field label {
-            font-size: 0.7rem;
-            font-weight: bold;
-            color: #ffaa44;
-            text-align: right;
-        }
-        .edit-field input, .edit-field textarea, .edit-field select {
-            width: 100%;
-            padding: 0.5rem;
-            border-radius: 1rem;
-            background: #0a0c1a;
-            border: 1px solid #ffaa44;
-            color: white;
-            font-size: 0.75rem;
-        }
-        .edit-image-upload {
-            background: #0a0c1a;
-            border: 1px dashed #ffaa44;
-            border-radius: 1rem;
-            padding: 0.5rem;
-            text-align: center;
-            cursor: pointer;
-            font-size: 0.7rem;
-            color: #ffaa44;
-        }
-        .edit-image-preview {
-            margin-top: 5px;
-            max-width: 100%;
-            max-height: 60px;
-            border-radius: 8px;
-            display: none;
-        }
-        .edit-buttons {
-            grid-column: 1 / -1;
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 0.5rem;
-        }
         .footer { text-align: center; margin-top: 1rem; padding: 1rem; color: #888; font-size: 0.7rem; }
         .loading { text-align: center; padding: 2rem; color: #ffaa44; }
         
-        /* إشعار منبثق */
-        .admin-notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #11152b;
-            border-right: 4px solid #ffaa44;
-            border-radius: 12px;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            z-index: 10000;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            animation: slideInRight 0.5s ease;
-        }
-        @keyframes slideInRight {
-            from { transform: translateX(100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        
         @media (max-width: 640px) {
             body { padding: 0.5rem; }
-            th, td { padding: 4px 3px; font-size: 0.6rem; }
+            th, td { padding: 4px; font-size: 0.65rem; }
             .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
             .product-edit-form { grid-template-columns: 1fr; }
         }
@@ -363,14 +244,7 @@
             color: #1a1a2e !important;
         }
         body.light-mode .header { background: linear-gradient(135deg, #1a3a7a, #0d2a6e) !important; }
-        body.light-mode .admin-panel,
-        body.light-mode .categories-manager,
-        body.light-mode .offers-manager,
-        body.light-mode .coupons-manager,
-        body.light-mode .news-manager {
-            background: #ffffff !important;
-            border-color: #ffaa44 !important;
-        }
+        body.light-mode .section-card { background: #ffffff !important; }
         body.light-mode .dashboard-card { background: #ffffff !important; }
         body.light-mode .products-table { background: rgba(0,0,0,0.05) !important; }
         body.light-mode td { color: #1a1a2e !important; }
@@ -378,137 +252,144 @@
             background: #f5f5f5 !important;
             color: #1a1a2e !important;
         }
-        body.light-mode .status-select { background: #f5f5f5 !important; color: #1a1a2e !important; }
     </style>
 </head>
 <body>
 
 <div class="header">
     <h1>🔐 لوحة إدارة xnesto <i class="fas fa-chart-line"></i></h1>
-    <p>إدارة المنتجات - المخزون - الترتيب - التصنيفات - العروض - الطلبات</p>
+    <p>إدارة المنتجات - العروض - أكواد الخصم - الطلبات - التصنيفات - الأخبار</p>
 </div>
 
-<div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem; justify-content: space-between;">
-    <div>
-        <a href="index.html" class="back-link"><i class="fas fa-arrow-right"></i> المتجر</a>
-        <button id="logoutBtn" class="logout-btn" style="display:none;"><i class="fas fa-sign-out-alt"></i> خروج</button>
-        <button id="deleteAllBtn" class="delete-all-btn" style="display:none;"><i class="fas fa-trash-alt"></i> حذف الكل</button>
-        <button id="exportExcelBtn" class="btn-sm" style="display:none;"><i class="fas fa-file-excel"></i> تصدير Excel</button>
-    </div>
-    <div>
-        <input type="text" id="searchInput" class="search-input" placeholder="🔍 بحث بالاسم">
-        <select id="filterCategory" class="filter-select">
-            <option value="all">الكل</option>
-        </select>
-    </div>
+<!-- ========== شاشة تسجيل الدخول ========== -->
+<div id="loginSection" class="login-box">
+    <h2><i class="fas fa-lock"></i> تسجيل الدخول</h2>
+    <input type="password" id="adminPassword" placeholder="كلمة السر">
+    <button onclick="checkPassword()">دخول</button>
+    <div id="loginError" class="login-error"></div>
 </div>
 
-<!-- ========== داشبورد الإحصائيات ========== -->
-<div id="dashboardSection" class="dashboard-grid" style="display:none;">
-    <div class="dashboard-card"><i class="fas fa-box"></i><div class="value" id="statTotalProducts">0</div><div class="label">إجمالي المنتجات</div></div>
-    <div class="dashboard-card"><i class="fas fa-chart-line"></i><div class="value" id="statTotalSales">0</div><div class="label">إجمالي المبيعات</div></div>
-    <div class="dashboard-card"><i class="fas fa-dollar-sign"></i><div class="value" id="statTotalValue">0</div><div class="label">قيمة المخزون</div></div>
-    <div class="dashboard-card"><i class="fas fa-shopping-cart"></i><div class="value" id="statTotalOrders">0</div><div class="label">إجمالي الطلبات</div></div>
-    <div class="dashboard-card"><i class="fas fa-tags"></i><div class="value" id="statActiveOffers">0</div><div class="label">عروض نشطة</div></div>
-    <div class="dashboard-card"><i class="fas fa-ticket-alt"></i><div class="value" id="statActiveCoupons">0</div><div class="label">أكواد خصم</div></div>
-</div>
-
-<!-- ========== إدارة العروض ========== -->
-<div id="offersSection" class="offers-manager" style="display:none;">
-    <h3><i class="fas fa-calendar-alt"></i> إدارة العروض الأسبوعية</h3>
-    <div class="add-form" style="margin-bottom: 0.5rem;">
-        <select id="offerProductSelect"></select>
-        <input type="number" id="offerDiscount" placeholder="نسبة الخصم %" step="5">
-        <button class="btn-save" onclick="addWeeklyOffer()">➕ إضافة عرض</button>
-    </div>
-    <div id="offersList" class="offers-list"></div>
-</div>
-
-<!-- ========== إدارة أكواد الخصم ========== -->
-<div id="couponsSection" class="coupons-manager" style="display:none;">
-    <h3><i class="fas fa-ticket-alt"></i> إدارة أكواد الخصم</h3>
-    <div class="add-form" style="margin-bottom: 0.5rem;">
-        <input type="text" id="couponCode" placeholder="كود الخصم (مثل: WELCOME10)">
-        <input type="number" id="couponDiscount" placeholder="نسبة الخصم %" step="5">
-        <button class="btn-save" onclick="addCoupon()">➕ إضافة كود</button>
-    </div>
-    <div id="couponsList" class="coupons-list"></div>
-</div>
-
-<!-- ========== إدارة الطلبات ========== -->
-<div id="ordersSection" class="orders-table" style="display:none;">
-    <div style="padding: 0.5rem; border-bottom: 1px solid rgba(255,170,68,0.2);">
-        <i class="fas fa-truck"></i> إدارة الطلبات
-        <button class="btn-sm" onclick="exportOrdersToExcel()" style="float: left;"><i class="fas fa-file-excel"></i> تصدير Excel</button>
-    </div>
-    <div style="overflow-x:auto;">
-        <table id="ordersTable">
-            <thead>
-                <tr><th>رقم الطلب</th><th>المنتج</th><th>السعر</th><th>العميل</th><th>التاريخ</th><th>الحالة</th><th>إجراءات</th></tr>
-            </thead>
-            <tbody id="ordersTableBody"></tbody>
-        </table>
-    </div>
-</div>
-
-<!-- ========== إدارة الأخبار ========== -->
-<div id="newsSection" class="news-manager" style="display:none;">
-    <h3><i class="fas fa-newspaper"></i> إدارة الأخبار والإعلانات</h3>
-    <div class="add-form" style="margin-bottom: 0.5rem;">
-        <input type="text" id="newsTitle" placeholder="عنوان الخبر">
-        <textarea id="newsContent" rows="2" placeholder="محتوى الخبر" style="flex:2;"></textarea>
-        <button class="btn-save" onclick="addNews()">➕ إضافة خبر</button>
-    </div>
-    <div id="newsList" class="news-list"></div>
-</div>
-
-<div id="categoriesManager" class="categories-manager" style="display:none;">
-    <h3><i class="fas fa-tags"></i> إدارة التصنيفات</h3>
-    <div id="categoriesList" class="categories-list"></div>
-    <div class="add-category-input">
-        <input type="text" id="newCategoryName" placeholder="تصنيف جديد (مثال: 🎮 ألعاب PS4)">
-        <button id="addCategoryBtn"><i class="fas fa-plus"></i> إضافة تصنيف</button>
-    </div>
-</div>
-
-<div id="adminPanel" class="admin-panel" style="display:none;">
-    <h3>➕ إضافة منتج جديد</h3>
-    <div class="add-form">
-        <input type="text" id="newNameAr" placeholder="الاسم بالعربية *">
-        <input type="text" id="newNameEn" placeholder="Name in English *">
-        <select id="newCategorySelect"></select>
-        <input type="number" id="newPrice" step="0.5" placeholder="السعر (ر.ع) *">
-        <input type="number" id="newOldPrice" step="0.5" placeholder="السعر القديم (اختياري)">
-        <input type="number" id="newStock" step="1" placeholder="الكمية المتوفرة" value="99">
-        <div class="image-upload-area" id="newImageUploadArea">
-            <i class="fas fa-cloud-upload-alt"></i> 📸 صورة المنتج
-            <input type="file" id="newImageFile" accept="image/*">
-            <img id="newImagePreview" class="image-preview">
+<!-- ========== المحتوى بعد الدخول ========== -->
+<div id="adminContent" style="display:none;">
+    <div class="control-bar">
+        <div>
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-right"></i> المتجر</a>
+            <button onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> خروج</button>
         </div>
-        <textarea id="newDesc" rows="2" placeholder="وصف المنتج بالعربية"></textarea>
-        <textarea id="newDescEn" rows="2" placeholder="Product description in English"></textarea>
-        <button class="btn-save" onclick="addProduct()">💾 إضافة منتج</button>
+        <div>
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 بحث">
+            <select id="filterCategory" class="filter-select">
+                <option value="all">الكل</option>
+            </select>
+        </div>
     </div>
-</div>
 
-<div id="productsTable" class="products-table">
-    <div class="loading">🔐 يرجى إدخال كلمة السر...</div>
-</div>
+    <!-- ========== التبويبات ========== -->
+    <div class="admin-tabs">
+        <button class="admin-tab active" onclick="showTab('products')">📦 المنتجات</button>
+        <button class="admin-tab" onclick="showTab('offers')">🏷️ العروض</button>
+        <button class="admin-tab" onclick="showTab('coupons')">🎫 أكواد الخصم</button>
+        <button class="admin-tab" onclick="showTab('orders')">📋 الطلبات</button>
+        <button class="admin-tab" onclick="showTab('categories')">📁 التصنيفات</button>
+        <button class="admin-tab" onclick="showTab('news')">📰 الأخبار</button>
+    </div>
 
-<div class="footer">
-    <p>📞 واتساب: +96879977100 | 📸 انستقرام: xnesto_store</p>
+    <!-- ========== داشبورد ========== -->
+    <div id="dashboardSection" class="dashboard-grid">
+        <div class="dashboard-card"><i class="fas fa-box"></i><div class="value" id="statProducts">0</div><div class="label">المنتجات</div></div>
+        <div class="dashboard-card"><i class="fas fa-chart-line"></i><div class="value" id="statSales">0</div><div class="label">إجمالي المبيعات</div></div>
+        <div class="dashboard-card"><i class="fas fa-shopping-cart"></i><div class="value" id="statOrders">0</div><div class="label">الطلبات</div></div>
+        <div class="dashboard-card"><i class="fas fa-tags"></i><div class="value" id="statOffers">0</div><div class="label">العروض النشطة</div></div>
+        <div class="dashboard-card"><i class="fas fa-ticket-alt"></i><div class="value" id="statCoupons">0</div><div class="label">أكواد الخصم</div></div>
+    </div>
+
+    <!-- ========== تبويب المنتجات ========== -->
+    <div id="productsTab" class="section-card">
+        <h3>➕ إضافة منتج جديد</h3>
+        <div class="flex-form">
+            <input type="text" id="newNameAr" placeholder="الاسم بالعربية">
+            <input type="text" id="newNameEn" placeholder="Name in English">
+            <select id="newCategorySelect"></select>
+            <input type="number" id="newPrice" step="0.5" placeholder="السعر">
+            <input type="number" id="newOldPrice" step="0.5" placeholder="السعر القديم">
+            <input type="number" id="newStock" step="1" placeholder="الكمية" value="99">
+            <div class="image-upload-area" id="newImageUploadArea">
+                <i class="fas fa-cloud-upload-alt"></i> 📸 صورة
+                <input type="file" id="newImageFile" accept="image/*">
+                <img id="newImagePreview" class="image-preview">
+            </div>
+            <textarea id="newDesc" rows="2" placeholder="وصف المنتج"></textarea>
+            <textarea id="newDescEn" rows="2" placeholder="Product description"></textarea>
+            <button class="btn-save" onclick="addProduct()">💾 إضافة</button>
+        </div>
+        <div id="productsTable" class="products-table"><div class="loading">جاري التحميل...</div></div>
+    </div>
+
+    <!-- ========== تبويب العروض ========== -->
+    <div id="offersTab" class="section-card" style="display:none;">
+        <h3><i class="fas fa-calendar-alt"></i> إدارة العروض الأسبوعية</h3>
+        <div class="flex-form">
+            <select id="offerProductSelect"></select>
+            <input type="number" id="offerDiscount" placeholder="نسبة الخصم %" step="5">
+            <button class="btn-save" onclick="addWeeklyOffer()">➕ إضافة عرض</button>
+        </div>
+        <div id="offersList" class="items-list"></div>
+    </div>
+
+    <!-- ========== تبويب أكواد الخصم ========== -->
+    <div id="couponsTab" class="section-card" style="display:none;">
+        <h3><i class="fas fa-ticket-alt"></i> إدارة أكواد الخصم</h3>
+        <div class="flex-form">
+            <input type="text" id="couponCode" placeholder="كود الخصم (مثل: WELCOME10)">
+            <input type="number" id="couponDiscount" placeholder="نسبة الخصم %" step="5">
+            <button class="btn-save" onclick="addCoupon()">➕ إضافة كود</button>
+        </div>
+        <div id="couponsList" class="items-list"></div>
+    </div>
+
+    <!-- ========== تبويب الطلبات ========== -->
+    <div id="ordersTab" class="section-card" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+            <h3><i class="fas fa-truck"></i> إدارة الطلبات</h3>
+            <button class="btn-sm" onclick="exportOrdersToExcel()"><i class="fas fa-file-excel"></i> تصدير Excel</button>
+        </div>
+        <div class="orders-table">
+            <table id="ordersTable">
+                <thead><tr><th>رقم الطلب</th><th>المنتج</th><th>السعر</th><th>العميل</th><th>التاريخ</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+                <tbody id="ordersTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ========== تبويب التصنيفات ========== -->
+    <div id="categoriesTab" class="section-card" style="display:none;">
+        <h3><i class="fas fa-tags"></i> إدارة التصنيفات</h3>
+        <div id="categoriesList" class="items-list"></div>
+        <div class="flex-form">
+            <input type="text" id="newCategoryName" placeholder="تصنيف جديد">
+            <button class="btn-save" onclick="addCategory()">➕ إضافة تصنيف</button>
+        </div>
+    </div>
+
+    <!-- ========== تبويب الأخبار ========== -->
+    <div id="newsTab" class="section-card" style="display:none;">
+        <h3><i class="fas fa-newspaper"></i> إدارة الأخبار</h3>
+        <div class="flex-form">
+            <input type="text" id="newsTitle" placeholder="عنوان الخبر">
+            <textarea id="newsContent" rows="2" placeholder="محتوى الخبر" style="flex:2;"></textarea>
+            <button class="btn-save" onclick="addNews()">➕ إضافة خبر</button>
+        </div>
+        <div id="newsList" class="items-list"></div>
+    </div>
+
+    <div class="footer">
+        <p>📞 واتساب: +96879977100 | 📸 انستقرام: xnesto_store</p>
+    </div>
 </div>
 
 <script>
+    const ADMIN_PASSWORD = "ssp1995";
     const firebaseConfig = { databaseURL: "https://xnesto-645bf-default-rtdb.asia-southeast1.firebasedatabase.app/" };
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-    const productsRef = database.ref('products');
-    const ordersRef = database.ref('orders');
-    const categoriesRef = database.ref('categories');
-    const offersRef = database.ref('weekly_offers');
-    const couponsRef = database.ref('coupons');
-    const newsRef = database.ref('news');
     
     let products = [];
     let categories = ["games", "giftcards"];
@@ -518,56 +399,35 @@
     let coupons = [];
     let news = [];
     let currentImageData = null;
-    let isLoggedIn = false;
     let searchQuery = "";
     let filterCategory = "all";
     let currentTab = "products";
-    const ADMIN_PASSWORD = "ssp1995";
-    const SESSION_KEY = "xnesto_admin_logged";
     
     // ==================== المنتجات الافتراضية ====================
     const defaultGames = [
-        { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 13, oldPrice: 22, stock: 0, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English", order: 1, category: "games" },
+        { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 13, oldPrice: 22, stock: 50, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English", order: 1, category: "games" },
         { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 26, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English", order: 2, category: "games" },
         { id: 3, nameAr: "Grand Theft Auto VI", nameEn: "Grand Theft Auto VI", priceOMR: 10, oldPrice: 11, stock: 100, image: "https://media-rockstargames-com.akamaized.net/rockstargames-newsite/img/global/downloads/gtavi/gtavi_cover_ps5.jpg", detailsAr: "🏷️ 150GB | 🌍 عالم مفتوح", detailsEn: "📦 150GB | 🌍 Open World", order: 3, category: "games" },
         { id: 4, nameAr: "God of War Ragnarök", nameEn: "God of War Ragnarök", priceOMR: 11, oldPrice: 18, stock: 60, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2322010/header.jpg", detailsAr: "🏷️ 85GB | 🪓 ملحمة إسكندنافية", detailsEn: "📦 85GB | 🪓 Norse Saga", order: 4, category: "games" },
-        { id: 5, nameAr: "Marvel's Spider-Man 2", nameEn: "Marvel's Spider-Man 2", priceOMR: 14.5, oldPrice: 22, stock: 40, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", detailsAr: "🏷️ 98GB | 🕷️ بيتر + مايلز", detailsEn: "📦 98GB | 🕷️ Peter + Miles", order: 5, category: "games" },
+        { id: 5, nameAr: "Spider-Man 2", nameEn: "Spider-Man 2", priceOMR: 14.5, oldPrice: 22, stock: 40, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2651280/header.jpg", detailsAr: "🏷️ 98GB | 🕷️ بيتر + مايلز", detailsEn: "📦 98GB | 🕷️ Peter + Miles", order: 5, category: "games" },
         { id: 6, nameAr: "Elden Ring", nameEn: "Elden Ring", priceOMR: 12, oldPrice: 18, stock: 55, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg", detailsAr: "🏷️ 60GB | ⚔️ RPG خيالي", detailsEn: "📦 60GB | ⚔️ Fantasy RPG", order: 6, category: "games" },
         { id: 7, nameAr: "Horizon Forbidden West", nameEn: "Horizon Forbidden West", priceOMR: 15, oldPrice: 20, stock: 50, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1151640/header.jpg", detailsAr: "🏷️ 96GB | 🦕 مغامرة مستقبلية", detailsEn: "📦 96GB | 🦕 Future Adventure", order: 7, category: "games" },
         { id: 8, nameAr: "Ghost of Tsushima", nameEn: "Ghost of Tsushima", priceOMR: 17, oldPrice: 22, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2215430/header.jpg", detailsAr: "🏷️ 50GB | 🗡️ ساموراي", detailsEn: "📦 50GB | 🗡️ Samurai", order: 8, category: "games" },
         { id: 9, nameAr: "The Last of Us Part I", nameEn: "The Last of Us Part I", priceOMR: 20, oldPrice: 25, stock: 35, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1888930/header.jpg", detailsAr: "🏷️ 70GB | 🧟 لعبة البقاء", detailsEn: "📦 70GB | 🧟 Survival Game", order: 9, category: "games" },
         { id: 10, nameAr: "Final Fantasy XVI", nameEn: "Final Fantasy XVI", priceOMR: 18, oldPrice: 25, stock: 30, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2055370/header.jpg", detailsAr: "🏷️ 90GB | 🗡️ RPG خيالي", detailsEn: "📦 90GB | 🗡️ Fantasy RPG", order: 10, category: "games" },
-        { id: 11, nameAr: "Star Wars Jedi Survivor", nameEn: "Star Wars Jedi Survivor", priceOMR: 18, oldPrice: 24, stock: 40, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1774580/header.jpg", detailsAr: "🏷️ 130GB | ⚔️ حرب النجوم", detailsEn: "📦 130GB | ⚔️ Star Wars", order: 11, category: "games" },
-        { id: 12, nameAr: "Hogwarts Legacy", nameEn: "Hogwarts Legacy", priceOMR: 17, oldPrice: 22, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/990080/header.jpg", detailsAr: "🏷️ 85GB | 🪄 هاري بوتر", detailsEn: "📦 85GB | 🪄 Harry Potter", order: 12, category: "games" },
-        { id: 13, nameAr: "Resident Evil 4 Remake", nameEn: "Resident Evil 4 Remake", priceOMR: 16, oldPrice: 22, stock: 50, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2050650/header.jpg", detailsAr: "🏷️ 60GB | 🧟 رعب", detailsEn: "📦 60GB | 🧟 Horror", order: 13, category: "games" },
-        { id: 14, nameAr: "Dead Space Remake", nameEn: "Dead Space Remake", priceOMR: 15, oldPrice: 20, stock: 35, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1693980/header.jpg", detailsAr: "🏷️ 50GB | 🚀 رعب فضائي", detailsEn: "📦 50GB | 🚀 Space Horror", order: 14, category: "games" },
-        { id: 15, nameAr: "Diablo IV", nameEn: "Diablo IV", priceOMR: 21, oldPrice: 28, stock: 40, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2344520/header.jpg", detailsAr: "🏷️ 80GB | 🔥 لعبة تقمص أدوار", detailsEn: "📦 80GB | 🔥 Action RPG", order: 15, category: "games" },
-        { id: 16, nameAr: "Baldur's Gate 3", nameEn: "Baldur's Gate 3", priceOMR: 24, oldPrice: 30, stock: 35, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1086940/header.jpg", detailsAr: "🏷️ 120GB | 🎲 RPG استراتيجي", detailsEn: "📦 120GB | 🎲 Strategy RPG", order: 16, category: "games" },
-        { id: 17, nameAr: "Cyberpunk 2077", nameEn: "Cyberpunk 2077", priceOMR: 10, oldPrice: 16, stock: 60, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg", detailsAr: "🏷️ 70GB | 🤖 مستقبلية", detailsEn: "📦 70GB | 🤖 Futuristic", order: 17, category: "games" },
-        { id: 18, nameAr: "EA Sports FC 24", nameEn: "EA Sports FC 24", priceOMR: 15, oldPrice: 20, stock: 80, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2195250/header.jpg", detailsAr: "🏷️ 45GB | ⚽ كرة قدم", detailsEn: "📦 45GB | ⚽ Football", order: 18, category: "games" },
-        { id: 19, nameAr: "NBA 2K24", nameEn: "NBA 2K24", priceOMR: 15, oldPrice: 20, stock: 70, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2335780/header.jpg", detailsAr: "🏷️ 110GB | 🏀 كرة سلة", detailsEn: "📦 110GB | 🏀 Basketball", order: 19, category: "games" },
-        { id: 20, nameAr: "Mortal Kombat 1", nameEn: "Mortal Kombat 1", priceOMR: 19, oldPrice: 25, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1971870/header.jpg", detailsAr: "🏷️ 100GB | 🥊 قتال", detailsEn: "📦 100GB | 🥊 Fighting", order: 20, category: "games" },
-        { id: 21, nameAr: "Street Fighter 6", nameEn: "Street Fighter 6", priceOMR: 17, oldPrice: 23, stock: 50, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1364780/header.jpg", detailsAr: "🏷️ 60GB | 🥊 قتال", detailsEn: "📦 60GB | 🥊 Fighting", order: 21, category: "games" },
-        { id: 22, nameAr: "Tekken 8", nameEn: "Tekken 8", priceOMR: 12, oldPrice: 18, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1778820/header.jpg", detailsAr: "🏷️ 80GB | 🥊 لعبة قتال", detailsEn: "📦 80GB | 🥊 Fighting Game", order: 22, category: "games" },
-        { id: 23, nameAr: "Armored Core VI", nameEn: "Armored Core VI", priceOMR: 18, oldPrice: 24, stock: 35, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1888160/header.jpg", detailsAr: "🏷️ 60GB | 🤖 ميكا", detailsEn: "📦 60GB | 🤖 Mecha", order: 23, category: "games" },
-        { id: 24, nameAr: "Lies of P", nameEn: "Lies of P", priceOMR: 17, oldPrice: 23, stock: 40, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1627720/header.jpg", detailsAr: "🏷️ 35GB | 🎭 سولز لايك", detailsEn: "📦 35GB | 🎭 Souls-like", order: 24, category: "games" },
-        { id: 25, nameAr: "Stray", nameEn: "Stray", priceOMR: 11, oldPrice: 15, stock: 90, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1332010/header.jpg", detailsAr: "🏷️ 10GB | 🐱 قط", detailsEn: "📦 10GB | 🐱 Cat", order: 25, category: "games" },
-        { id: 26, nameAr: "It Takes Two", nameEn: "It Takes Two", priceOMR: 10, oldPrice: 14, stock: 85, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1426210/header.jpg", detailsAr: "🏷️ 45GB | 👥 تعاوني", detailsEn: "📦 45GB | 👥 Co-op", order: 26, category: "games" },
-        { id: 27, nameAr: "Red Dead Redemption 2", nameEn: "Red Dead Redemption 2", priceOMR: 15, oldPrice: 24, stock: 70, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg", detailsAr: "🏷️ 150GB | 🤠 رعاة البقر", detailsEn: "📦 150GB | 🤠 Western", order: 27, category: "games" },
-        { id: 28, nameAr: "Grand Theft Auto V", nameEn: "Grand Theft Auto V", priceOMR: 10, oldPrice: 14, stock: 100, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/271590/header.jpg", detailsAr: "🏷️ 95GB | 🌍 عالم مفتوح", detailsEn: "📦 95GB | 🌍 Open World", order: 28, category: "games" },
-        { id: 29, nameAr: "The Witcher 3", nameEn: "The Witcher 3", priceOMR: 9, oldPrice: 13, stock: 85, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/292030/header.jpg", detailsAr: "🏷️ 50GB | ⚔️ RPG خيالي", detailsEn: "📦 50GB | ⚔️ Fantasy RPG", order: 29, category: "games" },
-        { id: 30, nameAr: "Sekiro: Shadows Die Twice", nameEn: "Sekiro: Shadows Die Twice", priceOMR: 19, oldPrice: 25, stock: 40, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/814380/header.jpg", detailsAr: "🏷️ 25GB | 🗡️ ساموراي", detailsEn: "📦 25GB | 🗡️ Samurai", order: 30, category: "games" },
+        { id: 11, nameAr: "Red Dead Redemption 2", nameEn: "Red Dead Redemption 2", priceOMR: 15, oldPrice: 24, stock: 70, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1174180/header.jpg", detailsAr: "🏷️ 150GB | 🤠 رعاة البقر", detailsEn: "📦 150GB | 🤠 Western", order: 11, category: "games" },
+        { id: 12, nameAr: "Cyberpunk 2077", nameEn: "Cyberpunk 2077", priceOMR: 10, oldPrice: 16, stock: 60, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg", detailsAr: "🏷️ 70GB | 🤖 مستقبلية", detailsEn: "📦 70GB | 🤖 Futuristic", order: 12, category: "games" },
+        { id: 13, nameAr: "Tekken 8", nameEn: "Tekken 8", priceOMR: 12, oldPrice: 18, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1778820/header.jpg", detailsAr: "🏷️ 80GB | 🥊 لعبة قتال", detailsEn: "📦 80GB | 🥊 Fighting Game", order: 13, category: "games" },
         { id: 108, nameAr: "Mafia: The Old Country", nameEn: "Mafia: The Old Country", priceOMR: 12, oldPrice: 18, stock: 25, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🇮🇹 55GB | 🔫 أكشن - مغامرة | 🗡️ قتال بالسكاكين", detailsEn: "🇮🇹 55GB | 🔫 Action-Adventure | 🗡️ Knife Combat", order: 108, category: "games" }
     ];
-    
-    for (let i = 31; i <= 50; i++) {
+    for (let i = 14; i <= 50; i++) {
         if (i === 108) continue;
         defaultGames.push({
-            id: i, nameAr: `لعبة PS5 مميزة ${i-20}`, nameEn: `Premium PS5 Game ${i-20}`,
+            id: i, nameAr: `لعبة PS5 مميزة ${i}`, nameEn: `Premium PS5 Game ${i}`,
             priceOMR: 9 + Math.floor(Math.random() * 10), oldPrice: 12 + Math.floor(Math.random() * 10),
             stock: 20 + Math.floor(Math.random() * 80),
             image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2358720/header.jpg",
-            detailsAr: `🏷️ لعبة رقم ${i-20}`, detailsEn: `Game ${i-20}`, order: i, category: "games"
+            detailsAr: `🏷️ لعبة رقم ${i}`, detailsEn: `Game ${i}`, order: i, category: "games"
         });
     }
     
@@ -575,101 +435,307 @@
         { id: 101, nameAr: "🇺🇸 بطاقة أمريكي", nameEn: "🇺🇸 US Card", category: "giftcards", priceOMR: 5, oldPrice: 6, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/30px-Flag_of_the_United_States.svg.png", detailsAr: "10$ | 25$ | 50$ | 100$", detailsEn: "10$ | 25$ | 50$ | 100$", order: 101 },
         { id: 102, nameAr: "🇸🇦 بطاقة سعودي", nameEn: "🇸🇦 Saudi Card", category: "giftcards", priceOMR: 4.5, oldPrice: 5.5, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/30px-Flag_of_Saudi_Arabia.svg.png", detailsAr: "50ر.س | 100ر.س | 200ر.س", detailsEn: "50 SAR | 100 SAR | 200 SAR", order: 102 },
         { id: 103, nameAr: "🇦🇪 بطاقة إماراتي", nameEn: "🇦🇪 UAE Card", category: "giftcards", priceOMR: 5, oldPrice: 6, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_United_Arab_Emirates.svg/30px-Flag_of_the_United_Arab_Emirates.svg.png", detailsAr: "50د.إ | 100د.إ | 200د.إ", detailsEn: "50 AED | 100 AED | 200 AED", order: 103 },
-        { id: 104, nameAr: "🇶🇦 بطاقة قطري", nameEn: "🇶🇦 Qatar Card", category: "giftcards", priceOMR: 4.5, oldPrice: 5.5, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Qatar.svg/30px-Flag_of_Qatar.svg.png", detailsAr: "50ر.ق | 100ر.ق | 200ر.ق", detailsEn: "50 QAR | 100 QAR | 200 QAR", order: 104 },
-        { id: 105, nameAr: "🇰🇼 بطاقة كويتي", nameEn: "🇰🇼 Kuwait Card", category: "giftcards", priceOMR: 6, oldPrice: 7, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Kuwait.svg/30px-Flag_of_Kuwait.svg.png", detailsAr: "5د.ك | 10د.ك | 20د.ك", detailsEn: "5 KWD | 10 KWD | 20 KWD", order: 105 },
-        { id: 106, nameAr: "🇧🇭 بطاقة بحريني", nameEn: "🇧🇭 Bahrain Card", category: "giftcards", priceOMR: 5.5, oldPrice: 6.5, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Bahrain.svg/30px-Flag_of_Bahrain.svg.png", detailsAr: "5د.ب | 10د.ب | 20د.ب", detailsEn: "5 BHD | 10 BHD | 20 BHD", order: 106 },
-        { id: 107, nameAr: "🇴🇲 بطاقة عماني", nameEn: "🇴🇲 Oman Card", category: "giftcards", priceOMR: 5, oldPrice: 6, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Oman.svg/30px-Flag_of_Oman.svg.png", detailsAr: "5ر.ع | 10ر.ع | 20ر.ع", detailsEn: "5 OMR | 10 OMR | 20 OMR", order: 107 }
+        { id: 104, nameAr: "🇴🇲 بطاقة عماني", nameEn: "🇴🇲 Oman Card", category: "giftcards", priceOMR: 5, oldPrice: 6, stock: 200, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Oman.svg/30px-Flag_of_Oman.svg.png", detailsAr: "5ر.ع | 10ر.ع | 20ر.ع", detailsEn: "5 OMR | 10 OMR | 20 OMR", order: 104 }
     ];
     
     const allDefaultProducts = [...defaultGames, ...giftCards];
     
-    // ==================== وظائف العروض ====================
+    // ==================== Firebase ====================
+    let db, productsRef, ordersRef, categoriesRef, offersRef, couponsRef, newsRef;
+    
+    function initFirebase() {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.database();
+        productsRef = db.ref('products');
+        ordersRef = db.ref('orders');
+        categoriesRef = db.ref('categories');
+        offersRef = db.ref('weekly_offers');
+        couponsRef = db.ref('coupons');
+        newsRef = db.ref('news');
+    }
+    
+    // ==================== تسجيل الدخول ====================
+    function checkPassword() {
+        const pwd = document.getElementById('adminPassword').value;
+        if (pwd === ADMIN_PASSWORD) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            initFirebase();
+            loadAllData();
+        } else {
+            document.getElementById('loginError').innerHTML = '❌ كلمة السر غير صحيحة';
+        }
+    }
+    
+    function logout() {
+        document.getElementById('loginSection').style.display = 'block';
+        document.getElementById('adminContent').style.display = 'none';
+        document.getElementById('adminPassword').value = '';
+    }
+    
+    // ==================== تحميل جميع البيانات ====================
+    function loadAllData() {
+        loadProducts();
+        loadOrders();
+        loadCategories();
+        loadWeeklyOffers();
+        loadCoupons();
+        loadNews();
+    }
+    
+    // ==================== المنتجات ====================
+    function loadProducts() {
+        productsRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data && Array.isArray(data) && data.length > 0) {
+                products = data.sort((a, b) => (a.order || 0) - (b.order || 0));
+            } else {
+                products = JSON.parse(JSON.stringify(allDefaultProducts));
+                productsRef.set(products);
+            }
+            renderProductsTable();
+            updateDashboard();
+            updateOfferSelect();
+        });
+    }
+    
+    function saveProducts() {
+        productsRef.set(products).then(() => showMessage('تم الحفظ'));
+    }
+    
+    function updateOrder() {
+        products.forEach((p, idx) => { p.order = idx; });
+        saveProducts();
+        renderProductsTable();
+    }
+    
+    function moveProductUp(index) {
+        if (index === 0) return;
+        [products[index], products[index-1]] = [products[index-1], products[index]];
+        updateOrder();
+    }
+    
+    function moveProductDown(index) {
+        if (index === products.length-1) return;
+        [products[index], products[index+1]] = [products[index+1], products[index]];
+        updateOrder();
+    }
+    
+    function moveToPosition(productId, newPos) {
+        const idx = products.findIndex(p => p.id == productId);
+        if (idx === -1) return;
+        let target = newPos - 1;
+        if (target < 0) target = 0;
+        if (target >= products.length) target = products.length - 1;
+        if (idx === target) return;
+        const product = products[idx];
+        products.splice(idx, 1);
+        products.splice(target, 0, product);
+        updateOrder();
+    }
+    
+    function updateStock(id, newStock) {
+        const p = products.find(p => p.id == id);
+        if (p) { p.stock = parseInt(newStock); saveProducts(); renderProductsTable(); }
+    }
+    
+    function getFilteredProducts() {
+        let filtered = [...products];
+        if (searchQuery) filtered = filtered.filter(p => p.nameAr.toLowerCase().includes(searchQuery) || p.nameEn.toLowerCase().includes(searchQuery));
+        if (filterCategory !== 'all') filtered = filtered.filter(p => p.category === filterCategory);
+        return filtered;
+    }
+    
+    function renderProductsTable() {
+        const filtered = getFilteredProducts();
+        const container = document.getElementById('productsTable');
+        if (filtered.length === 0) { container.innerHTML = '<div class="loading">لا توجد منتجات</div>'; return; }
+        
+        container.innerHTML = `
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead><tr><th>الترتيب</th><th>الصورة</th><th>الاسم</th><th>السعر</th><th>الكمية</th><th>التصنيف</th><th>إجراءات</th></tr></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        `;
+        
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = filtered.map((p, idx) => {
+            const realIdx = products.findIndex(prod => prod.id === p.id);
+            const orderNum = realIdx + 1;
+            return `
+                <tr>
+                    <td><div style="display:flex; gap:5px; justify-content:center;">
+                        <button class="edit-btn" onclick="moveProductUp(${realIdx})" ${realIdx===0?'disabled':''}>⬆️</button>
+                        <span style="background:#ffaa44; color:#0a0a1a; padding:2px 8px; border-radius:1rem;">${orderNum}</span>
+                        <button class="edit-btn" onclick="moveProductDown(${realIdx})" ${realIdx===products.length-1?'disabled':''}>⬇️</button>
+                        <input type="number" value="${orderNum}" min="1" max="${products.length}" style="width:55px; background:#1e1e3a; border:1px solid #ffaa44; border-radius:1rem; text-align:center; color:white;" onchange="moveToPosition(${p.id}, this.value)">
+                    </div></td>
+                    <td><img src="${p.image || ''}" width="40" height="40" style="border-radius:8px; object-fit:cover;" onerror="this.src='https://via.placeholder.com/40'"></td>
+                    <td><strong>${escapeHtml(p.nameAr)}</strong><br><small>${escapeHtml(p.nameEn)}</small></td>
+                    <td>${p.priceOMR} ر.ع${p.oldPrice ? `<br><span style="text-decoration:line-through;">${p.oldPrice}</span>` : ''}</td>
+                    <td><input type="number" class="stock-input" value="${p.stock}" min="0" onchange="updateStock(${p.id}, this.value)"></td>
+                    <td>${categoryNames[p.category] || p.category}</td>
+                    <td><button class="edit-btn" onclick="openEditForm(${p.id})">✏️</button><button class="delete-btn" onclick="deleteProduct(${p.id})">🗑️</button></td>
+                </tr>
+                <tr id="edit-form-${p.id}" style="display:none;"><td colspan="7"><div class="product-edit-form">
+                    <div class="edit-field"><label>📝 الاسم بالعربية</label><input type="text" id="editNameAr_${p.id}" value="${escapeHtml(p.nameAr)}"></div>
+                    <div class="edit-field"><label>🌐 الاسم بالإنجليزية</label><input type="text" id="editNameEn_${p.id}" value="${escapeHtml(p.nameEn)}"></div>
+                    <div class="edit-field"><label>💰 السعر</label><input type="number" id="editPrice_${p.id}" value="${p.priceOMR}" step="0.5"></div>
+                    <div class="edit-field"><label>🏷️ السعر القديم</label><input type="number" id="editOldPrice_${p.id}" value="${p.oldPrice||''}" step="0.5"></div>
+                    <div class="edit-field"><label>📦 الكمية</label><input type="number" id="editStock_${p.id}" value="${p.stock}" step="1"></div>
+                    <div class="edit-field"><label>🖼️ رابط الصورة</label><input type="text" id="editImageUrl_${p.id}" value="${escapeHtml(p.image||'')}"></div>
+                    <div class="edit-field"><label>📝 الوصف بالعربية</label><textarea id="editDescAr_${p.id}" rows="2">${escapeHtml(p.detailsAr||'')}</textarea></div>
+                    <div class="edit-field"><label>📝 الوصف بالإنجليزية</label><textarea id="editDescEn_${p.id}" rows="2">${escapeHtml(p.detailsEn||'')}</textarea></div>
+                    <div class="edit-field"><label>📂 التصنيف</label><select id="editCategory_${p.id}">${categories.map(cat => `<option value="${cat}" ${p.category===cat?'selected':''}>${categoryNames[cat]}</option>`).join('')}</select></div>
+                    <div class="edit-buttons"><button onclick="saveEdit(${p.id})" style="background:#00cc88;">💾 حفظ</button><button onclick="closeEditForm(${p.id})" style="background:#ff4444;">إلغاء</button></div>
+                </div></td></tr>
+            `;
+        }).join('');
+    }
+    
+    function openEditForm(id) { document.getElementById(`edit-form-${id}`).style.display = 'table-row'; }
+    function closeEditForm(id) { document.getElementById(`edit-form-${id}`).style.display = 'none'; }
+    
+    function saveEdit(id) {
+        const p = products.find(p => p.id == id);
+        if (!p) return;
+        p.nameAr = document.getElementById(`editNameAr_${id}`).value;
+        p.nameEn = document.getElementById(`editNameEn_${id}`).value;
+        p.priceOMR = parseFloat(document.getElementById(`editPrice_${id}`).value);
+        p.oldPrice = parseFloat(document.getElementById(`editOldPrice_${id}`).value) || null;
+        p.stock = parseInt(document.getElementById(`editStock_${id}`).value) || 0;
+        p.image = document.getElementById(`editImageUrl_${id}`).value;
+        p.detailsAr = document.getElementById(`editDescAr_${id}`).value;
+        p.detailsEn = document.getElementById(`editDescEn_${id}`).value;
+        p.category = document.getElementById(`editCategory_${id}`).value;
+        saveProducts();
+        closeEditForm(id);
+        renderProductsTable();
+        showMessage('✅ تم التحديث');
+    }
+    
+    function deleteProduct(id) {
+        if (confirm('⚠️ حذف المنتج؟')) {
+            products = products.filter(p => p.id != id);
+            updateOrder();
+            showMessage('✅ تم الحذف');
+        }
+    }
+    
+    function addProduct() {
+        const nameAr = document.getElementById('newNameAr').value.trim();
+        const nameEn = document.getElementById('newNameEn').value.trim();
+        const category = document.getElementById('newCategorySelect').value;
+        const price = parseFloat(document.getElementById('newPrice').value);
+        const oldPrice = parseFloat(document.getElementById('newOldPrice').value) || null;
+        const stock = parseInt(document.getElementById('newStock').value) || 0;
+        const image = currentImageData || "";
+        const descAr = document.getElementById('newDesc').value;
+        const descEn = document.getElementById('newDescEn').value;
+        
+        if (!nameAr || !nameEn || isNaN(price)) { alert('⚠️ يرجى ملء الاسم والسعر'); return; }
+        
+        const newProduct = {
+            id: Date.now(), nameAr, nameEn, category,
+            priceOMR: price, oldPrice: (oldPrice && oldPrice > price) ? oldPrice : null,
+            stock, image, detailsAr: descAr, detailsEn: descEn || descAr,
+            order: products.length
+        };
+        products.push(newProduct);
+        saveProducts();
+        document.getElementById('newNameAr').value = '';
+        document.getElementById('newNameEn').value = '';
+        document.getElementById('newPrice').value = '';
+        document.getElementById('newOldPrice').value = '';
+        document.getElementById('newStock').value = '99';
+        document.getElementById('newDesc').value = '';
+        document.getElementById('newDescEn').value = '';
+        currentImageData = null;
+        document.getElementById('newImagePreview').style.display = 'none';
+        renderProductsTable();
+        updateOfferSelect();
+        showMessage('✅ تم إضافة المنتج');
+    }
+    
+    // ==================== العروض ====================
     function loadWeeklyOffers() {
         offersRef.on('value', (snapshot) => {
             const data = snapshot.val();
-            if (data) weeklyOffers = Object.values(data);
-            else weeklyOffers = [];
+            weeklyOffers = data ? Object.values(data) : [];
             renderOffersList();
+            updateDashboard();
         });
     }
     
     function renderOffersList() {
         const container = document.getElementById('offersList');
-        if (!container) return;
-        container.innerHTML = weeklyOffers.map(offer => `
-            <div class="offer-item">
-                ${offer.productName} - ${offer.discount}%
-                <i class="fas fa-trash" onclick="deleteOffer('${offer.id}')"></i>
-            </div>
-        `).join('');
-        updateDashboard();
+        container.innerHTML = weeklyOffers.map(o => `<div class="item-badge">${o.productName} - ${o.discount}% <i class="fas fa-trash" onclick="deleteOffer('${o.id}')"></i></div>`).join('');
     }
     
     function addWeeklyOffer() {
-        const productId = document.getElementById('offerProductSelect').value;
+        const pid = document.getElementById('offerProductSelect').value;
         const discount = parseInt(document.getElementById('offerDiscount').value);
-        if (!productId || !discount) { alert('اختر منتج ونسبة الخصم'); return; }
-        const product = products.find(p => p.id == productId);
-        if (!product) return;
-        const newOffer = { id: Date.now(), productId: parseInt(productId), productName: product.nameAr, discount: discount };
+        if (!pid || !discount) { alert('اختر منتج ونسبة الخصم'); return; }
+        const p = products.find(p => p.id == pid);
+        if (!p) return;
+        const newOffer = { id: Date.now(), productId: parseInt(pid), productName: p.nameAr, discount };
         weeklyOffers.push(newOffer);
         offersRef.set(weeklyOffers);
         document.getElementById('offerDiscount').value = '';
-        showNotification('✅ تم إضافة العرض بنجاح');
+        showMessage('✅ تم إضافة العرض');
     }
     
     function deleteOffer(id) {
         weeklyOffers = weeklyOffers.filter(o => o.id != id);
         offersRef.set(weeklyOffers);
-        showNotification('✅ تم حذف العرض');
+        showMessage('✅ تم حذف العرض');
     }
     
-    // ==================== وظائف أكواد الخصم ====================
+    function updateOfferSelect() {
+        const select = document.getElementById('offerProductSelect');
+        if (select) select.innerHTML = products.map(p => `<option value="${p.id}">${p.nameAr}</option>`).join('');
+    }
+    
+    // ==================== أكواد الخصم ====================
     function loadCoupons() {
         couponsRef.on('value', (snapshot) => {
             const data = snapshot.val();
-            if (data) coupons = Object.values(data);
-            else coupons = [];
+            coupons = data ? Object.values(data) : [];
             renderCouponsList();
+            updateDashboard();
         });
     }
     
     function renderCouponsList() {
         const container = document.getElementById('couponsList');
-        if (!container) return;
-        container.innerHTML = coupons.map(coupon => `
-            <div class="coupon-item">
-                ${coupon.code} - ${coupon.discount}%
-                <i class="fas fa-trash" onclick="deleteCoupon('${coupon.id}')"></i>
-            </div>
-        `).join('');
-        updateDashboard();
+        container.innerHTML = coupons.map(c => `<div class="item-badge">${c.code} - ${c.discount}% <i class="fas fa-trash" onclick="deleteCoupon('${c.id}')"></i></div>`).join('');
     }
     
     function addCoupon() {
         const code = document.getElementById('couponCode').value.trim().toUpperCase();
         const discount = parseInt(document.getElementById('couponDiscount').value);
         if (!code || !discount) { alert('أدخل كود الخصم ونسبة الخصم'); return; }
-        const newCoupon = { id: Date.now(), code: code, discount: discount };
+        const newCoupon = { id: Date.now(), code, discount };
         coupons.push(newCoupon);
         couponsRef.set(coupons);
         document.getElementById('couponCode').value = '';
         document.getElementById('couponDiscount').value = '';
-        showNotification(`✅ تم إضافة كود الخصم ${code}`);
+        showMessage(`✅ تم إضافة كود ${code}`);
     }
     
     function deleteCoupon(id) {
         coupons = coupons.filter(c => c.id != id);
         couponsRef.set(coupons);
-        showNotification('✅ تم حذف كود الخصم');
+        showMessage('✅ تم حذف كود الخصم');
     }
     
-    // ==================== وظائف الطلبات ====================
+    // ==================== الطلبات ====================
     function loadOrders() {
         ordersRef.on('value', (snapshot) => {
             const data = snapshot.val();
-            if (data) orders = Object.values(data).sort((a,b) => b.id - a.id);
-            else orders = [];
+            orders = data ? Object.values(data).sort((a,b) => b.id - a.id) : [];
             renderOrdersTable();
             updateDashboard();
         });
@@ -677,9 +743,215 @@
     
     function renderOrdersTable() {
         const tbody = document.getElementById('ordersTableBody');
-        if (!tbody) return;
-        tbody.innerHTML = orders.map(order => `
+        tbody.innerHTML = orders.map(o => `
             <tr>
-                <td>#${order.id}</td>
-                <td>${escapeHtml(order.productName || 'منتج')}</td>
-                <td>${order.price || 0} ر.ع
+                <td>#${o.id}</td>
+                <td>${escapeHtml(o.productName || 'منتج')}</td>
+                <td>${o.price || 0} ر.ع</td>
+                <td>${escapeHtml(o.customerName || 'زائر')}</td>
+                <td>${o.date ? new Date(o.date).toLocaleDateString('ar') : '-'}</td>
+                <td><select class="status-select" onchange="updateOrderStatus(${o.id}, this.value)">
+                    <option value="pending" ${o.status==='pending'?'selected':''}>قيد المعالجة</option>
+                    <option value="processing" ${o.status==='processing'?'selected':''}>قيد التجهيز</option>
+                    <option value="completed" ${o.status==='completed'?'selected':''}>مكتمل</option>
+                    <option value="cancelled" ${o.status==='cancelled'?'selected':''}>ملغي</option>
+                </select></td>
+                <td><button class="btn-sm btn-danger" onclick="deleteOrder(${o.id})"><i class="fas fa-trash"></i></button></td>
+            </tr>
+        `).join('');
+    }
+    
+    function updateOrderStatus(orderId, status) {
+        const o = orders.find(o => o.id == orderId);
+        if (o) { o.status = status; ordersRef.set(orders); showMessage('✅ تم تحديث الحالة'); }
+    }
+    
+    function deleteOrder(orderId) {
+        if (confirm('حذف الطلب؟')) {
+            orders = orders.filter(o => o.id != orderId);
+            ordersRef.set(orders);
+            showMessage('✅ تم حذف الطلب');
+        }
+    }
+    
+    function exportOrdersToExcel() {
+        const data = orders.map(o => ({
+            'رقم الطلب': o.id, 'المنتج': o.productName, 'السعر': o.price,
+            'العميل': o.customerName, 'البريد': o.customerEmail, 'التاريخ': o.date, 'الحالة': o.status
+        }));
+        const ws = XLSX.utils.json_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'الطلبات');
+        XLSX.writeFile(wb, `orders_${new Date().toISOString().slice(0,19)}.xlsx`);
+        showMessage('✅ تم التصدير');
+    }
+    
+    // ==================== التصنيفات ====================
+    function loadCategories() {
+        categoriesRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data && data.categories && data.names) {
+                categories = data.categories;
+                categoryNames = data.names;
+            } else {
+                categories = ["games", "giftcards"];
+                categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
+                categoriesRef.set({ categories, names: categoryNames });
+            }
+            renderCategoriesList();
+            updateCategorySelect();
+            updateFilterSelect();
+        });
+    }
+    
+    function renderCategoriesList() {
+        const container = document.getElementById('categoriesList');
+        container.innerHTML = categories.map(cat => `<div class="item-badge">${categoryNames[cat]} <i class="fas fa-trash" onclick="deleteCategory('${cat}')"></i></div>`).join('');
+    }
+    
+    function addCategory() {
+        const newName = document.getElementById('newCategoryName').value.trim();
+        if (!newName) { alert('أدخل اسم التصنيف'); return; }
+        const key = newName.replace(/\s/g, "_").toLowerCase();
+        if (categories.includes(key)) { alert('التصنيف موجود'); return; }
+        categories.push(key);
+        categoryNames[key] = newName;
+        categoriesRef.set({ categories, names: categoryNames });
+        document.getElementById('newCategoryName').value = '';
+        renderCategoriesList();
+        updateCategorySelect();
+        updateFilterSelect();
+        showMessage('✅ تم إضافة التصنيف');
+    }
+    
+    function deleteCategory(cat) {
+        if (cat === "games" || cat === "giftcards") { alert('لا يمكن حذف التصنيفات الأساسية'); return; }
+        if (confirm('حذف التصنيف؟')) {
+            categories = categories.filter(c => c !== cat);
+            delete categoryNames[cat];
+            categoriesRef.set({ categories, names: categoryNames });
+            renderCategoriesList();
+            updateCategorySelect();
+            updateFilterSelect();
+            showMessage('✅ تم حذف التصنيف');
+        }
+    }
+    
+    function updateCategorySelect() {
+        const select = document.getElementById('newCategorySelect');
+        if (select) select.innerHTML = categories.map(cat => `<option value="${cat}">${categoryNames[cat]}</option>`).join('');
+    }
+    
+    function updateFilterSelect() {
+        const filter = document.getElementById('filterCategory');
+        if (filter) {
+            const val = filter.value;
+            filter.innerHTML = '<option value="all">الكل</option>' + categories.map(cat => `<option value="${cat}">${categoryNames[cat]}</option>`).join('');
+            filter.value = val;
+        }
+    }
+    
+    // ==================== الأخبار ====================
+    function loadNews() {
+        newsRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            news = data ? Object.values(data).sort((a,b) => b.id - a.id) : [];
+            renderNewsList();
+        });
+    }
+    
+    function renderNewsList() {
+        const container = document.getElementById('newsList');
+        container.innerHTML = news.map(n => `<div class="item-badge"><strong>${escapeHtml(n.title)}</strong><br><small>${escapeHtml(n.content)}</small> <i class="fas fa-trash" onclick="deleteNews('${n.id}')"></i></div>`).join('');
+    }
+    
+    function addNews() {
+        const title = document.getElementById('newsTitle').value.trim();
+        const content = document.getElementById('newsContent').value.trim();
+        if (!title || !content) { alert('أدخل عنوان ومحتوى الخبر'); return; }
+        const newNews = { id: Date.now(), title, content, date: new Date().toISOString() };
+        news.push(newNews);
+        newsRef.set(news);
+        document.getElementById('newsTitle').value = '';
+        document.getElementById('newsContent').value = '';
+        showMessage('✅ تم إضافة الخبر');
+    }
+    
+    function deleteNews(id) {
+        news = news.filter(n => n.id != id);
+        newsRef.set(news);
+        showMessage('✅ تم حذف الخبر');
+    }
+    
+    // ==================== داشبورد ====================
+    function updateDashboard() {
+        document.getElementById('statProducts').innerText = products.length;
+        const totalSales = products.reduce((s, p) => s + ((p.sales || 0) * (p.priceOMR || 0)), 0);
+        document.getElementById('statSales').innerText = totalSales.toFixed(2);
+        document.getElementById('statOrders').innerText = orders.length;
+        document.getElementById('statOffers').innerText = weeklyOffers.length;
+        document.getElementById('statCoupons').innerText = coupons.length;
+    }
+    
+    // ==================== تبويبات ====================
+    function showTab(tab) {
+        currentTab = tab;
+        document.querySelectorAll('.admin-tab').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        document.getElementById('productsTab').style.display = tab === 'products' ? 'block' : 'none';
+        document.getElementById('offersTab').style.display = tab === 'offers' ? 'block' : 'none';
+        document.getElementById('couponsTab').style.display = tab === 'coupons' ? 'block' : 'none';
+        document.getElementById('ordersTab').style.display = tab === 'orders' ? 'block' : 'none';
+        document.getElementById('categoriesTab').style.display = tab === 'categories' ? 'block' : 'none';
+        document.getElementById('newsTab').style.display = tab === 'news' ? 'block' : 'none';
+    }
+    
+    // ==================== مساعدين ====================
+    function showMessage(msg) { alert(msg); }
+    function escapeHtml(t) { return t ? t.replace(/[&<>]/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;' }[m]||m)) : ''; }
+    
+    // ==================== رفع الصورة ====================
+    const uploadArea = document.getElementById("newImageUploadArea");
+    const fileInput = document.getElementById("newImageFile");
+    const preview = document.getElementById("newImagePreview");
+    if (uploadArea) uploadArea.addEventListener("click", () => fileInput.click());
+    if (fileInput) {
+        fileInput.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => { currentImageData = e.target.result; preview.src = e.target.result; preview.style.display = "block"; };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    
+    document.getElementById('searchInput').addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase(); renderProductsTable(); });
+    document.getElementById('filterCategory').addEventListener('change', (e) => { filterCategory = e.target.value; renderProductsTable(); });
+    
+    window.checkPassword = checkPassword;
+    window.logout = logout;
+    window.showTab = showTab;
+    window.moveProductUp = moveProductUp;
+    window.moveProductDown = moveProductDown;
+    window.moveToPosition = moveToPosition;
+    window.updateStock = updateStock;
+    window.openEditForm = openEditForm;
+    window.closeEditForm = closeEditForm;
+    window.saveEdit = saveEdit;
+    window.deleteProduct = deleteProduct;
+    window.addProduct = addProduct;
+    window.addWeeklyOffer = addWeeklyOffer;
+    window.deleteOffer = deleteOffer;
+    window.addCoupon = addCoupon;
+    window.deleteCoupon = deleteCoupon;
+    window.updateOrderStatus = updateOrderStatus;
+    window.deleteOrder = deleteOrder;
+    window.exportOrdersToExcel = exportOrdersToExcel;
+    window.addCategory = addCategory;
+    window.deleteCategory = deleteCategory;
+    window.addNews = addNews;
+    window.deleteNews = deleteNews;
+</script>
+</body>
+</html>

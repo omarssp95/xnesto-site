@@ -28,7 +28,6 @@
         .header h1 { color: #ffaa44; font-size: 1.5rem; }
         .header p { color: #ffdd99; font-size: 0.8rem; }
         
-        /* ========== شاشة تسجيل الدخول ========== */
         .login-box {
             max-width: 400px;
             margin: 2rem auto;
@@ -62,7 +61,6 @@
         }
         .login-error { color: #ff6666; font-size: 0.8rem; margin-top: 0.5rem; }
         
-        /* ========== تبويبات ========== */
         .admin-tabs {
             display: flex;
             gap: 0.5rem;
@@ -83,7 +81,6 @@
         }
         .admin-tab.active { background: #ffaa44; color: #0a0a1a; }
         
-        /* ========== داشبورد ========== */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -101,7 +98,6 @@
         .dashboard-card .value { font-size: 1.6rem; font-weight: bold; color: #ffaa44; }
         .dashboard-card .label { font-size: 0.7rem; opacity: 0.8; }
         
-        /* ========== إدارة العروض ========== */
         .section-card {
             background: #11152b;
             border-radius: 1rem;
@@ -125,7 +121,7 @@
             flex: 1;
             min-width: 120px;
         }
-        .btn-save { background: #00cc88; border: none; padding: 0.5rem 1rem; border-radius: 2rem; cursor: pointer; font-weight: bold; }
+        .btn-save { background: #00cc88; border: none; padding: 0.5rem 1rem; border-radius: 2rem; cursor: pointer; font-weight: bold; color: #0a0a1a; }
         .btn-sm { background: #2d2f6e; border: none; padding: 0.3rem 0.8rem; border-radius: 2rem; cursor: pointer; color: white; }
         .btn-danger { background: #ff4444; }
         
@@ -141,7 +137,6 @@
         }
         .item-badge i { cursor: pointer; color: #ff6666; }
         
-        /* ========== جدول الطلبات ========== */
         .orders-table {
             background: rgba(255,255,255,0.05);
             border-radius: 1rem;
@@ -158,7 +153,6 @@
             color: white;
         }
         
-        /* ========== جدول المنتجات ========== */
         .products-table {
             background: rgba(255,255,255,0.05);
             border-radius: 1rem;
@@ -232,6 +226,25 @@
         .footer { text-align: center; margin-top: 1rem; padding: 1rem; color: #888; font-size: 0.7rem; }
         .loading { text-align: center; padding: 2rem; color: #ffaa44; }
         
+        .admin-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #11152b;
+            border-right: 4px solid #ffaa44;
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 10000;
+            animation: slideInRight 0.5s ease;
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
         @media (max-width: 640px) {
             body { padding: 0.5rem; }
             th, td { padding: 4px; font-size: 0.65rem; }
@@ -252,6 +265,8 @@
             background: #f5f5f5 !important;
             color: #1a1a2e !important;
         }
+        body.light-mode .status-select { background: #f5f5f5 !important; color: #1a1a2e !important; }
+        body.light-mode .admin-notification { background: #ffffff !important; }
     </style>
 </head>
 <body>
@@ -261,7 +276,6 @@
     <p>إدارة المنتجات - العروض - أكواد الخصم - الطلبات - التصنيفات - الأخبار</p>
 </div>
 
-<!-- ========== شاشة تسجيل الدخول ========== -->
 <div id="loginSection" class="login-box">
     <h2><i class="fas fa-lock"></i> تسجيل الدخول</h2>
     <input type="password" id="adminPassword" placeholder="كلمة السر">
@@ -269,7 +283,6 @@
     <div id="loginError" class="login-error"></div>
 </div>
 
-<!-- ========== المحتوى بعد الدخول ========== -->
 <div id="adminContent" style="display:none;">
     <div class="control-bar">
         <div>
@@ -284,7 +297,6 @@
         </div>
     </div>
 
-    <!-- ========== التبويبات ========== -->
     <div class="admin-tabs">
         <button class="admin-tab active" onclick="showTab('products')">📦 المنتجات</button>
         <button class="admin-tab" onclick="showTab('offers')">🏷️ العروض</button>
@@ -294,7 +306,6 @@
         <button class="admin-tab" onclick="showTab('news')">📰 الأخبار</button>
     </div>
 
-    <!-- ========== داشبورد ========== -->
     <div id="dashboardSection" class="dashboard-grid">
         <div class="dashboard-card"><i class="fas fa-box"></i><div class="value" id="statProducts">0</div><div class="label">المنتجات</div></div>
         <div class="dashboard-card"><i class="fas fa-chart-line"></i><div class="value" id="statSales">0</div><div class="label">إجمالي المبيعات</div></div>
@@ -303,7 +314,6 @@
         <div class="dashboard-card"><i class="fas fa-ticket-alt"></i><div class="value" id="statCoupons">0</div><div class="label">أكواد الخصم</div></div>
     </div>
 
-    <!-- ========== تبويب المنتجات ========== -->
     <div id="productsTab" class="section-card">
         <h3>➕ إضافة منتج جديد</h3>
         <div class="flex-form">
@@ -325,7 +335,6 @@
         <div id="productsTable" class="products-table"><div class="loading">جاري التحميل...</div></div>
     </div>
 
-    <!-- ========== تبويب العروض ========== -->
     <div id="offersTab" class="section-card" style="display:none;">
         <h3><i class="fas fa-calendar-alt"></i> إدارة العروض الأسبوعية</h3>
         <div class="flex-form">
@@ -336,7 +345,6 @@
         <div id="offersList" class="items-list"></div>
     </div>
 
-    <!-- ========== تبويب أكواد الخصم ========== -->
     <div id="couponsTab" class="section-card" style="display:none;">
         <h3><i class="fas fa-ticket-alt"></i> إدارة أكواد الخصم</h3>
         <div class="flex-form">
@@ -347,7 +355,6 @@
         <div id="couponsList" class="items-list"></div>
     </div>
 
-    <!-- ========== تبويب الطلبات ========== -->
     <div id="ordersTab" class="section-card" style="display:none;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
             <h3><i class="fas fa-truck"></i> إدارة الطلبات</h3>
@@ -361,7 +368,6 @@
         </div>
     </div>
 
-    <!-- ========== تبويب التصنيفات ========== -->
     <div id="categoriesTab" class="section-card" style="display:none;">
         <h3><i class="fas fa-tags"></i> إدارة التصنيفات</h3>
         <div id="categoriesList" class="items-list"></div>
@@ -371,7 +377,6 @@
         </div>
     </div>
 
-    <!-- ========== تبويب الأخبار ========== -->
     <div id="newsTab" class="section-card" style="display:none;">
         <h3><i class="fas fa-newspaper"></i> إدارة الأخبار</h3>
         <div class="flex-form">
@@ -389,6 +394,7 @@
 
 <script>
     const ADMIN_PASSWORD = "ssp1995";
+    const SESSION_KEY = "xnesto_admin_logged";
     const firebaseConfig = { databaseURL: "https://xnesto-645bf-default-rtdb.asia-southeast1.firebasedatabase.app/" };
     
     let products = [];
@@ -402,8 +408,59 @@
     let searchQuery = "";
     let filterCategory = "all";
     let currentTab = "products";
+    let notificationTimeout = null;
     
-    // ==================== المنتجات الافتراضية ====================
+    let db, productsRef, ordersRef, categoriesRef, offersRef, couponsRef, newsRef;
+    
+    // ==================== تسجيل الدخول والحفاظ على الجلسة ====================
+    function checkSession() {
+        const isLoggedIn = localStorage.getItem(SESSION_KEY) === "true";
+        if (isLoggedIn) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            initFirebaseAndLoad();
+        }
+    }
+    
+    function checkPassword() {
+        const pwd = document.getElementById('adminPassword').value;
+        if (pwd === ADMIN_PASSWORD) {
+            localStorage.setItem(SESSION_KEY, "true");
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            initFirebaseAndLoad();
+        } else {
+            document.getElementById('loginError').innerHTML = '❌ كلمة السر غير صحيحة';
+        }
+    }
+    
+    function logout() {
+        localStorage.removeItem(SESSION_KEY);
+        document.getElementById('loginSection').style.display = 'block';
+        document.getElementById('adminContent').style.display = 'none';
+        document.getElementById('adminPassword').value = '';
+        document.getElementById('loginError').innerHTML = '';
+    }
+    
+    function initFirebaseAndLoad() {
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        db = firebase.database();
+        productsRef = db.ref('products');
+        ordersRef = db.ref('orders');
+        categoriesRef = db.ref('categories');
+        offersRef = db.ref('weekly_offers');
+        couponsRef = db.ref('coupons');
+        newsRef = db.ref('news');
+        
+        loadProducts();
+        loadOrders();
+        loadCategories();
+        loadWeeklyOffers();
+        loadCoupons();
+        loadNews();
+    }
+    
+    // ==================== المنتجات ====================
     const defaultGames = [
         { id: 1, nameAr: "Assassin's Creed Shadows", nameEn: "Assassin's Creed Shadows", priceOMR: 13, oldPrice: 22, stock: 50, image: "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/3159340/header.jpg", detailsAr: "🏷️ 65GB | 🎮 عربي/إنجليزي", detailsEn: "📦 65GB | 🎮 Arabic/English", order: 1, category: "games" },
         { id: 2, nameAr: "Call of Duty Black Ops 6", nameEn: "Call of Duty Black Ops 6", priceOMR: 22, oldPrice: 26, stock: 45, image: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2933620/header.jpg", detailsAr: "🏷️ 120GB | 🎮 إنجليزي", detailsEn: "📦 120GB | 🎮 English", order: 2, category: "games" },
@@ -440,50 +497,6 @@
     
     const allDefaultProducts = [...defaultGames, ...giftCards];
     
-    // ==================== Firebase ====================
-    let db, productsRef, ordersRef, categoriesRef, offersRef, couponsRef, newsRef;
-    
-    function initFirebase() {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.database();
-        productsRef = db.ref('products');
-        ordersRef = db.ref('orders');
-        categoriesRef = db.ref('categories');
-        offersRef = db.ref('weekly_offers');
-        couponsRef = db.ref('coupons');
-        newsRef = db.ref('news');
-    }
-    
-    // ==================== تسجيل الدخول ====================
-    function checkPassword() {
-        const pwd = document.getElementById('adminPassword').value;
-        if (pwd === ADMIN_PASSWORD) {
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('adminContent').style.display = 'block';
-            initFirebase();
-            loadAllData();
-        } else {
-            document.getElementById('loginError').innerHTML = '❌ كلمة السر غير صحيحة';
-        }
-    }
-    
-    function logout() {
-        document.getElementById('loginSection').style.display = 'block';
-        document.getElementById('adminContent').style.display = 'none';
-        document.getElementById('adminPassword').value = '';
-    }
-    
-    // ==================== تحميل جميع البيانات ====================
-    function loadAllData() {
-        loadProducts();
-        loadOrders();
-        loadCategories();
-        loadWeeklyOffers();
-        loadCoupons();
-        loadNews();
-    }
-    
-    // ==================== المنتجات ====================
     function loadProducts() {
         productsRef.on('value', (snapshot) => {
             const data = snapshot.val();
@@ -500,7 +513,7 @@
     }
     
     function saveProducts() {
-        productsRef.set(products).then(() => showMessage('تم الحفظ'));
+        productsRef.set(products).then(() => showNotification('✅ تم حفظ المنتجات'));
     }
     
     function updateOrder() {
@@ -613,14 +626,14 @@
         saveProducts();
         closeEditForm(id);
         renderProductsTable();
-        showMessage('✅ تم التحديث');
+        showNotification('✅ تم التحديث');
     }
     
     function deleteProduct(id) {
         if (confirm('⚠️ حذف المنتج؟')) {
             products = products.filter(p => p.id != id);
             updateOrder();
-            showMessage('✅ تم الحذف');
+            showNotification('✅ تم الحذف');
         }
     }
     
@@ -645,6 +658,7 @@
         };
         products.push(newProduct);
         saveProducts();
+        
         document.getElementById('newNameAr').value = '';
         document.getElementById('newNameEn').value = '';
         document.getElementById('newPrice').value = '';
@@ -656,7 +670,7 @@
         document.getElementById('newImagePreview').style.display = 'none';
         renderProductsTable();
         updateOfferSelect();
-        showMessage('✅ تم إضافة المنتج');
+        showNotification('✅ تم إضافة المنتج');
     }
     
     // ==================== العروض ====================
@@ -684,13 +698,13 @@
         weeklyOffers.push(newOffer);
         offersRef.set(weeklyOffers);
         document.getElementById('offerDiscount').value = '';
-        showMessage('✅ تم إضافة العرض');
+        showNotification('✅ تم إضافة العرض');
     }
     
     function deleteOffer(id) {
         weeklyOffers = weeklyOffers.filter(o => o.id != id);
         offersRef.set(weeklyOffers);
-        showMessage('✅ تم حذف العرض');
+        showNotification('✅ تم حذف العرض');
     }
     
     function updateOfferSelect() {
@@ -722,13 +736,13 @@
         couponsRef.set(coupons);
         document.getElementById('couponCode').value = '';
         document.getElementById('couponDiscount').value = '';
-        showMessage(`✅ تم إضافة كود ${code}`);
+        showNotification(`✅ تم إضافة كود ${code}`);
     }
     
     function deleteCoupon(id) {
         coupons = coupons.filter(c => c.id != id);
         couponsRef.set(coupons);
-        showMessage('✅ تم حذف كود الخصم');
+        showNotification('✅ تم حذف كود الخصم');
     }
     
     // ==================== الطلبات ====================
@@ -763,14 +777,14 @@
     
     function updateOrderStatus(orderId, status) {
         const o = orders.find(o => o.id == orderId);
-        if (o) { o.status = status; ordersRef.set(orders); showMessage('✅ تم تحديث الحالة'); }
+        if (o) { o.status = status; ordersRef.set(orders); showNotification('✅ تم تحديث الحالة'); }
     }
     
     function deleteOrder(orderId) {
         if (confirm('حذف الطلب؟')) {
             orders = orders.filter(o => o.id != orderId);
             ordersRef.set(orders);
-            showMessage('✅ تم حذف الطلب');
+            showNotification('✅ تم حذف الطلب');
         }
     }
     
@@ -783,7 +797,7 @@
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'الطلبات');
         XLSX.writeFile(wb, `orders_${new Date().toISOString().slice(0,19)}.xlsx`);
-        showMessage('✅ تم التصدير');
+        showNotification('✅ تم التصدير');
     }
     
     // ==================== التصنيفات ====================
@@ -821,7 +835,7 @@
         renderCategoriesList();
         updateCategorySelect();
         updateFilterSelect();
-        showMessage('✅ تم إضافة التصنيف');
+        showNotification('✅ تم إضافة التصنيف');
     }
     
     function deleteCategory(cat) {
@@ -833,7 +847,7 @@
             renderCategoriesList();
             updateCategorySelect();
             updateFilterSelect();
-            showMessage('✅ تم حذف التصنيف');
+            showNotification('✅ تم حذف التصنيف');
         }
     }
     
@@ -874,13 +888,13 @@
         newsRef.set(news);
         document.getElementById('newsTitle').value = '';
         document.getElementById('newsContent').value = '';
-        showMessage('✅ تم إضافة الخبر');
+        showNotification('✅ تم إضافة الخبر');
     }
     
     function deleteNews(id) {
         news = news.filter(n => n.id != id);
         newsRef.set(news);
-        showMessage('✅ تم حذف الخبر');
+        showNotification('✅ تم حذف الخبر');
     }
     
     // ==================== داشبورد ====================
@@ -906,8 +920,19 @@
         document.getElementById('newsTab').style.display = tab === 'news' ? 'block' : 'none';
     }
     
+    // ==================== إشعارات ====================
+    function showNotification(message) {
+        const existing = document.querySelector('.admin-notification');
+        if (existing) existing.remove();
+        const notif = document.createElement('div');
+        notif.className = 'admin-notification';
+        notif.innerHTML = `<i class="fas fa-bell"></i> ${message}`;
+        document.body.appendChild(notif);
+        if (notificationTimeout) clearTimeout(notificationTimeout);
+        notificationTimeout = setTimeout(() => notif.remove(), 3000);
+    }
+    
     // ==================== مساعدين ====================
-    function showMessage(msg) { alert(msg); }
     function escapeHtml(t) { return t ? t.replace(/[&<>]/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;' }[m]||m)) : ''; }
     
     // ==================== رفع الصورة ====================
@@ -952,6 +977,8 @@
     window.deleteCategory = deleteCategory;
     window.addNews = addNews;
     window.deleteNews = deleteNews;
+    
+    checkSession();
 </script>
 </body>
 </html>

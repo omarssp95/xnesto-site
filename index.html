@@ -187,7 +187,7 @@
         
         .tabs-container {
             display: flex;
-            justify-content: center;
+            justify(content): center;
             gap: 12px;
             margin-bottom: 2rem;
             flex-wrap: wrap;
@@ -294,13 +294,13 @@
             border: 2px solid #ffaa44;
             width: 100%;
             max-width: 600px;
-            max-height: 90vh;
+            max-height: 95vh;
             overflow-y: auto;
             animation: fadeInScale 0.3s ease;
         }
         @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         .modal-content h3 { color: #ffaa44; margin-bottom: 1rem; text-align: center; font-size: 1.3rem; }
-        .modal-content p { color: #ffdd99; margin-bottom: 1rem; text-align: center; }
+        .modal-content p { color: #ffdd99; margin-bottom: 1rem; text-align: center; font-size: 0.9rem; }
         
         .license-options { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 1.5rem 0; }
         .license-card {
@@ -323,7 +323,20 @@
         .comparison-table i.fa-check { color: #00cc88; }
         .comparison-table i.fa-times { color: #ff4444; }
 
-        .terms-actions { display: flex; gap: 12px; justify-content: center; margin-top: 1.5rem; }
+        /* Guide & Terms Styles */
+        .guide-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(255, 170, 68, 0.2);
+        }
+        .guide-section h4 { color: #ffaa44; margin-bottom: 10px; font-size: 1rem; display: flex; align-items: center; gap: 8px; }
+        .guide-section ul { padding-right: 1.2rem; margin-bottom: 1rem; }
+        .guide-section li { font-size: 0.8rem; color: #b9c5f0; margin-bottom: 6px; line-height: 1.4; }
+        .guide-section strong { color: #ffaa44; }
+
+        .terms-actions { display: flex; gap: 12px; justify-content: center; margin-top: 1.5rem; position: sticky; bottom: 0; background: #11152b; padding-top: 10px; }
         .btn-cancel { background: #444; color: white; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; font-weight: bold; font-size: 0.9rem; }
         .btn-accept { background: #ffaa44; color: #0a0a1a; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; font-weight: bold; font-size: 0.9rem; }
     </style>
@@ -390,31 +403,53 @@
     <i class="fab fa-whatsapp"></i>
 </a>
 
-<!-- Licensing Modal -->
+<!-- Purchasing Modal -->
 <div id="purchaseModal" class="modal">
     <div class="modal-content">
         <h3 id="modalProductName">اسم اللعبة</h3>
-        <p id="modalSelectText">يرجى اختيار نوع النسخة المطلوبة:</p>
         
-        <div id="licenseSelectionArea" class="license-options">
-            <div class="license-card active" id="primaryCard" onclick="selectLicense('primary')">
-                <h4>النسخة الأساسية (Primary)</h4>
-                <div class="price-tag" id="primaryPriceDisplay">--</div>
+        <div id="gameOptionsArea">
+            <p id="modalSelectText">يرجى اختيار نوع النسخة المطلوبة:</p>
+            
+            <div class="license-options">
+                <div class="license-card active" id="primaryCard" onclick="selectLicense('primary')">
+                    <h4>النسخة الأساسية (Primary)</h4>
+                    <div class="price-tag" id="primaryPriceDisplay">--</div>
+                </div>
+                <div class="license-card" id="secondaryCard" onclick="selectLicense('secondary')">
+                    <h4>النسخة الثانوية (Secondary)</h4>
+                    <div class="price-tag" id="secondaryPriceDisplay">--</div>
+                </div>
             </div>
-            <div class="license-card" id="secondaryCard" onclick="selectLicense('secondary')">
-                <h4>النسخة الثانوية (Secondary)</h4>
-                <div class="price-tag" id="secondaryPriceDisplay">--</div>
+
+            <table class="comparison-table">
+                <thead><tr><th>الميزة</th><th>الأساسية</th><th>الثانوية</th></tr></thead>
+                <tbody>
+                    <tr><td>اللعب بحسابك الخاص</td><td><i class="fas fa-check"></i></td><td><i class="fas fa-times"></i></td></tr>
+                    <tr><td>اللعب بدون إنترنت</td><td><i class="fas fa-check"></i></td><td><i class="fas fa-times"></i></td></tr>
+                    <tr><td>تجميع التروفيز</td><td><i class="fas fa-check"></i></td><td><i class="fas fa-times"></i></td></tr>
+                </tbody>
+            </table>
+
+            <div class="guide-section">
+                <h4><i class="fas fa-info-circle"></i> شرح التفعيل:</h4>
+                <div id="primaryGuide">
+                    <li><strong>النسخة الأساسية:</strong> تفعل الحساب كجهاز رئيسي (Console Sharing) وتلعب من حسابك الخاص وتجمع التروفيز.</li>
+                </div>
+                <div id="secondaryGuide">
+                    <li><strong>النسخة الثانوية:</strong> تلعب من حساب المتجر مباشرة، وتحتاج اتصال دائم بالإنترنت أثناء اللعب.</li>
+                </div>
             </div>
         </div>
 
-        <table id="comparisonTable" class="comparison-table">
-            <thead><tr><th>الميزة</th><th>الأساسية</th><th>الثانوية</th></tr></thead>
-            <tbody>
-                <tr><td>اللعب بحسابك الخاص</td><td><i class="fas fa-check"></i></td><td><i class="fas fa-times"></i></td></tr>
-                <tr><td>اللعب بدون إنترنت</td><td><i class="fas fa-check"></i></td><td><i class="fas fa-times"></i></td></tr>
-                <tr><td>تجميع التروفيز</td><td><i class="fas fa-check"></i></td><td><i class="fas fa-times"></i></td></tr>
-            </tbody>
-        </table>
+        <div class="guide-section">
+            <h4><i class="fas fa-clipboard-list"></i> شروط المتجر:</h4>
+            <ul>
+                <li>الحساب مضمون لمدة <strong>7 أيام</strong> من تاريخ التسليم.</li>
+                <li>يمنع منعاً باتاً تغيير كلمة السر أو أي بيانات للحساب.</li>
+                <li>المنتجات الرقمية لا تسترد ولا تستبدل بعد التسليم إلا في حال وجود عطل.</li>
+            </ul>
+        </div>
 
         <div class="terms-actions">
             <button onclick="closeModal()" class="btn-cancel">إلغاء</button>
@@ -449,7 +484,8 @@
     function renderProducts() {
         const container = document.getElementById('productsContainer');
         const filtered = products.filter(p => {
-            const matchesSearch = (p.nameAr||'').toLowerCase().includes(searchQuery.toLowerCase());
+            const name = (p.nameAr||'').toLowerCase();
+            const matchesSearch = name.includes(searchQuery.toLowerCase());
             const matchesCat = currentCategory === 'all' || p.category === currentCategory;
             return matchesSearch && matchesCat;
         });
@@ -483,15 +519,18 @@
         selectedProduct = p;
         document.getElementById('modalProductName').innerText = p.nameAr;
         
-        if (p.category === 'games' && (p.pricePrimary || p.priceSecondary)) {
-            document.getElementById('licenseSelectionArea').style.display = 'grid';
-            document.getElementById('comparisonTable').style.display = 'table';
-            document.getElementById('primaryPriceDisplay').innerText = formatPrice(p.pricePrimary || p.priceOMR);
-            document.getElementById('secondaryPriceDisplay').innerText = formatPrice(p.priceSecondary || (p.priceOMR * 0.6));
+        if (p.category === 'games') {
+            document.getElementById('gameOptionsArea').style.display = 'block';
+            
+            // Logic for legacy products: If no specific prices set, use fallback
+            const primaryPrice = p.pricePrimary || p.priceOMR;
+            const secondaryPrice = p.priceSecondary || (p.priceOMR * 0.6).toFixed(1);
+            
+            document.getElementById('primaryPriceDisplay').innerText = formatPrice(primaryPrice);
+            document.getElementById('secondaryPriceDisplay').innerText = formatPrice(secondaryPrice);
             selectLicense('primary');
         } else {
-            document.getElementById('licenseSelectionArea').style.display = 'none';
-            document.getElementById('comparisonTable').style.display = 'none';
+            document.getElementById('gameOptionsArea').style.display = 'none';
         }
         
         document.getElementById('purchaseModal').style.display = 'flex';
@@ -508,14 +547,14 @@
         let finalPrice = p.priceOMR;
         let licenseText = "";
         
-        if (p.category === 'games' && (p.pricePrimary || p.priceSecondary)) {
+        if (p.category === 'games') {
             finalPrice = selectedLicenseType === 'primary' ? (p.pricePrimary || p.priceOMR) : (p.priceSecondary || (p.priceOMR * 0.6));
             licenseText = selectedLicenseType === 'primary' ? "النسخة الأساسية (Primary)" : "النسخة الثانوية (Secondary)";
         }
 
         const sym = currencySymbols[currentCurrency];
         const convertedPrice = (finalPrice * exchangeRates[currentCurrency]).toFixed(2);
-        const message = `🛒 طلب شراء جديد\n🎮 المنتج: ${p.nameAr}\n📂 النوع: ${licenseText || 'حساب كامل'}\n💰 السعر: ${sym} ${convertedPrice}\n━━━━━━━━━━━━━━━━━━━━\nيرجى تأكيد الطلب وإرسال تفاصيل الدفع.`;
+        const message = `🛒 طلب شراء جديد\n🎮 المنتج: ${p.nameAr}\n📂 النوع: ${licenseText || 'حساب كامل'}\n💰 السعر: ${sym} ${convertedPrice}\n━━━━━━━━━━━━━━━━━━━━\n✅ أوافق على شروط المتجر.`;
         
         window.open(`https://wa.me/96879977100?text=${encodeURIComponent(message)}`, '_blank');
         closeModal();

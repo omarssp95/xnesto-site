@@ -253,7 +253,6 @@
         .card-info { padding: 1rem; display: flex; flex-direction: column; flex-grow: 1; }
         .product-title { font-size: 0.9rem; font-weight: 800; color: #fff; margin-bottom: 10px; line-height: 1.4; text-align: center; }
         
-        /* Pricing Row Layout */
         .pricing-display {
             display: flex;
             flex-direction: column;
@@ -316,7 +315,7 @@
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
         }
         
-        /* Licensing Modal */
+        /* Purchasing Modal */
         .modal {
             display: none;
             position: fixed;
@@ -430,11 +429,7 @@
     </div>
 </div>
 
-<div id="tabsContainer" class="tabs-container">
-    <button class="tab-btn active" onclick="setCategory('all')">🔥 الكل</button>
-    <button class="tab-btn" onclick="setCategory('games')">🎮 ألعاب</button>
-    <button class="tab-btn" onclick="setCategory('giftcards')">💳 بطاقات</button>
-</div>
+<div id="tabsContainer" class="tabs-container"></div>
 
 <div id="productsContainer" class="products-grid"></div>
 
@@ -503,7 +498,11 @@
 
 <script>
     const firebaseConfig = { databaseURL: "https://xnesto-645bf-default-rtdb.asia-southeast1.firebasedatabase.app/" };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    
     let products = [];
+    let categories = { "all": "🔥 الكل", "games": "🎮 ألعاب", "giftcards": "💳 بطاقات" };
     let currentCategory = "all";
     let currentCurrency = "OMR";
     let searchQuery = "";
@@ -513,15 +512,28 @@
     const exchangeRates = { OMR: 1, SAR: 9.75, AED: 9.55, USD: 2.60 };
     const currencySymbols = { OMR: 'ر.ع', SAR: 'ر.س', AED: 'د.إ', USD: '$' };
 
-    function initFirebase() {
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        db.ref('products').on('value', (snapshot) => {
-            const data = snapshot.val();
+    function init() {
+        // Load Categories
+        db.ref('categories').on('value', (snap) => {
+            const data = snap.val();
+            categories = { "all": "🔥 الكل", ...(data || {}) };
+            renderTabs();
+        });
+
+        // Load Products
+        db.ref('products').on('value', (snap) => {
+            const data = snap.val();
             products = data ? (Array.isArray(data) ? data : Object.values(data)) : [];
             products.sort((a, b) => (a.order || 0) - (b.order || 0));
             renderProducts();
         });
+    }
+
+    function renderTabs() {
+        const container = document.getElementById('tabsContainer');
+        container.innerHTML = Object.entries(categories).map(([key, name]) => `
+            <button class="tab-btn ${currentCategory === key ? 'active' : ''}" onclick="setCategory('${key}')">${name}</button>
+        `).join('');
     }
 
     function renderProducts() {
@@ -534,40 +546,28 @@
         });
 
         container.innerHTML = filtered.map(p => {
-            const isOutOfStock = (p.stock === 0 || p.stock === "0");
+            const isOutOfStock = (p.stock === 0 || p.stock === "0" || !p.stock);
+            const isGame = (p.category === 'games');
             
-            // Pricing Logic
             let pricingHTML = "";
-            if (p.category === 'games') {
+            if (isGame) {
                 const pPrice = p.pricePrimary || p.priceOMR;
                 const sPrice = p.priceSecondary || (p.priceOMR * 0.6).toFixed(1);
                 pricingHTML = `
                     <div class="pricing-display">
-                        <div class="price-row">
-                            <span class="price-label">أساسية:</span>
-                            <span class="price-val primary">${formatPrice(pPrice)}</span>
-                        </div>
-                        <div class="price-row">
-                            <span class="price-label">ثانوية:</span>
-                            <span class="price-val secondary">${formatPrice(sPrice)}</span>
-                        </div>
+                        <div class="price-row"><span class="price-label">أساسية:</span><span class="price-val primary">${formatPrice(pPrice)}</span></div>
+                        <div class="price-row"><span class="price-label">ثانوية:</span><span class="price-val secondary">${formatPrice(sPrice)}</span></div>
                     </div>
                 `;
             } else {
-                pricingHTML = `
-                    <div class="pricing-display" style="justify-content:center;">
-                        <div class="price-row" style="justify-content:center;">
-                            <span class="price-val" style="font-size:1.1rem;">${formatPrice(p.priceOMR)}</span>
-                        </div>
-                    </div>
-                `;
+                pricingHTML = `<div class="pricing-display" style="justify-content:center;"><div class="price-row" style="justify-content:center;"><span class="price-val" style="font-size:1.1rem;">${formatPrice(p.priceOMR)}</span></div></div>`;
             }
 
             return `
                 <div class="product-card">
                     ${isOutOfStock ? '<div class="out-of-stock-overlay"><div class="out-of-stock-badge">نفذت الكمية</div></div>' : ''}
                     <div class="product-image" style="background-image: url('${p.image}'); background-size: cover; background-position: center;">
-                        <div class="product-badge">${p.category === 'games' ? 'لعبة' : 'بطاقة'}</div>
+                        <div class="product-badge">${categories[p.category] || 'منتج'}</div>
                     </div>
                     <div class="card-info">
                         <div class="product-title">${p.nameAr}</div>
@@ -602,7 +602,6 @@
         } else {
             document.getElementById('gameOptionsArea').style.display = 'none';
         }
-        
         document.getElementById('purchaseModal').style.display = 'flex';
     }
 
@@ -616,31 +615,22 @@
         const p = selectedProduct;
         let finalPrice = p.priceOMR;
         let licenseText = "";
-        
         if (p.category === 'games') {
             finalPrice = selectedLicenseType === 'primary' ? (p.pricePrimary || p.priceOMR) : (p.priceSecondary || (p.priceOMR * 0.6));
             licenseText = selectedLicenseType === 'primary' ? "النسخة الأساسية (Primary)" : "النسخة الثانوية (Secondary)";
         }
-
-        const sym = currencySymbols[currentCurrency];
         const convertedPrice = (finalPrice * exchangeRates[currentCurrency]).toFixed(2);
-        const message = `🛒 طلب شراء جديد\n🎮 المنتج: ${p.nameAr}\n📂 النوع: ${licenseText || 'حساب كامل'}\n💰 السعر: ${sym} ${convertedPrice}\n━━━━━━━━━━━━━━━━━━━━\n✅ أوافق على شروط المتجر.`;
-        
+        const message = `🛒 طلب شراء جديد\n🎮 المنتج: ${p.nameAr}\n📂 النوع: ${licenseText || 'حساب كامل'}\n💰 السعر: ${currencySymbols[currentCurrency]} ${convertedPrice}\n━━━━━━━━━━━━━━━━━━━━\n✅ أوافق على شروط المتجر.`;
         window.open(`https://wa.me/96879977100?text=${encodeURIComponent(message)}`, '_blank');
         closeModal();
     }
 
     function closeModal() { document.getElementById('purchaseModal').style.display = 'none'; }
-    function setCategory(cat) { 
-        currentCategory = cat; 
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        event.target.classList.add('active');
-        renderProducts(); 
-    }
+    function setCategory(cat) { currentCategory = cat; renderTabs(); renderProducts(); }
     function setCurrency(cur) { currentCurrency = cur; renderProducts(); }
     document.getElementById('searchInput').oninput = (e) => { searchQuery = e.target.value; renderProducts(); };
 
-    window.onload = initFirebase;
+    init();
 </script>
 </body>
 </html>

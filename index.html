@@ -23,7 +23,8 @@
             .products-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 0.8rem; }
             .product-image { height: 130px; background-size: contain !important; background-repeat: no-repeat !important; background-position: center !important; }
             .product-title { font-size: 0.7rem; }
-            .price { font-size: 0.8rem; }
+            .price-container { flex-direction: column; align-items: flex-start; gap: 5px; }
+            .price-primary, .price-secondary { font-size: 0.7rem; }
             .btn-wa { font-size: 0.6rem; padding: 5px; }
             .hero-content { padding: 1.2rem 1rem; }
             .main-logo { font-size: 1.6rem; }
@@ -326,6 +327,7 @@
             flex-direction: column;
         }
         .product-card:hover { transform: translateY(-10px); border-color: #ffaa44; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5); }
+        .product-card.out-of-stock { opacity: 0.7; }
         
         .product-image {
             height: 180px;
@@ -359,46 +361,92 @@
             z-index: 5;
             box-shadow: 0 3px 10px rgba(255, 68, 68, 0.4);
         }
+        .out-of-stock-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: #ff4444;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 10;
+            white-space: nowrap;
+        }
         
         .card-info { padding: 1.2rem; display: flex; flex-direction: column; flex-grow: 1; }
         .product-title { font-size: 0.95rem; font-weight: 800; color: #fff; margin-bottom: 8px; line-height: 1.4; display: flex; justify-content: space-between; align-items: flex-start; }
         .share-btn { background: none; border: none; color: #25d366; cursor: pointer; font-size: 1.1rem; padding: 0 5px; transition: 0.2s; }
         .share-btn:hover { transform: scale(1.2); }
         
-        .rating-stars { display: flex; align-items: center; gap: 4px; margin-bottom: 10px; font-size: 0.75rem; color: #ffaa44; }
-        .reviews-count { color: #888; margin-right: 5px; font-size: 0.7rem; }
+        .price-container { 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+            margin-bottom: 12px; 
+            flex-wrap: wrap;
+            background: rgba(0,0,0,0.3);
+            padding: 8px;
+            border-radius: 12px;
+        }
+        .price-primary {
+            background: linear-gradient(135deg, #00cc88, #00aa66);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: white;
+        }
+        .price-secondary {
+            background: linear-gradient(135deg, #ffaa44, #ff8844);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #0a0a1a;
+        }
+        .price-primary span, .price-secondary span {
+            font-size: 0.7rem;
+            font-weight: normal;
+            margin-left: 3px;
+        }
+        .old-price { font-size: 0.7rem; text-decoration: line-through; color: #888; }
         
-        .product-details { font-size: 0.75rem; color: #b9c5f0; margin-bottom: 15px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        
-        .price-container { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
-        .price { font-size: 1.2rem; font-weight: 900; color: #ffaa44; }
-        .old-price { font-size: 0.85rem; text-decoration: line-through; color: #666; font-weight: 600; }
-        
-        .stock-counter { font-size: 0.7rem; font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; gap: 6px; }
-        .stock-counter.high { color: #00cc88; }
-        .stock-counter.low { color: #ffaa44; }
-        .stock-counter.out { color: #ff4444; }
+        .stock-status {
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            display: inline-block;
+            width: fit-content;
+        }
+        .stock-status.in-stock { background: #00cc8833; color: #00cc88; }
+        .stock-status.low-stock { background: #ffaa4433; color: #ffaa44; }
+        .stock-status.out-stock { background: #ff444433; color: #ff4444; }
         
         .btn-wa {
             background: linear-gradient(135deg, #ffaa44, #ff8844);
             color: #0a0a1a;
             border: none;
-            padding: 12px;
+            padding: 10px;
             border-radius: 12px;
             font-weight: 800;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             width: 100%;
             margin-top: auto;
         }
-        .btn-wa:hover { transform: scale(1.03); box-shadow: 0 5px 15px rgba(255, 136, 68, 0.4); }
-        .btn-wa i { font-size: 1.2rem; }
-        .btn-wa.disabled { background: #333; color: #888; cursor: not-allowed; }
+        .btn-wa:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(255, 136, 68, 0.4); }
+        .btn-wa.disabled { background: #333; color: #888; cursor: not-allowed; opacity: 0.6; }
+        .btn-wa.disabled:hover { transform: none; box-shadow: none; }
         
         .pagination { display: flex; justify-content: center; gap: 10px; margin: 3rem 0; }
         .page-btn { background: #1e1e3a; border: 1px solid rgba(255, 170, 68, 0.2); color: white; width: 40px; height: 40px; border-radius: 10px; cursor: pointer; font-weight: 700; transition: 0.3s; }
@@ -526,7 +574,6 @@
         .comparison-table i.fa-check { color: #00cc88; font-size: 1.1rem; }
         .comparison-table i.fa-times { color: #ff4444; font-size: 1.1rem; }
 
-        /* شرح تفصيلي للنسخة الأساسية والثانوية */
         .activation-details {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 1rem;
@@ -719,7 +766,7 @@
     <i class="fab fa-whatsapp"></i>
 </a>
 
-<!-- Modal اختيار النسخة مع شرح تفصيلي -->
+<!-- Modal اختيار النسخة -->
 <div id="termsModal" class="modal" style="display:none;">
     <div class="modal-content">
         <h3 id="modalProductName">اسم المنتج</h3>
@@ -737,48 +784,29 @@
             </div>
         </div>
 
-        <!-- جدول المقارنة -->
         <table class="comparison-table">
             <thead>
-                <tr>
-                    <th>الميزة</th>
-                    <th id="primaryHeader">النسخة الأساسية</th>
-                    <th id="secondaryHeader">النسخة الثانوية</th>
-                 </tr>
+                <tr><th>الميزة</th><th id="primaryHeader">النسخة الأساسية</th><th id="secondaryHeader">النسخة الثانوية</th> </tr>
             </thead>
             <tbody>
-                 <tr>
-                    <td>اللعب بحسابك الخاص</td>
-                    <td><i class="fas fa-check"></i> <span id="yesText">نعم</span></td>
-                    <td><i class="fas fa-times"></i> <span id="noText">لا</span></td>
-                 </tr>
-                 <tr>
-                    <td>اللعب بدون إنترنت</td>
-                    <td><i class="fas fa-check"></i> <span id="yesText2">نعم</span></td>
-                    <td><i class="fas fa-times"></i> <span id="noText2">لا</span></td>
-                  </tr>
-                  <tr>
-                    <td>تجميع التروفيز</td>
-                    <td><i class="fas fa-check"></i> <span id="yesText3">نعم</span></td>
-                    <td><i class="fas fa-times"></i> <span id="noText3">لا</span></td>
-                  </tr>
+                <tr><td>اللعب بحسابك الخاص</td><td><i class="fas fa-check"></i> <span id="yesText">نعم</span></td><td><i class="fas fa-times"></i> <span id="noText">لا</span></td></tr>
+                <tr><td>اللعب بدون إنترنت</td><td><i class="fas fa-check"></i> <span id="yesText2">نعم</span></td><td><i class="fas fa-times"></i> <span id="noText2">لا</span></td></tr>
+                <tr><td>تجميع التروفيز</td><td><i class="fas fa-check"></i> <span id="yesText3">نعم</span></td><td><i class="fas fa-times"></i> <span id="noText3">لا</span></td></tr>
             </tbody>
-         </table>
+        </table>
 
-        <!-- شرح تفصيلي للنسخة الأساسية والثانوية -->
         <div class="activation-details">
             <h4><i class="fas fa-info-circle"></i> <span id="detailsTitle">شرح تفصيلي للنسختين:</span></h4>
             <div class="primary-desc">
                 <strong id="primaryTitle" style="color:#00cc88;">✓ النسخة الأساسية (Primary):</strong>
-                <p id="primaryDesc">تفعل الحساب كجهاز رئيسي (Primary) على جهاز PlayStation الخاص بك، مما يتيح لك اللعب من حسابك الشخصي مع إمكانية اللعب بدون إنترنت وتجميع التروفيز والإنجازات. هذه النسخة مناسبة لمن يريد تجربة كاملة ومستقلة.</p>
+                <p id="primaryDesc">تفعل الحساب كجهاز رئيسي على جهاز PlayStation الخاص بك، مما يتيح لك اللعب من حسابك الشخصي مع إمكانية اللعب بدون إنترنت وتجميع التروفيز والإنجازات.</p>
             </div>
             <div class="secondary-desc">
                 <strong id="secondaryTitle" style="color:#ffaa44;">✓ النسخة الثانوية (Secondary):</strong>
-                <p id="secondaryDesc">تفعل الحساب كجهاز ثانوي (Secondary) وتتطلب تسجيل الدخول إلى حساب المتجر مع اتصال دائم بالإنترنت، ولا يمكنك تجميع التروفيز على حسابك الشخصي. هذه النسخة اقتصادية لمن لا يهتم بالميزات الإضافية.</p>
+                <p id="secondaryDesc">تفعل الحساب كجهاز ثانوي وتتطلب تسجيل الدخول إلى حساب المتجر مع اتصال دائم بالإنترنت، ولا يمكنك تجميع التروفيز على حسابك الشخصي.</p>
             </div>
         </div>
 
-        <!-- شروط المتجر -->
         <div class="store-terms">
             <h4><i class="fas fa-gavel"></i> <span id="termsTitle">شروط المتجر:</span></h4>
             <p id="term1">1. يمنع تغيير بيانات الحساب نهائياً.</p>
@@ -798,8 +826,7 @@
     const firebaseConfig = { databaseURL: "https://xnesto-645bf-default-rtdb.asia-southeast1.firebasedatabase.app/" };
     
     let products = [];
-    let categories = ["games", "giftcards"];
-    let categoryNames = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
+    let categories = { games: "🎮 ألعاب PS4/PS5", giftcards: "💳 بطاقات شحن" };
     let currentLang = "ar";
     let currentCurrency = "OMR";
     let currentPage = 1;
@@ -807,11 +834,9 @@
     let searchQuery = "";
     let pendingProductData = null;
     let selectedLicenseType = 'primary';
-    let weeklyOffers = [];
     
     const ITEMS_PER_PAGE = 12;
     const WA_NUMBER = "96879977100";
-    const INSTA_USERNAME = "xnesto_store";
     
     const exchangeRates = { OMR: 1, SAR: 9.75, AED: 9.55, KWD: 0.79, BHD: 0.98, QAR: 9.45, USD: 2.60, EUR: 2.40 };
     const currencySymbols = { OMR: 'ر.ع', SAR: 'ر.س', AED: 'د.إ', KWD: 'د.ك', BHD: 'د.ب', QAR: 'ر.ق', USD: '$', EUR: '€' };
@@ -822,7 +847,6 @@
             searchPlaceholder: "🔍 ابحث عن منتج...", orderNow: "اطلب الآن",
             outOfStock: "نفذت الكمية", currencyLabel: "العملة:",
             statGames: "لعبة", statCustomers: "عميل", statRating: "تقييم", statSupport: "دعم",
-            // ترجمات النافذة المنبثقة
             modalSelectText: "يرجى اختيار نوع النسخة المطلوبة:",
             primaryHeader: "النسخة الأساسية",
             secondaryHeader: "النسخة الثانوية",
@@ -830,9 +854,9 @@
             no: "لا",
             detailsTitle: "شرح تفصيلي للنسختين:",
             primaryTitle: "✓ النسخة الأساسية (Primary):",
-            primaryDesc: "تفعل الحساب كجهاز رئيسي (Primary) على جهاز PlayStation الخاص بك، مما يتيح لك اللعب من حسابك الشخصي مع إمكانية اللعب بدون إنترنت وتجميع التروفيز والإنجازات. هذه النسخة مناسبة لمن يريد تجربة كاملة ومستقلة.",
+            primaryDesc: "تفعل الحساب كجهاز رئيسي على جهاز PlayStation الخاص بك، مما يتيح لك اللعب من حسابك الشخصي مع إمكانية اللعب بدون إنترنت وتجميع التروفيز والإنجازات.",
             secondaryTitle: "✓ النسخة الثانوية (Secondary):",
-            secondaryDesc: "تفعل الحساب كجهاز ثانوي (Secondary) وتتطلب تسجيل الدخول إلى حساب المتجر مع اتصال دائم بالإنترنت، ولا يمكنك تجميع التروفيز على حسابك الشخصي. هذه النسخة اقتصادية لمن لا يهتم بالميزات الإضافية.",
+            secondaryDesc: "تفعل الحساب كجهاز ثانوي وتتطلب تسجيل الدخول إلى حساب المتجر مع اتصال دائم بالإنترنت، ولا يمكنك تجميع التروفيز على حسابك الشخصي.",
             termsTitle: "شروط المتجر:",
             term1: "1. يمنع تغيير بيانات الحساب نهائياً.",
             term2: "2. النسخة الأساسية تسمح لك باللعب بحسابك الشخصي.",
@@ -846,7 +870,6 @@
             searchPlaceholder: "🔍 Search products...", orderNow: "Order Now",
             outOfStock: "Out of Stock", currencyLabel: "Currency:",
             statGames: "Games", statCustomers: "Customers", statRating: "Rating", statSupport: "Support",
-            // English translations for modal
             modalSelectText: "Please select the license type:",
             primaryHeader: "Primary License",
             secondaryHeader: "Secondary License",
@@ -854,9 +877,9 @@
             no: "No",
             detailsTitle: "Detailed License Explanation:",
             primaryTitle: "✓ Primary License:",
-            primaryDesc: "Activate the account as Primary on your PlayStation device, allowing you to play from your personal account with offline play and trophy collection. This license is perfect for those who want a complete and independent experience.",
+            primaryDesc: "Activate the account as Primary on your PlayStation device, allowing you to play from your personal account with offline play and trophy collection.",
             secondaryTitle: "✓ Secondary License:",
-            secondaryDesc: "Activate the account as Secondary, requiring login to the store account with constant internet connection. You cannot collect trophies on your personal account. This is an economical option for those who don't need additional features.",
+            secondaryDesc: "Activate the account as Secondary, requiring login to the store account with constant internet connection. You cannot collect trophies on your personal account.",
             termsTitle: "Store Terms:",
             term1: "1. Changing account information is strictly prohibited.",
             term2: "2. Primary license allows you to play from your personal account.",
@@ -880,6 +903,15 @@
                 renderTabs();
             }
         });
+
+        db.ref('categories').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                categories = data;
+                renderTabs();
+                renderProducts();
+            }
+        });
     }
 
     function formatPrice(omr) {
@@ -891,10 +923,16 @@
         const container = document.getElementById('tabsContainer');
         const t = translations[currentLang];
         let html = `<button class="tab-btn ${currentCategory === 'all' ? 'active' : ''}" onclick="setCategory('all')">${t.all}</button>`;
-        categories.forEach(cat => {
-            html += `<button class="tab-btn ${currentCategory === cat ? 'active' : ''}" onclick="setCategory('${cat}')">${t[cat] || cat}</button>`;
+        Object.keys(categories).forEach(cat => {
+            html += `<button class="tab-btn ${currentCategory === cat ? 'active' : ''}" onclick="setCategory('${cat}')">${categories[cat]}</button>`;
         });
         container.innerHTML = html;
+    }
+
+    function getStockStatus(stock) {
+        if (stock <= 0) return { text: translations[currentLang].outOfStock, class: 'out-stock' };
+        if (stock < 5) return { text: `🔥 متبقي ${stock} فقط`, class: 'low-stock' };
+        return { text: `✅ متوفر ${stock}`, class: 'in-stock' };
     }
 
     function renderProducts() {
@@ -914,23 +952,30 @@
         
         container.innerHTML = pageProducts.map(p => {
             const name = currentLang === 'ar' ? p.nameAr : p.nameEn;
-            const price = formatPrice(p.priceOMR);
+            const primaryPrice = formatPrice(p.pricePrimary || p.priceOMR || 0);
+            const secondaryPrice = formatPrice(p.priceSecondary || (p.priceOMR * 0.6) || 0);
             const isOutOfStock = (p.stock || 0) <= 0;
-            const hasDiscount = p.oldPrice && p.oldPrice > p.priceOMR;
+            const stockStatus = getStockStatus(p.stock);
+            const hasDiscount = p.oldPrice && p.oldPrice > (p.pricePrimary || p.priceOMR);
             
             return `
                 <div class="product-card ${isOutOfStock ? 'out-of-stock' : ''}">
                     ${hasDiscount ? `<div class="discount-badge">🔥 خصم</div>` : ''}
+                    ${isOutOfStock ? `<div class="out-of-stock-badge">${t.outOfStock}</div>` : ''}
                     <div class="product-image" style="background-image: url('${p.image}'); background-size: cover; background-position: center;">
-                        <div class="product-badge">${categoryNames[p.category] || p.category}</div>
+                        <div class="product-badge">${categories[p.category] || p.category}</div>
                     </div>
                     <div class="card-info">
                         <div class="product-title">${escapeHtml(name)}</div>
                         <div class="price-container">
-                            <span class="price">${price}</span>
-                            ${hasDiscount ? `<span class="old-price">${formatPrice(p.oldPrice)}</span>` : ''}
+                            <div class="price-primary"><i class="fas fa-crown"></i> أساسي: ${primaryPrice}</div>
+                            <div class="price-secondary"><i class="fas fa-share-alt"></i> ثانوي: ${secondaryPrice}</div>
+                            ${hasDiscount ? `<div class="old-price">كان: ${formatPrice(p.oldPrice)}</div>` : ''}
                         </div>
-                        <button class="btn-wa" onclick="requestPurchase('${p.id}')">
+                        <div class="stock-status ${stockStatus.class}">
+                            <i class="fas ${stockStatus.class === 'in-stock' ? 'fa-check-circle' : (stockStatus.class === 'low-stock' ? 'fa-exclamation-triangle' : 'fa-times-circle')}"></i> ${stockStatus.text}
+                        </div>
+                        <button class="btn-wa ${isOutOfStock ? 'disabled' : ''}" onclick="${!isOutOfStock ? `requestPurchase('${p.id}')` : ''}">
                             <i class="fab fa-whatsapp"></i> ${t.orderNow}
                         </button>
                     </div>
@@ -952,78 +997,41 @@
         container.innerHTML = html;
     }
 
-    // تحديث النصوص في النافذة المنبثقة حسب اللغة
     function updateModalLanguage() {
         const t = translations[currentLang];
-        
-        // تحديث عناوين الجدول
-        const primaryHeader = document.getElementById('primaryHeader');
-        const secondaryHeader = document.getElementById('secondaryHeader');
-        if (primaryHeader) primaryHeader.innerText = t.primaryHeader;
-        if (secondaryHeader) secondaryHeader.innerText = t.secondaryHeader;
-        
-        // تحديث نصوص نعم/لا
-        const yesElements = document.querySelectorAll('#yesText, #yesText2, #yesText3');
-        const noElements = document.querySelectorAll('#noText, #noText2, #noText3');
-        yesElements.forEach(el => { if(el) el.innerText = t.yes; });
-        noElements.forEach(el => { if(el) el.innerText = t.no; });
-        
-        // تحديث شرح التفاصيل
-        const detailsTitle = document.getElementById('detailsTitle');
-        const primaryTitle = document.getElementById('primaryTitle');
-        const primaryDesc = document.getElementById('primaryDesc');
-        const secondaryTitle = document.getElementById('secondaryTitle');
-        const secondaryDesc = document.getElementById('secondaryDesc');
-        if (detailsTitle) detailsTitle.innerText = t.detailsTitle;
-        if (primaryTitle) primaryTitle.innerText = t.primaryTitle;
-        if (primaryDesc) primaryDesc.innerText = t.primaryDesc;
-        if (secondaryTitle) secondaryTitle.innerText = t.secondaryTitle;
-        if (secondaryDesc) secondaryDesc.innerText = t.secondaryDesc;
-        
-        // تحديث شروط المتجر
-        const termsTitle = document.getElementById('termsTitle');
-        const term1 = document.getElementById('term1');
-        const term2 = document.getElementById('term2');
-        const term3 = document.getElementById('term3');
-        const term4 = document.getElementById('term4');
-        if (termsTitle) termsTitle.innerText = t.termsTitle;
-        if (term1) term1.innerText = t.term1;
-        if (term2) term2.innerText = t.term2;
-        if (term3) term3.innerText = t.term3;
-        if (term4) term4.innerText = t.term4;
-        
-        // تحديث أزرار الإلغاء والتأكيد
-        const cancelText = document.getElementById('cancelText');
-        const acceptText = document.getElementById('acceptText');
-        if (cancelText) cancelText.innerText = t.cancelText;
-        if (acceptText) acceptText.innerText = t.acceptText;
-        
-        // تحديث نص اختيار النسخة
-        const modalSelectText = document.getElementById('modalSelectText');
-        if (modalSelectText) modalSelectText.innerText = t.modalSelectText;
+        const elements = ['primaryHeader', 'secondaryHeader', 'detailsTitle', 'primaryTitle', 'secondaryTitle', 'termsTitle', 'cancelText', 'acceptText', 'modalSelectText'];
+        elements.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && t[id]) el.innerText = t[id];
+        });
+        document.getElementById('primaryDesc').innerText = t.primaryDesc;
+        document.getElementById('secondaryDesc').innerText = t.secondaryDesc;
+        document.getElementById('term1').innerText = t.term1;
+        document.getElementById('term2').innerText = t.term2;
+        document.getElementById('term3').innerText = t.term3;
+        document.getElementById('term4').innerText = t.term4;
+        ['yesText', 'yesText2', 'yesText3'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerText = t.yes; });
+        ['noText', 'noText2', 'noText3'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).innerText = t.no; });
     }
 
     function requestPurchase(productId) {
         const p = products.find(prod => prod.id == productId);
         if (!p) return;
-        pendingProductData = p;
+        if ((p.stock || 0) <= 0) return;
         
+        pendingProductData = p;
         document.getElementById('modalProductName').innerText = currentLang === 'ar' ? p.nameAr : p.nameEn;
         
-        // عرض الأسعار في النافذة المنبثقة
-        const primaryPrice = p.pricePrimary || p.priceOMR;
-        const secondaryPrice = p.priceSecondary || (p.priceOMR * 0.6);
+        const primaryPrice = p.pricePrimary || p.priceOMR || 0;
+        const secondaryPrice = p.priceSecondary || (p.priceOMR * 0.6) || 0;
         document.getElementById('primaryPriceDisplay').innerText = formatPrice(primaryPrice);
         document.getElementById('secondaryPriceDisplay').innerText = formatPrice(secondaryPrice);
         
-        // حفظ الأسعار للاستخدام لاحقاً
         pendingProductData.displayPrimaryPrice = primaryPrice;
         pendingProductData.displaySecondaryPrice = secondaryPrice;
         
-        // تحديث النصوص حسب اللغة الحالية
         updateModalLanguage();
         
-        // إعادة تعيين الاختيار إلى الأساسية
         selectedLicenseType = 'primary';
         document.getElementById('primaryCard').classList.add('active');
         document.getElementById('secondaryCard').classList.remove('active');
@@ -1033,23 +1041,15 @@
 
     function selectLicense(type) {
         selectedLicenseType = type;
-        if (type === 'primary') {
-            document.getElementById('primaryCard').classList.add('active');
-            document.getElementById('secondaryCard').classList.remove('active');
-        } else {
-            document.getElementById('primaryCard').classList.remove('active');
-            document.getElementById('secondaryCard').classList.add('active');
-        }
+        document.getElementById('primaryCard').classList.toggle('active', type === 'primary');
+        document.getElementById('secondaryCard').classList.toggle('active', type === 'secondary');
     }
 
     function acceptTerms() {
         const p = pendingProductData;
         if (!p) return;
         
-        const licenseNameAr = selectedLicenseType === 'primary' ? 'النسخة الأساسية (Primary)' : 'النسخة الثانوية (Secondary)';
-        const licenseNameEn = selectedLicenseType === 'primary' ? 'Primary License' : 'Secondary License';
-        const licenseName = currentLang === 'ar' ? licenseNameAr : licenseNameEn;
-        
+        const licenseName = selectedLicenseType === 'primary' ? 'النسخة الأساسية (Primary)' : 'النسخة الثانوية (Secondary)';
         let finalPrice = selectedLicenseType === 'primary' ? p.displayPrimaryPrice : p.displaySecondaryPrice;
         const sym = currencySymbols[currentCurrency];
         const convertedPrice = (finalPrice * exchangeRates[currentCurrency]).toFixed(2);
@@ -1073,10 +1073,7 @@
         currentLang = lang; 
         renderTabs(); 
         renderProducts();
-        // تحديث النصوص في النافذة المنبثقة إذا كانت مفتوحة
-        if (document.getElementById('termsModal').style.display === 'flex') {
-            updateModalLanguage();
-        }
+        if (document.getElementById('termsModal').style.display === 'flex') updateModalLanguage();
     }
     function escapeHtml(text) { return text ? text.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])) : ''; }
 

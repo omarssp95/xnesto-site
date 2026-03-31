@@ -142,9 +142,9 @@
             overflow-x: auto;
             margin-top: 0.5rem;
         }
-        .stock-input { width: 60px; background: #1e1e3a; border: 1px solid #ffaa44; border-radius: 1rem; padding: 3px; text-align: center; color: white; }
+        .stock-input { width: 80px; background: #1e1e3a; border: 1px solid #ffaa44; border-radius: 1rem; padding: 5px; text-align: center; color: white; }
         .edit-btn, .delete-btn {
-            padding: 3px 8px;
+            padding: 5px 10px;
             margin: 0 2px;
             border: none;
             border-radius: 1rem;
@@ -157,19 +157,19 @@
             padding: 1rem;
             border-radius: 1rem;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 0.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.8rem;
         }
         .edit-field { display: flex; flex-direction: column; gap: 5px; }
         .edit-field label { font-size: 0.7rem; font-weight: bold; color: #ffaa44; }
         .edit-field input, .edit-field textarea, .edit-field select {
-            padding: 0.4rem;
+            padding: 0.5rem;
             border-radius: 1rem;
             background: #0a0c1a;
             border: 1px solid #ffaa44;
             color: white;
         }
-        .edit-buttons { grid-column: 1/-1; display: flex; gap: 10px; justify-content: center; margin-top: 0.5rem; }
+        .edit-buttons { grid-column: 1/-1; display: flex; gap: 10px; justify-content: center; margin-top: 0.8rem; }
         
         .control-bar {
             display: flex;
@@ -230,7 +230,7 @@
         
         @media (max-width: 640px) {
             body { padding: 0.5rem; }
-            th, td { padding: 4px; font-size: 0.65rem; }
+            th, td { padding: 6px; font-size: 0.7rem; }
             .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
             .product-edit-form { grid-template-columns: 1fr; }
         }
@@ -295,18 +295,18 @@
     <div id="productsTab" class="section-card">
         <h3>➕ إضافة منتج جديد</h3>
         <div class="flex-form">
-            <input type="text" id="newNameAr" placeholder="الاسم بالعربية">
-            <input type="text" id="newNameEn" placeholder="Name in English">
+            <input type="text" id="newNameAr" placeholder="الاسم بالعربية *">
+            <input type="text" id="newNameEn" placeholder="Name in English *">
             <select id="newCategorySelect">
                 <option value="games">🎮 ألعاب PS4/PS5</option>
                 <option value="giftcards">💳 بطاقات شحن</option>
             </select>
-            <input type="number" id="newPricePrimary" step="0.1" placeholder="سعر النسخة الأساسية (ر.ع)">
-            <input type="number" id="newPriceSecondary" step="0.1" placeholder="سعر النسخة الثانوية (ر.ع)">
+            <input type="number" id="newPricePrimary" step="0.1" placeholder="السعر الأساسي (ر.ع) *">
+            <input type="number" id="newPriceSecondary" step="0.1" placeholder="السعر الثانوي (ر.ع)">
             <input type="number" id="newOldPrice" step="0.1" placeholder="السعر القديم (اختياري)">
             <input type="number" id="newStock" step="1" placeholder="الكمية" value="99">
             <div class="image-upload-area" id="newImageUploadArea">
-                <i class="fas fa-cloud-upload-alt"></i> 📸 صورة
+                <i class="fas fa-cloud-upload-alt"></i> 📸 صورة المنتج
                 <input type="file" id="newImageFile" accept="image/*">
                 <img id="newImagePreview" class="image-preview">
             </div>
@@ -325,6 +325,7 @@
             <input type="text" id="newCategoryName" placeholder="اسم التصنيف (مثل: 🎮 ألعاب PS4/PS5)">
             <button class="btn-save" onclick="addCategory()">➕ إضافة تصنيف</button>
         </div>
+        <p style="font-size:0.7rem; color:#888; margin-top:0.5rem;">⚠️ لا يمكن حذف التصنيفات الأساسية (games, giftcards)</p>
     </div>
 
     <div class="footer">
@@ -470,17 +471,17 @@
         
         container.innerHTML = `
             <div style="overflow-x:auto;">
-                <table style="width:100%;">
+                <table style="width:100%; border-collapse:collapse;">
                     <thead>
-                        <tr>
-                            <th>الترتيب</th>
-                            <th>الصورة</th>
-                            <th>الاسم</th>
-                            <th>السعر الأساسي</th>
-                            <th>السعر الثانوي</th>
-                            <th>الكمية</th>
-                            <th>التصنيف</th>
-                            <th>إجراءات</th>
+                        <tr style="background:rgba(255,170,68,0.2);">
+                            <th style="padding:10px;">الترتيب</th>
+                            <th style="padding:10px;">الصورة</th>
+                            <th style="padding:10px;">الاسم</th>
+                            <th style="padding:10px;">السعر الأساسي</th>
+                            <th style="padding:10px;">السعر الثانوي</th>
+                            <th style="padding:10px;">الكمية</th>
+                            <th style="padding:10px;">التصنيف</th>
+                            <th style="padding:10px;">إجراءات</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody"></tbody>
@@ -493,25 +494,25 @@
             const realIdx = products.findIndex(prod => prod.id === p.id);
             const orderNum = realIdx + 1;
             return `
-                <tr>
-                    <td>
-                        <div style="display:flex; gap:5px; justify-content:center;">
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+                    <td style="padding:8px;">
+                        <div style="display:flex; gap:5px; justify-content:center; flex-wrap:wrap;">
                             <button class="edit-btn" onclick="moveProductUp(${realIdx})" ${realIdx===0?'disabled':''}>⬆️</button>
                             <span style="background:#ffaa44; color:#0a0a1a; padding:2px 8px; border-radius:1rem;">${orderNum}</span>
                             <button class="edit-btn" onclick="moveProductDown(${realIdx})" ${realIdx===products.length-1?'disabled':''}>⬇️</button>
                             <input type="number" value="${orderNum}" min="1" max="${products.length}" style="width:55px; background:#1e1e3a; border:1px solid #ffaa44; border-radius:1rem; text-align:center; color:white;" onchange="moveToPosition(${p.id}, this.value)">
                         </div>
                     </td>
-                    <td><img src="${p.image || ''}" width="40" height="40" style="border-radius:8px; object-fit:cover;" onerror="this.src='https://via.placeholder.com/40'"></td>
-                    <td><strong>${escapeHtml(p.nameAr)}</strong><br><small>${escapeHtml(p.nameEn)}</small></td>
-                    <td><span style="color:#00cc88;">${p.pricePrimary || p.priceOMR || 0} ر.ع</span></td>
-                    <td><span style="color:#ffaa44;">${p.priceSecondary || 0} ر.ع</span></td>
-                    <td><input type="number" class="stock-input" value="${p.stock || 0}" min="0" onchange="updateStock(${p.id}, this.value)"></td>
-                    <td>${categories[p.category] || p.category}</td>
-                    <td><button class="edit-btn" onclick="openEditForm(${p.id})">✏️</button><button class="delete-btn" onclick="deleteProduct(${p.id})">🗑️</button></td>
+                    <td style="padding:8px;"><img src="${p.image || ''}" width="45" height="45" style="border-radius:8px; object-fit:cover;" onerror="this.src='https://via.placeholder.com/45'"></td>
+                    <td style="padding:8px;"><strong>${escapeHtml(p.nameAr)}</strong><br><small>${escapeHtml(p.nameEn)}</small></td>
+                    <td style="padding:8px;"><span style="color:#00cc88; font-weight:bold;">${p.pricePrimary || p.priceOMR || 0} ر.ع</span></td>
+                    <td style="padding:8px;"><span style="color:#ffaa44; font-weight:bold;">${p.priceSecondary || 0} ر.ع</span></td>
+                    <td style="padding:8px;"><input type="number" class="stock-input" value="${p.stock || 0}" min="0" onchange="updateStock(${p.id}, this.value)"></td>
+                    <td style="padding:8px;">${categories[p.category] || p.category}</td>
+                    <td style="padding:8px;"><button class="edit-btn" onclick="openEditForm(${p.id})">✏️ تعديل</button><button class="delete-btn" onclick="deleteProduct(${p.id})">🗑️ حذف</button></td>
                 </tr>
-                <tr id="edit-form-${p.id}" style="display:none;">
-                    <td colspan="8">
+                <tr id="edit-form-${p.id}" style="display:none; background:#1e1e3a;">
+                    <td colspan="8" style="padding:15px;">
                         <div class="product-edit-form">
                             <div class="edit-field"><label>📝 الاسم بالعربية</label><input type="text" id="editNameAr_${p.id}" value="${escapeHtml(p.nameAr)}"></div>
                             <div class="edit-field"><label>🌐 الاسم بالإنجليزية</label><input type="text" id="editNameEn_${p.id}" value="${escapeHtml(p.nameEn)}"></div>
@@ -523,9 +524,9 @@
                             <div class="edit-field"><label>📝 الوصف بالعربية</label><textarea id="editDescAr_${p.id}" rows="2">${escapeHtml(p.detailsAr||'')}</textarea></div>
                             <div class="edit-field"><label>📝 الوصف بالإنجليزية</label><textarea id="editDescEn_${p.id}" rows="2">${escapeHtml(p.detailsEn||'')}</textarea></div>
                             <div class="edit-field"><label>📂 التصنيف</label><select id="editCategory_${p.id}">
-                                ${Object.keys(categories).map(cat => `<option value="${cat}" ${p.category===cat?'selected':''}>${categories[cat]}</option>`).join('')}
+                                ${Object.entries(categories).map(([catId, catName]) => `<option value="${catId}" ${p.category===catId?'selected':''}>${catName}</option>`).join('')}
                             </select></div>
-                            <div class="edit-buttons"><button onclick="saveEdit(${p.id})" style="background:#00cc88;">💾 حفظ</button><button onclick="closeEditForm(${p.id})" style="background:#ff4444;">إلغاء</button></div>
+                            <div class="edit-buttons"><button onclick="saveEdit(${p.id})" style="background:#00cc88; padding:8px 20px; border-radius:2rem; border:none; cursor:pointer; font-weight:bold;">💾 حفظ التعديلات</button><button onclick="closeEditForm(${p.id})" style="background:#ff4444; padding:8px 20px; border-radius:2rem; border:none; cursor:pointer; font-weight:bold;">❌ إلغاء</button></div>
                         </div>
                     </td>
                 </tr>
@@ -549,8 +550,8 @@
         p.nameAr = document.getElementById(`editNameAr_${id}`).value;
         p.nameEn = document.getElementById(`editNameEn_${id}`).value;
         p.pricePrimary = parseFloat(document.getElementById(`editPricePrimary_${id}`).value);
-        p.priceSecondary = parseFloat(document.getElementById(`editPriceSecondary_${id}`).value);
-        p.priceOMR = p.pricePrimary; // للتوافق مع المتجر
+        p.priceSecondary = parseFloat(document.getElementById(`editPriceSecondary_${id}`).value) || 0;
+        p.priceOMR = p.pricePrimary;
         const oldPrice = parseFloat(document.getElementById(`editOldPrice_${id}`).value);
         p.oldPrice = (oldPrice && oldPrice > p.pricePrimary) ? oldPrice : null;
         p.stock = parseInt(document.getElementById(`editStock_${id}`).value) || 0;
@@ -566,7 +567,7 @@
     }
     
     function deleteProduct(id) {
-        if (confirm('⚠️ حذف المنتج؟')) {
+        if (confirm('⚠️ هل أنت متأكد من حذف هذا المنتج؟')) {
             products = products.filter(p => p.id != id);
             updateOrder();
             showNotification('✅ تم حذف المنتج');
@@ -578,7 +579,7 @@
         const nameEn = document.getElementById('newNameEn').value.trim();
         const category = document.getElementById('newCategorySelect').value;
         const pricePrimary = parseFloat(document.getElementById('newPricePrimary').value);
-        const priceSecondary = parseFloat(document.getElementById('newPriceSecondary').value);
+        const priceSecondary = parseFloat(document.getElementById('newPriceSecondary').value) || 0;
         const oldPrice = parseFloat(document.getElementById('newOldPrice').value) || null;
         const stock = parseInt(document.getElementById('newStock').value) || 0;
         const image = currentImageData || "";
@@ -596,7 +597,7 @@
             nameEn: nameEn,
             category: category,
             pricePrimary: pricePrimary,
-            priceSecondary: priceSecondary || 0,
+            priceSecondary: priceSecondary,
             priceOMR: pricePrimary,
             oldPrice: (oldPrice && oldPrice > pricePrimary) ? oldPrice : null,
             stock: stock,
@@ -666,7 +667,7 @@
     function loadCategories() {
         categoriesRef.on('value', (snapshot) => {
             const data = snapshot.val();
-            if (data) {
+            if (data && Object.keys(data).length > 0) {
                 categories = data;
             } else {
                 // التصنيفات الافتراضية
@@ -708,6 +709,7 @@
             document.getElementById('newCategoryId').value = '';
             document.getElementById('newCategoryName').value = '';
             updateCategorySelects();
+            renderProductsTable();
         });
     }
 
@@ -721,6 +723,7 @@
             categoriesRef.set(categories).then(() => {
                 showNotification('✅ تم حذف التصنيف');
                 updateCategorySelects();
+                renderProductsTable();
             });
         }
     }

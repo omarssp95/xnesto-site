@@ -301,12 +301,12 @@
     </div>
 
     <div class="admin-tabs">
-        <button class="admin-tab active" onclick="showTab('products')">📦 المنتجات</button>
-        <button class="admin-tab" onclick="showTab('offers')">🏷️ العروض</button>
-        <button class="admin-tab" onclick="showTab('coupons')">🎫 أكواد الخصم</button>
-        <button class="admin-tab" onclick="showTab('orders')">📋 الطلبات</button>
-        <button class="admin-tab" onclick="showTab('categories')">📁 التصنيفات</button>
-        <button class="admin-tab" onclick="showTab('news')">📰 الأخبار</button>
+        <button class="admin-tab active" data-tab="products" onclick="showTab('products')">📦 المنتجات</button>
+        <button class="admin-tab" data-tab="offers" onclick="showTab('offers')">🏷️ العروض</button>
+        <button class="admin-tab" data-tab="coupons" onclick="showTab('coupons')">🎫 أكواد الخصم</button>
+        <button class="admin-tab" data-tab="orders" onclick="showTab('orders')">📋 الطلبات</button>
+        <button class="admin-tab" data-tab="categories" onclick="showTab('categories')">📁 التصنيفات</button>
+        <button class="admin-tab" data-tab="news" onclick="showTab('news')">📰 الأخبار</button>
     </div>
 
     <div id="dashboardSection" class="dashboard-grid">
@@ -656,14 +656,28 @@
         showNotification('✅ تم إضافة المنتج');
     }
 
-    // Helper functions and rest of logic (keeping original functionality)
+    // ========== إصلاح دالة showTab ==========
     function showTab(tabId) {
-        document.querySelectorAll('.section-tab, .section-card').forEach(s => {
-            if(s.id.includes('Tab')) s.style.display = 'none';
+        // إخفاء جميع التبويبات
+        const tabs = ['productsTab', 'offersTab', 'couponsTab', 'ordersTab', 'categoriesTab', 'newsTab'];
+        tabs.forEach(tab => {
+            const element = document.getElementById(tab);
+            if (element) element.style.display = 'none';
         });
-        document.getElementById(tabId + 'Tab').style.display = 'block';
-        document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-        event.target.classList.add('active');
+        
+        // إظهار التبويب المحدد
+        const selectedTab = document.getElementById(tabId + 'Tab');
+        if (selectedTab) selectedTab.style.display = 'block';
+        
+        // تحديث حالة الأزرار النشطة
+        document.querySelectorAll('.admin-tab').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-tab') === tabId || (btn.textContent.includes(tabId) && tabId === 'products')) {
+                btn.classList.add('active');
+            }
+        });
+        
+        // تحديث التيار الحالي
         currentTab = tabId;
     }
 
@@ -717,7 +731,7 @@
                         <option value="completed" ${o.status==='completed'?'selected':''}>تم التسليم</option>
                         <option value="cancelled" ${o.status==='cancelled'?'selected':''}>ملغي</option>
                     </select>
-                </td>
+                 </td>
                 <td><button class="btn-sm btn-danger" onclick="deleteOrder('${o.id}')">🗑️</button></td>
             </tr>
         `).join('');
@@ -750,7 +764,6 @@
     }
 
     function updateCategorySelects() {
-        const selects = ['newCategorySelect', 'editCategory']; // Simplified
         const options = categories.map(cat => `<option value="${cat}">${categoryNames[cat]}</option>`).join('');
         const newSelect = document.getElementById('newCategorySelect');
         if (newSelect) newSelect.innerHTML = options;
@@ -877,20 +890,26 @@
     }
 
     // Image upload handling
-    document.getElementById('newImageUploadArea').onclick = () => document.getElementById('newImageFile').click();
-    document.getElementById('newImageFile').onchange = function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                currentImageData = event.target.result;
-                const preview = document.getElementById('newImagePreview');
-                preview.src = currentImageData;
-                preview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-    };
+    const uploadArea = document.getElementById('newImageUploadArea');
+    if (uploadArea) {
+        uploadArea.onclick = () => document.getElementById('newImageFile').click();
+    }
+    const imageFile = document.getElementById('newImageFile');
+    if (imageFile) {
+        imageFile.onchange = function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    currentImageData = event.target.result;
+                    const preview = document.getElementById('newImagePreview');
+                    preview.src = currentImageData;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+    }
 
     window.onload = checkSession;
 </script>

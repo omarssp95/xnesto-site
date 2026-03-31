@@ -207,6 +207,7 @@
             align-items: center;
             gap: 10px;
             border: 1px solid rgba(255,170,68,0.3);
+            cursor: pointer;
         }
         .weekly-item img { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; }
         .weekly-item .info { text-align: right; }
@@ -472,7 +473,7 @@
         }
         .whatsapp-float:hover { transform: scale(1.1); background: #20b859; }
         
-        /* Modal Styles */
+        /* Modal Styles - مطابق للصورة */
         .modal {
             display: none;
             position: fixed;
@@ -493,7 +494,7 @@
             padding: 1.5rem;
             border: 2px solid #ffaa44;
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             max-height: 90vh;
             overflow-y: auto;
             animation: fadeInScale 0.3s ease;
@@ -502,51 +503,142 @@
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
         }
-        .modal-content h3 { color: #ffaa44; margin-bottom: 1rem; text-align: center; font-size: 1.3rem; }
+        .modal-content h3 { color: #ffaa44; margin-bottom: 0.5rem; text-align: center; font-size: 1.3rem; }
         .modal-content p { color: #ffdd99; margin-bottom: 1rem; text-align: center; }
         
-        /* Licensing Options in Modal */
-        .license-options { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 1.5rem 0; }
+        /* Licensing Options - مثل الصورة */
+        .license-options {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
         .license-card {
             background: #1e1e3a;
             border: 2px solid rgba(255, 170, 68, 0.2);
             border-radius: 1rem;
-            padding: 1rem;
+            padding: 1.2rem;
             cursor: pointer;
             transition: 0.3s;
             text-align: center;
             position: relative;
+            flex: 1;
+            min-width: 150px;
         }
-        .license-card.active { border-color: #ffaa44; background: rgba(255, 170, 68, 0.1); }
-        .license-card h4 { color: #ffaa44; margin-bottom: 5px; font-size: 1rem; }
-        .license-card .price-tag { font-weight: 900; font-size: 1.1rem; }
+        .license-card.active { border-color: #ffaa44; background: rgba(255, 170, 68, 0.1); transform: scale(1.02); }
+        .license-card h4 { color: #ffaa44; margin-bottom: 5px; font-size: 1.1rem; }
+        .license-card .price-tag { font-weight: 900; font-size: 1.3rem; color: #fff; }
         .license-card .badge {
             position: absolute;
-            top: -10px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
             background: #ffaa44;
             color: #0a0a1a;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.65rem;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
             font-weight: bold;
+            white-space: nowrap;
         }
 
-        /* Comparison Table */
-        .comparison-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.75rem; color: #b9c5f0; }
-        .comparison-table th, .comparison-table td { padding: 8px; text-align: center; border-bottom: 1px solid rgba(255, 170, 68, 0.1); }
-        .comparison-table th { color: #ffaa44; }
-        .comparison-table i.fa-check { color: #00cc88; }
-        .comparison-table i.fa-times { color: #ff4444; }
+        /* Comparison Table - مثل الصورة */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.8rem;
+            color: #b9c5f0;
+            background: #0a0c1a;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 170, 68, 0.15);
+        }
+        .comparison-table th {
+            color: #ffaa44;
+            background: #0f1125;
+            font-weight: bold;
+        }
+        .comparison-table td:first-child {
+            text-align: right;
+            font-weight: bold;
+        }
+        .comparison-table i.fa-check { color: #00cc88; font-size: 1.1rem; }
+        .comparison-table i.fa-times { color: #ff4444; font-size: 1.1rem; }
 
-        .modal-content ol { margin: 1rem 0; padding-right: 1.5rem; }
-        .modal-content li { color: #b9c5f0; margin-bottom: 8px; line-height: 1.5; font-size: 0.85rem; }
-        .modal-content li strong { color: #ffaa44; }
-        .terms-actions { display: flex; gap: 12px; justify-content: center; margin-top: 1.5rem; }
-        .btn-cancel { background: #444; color: white; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: all 0.2s; }
+        /* شرح التفعيل */
+        .activation-info {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-right: 3px solid #ffaa44;
+        }
+        .activation-info h4 {
+            color: #ffaa44;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        .activation-info p {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #b9c5f0;
+            margin: 0;
+        }
+
+        /* شروط المتجر */
+        .store-terms {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-size: 0.75rem;
+            color: #888;
+        }
+        .store-terms h4 {
+            color: #ffaa44;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+        .store-terms p {
+            margin: 5px 0;
+            line-height: 1.6;
+        }
+        
+        .terms-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        .btn-cancel {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
         .btn-cancel:hover { background: #555; transform: scale(1.02); }
-        .btn-accept { background: #ffaa44; color: #0a0a1a; border: none; padding: 10px 20px; border-radius: 40px; cursor: pointer; font-weight: bold; font-size: 0.9rem; transition: all 0.2s; }
+        .btn-accept {
+            background: #ffaa44;
+            color: #0a0a1a;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
         .btn-accept:hover { background: #ffbb55; transform: scale(1.02); }
         
         .device-bar {
@@ -670,14 +762,14 @@
     <i class="fab fa-whatsapp"></i>
 </a>
 
-<!-- Purchasing & Licensing Modal -->
+<!-- Modal اختيار النسخة - مطابق للصورة -->
 <div id="termsModal" class="modal" style="display:none;">
     <div class="modal-content">
         <h3 id="modalProductName">اسم المنتج</h3>
         <p id="modalSelectText">يرجى اختيار نوع النسخة المطلوبة:</p>
         
         <div id="licenseSelectionArea" class="license-options">
-            <div class="license-card active" id="primaryCard" onclick="selectLicense('primary')">
+            <div class="license-card" id="primaryCard" onclick="selectLicense('primary')">
                 <div class="badge">الأكثر طلباً</div>
                 <h4>النسخة الأساسية</h4>
                 <div class="price-tag" id="primaryPriceDisplay">--</div>
@@ -688,12 +780,13 @@
             </div>
         </div>
 
+        <!-- جدول المقارنة مثل الصورة -->
         <table class="comparison-table">
             <thead>
                 <tr>
                     <th>الميزة</th>
-                    <th>الأساسية</th>
-                    <th>الثانوية</th>
+                    <th>النسخة الأساسية</th>
+                    <th>النسخة الثانوية</th>
                 </tr>
             </thead>
             <tbody>
@@ -712,21 +805,23 @@
                     <td><i class="fas fa-check"></i> نعم</td>
                     <td><i class="fas fa-times"></i> لا</td>
                 </tr>
-                <tr>
-                    <td>السعر</td>
-                    <td>أعلى</td>
-                    <td>أرخص</td>
-                </tr>
             </tbody>
         </table>
 
-        <h3 id="termsTitle">📋 شروط الاستخدام</h3>
-        <ol id="termsList">
-            <li>يمنع تغيير بيانات الحساب نهائياً.</li>
-            <li>النسخة الأساسية تسمح لك باللعب بحسابك الشخصي.</li>
-            <li>النسخة الثانوية تتطلب اتصال دائم بالإنترنت واللعب من حساب المتجر.</li>
-            <li>الضمان يسري لمدة 7 أيام من تاريخ الاستلام.</li>
-        </ol>
+        <!-- شرح التفعيل -->
+        <div class="activation-info">
+            <h4><i class="fas fa-info-circle"></i> شرح التفعيل:</h4>
+            <p>النسخة الأساسية: تفعل الحساب كجهاز رئيسي وتلعب من حسابك الخاص.</p>
+        </div>
+
+        <!-- شروط المتجر -->
+        <div class="store-terms">
+            <h4><i class="fas fa-gavel"></i> شروط المتجر:</h4>
+            <p>1. يمنع تغيير بيانات الحساب نهائياً.</p>
+            <p>2. النسخة الأساسية تسمح لك باللعب بحسابك الشخصي.</p>
+            <p>3. النسخة الثانوية تتطلب اتصال دائم بالإنترنت واللعب من حساب المتجر.</p>
+            <p>4. الضمان يسري لمدة 7 أيام من تاريخ الاستلام.</p>
+        </div>
         
         <div class="terms-actions">
             <button onclick="rejectTerms()" class="btn-cancel" id="cancelBtn">إلغاء</button>
@@ -872,43 +967,44 @@
         
         document.getElementById('modalProductName').innerText = currentLang === 'ar' ? p.nameAr : p.nameEn;
         
-        // Check if product has dual pricing (mostly for games)
-        if (p.category === 'games' && (p.pricePrimary || p.priceSecondary)) {
-            document.getElementById('licenseSelectionArea').style.display = 'grid';
-            document.querySelector('.comparison-table').style.display = 'table';
-            document.getElementById('modalSelectText').style.display = 'block';
-            
-            // Set prices in modal
-            document.getElementById('primaryPriceDisplay').innerText = formatPrice(p.pricePrimary || p.priceOMR);
-            document.getElementById('secondaryPriceDisplay').innerText = formatPrice(p.priceSecondary || (p.priceOMR * 0.6)); // Fallback
-            
-            // Default to primary
-            selectLicense('primary');
-        } else {
-            document.getElementById('licenseSelectionArea').style.display = 'none';
-            document.querySelector('.comparison-table').style.display = 'none';
-            document.getElementById('modalSelectText').style.display = 'none';
-        }
+        // عرض الأسعار في النافذة المنبثقة
+        const primaryPrice = p.pricePrimary || p.priceOMR;
+        const secondaryPrice = p.priceSecondary || (p.priceOMR * 0.6);
+        document.getElementById('primaryPriceDisplay').innerText = formatPrice(primaryPrice);
+        document.getElementById('secondaryPriceDisplay').innerText = formatPrice(secondaryPrice);
+        
+        // حفظ الأسعار للاستخدام لاحقاً
+        pendingProductData.displayPrimaryPrice = primaryPrice;
+        pendingProductData.displaySecondaryPrice = secondaryPrice;
+        
+        // إعادة تعيين الاختيار إلى الأساسية
+        selectedLicenseType = 'primary';
+        document.getElementById('primaryCard').classList.add('active');
+        document.getElementById('secondaryCard').classList.remove('active');
         
         document.getElementById('termsModal').style.display = 'flex';
     }
 
     function selectLicense(type) {
         selectedLicenseType = type;
-        document.getElementById('primaryCard').classList.toggle('active', type === 'primary');
-        document.getElementById('secondaryCard').classList.toggle('active', type === 'secondary');
+        if (type === 'primary') {
+            document.getElementById('primaryCard').classList.add('active');
+            document.getElementById('secondaryCard').classList.remove('active');
+        } else {
+            document.getElementById('primaryCard').classList.remove('active');
+            document.getElementById('secondaryCard').classList.add('active');
+        }
     }
 
     function acceptTerms() {
         const p = pendingProductData;
-        const licenseName = selectedLicenseType === 'primary' ? 'النسخة الأساسية (Primary)' : 'النسخة الثانوية (Secondary)';
-        let finalPrice = p.priceOMR;
+        if (!p) return;
         
-        if (p.category === 'games') {
-            if (selectedLicenseType === 'primary') finalPrice = p.pricePrimary || p.priceOMR;
-            else finalPrice = p.priceSecondary || (p.priceOMR * 0.6);
-        }
-
+        const licenseNameAr = selectedLicenseType === 'primary' ? 'النسخة الأساسية (Primary)' : 'النسخة الثانوية (Secondary)';
+        const licenseNameEn = selectedLicenseType === 'primary' ? 'Primary License' : 'Secondary License';
+        const licenseName = currentLang === 'ar' ? licenseNameAr : licenseNameEn;
+        
+        let finalPrice = selectedLicenseType === 'primary' ? p.displayPrimaryPrice : p.displaySecondaryPrice;
         const sym = currencySymbols[currentCurrency];
         const convertedPrice = (finalPrice * exchangeRates[currentCurrency]).toFixed(2);
         
@@ -916,9 +1012,14 @@
         
         window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
         document.getElementById('termsModal').style.display = 'none';
+        pendingProductData = null;
     }
 
-    function rejectTerms() { document.getElementById('termsModal').style.display = 'none'; }
+    function rejectTerms() { 
+        document.getElementById('termsModal').style.display = 'none'; 
+        pendingProductData = null;
+    }
+    
     function setCategory(cat) { currentCategory = cat; currentPage = 1; renderProducts(); renderTabs(); }
     function goToPage(page) { currentPage = page; renderProducts(); window.scrollTo(0, 400); }
     function setCurrency(cur) { currentCurrency = cur; renderProducts(); }
